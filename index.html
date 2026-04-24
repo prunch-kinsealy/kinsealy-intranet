@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kinsealy Medical Centre — Staff Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1a2d4a;--navy-light:#243c61;--teal:#2a8a7e;--teal-light:#3aa897;--teal-pale:#e8f5f3;
+  --gold:#c9a84c;--cream:#f8f6f1;--white:#ffffff;--grey-100:#f4f4f4;--grey-200:#e8e8e8;
+  --grey-400:#9ca3af;--grey-700:#374151;--text:#1f2937;--sidebar-w:260px;--radius:10px;
+  /* Staff colours */
+  --col-pm:#7c3aed;--col-pm-pale:#f3f0ff;
+  --col-sec:#0369a1;--col-sec-pale:#e0f2fe;
+  --col-nurse:#0f766e;--col-nurse-pale:#ccfbf1;
+  --col-doc:#b91c1c;--col-doc-pale:#fee2e2;
+  --col-phle:#b45309;--col-phle-pale:#fef3c7;
+  --col-all:#374151;--col-all-pale:#f3f4f6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);display:flex;min-height:100vh}
+
+/* SIDEBAR */
+#sidebar{width:var(--sidebar-w);background:var(--navy);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+.sidebar-logo{padding:24px 20px 16px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sidebar-logo h1{font-family:'DM Serif Display',serif;font-size:1.05rem;line-height:1.3;color:#fff}
+.sidebar-logo span{display:block;font-size:0.65rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal-light);margin-top:3px}
+.sidebar-date{padding:10px 20px;font-size:0.7rem;color:rgba(255,255,255,0.4);border-bottom:1px solid rgba(255,255,255,0.06)}
+nav{flex:1;padding:12px 0}
+nav a{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,0.72);text-decoration:none;font-size:0.82rem;font-weight:400;transition:all 0.15s;border-left:3px solid transparent}
+nav a:hover{background:rgba(255,255,255,0.06);color:#fff;border-left-color:rgba(42,138,126,0.5)}
+nav a.active{background:rgba(42,138,126,0.15);color:#fff;border-left-color:var(--teal-light);font-weight:500}
+nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.sidebar-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.68rem;color:rgba(255,255,255,0.3)}
+
+/* MAIN */
+#main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+#topbar{background:var(--white);border-bottom:1px solid var(--grey-200);padding:12px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--navy)}
+.topbar-right{display:flex;align-items:center;gap:14px}
+#search{border:1px solid var(--grey-200);border-radius:6px;padding:7px 14px;font-size:0.82rem;font-family:'DM Sans',sans-serif;background:var(--grey-100);width:220px;outline:none;transition:border 0.15s}
+#search:focus{border-color:var(--teal);background:#fff}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;font-size:0.75rem;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer}
+#content{flex:1;padding:28px 32px;max-width:1100px}
+
+/* SECTIONS */
+.section{display:none;animation:fadeIn 0.2s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* PAGE HEADER */
+.page-header{margin-bottom:24px}
+.page-header h2{font-family:'DM Serif Display',serif;font-size:1.75rem;color:var(--navy);margin-bottom:5px}
+.page-header p{color:var(--grey-400);font-size:0.85rem}
+
+/* SECTION LABEL */
+.section-label{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--teal);margin-bottom:10px;margin-top:24px;padding-bottom:5px;border-bottom:1px solid var(--teal-pale)}
+
+/* STAFF LEGEND */
+.staff-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding:12px 16px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius)}
+.staff-legend-title{font-size:0.72rem;font-weight:600;color:var(--navy);width:100%;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em}
+.staff-badge{display:inline-flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:600;padding:4px 10px;border-radius:20px;cursor:default}
+.badge-pm{background:var(--col-pm-pale);color:var(--col-pm)}
+.badge-sec{background:var(--col-sec-pale);color:var(--col-sec)}
+.badge-nurse{background:var(--col-nurse-pale);color:var(--col-nurse)}
+.badge-doc{background:var(--col-doc-pale);color:var(--col-doc)}
+.badge-phle{background:var(--col-phle-pale);color:var(--col-phle)}
+.badge-all{background:var(--col-all-pale);color:var(--col-all)}
+
+/* SOP CARD */
+.sop-card{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);margin-bottom:16px;overflow:hidden}
+.sop-header{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:background 0.15s}
+.sop-header:hover{background:var(--grey-100)}
+.sop-header-left{display:flex;align-items:center;gap:10px}
+.sop-header h3{font-size:0.92rem;font-weight:600;color:var(--navy)}
+.sop-toggle{font-size:0.8rem;color:var(--grey-400);transition:transform 0.2s;flex-shrink:0}
+.sop-toggle.open{transform:rotate(180deg)}
+.sop-meta{display:flex;gap:12px;flex-wrap:wrap;padding:8px 18px;background:var(--grey-100);border-bottom:1px solid var(--grey-200);font-size:0.7rem;color:var(--grey-400)}
+.sop-meta span{display:flex;align-items:center;gap:4px}
+.sop-body{padding:16px 18px;display:none}
+.sop-body.open{display:block}
+
+/* JOURNEY / STEPS */
+.journey{display:flex;flex-direction:column;gap:0}
+.journey-step{display:flex;gap:14px;position:relative;padding-bottom:4px}
+.journey-step:not(:last-child)::before{content:'';position:absolute;left:18px;top:36px;bottom:0;width:2px;background:var(--grey-200);z-index:0}
+.step-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;flex-shrink:0;position:relative;z-index:1;margin-top:2px}
+.dot-pm{background:var(--col-pm-pale);color:var(--col-pm);border:2px solid var(--col-pm)}
+.dot-sec{background:var(--col-sec-pale);color:var(--col-sec);border:2px solid var(--col-sec)}
+.dot-nurse{background:var(--col-nurse-pale);color:var(--col-nurse);border:2px solid var(--col-nurse)}
+.dot-doc{background:var(--col-doc-pale);color:var(--col-doc);border:2px solid var(--col-doc)}
+.dot-phle{background:var(--col-phle-pale);color:var(--col-phle);border:2px solid var(--col-phle)}
+.dot-all{background:var(--col-all-pale);color:var(--col-all);border:2px solid var(--col-all)}
+.step-content{flex:1;padding:8px 12px;border-radius:8px;margin-bottom:10px}
+.step-content-pm{background:var(--col-pm-pale);border-left:3px solid var(--col-pm)}
+.step-content-sec{background:var(--col-sec-pale);border-left:3px solid var(--col-sec)}
+.step-content-nurse{background:var(--col-nurse-pale);border-left:3px solid var(--col-nurse)}
+.step-content-doc{background:var(--col-doc-pale);border-left:3px solid var(--col-doc)}
+.step-content-phle{background:var(--col-phle-pale);border-left:3px solid var(--col-phle)}
+.step-content-all{background:var(--col-all-pale);border-left:3px solid var(--col-all)}
+.step-role{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px}
+.step-role-pm{color:var(--col-pm)}
+.step-role-sec{color:var(--col-sec)}
+.step-role-nurse{color:var(--col-nurse)}
+.step-role-doc{color:var(--col-doc)}
+.step-role-phle{color:var(--col-phle)}
+.step-role-all{color:var(--col-all)}
+.step-title{font-size:0.88rem;font-weight:600;color:var(--navy);margin-bottom:4px}
+.step-detail{font-size:0.8rem;color:var(--grey-700);line-height:1.55}
+.step-detail ul{margin-left:16px;margin-top:4px}
+.step-detail li{margin-bottom:3px}
+.step-detail a{color:var(--teal);text-decoration:none}
+.step-detail a:hover{text-decoration:underline}
+
+/* NOTICE BOARD */
+.notice-strip{background:var(--navy);color:#fff;border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;display:flex;gap:14px;align-items:flex-start}
+.notice-strip .badge{background:var(--gold);color:var(--navy);font-size:0.62rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:4px;flex-shrink:0;margin-top:2px}
+.notice-strip h4{font-size:0.88rem;font-weight:600;margin-bottom:3px}
+.notice-strip p{font-size:0.78rem;opacity:0.75;line-height:1.5}
+.notice-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.notice-item{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:12px 16px;display:flex;gap:12px;align-items:flex-start}
+.notice-item.recent-update{border-left:3px solid var(--teal)}
+.notice-item .dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.dot-teal{background:var(--teal)}.dot-gold{background:var(--gold)}.dot-navy{background:var(--navy)}.dot-red{background:#ef4444}
+.notice-item h4{font-size:0.85rem;font-weight:500;margin-bottom:2px}
+.notice-item p{font-size:0.77rem;color:var(--grey-400)}
+.notice-item .date{font-size:0.7rem;color:var(--grey-400);margin-left:auto;flex-shrink:0}
+
+/* HOME GRID */
+.home-grid{display:grid;grid-template-columns:1fr 300px;gap:20px}
+.widget{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);margin-bottom:14px;overflow:hidden}
+.widget-header{padding:12px 16px;border-bottom:1px solid var(--grey-200);display:flex;align-items:center;justify-content:space-between}
+.widget-header h3{font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--navy)}
+.widget-body{padding:12px 16px}
+.link-list{list-style:none}
+.link-list li{border-bottom:1px solid var(--grey-100);padding:8px 0;display:flex;align-items:center;justify-content:space-between}
+.link-list li:last-child{border-bottom:none}
+.link-list a{font-size:0.82rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:7px}
+.link-list a:hover{color:var(--teal)}
+.link-list .tag{font-size:0.66rem;padding:2px 6px;border-radius:4px;background:var(--teal-pale);color:var(--teal);font-weight:500}
+
+/* CLAUDE UPDATE BOX */
+.claude-box{background:linear-gradient(135deg,#1a2d4a,#243c61);color:#fff;border-radius:var(--radius);padding:20px 22px;margin-bottom:20px}
+.claude-box h3{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:8px;color:var(--gold)}
+.claude-box p{font-size:0.82rem;opacity:0.85;line-height:1.6;margin-bottom:12px}
+.claude-box .prompt-box{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:14px;font-family:monospace;font-size:0.78rem;line-height:1.7;color:#e2f0ee}
+
+/* QUICK LINKS */
+.quicklinks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.ql-btn{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:16px 14px;text-align:center;text-decoration:none;color:var(--navy);transition:all 0.15s;display:block}
+.ql-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy);transform:translateY(-2px);box-shadow:0 6px 16px rgba(26,45,74,0.15)}
+.ql-btn .ql-icon{font-size:1.5rem;margin-bottom:6px}
+.ql-btn .ql-label{font-size:0.78rem;font-weight:500}
+.ql-btn .ql-sub{font-size:0.68rem;color:var(--grey-400);margin-top:2px}
+.ql-btn:hover .ql-sub{color:rgba(255,255,255,0.6)}
+
+/* FORMS GRID */
+.forms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.form-card{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:16px 18px;display:flex;align-items:flex-start;gap:12px}
+.form-card .form-icon{font-size:1.4rem;flex-shrink:0}
+.form-card h4{font-size:0.88rem;font-weight:600;color:var(--navy);margin-bottom:4px}
+.form-card p{font-size:0.76rem;color:var(--grey-400);line-height:1.5;margin-bottom:8px}
+.form-card a{font-size:0.76rem;font-weight:500;color:var(--teal);text-decoration:none}
+.form-card a:hover{text-decoration:underline}
+
+/* TASK COLOUR KEY */
+.task-key{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:16px}
+.task-key-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:6px;font-size:0.78rem;font-weight:500}
+
+/* INFO BOX */
+.info-box{background:var(--teal-pale);border:1px solid rgba(42,138,126,0.2);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;font-size:0.82rem;color:var(--navy);line-height:1.6}
+.info-box strong{color:var(--teal)}
+.warn-box{background:#fff7ed;border:1px solid #fed7aa;border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;font-size:0.82rem;color:#9a3412;line-height:1.6}
+.pass-box{background:#f0fdf4;border:1px solid #86efac;border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;font-size:0.82rem}
+.pass-box strong{color:#166534;display:block;margin-bottom:4px}
+.pass-box code{font-family:monospace;font-size:0.82rem;background:#dcfce7;padding:2px 6px;border-radius:4px;color:#166534}
+
+/* PASSWORD FUTURE NOTE */
+.future-lock{display:inline-flex;align-items:center;gap:5px;font-size:0.68rem;padding:3px 8px;border-radius:4px;background:#fef3c7;color:#92400e;font-weight:600;margin-left:8px}
+
+/* PLACEHOLDER */
+.placeholder-box{background:var(--grey-100);border:2px dashed var(--grey-200);border-radius:var(--radius);padding:24px;text-align:center;color:var(--grey-400);margin-bottom:14px}
+.placeholder-box .ph-icon{font-size:1.8rem;margin-bottom:6px}
+.placeholder-box p{font-size:0.8rem;line-height:1.6}
+
+#sidebar::-webkit-scrollbar{width:4px}
+#sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:2px}
+
+/* SEARCH HIGHLIGHT */
+.search-hidden{display:none!important}
+
+/* ── MOBILE HAMBURGER ── */
+#hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;z-index:200}
+#hamburger span{display:block;width:22px;height:2px;background:var(--navy);border-radius:2px;transition:all 0.2s}
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:90}
+
+/* ── PASSWORD MODAL ── */
+#pm-lock{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center}
+#pm-lock.show{display:flex}
+.pm-modal{background:#fff;border-radius:14px;padding:32px;width:320px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.pm-modal h3{font-family:'DM Serif Display',serif;color:var(--navy);font-size:1.2rem;margin-bottom:8px}
+.pm-modal p{font-size:0.82rem;color:var(--grey-400);margin-bottom:20px}
+.pm-modal input{width:100%;border:1px solid var(--grey-200);border-radius:8px;padding:10px 14px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px;text-align:center;letter-spacing:0.1em}
+.pm-modal input:focus{border-color:var(--teal)}
+.pm-modal button{width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px;font-size:0.88rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:6px}
+.pm-modal button:hover{background:var(--teal)}
+.pm-modal .cancel{background:none;color:var(--grey-400);font-size:0.78rem;padding:4px;margin-bottom:0}
+.pm-modal .cancel:hover{color:var(--navy);background:none}
+.pm-modal .error{color:#dc2626;font-size:0.75rem;margin-top:4px;display:none}
+.pm-modal .lock-icon{font-size:2rem;margin-bottom:12px}
+.pm-unlocked-badge{display:none;font-size:0.65rem;background:#dcfce7;color:#166534;border-radius:4px;padding:2px 6px;font-weight:600;margin-left:6px}
+
+/* ── NOTICEBOARD EDITOR BUTTON ── */
+.notice-editor-btn{display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:600;padding:6px 12px;background:var(--navy);color:#fff;border-radius:6px;text-decoration:none;transition:background 0.15s;margin-bottom:16px}
+.notice-editor-btn:hover{background:var(--teal)}
+
+/* ── MOBILE RESPONSIVE ── */
+@media(max-width:768px){
+  #hamburger{display:flex}
+  #sidebar{transform:translateX(-100%);transition:transform 0.25s ease;width:260px}
+  #sidebar.open{transform:translateX(0)}
+  #overlay.show{display:block}
+  #main{margin-left:0}
+  #topbar{padding:12px 16px}
+  #search{width:150px}
+  #content{padding:16px}
+  .home-grid{grid-template-columns:1fr}
+  .topbar-title{font-size:1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile overlay -->
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<!-- Password modal for Practice Management -->
+<div id="pm-lock">
+  <div class="pm-modal">
+    <div class="lock-icon">🔐</div>
+    <h3>Practice Management</h3>
+    <p>This section is restricted to PM and Partners only.</p>
+    <input type="password" id="pm-password" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPmPassword()">
+    <button onclick="checkPmPassword()">Unlock Section</button>
+    <button class="cancel" onclick="closePmLock()">Cancel</button>
+    <div class="error" id="pm-error">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    <h1>Kinsealy Medical Centre</h1>
+    <span>Staff Hub</span>
+  </div>
+  <div class="sidebar-date" id="sidebarDate">Thursday 23 April 2026</div>
+  <nav>
+    <a href="#" class="nav-link active" data-section="home"><span class="nav-icon">🏠</span> Home &amp; Noticeboard</a>
+    <a href="#" class="nav-link" data-section="cdm"><span class="nav-icon">🔁</span> CDM</a>
+    <a href="#" class="nav-link" data-section="care-pathways"><span class="nav-icon">🩺</span> Care Pathways</a>
+    <a href="#" class="nav-link" data-section="doctor-stuff"><span class="nav-icon">👨‍⚕️</span> Doctor Stuff</a>
+    <a href="#" class="nav-link" data-section="practice-management" id="pm-nav-link"><span class="nav-icon">📋</span> Practice Management <span class="future-lock" id="pm-lock-badge">🔒</span><span class="pm-unlocked-badge" id="pm-unlocked-badge">✓ Unlocked</span></a>
+    <a href="#" class="nav-link" data-section="front-of-house"><span class="nav-icon">🏥</span> Front of House</a>
+    <a href="#" class="nav-link" data-section="clinical-pathways"><span class="nav-icon">🧬</span> Clinical Pathways</a>
+    <a href="#" class="nav-link" data-section="text-templates"><span class="nav-icon">💬</span> Text Templates</a>
+    <a href="#" class="nav-link" data-section="useful-forms"><span class="nav-icon">📄</span> Useful Forms</a>
+    <a href="#" class="nav-link" data-section="quick-links"><span class="nav-icon">⚡</span> Quick Links</a>
+    <a href="#" class="nav-link" data-section="social-media"><span class="nav-icon">📱</span> Social Media</a>
+    <a href="#" class="nav-link" data-section="maintenance"><span class="nav-icon">🔧</span> Maintenance</a>
+    <a href="#" class="nav-link" data-section="misc"><span class="nav-icon">📁</span> Miscellaneous</a>
+  </nav>
+  <div class="sidebar-footer">Kinsealy Group Practice © 2025</div>
+</aside>
+
+<div id="main">
+  <div id="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-title" id="topbarTitle">Home &amp; Noticeboard</div>
+    </div>
+    <div class="topbar-right">
+      <input type="text" id="search" placeholder="🔍  Search hub…">
+      <div class="avatar" title="Dr O&#39;Reilly">FO</div>
+    </div>
+  </div>
+
+  <div id="content">
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- HOME -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section active" id="home">
+  <div class="page-header">
+    <h2>Good morning, team 👋</h2>
+    <p>Welcome to the Kinsealy Staff Hub — your central resource for everything practice-related.</p>
+  </div>
+
+  <div class="home-grid">
+    <div class="home-main">
+
+      <div class="notice-strip">
+        <span class="badge">Pinned</span>
+        <div>
+          <h4>Welcome to the Kinsealy Staff Hub</h4>
+          <p>This replaces the Google Docs protocols folder. All SOPs live here. Bookmark this page. When a section is updated it will appear below automatically for 21 days.</p>
+        </div>
+      </div>
+
+      <a href="noticeboard-editor.html" class="notice-editor-btn">✏️ Post an Announcement (PM / Admin only)</a>
+
+      <div id="announcements-container"></div>
+
+      <div class="section-label">🔄 Recently Updated (last 21 days)</div>
+      <div id="recent-updates-list" class="notice-list">
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Hypertension</h4>
+        <p>Section: Clinical Pathways</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Type 2 Diabetes</h4>
+        <p>Section: Clinical Pathways</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Fatty Liver / Deranged LFTs</h4>
+        <p>Section: Clinical Pathways</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Dyslipidaemia</h4>
+        <p>Section: Clinical Pathways</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Hyperkalaemia</h4>
+        <p>Section: Clinical Pathways</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Hyperparathyroidism</h4>
+        <p>Section: Clinical Pathways</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Redirect — What We Don't Treat</h4>
+        <p>Section: Clinical Pathways</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Doctor Cheat Sheet</h4>
+        <p>Section: Clinical Pathways</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Doctor Handoff List</h4>
+        <p>Section: Clinical Pathways</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Staff Social Media Policy</h4>
+        <p>Section: Social Media</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Platform Strategy</h4>
+        <p>Section: Social Media</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Annual Health Awareness Calendar</h4>
+        <p>Section: Social Media</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Alarm System</h4>
+        <p>Section: Maintenance</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: BLS Training</h4>
+        <p>Section: Maintenance</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Equipment Register</h4>
+        <p>Section: Maintenance</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Premises &amp; Cabin</h4>
+        <p>Section: Maintenance</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: Monthly Metrics Tracker</h4>
+        <p>Section: Maintenance</p>
+      </div>
+      <span class="date">22 Apr 2026</span>
+    </div>
+  </div>
+
+      <div class="section-label">📌 Noticeboard</div>
+      <div class="notice-list">
+        <div class="notice-item">
+          <span class="dot dot-teal"></span>
+          <div>
+            <h4>Interpretation Service — No longer HSE-funded</h4>
+            <p>As of 11th Feb 2026, invoices for translation services will be sent directly to the practice. See Miscellaneous for full detail.</p>
+          </div>
+          <span class="date">Feb 2026</span>
+        </div>
+        <div class="notice-item">
+          <span class="dot dot-gold"></span>
+          <div>
+            <h4>Healthmail MFA — New login process from 29th May 2025</h4>
+            <p>Two Samsung tablets now used for swipe/code login. See Miscellaneous for full guidance.</p>
+          </div>
+          <span class="date">May 2025</span>
+        </div>
+        <div class="notice-item">
+          <span class="dot dot-navy"></span>
+          <div>
+            <h4>DNA Policy updated — 3-strike system now active</h4>
+            <p>New lateness and DNA rules in place. All staff to review Front of House → DNA Policy.</p>
+          </div>
+          <span class="date">2025</span>
+        </div>
+        <div class="notice-item">
+          <span class="dot dot-red"></span>
+          <div>
+            <h4>Dressings — No longer provided at surgery</h4>
+            <p>Refer all dressing queries to local PHN or Bon Secours wound care clinic. Sutures/stitch removal still done here.</p>
+          </div>
+          <span class="date">2025</span>
+        </div>
+      </div>
+
+      <!-- HOW TO UPDATE -->
+      <div class="section-label">📝 How to Update This Hub</div>
+      <div class="claude-box">
+        <h3>Updating the Staff Hub via Claude</h3>
+        <p>You do not need Google Docs, a developer, or any technical skills. To update any SOP or add new content, open Claude.ai and paste the prompt below with your changes. Claude will update the HTML file and you drag-drop it to Netlify. Done in under 2 minutes.</p>
+        <div class="prompt-box">
+Please update the Kinsealy Staff Hub intranet HTML file.<br><br>
+Section: [e.g. Front of House → Appointments]<br>
+SOP name: [e.g. Late Arrivals]<br>
+Change: [describe exactly what to add, remove or update]<br>
+Updated by: [your name]<br>
+Date updated: [today's date]<br><br>
+Please also update the "last updated" date on the SOP card,<br>
+and add a noticeboard entry so it appears in Recent Updates<br>
+for the next 21 days. Keep all formatting consistent<br>
+with the existing intranet style.
+        </div>
+        <p style="margin-top:12px;margin-bottom:0;font-size:0.78rem;opacity:0.7">Always paste the full HTML file into Claude alongside this prompt so it can update the correct version.</p>
+      </div>
+    </div>
+
+    <div class="home-sidebar">
+      <div class="widget">
+        <div class="widget-header"><h3>Staff Colour Key</h3></div>
+        <div class="widget-body">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span class="staff-badge badge-pm">🟣 PM / Practice Manager</span>
+            <span class="staff-badge badge-sec">🔵 Medical Secretary</span>
+            <span class="staff-badge badge-nurse">🟢 Nurse</span>
+            <span class="staff-badge badge-doc">🔴 Doctor</span>
+            <span class="staff-badge badge-phle">🟠 Phlebotomist</span>
+            <span class="staff-badge badge-all">⚫ All Staff</span>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-header"><h3>Task Colour Coding</h3></div>
+        <div class="widget-body">
+          <div style="display:flex;flex-direction:column;gap:5px;font-size:0.78rem">
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:3px;background:#ef4444;flex-shrink:0"></span> Red — Urgent</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:3px;background:#eab308;flex-shrink:0"></span> Yellow — Prescriptions</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:3px;background:#22c55e;flex-shrink:0"></span> Green — Certs / SW certs</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:3px;background:#1e40af;flex-shrink:0"></span> Navy — New patient reg</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:3px;background:#38bdf8;flex-shrink:0"></span> Light Blue — Results requested</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:3px;background:#db2777;flex-shrink:0"></span> Magenta — Phone consults</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:3px;background:#f97316;flex-shrink:0"></span> Orange — CDM doctor review</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:3px;background:#111827;flex-shrink:0"></span> Black — Consultant blood results</div>
+          </div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-header"><h3>Quick Access</h3></div>
+        <div class="widget-body">
+          <ul class="link-list">
+            <li><a href="#">🖥️ Socrates PMS</a><span class="tag">Link</span></li>
+            <li><a href="#">📧 Gmail / Workspace</a><span class="tag">Link</span></li>
+            <li><a href="#">📂 Shared S: Drive</a><span class="tag">Link</span></li>
+            <li><a href="https://sspcrs.ie/" target="_blank">💊 PCRS Portal</a><span class="tag">↗</span></li>
+            <li><a href="https://secure.goldfish.ie/login.aspx" target="_blank">📞 Phone System</a><span class="tag">↗</span></li>
+            <li><a href="#" onclick="switchSection(&#39;useful-forms&#39;)">📄 Forms Library</a><span class="tag">Hub</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- CDM -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="cdm">
+  <div class="page-header">
+    <h2>Chronic Disease Management</h2>
+    <p>The cornerstone of our practice — CDM / PP / OCF patient journey, eligibility, and weekly submission.</p>
+  </div>
+
+  <div class="staff-legend">
+    <div class="staff-legend-title">Staff Colour Key</div>
+    <span class="staff-badge badge-pm">🟣 PM</span>
+    <span class="staff-badge badge-sec">🔵 Secretary</span>
+    <span class="staff-badge badge-nurse">🟢 Nurse</span>
+    <span class="staff-badge badge-doc">🔴 Doctor</span>
+    <span class="staff-badge badge-phle">🟠 Phlebotomist</span>
+    <span class="staff-badge badge-all">⚫ All</span>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="CDM" data-sop-name="Chronic Disease Management (CDM)">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left">
+        <span>🔁</span>
+        <h3>Chronic Disease Management (CDM / PP / OCF)</h3>
+      </div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta">
+      <span>👤 Created by: Dr F. O'Reilly</span>
+      <span>📅 Active from: 23/05/2025</span>
+      <span>🔄 Last updated: 23/05/2025</span>
+      <span>📌 v1.0</span>
+    </div>
+    <div class="sop-body">
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Step 1 — Medical Secretary / All Staff</div>
+            <div class="step-title">Book the Patient</div>
+            <div class="step-detail">
+              Preferred: Calendly link (text/email from Socrates) — <a href="#">Calendly Link</a>. Cancel a slot at time of booking.<br>
+              PP (annual) bookable from 9–10 months. CDM (bi-annual) bookable from 4–5 months.<br>
+              Patient must complete GDrive 'CDM Patient Information' form — in-waiting room option available.<br>
+              Book with: Nurse OR Phlebotomist + GP (if CDM). PP does not require GP visit unless Phlebotomist + CDM.<br>
+              <strong>❌ No afternoon bookings</strong> for patients on ACE inhibitors (ending in 'pril') or ARBs (ending in 'sartan'). If unsure — ask a GP.
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Step 2 — Nurse / Phlebotomist</div>
+            <div class="step-title">Surgery Visit</div>
+            <div class="step-detail">
+              <ul>
+                <li>Ensure CDM Patient Information form is uploaded before calling patient</li>
+                <li>Use 'CDM Note' template in Socrates</li>
+                <li>Update Diagnoses → Register any chronic condition</li>
+                <li>Use AliveCor — if not NSR, arrange full ECG. Place ABPM</li>
+                <li>Complete CDM bloods as per note template (other bloods are chargeable)</li>
+                <li>For OCF, task nurse for PP follow-up if eligible</li>
+                <li>Populate all into Socrates CDM tab. Submit STC (ECG &amp; ABPM) via Socrates</li>
+                <li>🟠 Task doctor: "CDM doctor review and 6/12 script" — include bloods + ABPM under same doctor name. Distribute evenly (Orange priority)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Step 3 — Doctor</div>
+            <div class="step-title">GP Review &amp; Script</div>
+            <div class="step-detail">
+              Review: Bloods, ABPM, AliveCor/ECG, chart notes.<br>
+              Decide if follow-up needed (call, visit, text).<br>
+              Do 6/12 (CDM) or 12/12 (PP) script. Include note to pharmacist:<br>
+              <em>"Please advise patient to book CDM review when script finishes"</em><br>
+              Remind patient: next script requires CDM review. Rebook when last script is issued — do not order script, book CDM/PP.
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">Step 4 — Practice Manager</div>
+            <div class="step-title">Submission (Weekly)</div>
+            <div class="step-detail">
+              <ul>
+                <li>Confirm CDM/PP submission. Confirm STC submitted (ECG, ABPM)</li>
+                <li>Document in chart: "CDM/PP submitted"</li>
+                <li>Review failed submissions every 1–2 weeks</li>
+                <li>Bulk text reminders every 3 months (Google Calendar reminder set)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-all">ALL</div>
+          <div class="step-content step-content-all">
+            <div class="step-role step-role-all">Opportunistic — All Staff</div>
+            <div class="step-title">OCF — Opportunistic Case Finding</div>
+            <div class="step-detail">
+              See a GMS/DVC patient? Check if CDM/PP/OCF is due! Add CDM/PP as Active Diagnosis in chart.<br>
+              If script requested, check last CDM visit. No recent CDM → give 1/12 script only and send CDM text template.<br>
+              <strong>Eligibility:</strong> CDM (8 HSE conditions). PP if Qrisk &gt;20%, Pre-diabetic, or Hypertension + GMS/DVC + Age &gt;45. Any woman with Gestational DM or Pre-Eclampsia since 01/2023.<br>
+              OCF = first step, then PP or CDM. Claim both!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- CARE PATHWAYS -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="care-pathways">
+  <div class="page-header">
+    <h2>Care Pathways</h2>
+    <p>Patient journey maps — each step shows which staff member is responsible. Follow the flow.</p>
+  </div>
+
+  <div class="staff-legend">
+    <div class="staff-legend-title">Staff Colour Key</div>
+    <span class="staff-badge badge-pm">🟣 PM</span>
+    <span class="staff-badge badge-sec">🔵 Secretary</span>
+    <span class="staff-badge badge-nurse">🟢 Nurse</span>
+    <span class="staff-badge badge-doc">🔴 Doctor</span>
+    <span class="staff-badge badge-phle">🟠 Phlebotomist</span>
+    <span class="staff-badge badge-all">⚫ All</span>
+  </div>
+
+  <!-- CONTRACEPTION -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Contraception">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>💊</span><h3>Contraception (Free Scheme &amp; STCs)</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta">
+      <span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span>
+    </div>
+    <div class="sop-body">
+      <div class="info-box"><strong>Age rules:</strong> 17–35 = 2 visits/year, no charge (incl. private). 36–44 = 1 visit/year, code CL. GMS up to 44. No patient in this range to be charged for scripts.</div>
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary</div>
+            <div class="step-title">Booking</div>
+            <div class="step-detail">17–35: no prescription unless visited once every 6 months. Nurse visit = No Charge. 36–44: nurse or doctor. Full info in G-Drive 'Contraception 2023 STC arrangements'.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Nurse / Doctor</div>
+            <div class="step-title">Consultation</div>
+            <div class="step-detail">Complete STC — Code CF (or Code CL for GMS 31–44). Opportunistically complete contraception consultation when patient attends for other issues. Do 12-month scripts where appropriate. Nurse can STC for 17–35 visits.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM</div>
+            <div class="step-title">Claim</div>
+            <div class="step-detail">Task PM to complete STC if not done by nurse/doctor. Ensure correct code (CF or CL) submitted.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANTENATAL -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Antenatal Care">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🤰</span><h3>Antenatal / Combined Care</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta">
+      <span>👤 Dr F. O'Reilly</span><span>📅 Active from: 03/01/2017</span><span>🔄 Last updated: 23/05/2025</span>
+    </div>
+    <div class="sop-body">
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary — Booking</div>
+            <div class="step-title">Book &amp; Advise Urine Sample</div>
+            <div class="step-detail">Ask patient to bring a urine sample (including 1st visit).</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Doctor — 1st Visit</div>
+            <div class="step-title">1st Antenatal Visit</div>
+            <div class="step-detail">
+              Print forms: Forms Forms → Documents Dates 03/01/27. Submit to PM.<br>
+              Patient completes Combined Care Application form on first visit.<br>
+              Socrates: 6.9.3.1 'To Add a Pregnancy'. E-refer to relevant hospital.<br>
+              Offer MSU jar at end for next consultation.
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM — Admin</div>
+            <div class="step-title">Application &amp; Claim</div>
+            <div class="step-detail">
+              Photocopy form and file. Add to ANTENATAL,ANTENATAL file.<br>
+              Application form sent on first attendance.<br>
+              Claim form sent after 6-week check of Mum &amp; Baby.<br>
+              Post to: Maternity &amp; Infant Section, PCRS, H.S.E, J5 Plaza, Exit 5, M50, North Road, Finglas, Dublin 11.
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Doctor — 6-Week Check</div>
+            <div class="step-title">Task PM on Completion</div>
+            <div class="step-detail">Task PM: "Ante-natal complete" once 2-week &amp; 6-week checks done.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM</div>
+            <div class="step-title">Submit Claim</div>
+            <div class="step-detail">Claim completed and sent to PCRS for payment. Noted in ANTENATAL,ANTENATAL file. PM runs end-of-month report for 6-week checks.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BABY VACCINES -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Baby Vaccines">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>💉</span><h3>Baby Vaccines Schedule</h3></div>
+      <span class="sop-toggle open">▼</span>
+    </div>
+    <div class="sop-meta">
+      <span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span>
+    </div>
+    <div class="sop-body open">
+      <div class="warn-box">⚠️ Vaccines can be given LATER than scheduled dates but <strong>NEVER earlier</strong>. This is HSE policy.</div>
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary — Booking</div>
+            <div class="step-title">Send Consent Form &amp; Advise Schedule</div>
+            <div class="step-detail">
+              Send consent form when booking by phone. Pippo users prompted automatically.<br>
+              <strong>2 months (1st vaccines):</strong> Must have 6-week check. Must be 2 calendar months old (not 8 weeks).<br>
+              <strong>4 months:</strong> 2 calendar months from 1st vaccines. E.g. if given 25/05 → from 25/07.<br>
+              <strong>6 months:</strong> Same rule as 4 months.<br>
+              <strong>12 months:</strong> Must be 12 months old.<br>
+              <strong>13 months:</strong> 1 calendar month from 12-month vaccines. E.g. if given 25/05 → from 25/06.
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Nurse</div>
+            <div class="step-title">Administer &amp; Document</div>
+            <div class="step-detail">Administer vaccines as per HSE schedule. Document in Socrates. Task for travel vaccines if any party under 15 (children's Hep A required).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SMEARS -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Cervical Smears">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🔬</span><h3>Cervical Smears (CervicalCheck)</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta">
+      <span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span>
+    </div>
+    <div class="sop-body">
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary — Booking</div>
+            <div class="step-title">Check CervicalCheck Registration</div>
+            <div class="step-detail">Ask if patient has received a letter from CervicalCheck. If over 25, they must be registered with CervicalCheck to be eligible for free smear. This is asked on Pippo automatically. Send consent form.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary — Check-In</div>
+            <div class="step-title">Verify Consent at Front Desk</div>
+            <div class="step-detail">Double-check consent form completed at check-in.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Doctor / Nurse</div>
+            <div class="step-title">Before Calling Patient</div>
+            <div class="step-detail">Check consent is completed. If not — send message to front desk.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEIGHT LOSS DRUGS -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Weight Loss Drugs (Saxenda)">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>⚖️</span><h3>Weight Loss Drugs — Saxenda</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta">
+      <span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span>
+    </div>
+    <div class="sop-body">
+      <div class="info-box">Full HSE guidance: <a href="https://www.hse.ie/eng/staff/pcrs/circulars/gp/gp-circular-003-23-saxenda.pdf" target="_blank">HSE Circular 003-23 — Saxenda</a></div>
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary</div>
+            <div class="step-title">Booking Enquiry</div>
+            <div class="step-detail">GMS patients: advise "The HSE have strict criteria for funding the medication — I can ask Dr if you might be covered" and revert back. All consults are doctor first initially.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Doctor</div>
+            <div class="step-title">Initiation Consultation</div>
+            <div class="step-detail">
+              Use 'Saxenda' template in Socrates. Record height/weight. Book bloods, BP/ABPM.<br>
+              Discuss side effects — text patient handout link. 6/12 script + needles script.<br>
+              Script: Wk1: 0.6mg, Wk2: 1.2mg, Wk3: 1.8mg, Wk4: 2.4mg, Wk5+: 3.0mg OD + needles.<br>
+              Note to pharmacist: "Please instruct on use".<br>
+              If GMS: sign up for OCF + task PM to complete PCRS reimbursement.<br>
+              Advise: re-attend in 4–6 months; if &lt;5% weight loss, Saxenda will be stopped.
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM</div>
+            <div class="step-title">PCRS Application (GMS only)</div>
+            <div class="step-detail">Application on PCRS — SAXENDA. Use 'Saxenda PCRS applications' task. Admin fee for completion. Reimbursement not guaranteed.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Nurse</div>
+            <div class="step-title">Follow-Up Visit (4–6 months)</div>
+            <div class="step-detail">Follow-up visit with nurse at 4–6 months. Review weight, assess progress. Task doctor if &lt;5% loss for discontinuation decision.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASTHMA -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Asthma">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🫁</span><h3>Asthma Registration</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Doctor</div>
+            <div class="step-title">Identify &amp; Task</div>
+            <div class="step-detail">Any patient under 8 with new asthma diagnosis, or if prescribed ANY inhaler, or suspected asthma → task PM/MS for registration. Attending asthmatic → complete cycle of care: Care Protocols → Cycle of care → Add visit.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM</div>
+            <div class="step-title">Register on PCRS</div>
+            <div class="step-detail">PCRS → Panel Mx → Panel Management → GPV card for children → follow instructions.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- DOCTOR STUFF -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="doctor-stuff">
+  <div class="page-header">
+    <h2>Doctor Stuff</h2>
+    <p>Clinical resources, medicolegal, tasks, prescribing, and GP training.</p>
+  </div>
+
+  <div class="section-label">Tasks &amp; Responsibilities</div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="Task System &amp; Colour Coding">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📋</span><h3>Task System, Colour Coding &amp; Buddy System</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2024</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="section-label" style="margin-top:0">Task Colour Coding</div>
+      <div class="task-key">
+        <div class="task-key-item" style="background:#fee2e2;color:#991b1b"><span style="font-weight:700">🔴 Red</span> — Urgent (+ instant message to doctor)</div>
+        <div class="task-key-item" style="background:#fef9c3;color:#854d0e"><span style="font-weight:700">🟡 Yellow</span> — Prescriptions</div>
+        <div class="task-key-item" style="background:#dcfce7;color:#166534"><span style="font-weight:700">🟢 Green</span> — Medical / SW certs</div>
+        <div class="task-key-item" style="background:#dbeafe;color:#1e3a8a"><span style="font-weight:700">🔵 Navy</span> — New patient registration</div>
+        <div class="task-key-item" style="background:#e0f2fe;color:#075985"><span style="font-weight:700">🩵 Light Blue</span> — Results requested</div>
+        <div class="task-key-item" style="background:#fce7f3;color:#9d174d"><span style="font-weight:700">🩷 Magenta</span> — Phone consultations</div>
+        <div class="task-key-item" style="background:#ffedd5;color:#9a3412"><span style="font-weight:700">🟠 Orange</span> — CDM doctor review &amp; 6/12 script</div>
+        <div class="task-key-item" style="background:#f3f4f6;color:#111827"><span style="font-weight:700">⚫ Black</span> — Consultant blood results (to forward)</div>
+      </div>
+      <div class="section-label">Doctor on the Day</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:12px">
+        ABPMs, repeat scripts, and consultant-requested bloods: forwarded to doctor(s) on duty that day.<br>
+        CDM tasks (ECGs, ABPMs, scripts): assigned to doctor on the day — shared care, distribute evenly.<br>
+        All incoming documents: scanned and distributed among doctors present.<br>
+        Absent doctors' tasks: treat as unassigned, distribute among current doctors on duty.<br>
+        Blood results: responsibility of <strong>last doctor to have seen the patient</strong> (unless diagnostic bloods ordered specifically).<br>
+        Scans: leave with ordering doctor. Colposcopy: leave for Dr Dundon.
+      </div>
+      <div class="section-label">Buddy System (activated only for absences ≥1 week)</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:12px">
+        <strong>Pairings (away/mat leave/gone):</strong><br>
+        Michael → Fran | Sean → Ruth | Ciara → Joanne | Old Registrars → Current Registrar | Paul → Ciara<br><br>
+        <strong>Active buddy pairings (away ≥1 week):</strong><br>
+        Fran ↔ Joanne | Registrar away → Ruth cover | Ruth away → Ciara cover | Ciara away → Registrar cover<br><br>
+        Buddy responsibilities: OOH reports, e-referrals, all incoming blood results. Routine bloods managed fully by buddy. Scans do not fall under buddy system.
+      </div>
+      <div class="info-box">Task session AM: stops at 12.30. Task session PM: starts at 12.30. Post for doctor goes to PM session if tasks run AM and PM. First person with patient contact is lead on the task.</div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="Bloods — Clinical">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🩸</span><h3>Bloods — Ordering, Special Tests &amp; Under 16s</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        <strong>Ordering:</strong> Document EXACTLY what bloods you want. Do not write 'due bloods' or 'repeat bloods'.<br>
+        Use the blood template and indicate if afternoon bloods acceptable (e.g. don't need Potassium).<br>
+        CDMs: morning bloods where possible.<br><br>
+        <strong>Hospital scripts / transcribing:</strong> Add note to pharmacist "Transcribed from hospital letter dated XX/XX". Update existing lines — no duplicates. Unclear/unsafe/non-standard → notify GP immediately.<br><br>
+        <strong>Beaumont bloods:</strong> Print lab order page with BARCODE (top right) and give to patient.<br><br>
+        <strong>Under 16:</strong> No bloods at surgery. Send to Temple Street Children's Hospital. Doctor completes blood form for patient to bring.<br><br>
+        <strong>Special bloods (Biomnis — extra fee):</strong><br>
+        — TB (Quantiferon): €135 (€85 lab + €50 fee). Inform nurse Laura. Special kit required. Send to Biomnis ASAP.<br>
+        — AMH (fertility): €110 (€80 lab + €30 fee). Send to Biomnis.<br><br>
+        <strong>Beaumont Lab guide:</strong> <a href="https://www.beaumont.ie/sites/default/files/2025-01/Beaumont%20Hospital%20Laboratory%20User%20Guide.pdf" target="_blank">Beaumont Lab User Guide (2025)</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="Medicolegal">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>⚖️</span><h3>Medicolegal Reports &amp; PMAs</h3></div>
+      <span class="sop-toggle open">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 27/01/2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body open">
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary</div>
+            <div class="step-title">Receive &amp; Scan</div>
+            <div class="step-detail">Solicitor's letter received by post/email. Scan to patient chart. Document received. Pass to PM.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM</div>
+            <div class="step-title">Invoice &amp; Await Consent</div>
+            <div class="step-detail">Invoice sent to solicitor. Await payment (cheque or bank transfer). Patient consent required — signed consent from patient returned by email confirming full release of records. Once paid, pass to doctor.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Doctor</div>
+            <div class="step-title">Complete Report</div>
+            <div class="step-detail">Responsibility falls to doctor who first saw patient re the incident. If no longer present → next doctor who saw them. Template + charges in 'notes notes' dated 27/1/23. Allow ~2 weeks from payment received. Document in chart.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM</div>
+            <div class="step-title">Send &amp; Document</div>
+            <div class="step-detail">Email and post (with FREEPOST envelope if supplied). Document in chart.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="EPOA / Testamentary Capacity">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📜</span><h3>Enduring Power of Attorney / Testamentary Capacity</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary</div>
+            <div class="step-title">Receive Solicitor Letter</div>
+            <div class="step-detail">Request instructions in writing from solicitor. Pass to doctor for review.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Doctor</div>
+            <div class="step-title">Review &amp; Request Payment</div>
+            <div class="step-detail">Review solicitor letter. If satisfied, send letter requesting payment (€150). Book: MMSE with nurse first (included), then double appointment with doctor.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Nurse</div>
+            <div class="step-title">MMSE Assessment</div>
+            <div class="step-detail">Administer MMSE (included in €150 fee). Document and task doctor.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Doctor</div>
+            <div class="step-title">Complete Form</div>
+            <div class="step-detail">Use EPOA/Capacity template in Socrates. Resources: <a href="https://medisec.ie/wp-content/uploads/2020/07/Enduring-Power-of-Attorney.pdf" target="_blank">Medisec EPOA guide</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Prescribing</div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="Psych Prescriptions (PCRS 016/24)">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🧠</span><h3>Psych Prescriptions — PCRS Circular 016/24</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2024</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="info-box"><strong>Key change:</strong> Mental Health Service prescriptions (paper or Healthmail to pharmacy) do NOT need to be rewritten by GP for GMS reimbursement. Pharmacies can claim directly.</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        <strong>Reception wording:</strong> "You can bring that prescription straight to your pharmacy — we no longer need to rewrite it."<br><br>
+        <strong>GP still needed for:</strong> Clinical concern, medication review, pharmacy query, patient not GMS eligible.
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="High-Tech / Controlled Medications">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>💊</span><h3>High-Tech / Controlled Medication Prescriptions</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        Where doctor is happy to issue more than one month: prescriptions can be issued at the same time.<br>
+        Prescriptions must be sent individually to the pharmacy with the date changed on each separate prescription.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Clinical Guidelines &amp; Links</div>
+  <div class="forms-grid">
+    <div class="form-card"><div class="form-icon">📖</div><div><h4>NICE Guidelines</h4><p>National Institute for Health and Care Excellence</p><a href="https://www.nice.org.uk/" target="_blank">nice.org.uk ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🩺</div><div><h4>NICE CKS</h4><p>Clinical Knowledge Summaries</p><a href="https://cks.nice.org.uk/" target="_blank">cks.nice.org.uk ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🎓</div><div><h4>ICGP</h4><p>Irish College of GPs — ePortfolio, CME, guidelines</p><a href="https://www.icgp.ie/" target="_blank">icgp.ie ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🛡️</div><div><h4>MPS / Medisec</h4><p>Medicolegal resources and factsheets</p><a href="https://medisec.ie/" target="_blank">medisec.ie ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🔬</div><div><h4>UpToDate</h4><p>Evidence-based clinical decision support</p><a href="https://www.uptodate.com/" target="_blank">uptodate.com ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🏥</div><div><h4>Beaumont PALS</h4><p>Patient Advisory Liaison Service — advise patients unable to get results</p><a href="http://www.beaumont.ie/pals" target="_blank">beaumont.ie/pals ↗</a></div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- PRACTICE MANAGEMENT -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="practice-management">
+  <div class="page-header">
+    <h2>Practice Management <span class="future-lock">🔒 Password protection — planned</span></h2>
+    <p>Operations, HR, finance, PCRS, and compliance. Restricted to PM and Partners.</p>
+  </div>
+
+  <div class="section-label">Panel Management</div>
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Practice Management" data-sop-name="Panel Management">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>👥</span><h3>Panel Management (PCRS Importer)</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 PM / Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="warn-box">⚠️ Two critical times: <strong>1st of every month</strong> and <strong>middle of every month</strong>. Use Socrates manual "PCRS importer".</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        <strong>A) Expiring end of month (1st of month):</strong> Panel Management → Doctor Panel updates → Clients expiring soon → Clients expiring this month. Text and document. Avoid under-6s. Text lead card (ending in A) for families.<br><br>
+        <strong>B) Transferred off list (middle of month):</strong> Panel Management → All listings → Panel listing → Most recent month. Common reasons: left practice, under-6, panel swap, turned 16, card lapsed. If unexplained → send text + document.<br><br>
+        <strong>C) Under-6 / Medical cards for infants:</strong> Register as early as possible — ideally by 6-week check. Ask at 2-week, 6-week, and vaccine appointments if Under-6 card applied for. Send 6-month reminder text for children 3–24 months with no DVC card.<br><br>
+        <strong>D) Over-70s:</strong> Every 3 months, search for over-70s with no medical card and send registration link text.
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-08-22" data-section-name="Practice Management" data-sop-name="Annual Leave">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🏖️</span><h3>Annual Leave — Request Process</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/08/2025</span><span>🔄 Last updated: 22/08/2025</span></div>
+    <div class="sop-body">
+      <div class="info-box">All leave requests submitted via <strong>Leave Dates</strong> platform. Do not book flights/accommodation until formal approval received.</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        <strong>Notice periods:</strong><br>
+        1–3 days: minimum 2 weeks' notice.<br>
+        4+ days: 6–8 weeks' notice.<br>
+        Short notice (&lt;7 days with bookings in session): requires suitable cover — not guaranteed.<br><br>
+        <strong>Emergencies:</strong> Notify manager as soon as possible. Approval subject to staffing.<br><br>
+        <strong>Manager responsibilities:</strong> Review promptly in Leave Dates. Consider team coverage. Communicate rejections directly.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">New Patient Onboarding</div>
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Practice Management" data-sop-name="New Patient Onboarding">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🆕</span><h3>New Patient Onboarding</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2024</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary</div>
+            <div class="step-title">Step 1 — Patient Submits Form</div>
+            <div class="step-detail">Direct patient to complete New Patient Registration Form on website.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM / Admin</div>
+            <div class="step-title">Step 2 — Assessment</div>
+            <div class="step-detail">
+              Patient accepted ONLY if ALL of the following apply:<br>
+              📍 <strong>Catchment:</strong> Closest GP to address (proof required) and not registered elsewhere — OR has first-degree relative attending.<br>
+              💊 <strong>Medication check:</strong> Must NOT be on benzodiazepines or opioids. If so → escalate to GP Partner.<br>
+              🏥 <strong>Previous GP:</strong> Do not accept if from Swords or Malahide (unless moved address).<br>
+              💳 <strong>Medical card:</strong> If GMS — switch on PCRS immediately and document.
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM</div>
+            <div class="step-title">Step 3 — Decision</div>
+            <div class="step-detail">Accepted: Add to Socrates, schedule appointment if requested, send welcome text/email, update medical card status.<br>Declined: Politely inform, suggest HSE Find-a-GP tool. Document in 'DECLINED REGISTRATIONS' file.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Logins &amp; Passwords</div>
+  <div class="warn-box">⚠️ This section is for authorised staff only. Do not share credentials externally. Change passwords if compromised — notify PM immediately.</div>
+  <div class="pass-box"><strong>PCRS Portal</strong>Username: <code>maria.harding</code> &nbsp; Password: <code>Shes$omebeaut21</code></div>
+  <div class="pass-box"><strong>Healthmail</strong>Address: <code>kinsealymedicalcentre.gp@healthmail.ie</code> &nbsp; Password: <code>Shes$omebeaut2025</code></div>
+  <div class="pass-box"><strong>Phone System (Goldfish)</strong>URL: <a href="https://secure.goldfish.ie/login.aspx" target="_blank">secure.goldfish.ie</a> &nbsp; Email: <code>kinsealymedicalcentre@gmail.com</code> &nbsp; Password: <code>4H3C6TD8</code></div>
+  <div class="pass-box"><strong>Irish Life (Joint Injection Insurance)</strong>Login: <code>kinsealymedicalcentre@gmail.com</code> &nbsp; Password: <code>Shes$omebeaut1</code></div>
+  <div class="pass-box"><strong>Cloud Storage (Pre-2007 files)</strong>USB drive in PM desk drawer. Password: <code>KinMed976@!</code> → Double-click Kinsealy Medical Centre folder.</div>
+  <div class="pass-box"><strong>Logins &amp; General Info Doc</strong><a href="https://docs.google.com/document/d/13WFMZY8vuAwpiVKuKOzGiVunOcn9zQ5WyiLhJBzkeDY/edit?usp=drive_link" target="_blank">Google Doc — full login list ↗</a></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- FRONT OF HOUSE -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="front-of-house">
+  <div class="page-header">
+    <h2>Front of House</h2>
+    <p>Reception, secretarial, appointments, and patient-facing protocols.</p>
+  </div>
+
+  <div class="staff-legend">
+    <div class="staff-legend-title">Staff Colour Key</div>
+    <span class="staff-badge badge-pm">🟣 PM</span><span class="staff-badge badge-sec">🔵 Secretary</span><span class="staff-badge badge-nurse">🟢 Nurse</span><span class="staff-badge badge-doc">🔴 Doctor</span><span class="staff-badge badge-all">⚫ All</span>
+  </div>
+
+  <!-- APPOINTMENTS -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Appointments — Booking">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📅</span><h3>Appointments — Booking &amp; Colour Coding</h3></div>
+      <span class="sop-toggle open">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body open">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:12px">
+        <strong>Booking channels:</strong> Pippo (preferred) or by phone.<br><br>
+        <strong>Q1 (all patients):</strong> "Have you had any cough, fever, shortness of breath, runny nose or sore throat in the last 7 days?" — document 'screened'. If yes → must bring negative antigen test and wear mask.<br><br>
+        <strong>Q2 (GMS/DVC/An Post only):</strong> "Can you briefly tell me the reason for the consultation?" — if declined, document 'declined'. Not required for private patients.<br><br>
+        <strong>Important checks before booking:</strong> Do we already have results? Is CDM review due? Is it for a letter/form? Do results need to be sent on?<br><br>
+        <strong>Appointment colour codes:</strong><br>
+        🔵 Blue = Any patient, on the day only (opens at 9am on the day)<br>
+        ⬜ Grey = Any patient, any time<br><br>
+        <strong>Booking on patient's behalf:</strong> Ask: Is the patient aware? Do they have the patient's consent? (GDPR)
+      </div>
+    </div>
+  </div>
+
+  <!-- LATE ARRIVALS -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Late Arrivals">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>⏰</span><h3>Late Arrivals Policy</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2024</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="info-box">⏱️ <strong>The lateness clock starts from when the patient is checked in by reception</strong> (not from their physical arrival time).</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:10px">
+        <strong>0–5 mins late:</strong> Check in as normal.<br>
+        <strong>10 mins late:</strong> Inform patient they are late. Contact GP to confirm if they can still be seen. If accommodated → one urgent issue only.<br>
+        <strong>20 mins late:</strong> Appointment considered missed — must rebook.<br>
+        <strong>20+ mins:</strong> Strictly missed. No exceptions (see below).<br><br>
+        <strong>Exceptions:</strong><br>
+        Sick babies/children: do not turn away — squeeze into current session, advise wait.<br>
+        Elderly/vulnerable: exercise patience, facilitate where possible.<br>
+        Internal: if original GP can't see, check if another doctor has a free slot.<br><br>
+        <strong>When patients complain doctors run late:</strong><br>
+        <em>"We always endeavour to run to time. However, when appointments start late, it creates a knock-on effect for every subsequent patient. To ensure every patient gets their full allocated time, we ask everyone arrives promptly."</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- DNA -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="DNA Policy">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>❌</span><h3>DNA (Did Not Attend) Policy</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2024</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="info-box">DNA = patient does not attend AND/OR gives less than 3 hours' notice. Late cancellations (&lt;3 hrs) = DNA.</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:10px">
+        <strong>1st DNA (within 18 months):</strong> Text sent same day with link to DNA policy. Recorded in chart.<br>
+        Text: <em>"You missed your appointment today. Missing appointments unfortunately limits access for others. Please review our DNA policy here: kinsealymedicalcentre.ie/patient-information. Further DNAs may restrict your ability to book appointments."</em><br><br>
+        <strong>2nd DNA (within 18 months):</strong> Delete from Pippo booking system. Same-day only (must present AM). Text sent.<br>
+        Text: <em>"You have missed 2 appointments without notice. You are now removed from our online booking system and cannot pre-book appointments. You may continue to access same-day appointments by presenting in the morning at reception."</em><br><br>
+        <strong>3rd DNA (within 18 months):</strong> Notify PM immediately. PM + Partner review. Decision documented. If removal agreed → letter to patient.
+      </div>
+      <div class="section-label" style="margin-top:8px">End-of-Day Procedure</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        Check booked list against attendance. Mark any DNA in chart with stage (1st, 2nd, 3rd). Send appropriate text. Escalate 3rd DNA to PM immediately.
+      </div>
+    </div>
+  </div>
+
+  <!-- ABUSIVE PATIENTS -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Abusive Patients">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🚨</span><h3>Abusive Patients</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="warn-box">⚠️ Abusive behaviour of ANY type will not be tolerated. First warning → potential removal.</div>
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-all">ALL</div>
+          <div class="step-content step-content-all">
+            <div class="step-role step-role-all">All Staff — Immediate</div>
+            <div class="step-title">Report to PM or Doctor</div>
+            <div class="step-detail">Report all incidents at earliest opportunity. Record factual details in patient's file under 'Private Note'.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary — Phone Escalation</div>
+            <div class="step-title">4-Step Phone Protocol</div>
+            <div class="step-detail">
+              Step 1 — Ask: "Please do not shout/swear/use bad language"<br>
+              Step 2 — Warning: "If you continue, I will put the phone down"<br>
+              Step 3 — Action: Put the phone down<br>
+              Step 4 — Inform PM (or GP). Record in patient's file.
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM</div>
+            <div class="step-title">Investigate &amp; Contact Patient</div>
+            <div class="step-detail">Investigate incident. Contact patient by phone on day of incident if deemed necessary. Issue warning — further incidents = removal from practice list.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRESCRIPTIONS -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Repeat Prescriptions">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>💊</span><h3>Repeat Prescriptions</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 23/05/2025</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary — Requests</div>
+            <div class="step-title">Accepted via Pippo or Website Only</div>
+            <div class="step-detail">❌ Phone requests not accepted (except elderly/vulnerable). Confirm name/DOB/address. Match to active repeat list. Click 'Generic' for all items. Flag: items not on repeat, early refills, inconsistencies → escalate to GP.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary — Safety Check</div>
+            <div class="step-title">Before Sending</div>
+            <div class="step-detail">Script matches repeat list and GP notes. No duplicates/interactions. Sent to correct nominated pharmacy. Log any GP feedback in patient file. Check if CDM/PP due — if so, book.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary — Pharmacy Requests</div>
+            <div class="step-title">Pharmacy Orders — Vulnerable Only</div>
+            <div class="step-detail">Only accept pharmacy orders if chart has Active Diagnosis: "Vulnerable Patient: Pharmacy may order scripts". No flag = reject and inform pharmacy that patient/carer must order directly.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CERTS -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Certificates &amp; Sick Notes">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📝</span><h3>Certificates, Sick Notes &amp; Social Welfare</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:10px">
+        <strong>Charges:</strong> Private (no consult) = see fees. GMS/DVC (during consult or by email) = charge. An Post = no charge. Pregnant = no charge.<br>
+        Extension &gt;1 extra day = charge. Request forwarded to GP on duty.<br><br>
+        <strong>For 3+ days sick:</strong> Encourage Illness Benefit application (MED1 form — doctor; IB1 form — patient online/front desk).<br><br>
+        <strong>Weekly cert requests:</strong> Use template letter for employer (in doc — 'no legislation requiring weekly certs'). Only issue weekly certs if employer covers cost.<br><br>
+        <strong>Social Welfare certs:</strong> Task doctor on duty. Doctor to document in chart how long SW cert can be issued before re-notification (e.g. "SW can be renewed up to xx/xx/xxxx"). Code required from doctor.<br><br>
+        Common SW codes: pregnant, post-surgery, joint/back, cough/cold/chest infection.
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Results Handling">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🔬</span><h3>Results — Requests, Download &amp; Review Fee</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:10px">
+        <strong>Downloads:</strong> PM downloads twice daily — 8:30am and 3:50pm. One computer only to avoid duplication.<br><br>
+        <strong>Scenario 1 — We ordered it:</strong> Task ordering doctor. If not ordered by us → advise patient to follow up with ordering hospital doctor.<br>
+        <strong>Scenario 2 — Sending to hospital/other doctor:</strong> No need to task — just send.<br>
+        <strong>Scenario 3 — Patient wants copy:</strong> If marked 'complete' or has green tick → send without tasking doctor.<br>
+        <strong>Scenario 4 — Hospital refusing patient:</strong> Advise patient of GDPR rights. Beaumont: <a href="https://www.beaumont.ie/pages/health-A-Z/data-protection" target="_blank">data protection request ↗</a><br><br>
+        <strong>Internal results (bloods/ECG/ABPM done by nurse):</strong> Normal → patient not contacted unless doctor said otherwise. Abnormal → always contacted (text or call).<br>
+        <strong>External investigations (X-ray/MRI/CT/DEXA):</strong> ALL results communicated whether normal or not. Patient should contact us if not heard within 2 weeks.<br><br>
+        <strong>Review fee:</strong> GMS = no charge. Private: if re bloods/ABPM/ECG done in surgery = no charge. Scans/Dexa etc = phone consult charge.
+      </div>
+    </div>
+  </div>
+
+  <!-- REFERRALS -->
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Referral Email List">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📧</span><h3>Referrals — Email List</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        All referral letters to be emailed from Healthmail.<br><br>
+        Primary Care Team: <code>referrals.nd@hse.ie</code><br>
+        Counselling in Primary Care: <code>cipcdnc@hse.ie</code><br>
+        Audiology: <code>audiology@hse.ie</code><br>
+        Ophthalmology (children 5th class &amp; under): <code>cecdncc@hse.ie</code><br>
+        Curam: <code>cmht.swords@hse.ie</code><br>
+        CAMHS: <code>camhs.swords@hse.ie</code><br>
+        Beaumont ED: <code>gpliaison@beaumont.ie</code>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- USEFUL FORMS -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section active" id="useful-forms">
+  <div class="page-header">
+    <h2>Useful Forms</h2>
+    <p>All consent forms, patient forms, HSE forms, and templates — in one place.</p>
+  </div>
+
+  <div class="section-label">Consent Forms</div>
+  <div class="forms-grid">
+    <div class="form-card"><div class="form-icon">📋</div><div><h4>Childhood Immunisations</h4><p>Consent form for baby/childhood vaccines</p><a href="#">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🔬</div><div><h4>Cervical Smear</h4><p>CervicalCheck consent</p><a href="#">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">❄️</div><div><h4>Cryotherapy</h4><p>Consent + STC required</p><a href="#">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">👂</div><div><h4>Ear Irrigation</h4><p>Pre-procedure consent</p><a href="#">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🔩</div><div><h4>Mirena / Implanon</h4><p>Insertion or removal consent</p><a href="#">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🩺</div><div><h4>24-Hour BP Monitoring</h4><p>ABPM consent and instructions</p><a href="/abpm-consent.html" target="_blank">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">💉</div><div><h4>Joint Injection</h4><p>New consent form — includes steroid injection info</p><a href="#">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">💊</div><div><h4>Prolia Injection</h4><p>Pre-injection consent (bloods + dental check required)</p><a href="#">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🚭</div><div><h4>PMA Consent Form</h4><p>Patient consent for insurance medical reports</p><a href="#">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">📄</div><div><h4>Roaccutane Consent</h4><p>Live on Netlify</p><a href="#">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">📄</div><div><h4>CDM Pre-Appointment Form</h4><p>Live on Netlify</p><a href="#">Open form ↗</a></div></div>
+  </div>
+
+  <div class="section-label">HSE &amp; Social Welfare Forms</div>
+  <div class="forms-grid">
+    <div class="form-card"><div class="form-icon">🏛️</div><div><h4>Medical Card Application (AMI 1A)</h4><p>Admin completes and submits — no patient input required</p><a href="#">Template in GDrive ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">📋</div><div><h4>Disability Allowance (DA1)</h4><p>Patient + admin + doctor sections</p><a href="#">Template in GDrive ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">👩‍⚕️</div><div><h4>PHN Medicines Request (B12)</h4><p>Admin pre-fills, doctor signs. Template in GDrive.</p><a href="https://www.hse.ie/eng/services/list/2/primarycare/national-phn-service/medicine-request-and-administration-record-for-phn-services.pdf" target="_blank">HSE form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🤰</div><div><h4>Combined Care Application</h4><p>1st antenatal visit — patient completes, submit to PM</p><a href="#">Forms Forms 03/01/27 ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">📑</div><div><h4>Illness Benefit (MED1)</h4><p>Doctor completes. Patient can also apply online (IB1)</p><a href="#">GDrive ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🟢</div><div><h4>Palliative Care (Green Form)</h4><p>Doctor confirms → PM completes and sends to Primary Care Office</p><a href="#">GDrive ↗</a></div></div>
+  </div>
+
+  <div class="section-label">Patient Information &amp; External Links</div>
+  <div class="forms-grid">
+    <div class="form-card"><div class="form-icon">🚗</div><div><h4>Driving Medical Form (NDLS)</h4><p>Advise patient to print before attending</p><a href="https://www.ndls.ie/images/Documents/Forms/171315_NDLS_Medical_Form_JAN_2022_WEB_HR.pdf" target="_blank">NDLS form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">👂</div><div><h4>Ear Wax — Patient Advice</h4><p>Send to patients before ear syringing — min 5 days drops</p><a href="https://www.rveeh.ie/app/uploads/2017/04/ear_wax_and_ear_care_advice.pdf" target="_blank">RVEEH leaflet ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">💉</div><div><h4>Steroid Injection Info</h4><p>Send to patient before joint injection</p><a href="https://www.versusarthritis.org/media/23676/steroiation-booklet-june2021.pdfd-injections-inform" target="_blank">Versus Arthritis ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">⚖️</div><div><h4>Saxenda Patient Leaflet</h4><p>Side effects — send before commencing</p><a href="https://www.saxenda.co.uk/public-site/patient-information-leaflet.html" target="_blank">Saxenda PIL ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🔬</div><div><h4>PSA Test Information</h4><p>Send link before unsolicited PSA bloods</p><a href="#" target="_blank">PSA info link ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">📋</div><div><h4>Under-6 Card Registration</h4><p>SSPCRS — send to parents</p><a href="https://www.sspcrs.ie/portal/free-gp-care-web/pub" target="_blank">sspcrs.ie ↗</a></div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- QUICK LINKS -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="quick-links">
+  <div class="page-header">
+    <h2>Quick Links</h2>
+    <p>One-click access to systems and sites used daily.</p>
+  </div>
+  <div class="section-label">Practice Systems</div>
+  <div class="quicklinks-grid">
+    <a href="#" class="ql-btn"><div class="ql-icon">🖥️</div><div class="ql-label">Socrates PMS</div><div class="ql-sub">Patient records</div></a>
+    <a href="#" class="ql-btn"><div class="ql-icon">📧</div><div class="ql-label">Gmail</div><div class="ql-sub">Google Workspace</div></a>
+    <a href="#" class="ql-btn"><div class="ql-icon">📂</div><div class="ql-label">Shared S: Drive</div><div class="ql-sub">Shared Documents</div></a>
+    <a href="#" class="ql-btn"><div class="ql-icon">📅</div><div class="ql-label">Google Calendar</div><div class="ql-sub">Rota &amp; sessions</div></a>
+    <a href="#" class="ql-btn"><div class="ql-icon">📲</div><div class="ql-label">Pippo</div><div class="ql-sub">Online booking</div></a>
+    <a href="#" class="ql-btn"><div class="ql-icon">📆</div><div class="ql-label">Leave Dates</div><div class="ql-sub">Annual leave</div></a>
+  </div>
+  <div class="section-label">HSE &amp; PCRS</div>
+  <div class="quicklinks-grid">
+    <a href="https://www.sspcrs.ie/" target="_blank" class="ql-btn"><div class="ql-icon">💊</div><div class="ql-label">PCRS Portal</div><div class="ql-sub">sspcrs.ie</div></a>
+    <a href="https://www.hse.ie/" target="_blank" class="ql-btn"><div class="ql-icon">🏛️</div><div class="ql-label">HSE</div><div class="ql-sub">hse.ie</div></a>
+    <a href="https://www.icgp.ie/" target="_blank" class="ql-btn"><div class="ql-icon">🎓</div><div class="ql-label">ICGP</div><div class="ql-sub">icgp.ie</div></a>
+    <a href="https://kinsealymedicalcentre.gp@healthmail.ie/" class="ql-btn"><div class="ql-icon">📬</div><div class="ql-label">Healthmail</div><div class="ql-sub">Secure email</div></a>
+  </div>
+  <div class="section-label">Clinical</div>
+  <div class="quicklinks-grid">
+    <a href="https://www.nice.org.uk/" target="_blank" class="ql-btn"><div class="ql-icon">📖</div><div class="ql-label">NICE</div><div class="ql-sub">nice.org.uk</div></a>
+    <a href="https://cks.nice.org.uk/" target="_blank" class="ql-btn"><div class="ql-icon">🩺</div><div class="ql-label">NICE CKS</div><div class="ql-sub">Clinical Knowledge</div></a>
+    <a href="https://www.uptodate.com/" target="_blank" class="ql-btn"><div class="ql-icon">🔬</div><div class="ql-label">UpToDate</div><div class="ql-sub">uptodate.com</div></a>
+    <a href="https://www.beaumont.ie/sites/default/files/2025-01/Beaumont%20Hospital%20Laboratory%20User%20Guide.pdf" target="_blank" class="ql-btn"><div class="ql-icon">🧪</div><div class="ql-label">Beaumont Lab Guide</div><div class="ql-sub">2025 edition</div></a>
+    <a href="https://www.hse.ie/eng/services/list/2/primarycare/community-healthcare-networks/gp-diagnostics/gp-access-to-diagnostics-cho9-dublin-north-north-central-north-west.pdf" target="_blank" class="ql-btn"><div class="ql-icon">🏥</div><div class="ql-label">GMS Radiology</div><div class="ql-sub">CHO9 access list</div></a>
+    <a href="http://www.beaumont.ie/pals" target="_blank" class="ql-btn"><div class="ql-icon">🔗</div><div class="ql-label">Beaumont PALS</div><div class="ql-sub">Patient liaison</div></a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- MISCELLANEOUS -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="misc">
+  <div class="page-header">
+    <h2>Miscellaneous</h2>
+    <p>Anything that doesn't fit neatly elsewhere — still important!</p>
+  </div>
+
+  <div class="sop-card" data-updated="2026-02-11" data-section-name="Miscellaneous" data-sop-name="Interpretation Service">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🌐</span><h3>Interpretation Service — No Longer HSE Funded</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 11/02/2026</span><span>🔄 Last updated: 11/02/2026</span></div>
+    <div class="sop-body">
+      <div class="warn-box">⚠️ As of 11th February 2026, Lingua Translation Services invoices are sent directly to the practice. HSE Social Inclusion will no longer approve bookings. Contact: Antonio Fernando, Lingua Translation Services, 30 Wicklow Street, Dublin 2.</div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-29" data-section-name="Miscellaneous" data-sop-name="Healthmail MFA">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🔐</span><h3>Healthmail — Multi-Factor Authentication (from 29/05/2025)</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 IT / Dr F. O'Reilly</span><span>📅 Active from: 29/05/2025</span><span>🔄 Last updated: 29/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        New swipe/code login required from 29th May 2025. Two Samsung tablets available — downstairs and one with the nurse.<br>
+        Verified once every 24 hours per computer. Re-verification needed if: you sign out, computer shuts down, or browser history cleared.<br>
+        Support: 061 203779 or <a href="mailto:ictsupport@three.ie">ictsupport@three.ie</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Miscellaneous" data-sop-name="Phone System">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📞</span><h3>Phone System — Voicemail &amp; Out of Hours</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 PM</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        Login: <a href="https://secure.goldfish.ie/login.aspx" target="_blank">secure.goldfish.ie</a> | Email: kinsealymedicalcentre@gmail.com | Password: 4H3C6TD8<br><br>
+        To turn voicemail on: Select 'Your Numbers' → '018405940' → 'Routing Wizard' → 'Play a message to caller' → select message (e.g. 'PhonesClosedFriday').
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Miscellaneous" data-sop-name="Power Outage">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>⚡</span><h3>Power Outage Protocol</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 PM / Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        PCs and desk phones will not work. PM organises brief meeting.<br>
+        Take names, DOB, address of patients checking in. Check which doctor/nurse they're due to see. Text via WhatsApp to doctor/nurse.<br>
+        Handwritten notes taken during consultation — transferred to Socrates when restored.<br>
+        Non-routine bloods → reschedule appointment.<br>
+        Encourage online payment. Payment link sent once system restored.
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Miscellaneous" data-sop-name="Post Handling">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📮</span><h3>Post Handling</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 PM / Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        PM opens post 8–8:30am. Date stamp and scan to patient file (select doctor from drop-down in pop-up).<br>
+        When PM absent → early shift admin opens and stamps.<br><br>
+        <strong>Test results (CT/MRI/Ultrasound/DEXA/X-ray ordered by us):</strong> Give to ordering doctor — even if not present that day.<br>
+        <strong>All other post:</strong> Divide equally between doctors on duty.<br>
+        PM posts outgoing letters twice weekly (Tue &amp; Fri). Stamps in PM desk drawer. If PM absent → admin leaving at 4/4:30 brings post before 5:30.
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Miscellaneous" data-sop-name="Protonmail / Email Privacy">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🔒</span><h3>Patient Email — Protonmail Preference</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 2023</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        Encourage ALL patients to sign up to Protonmail where possible.<br>
+        Suggested wording: <em>"Popular email providers scan content for profit, while Proton Mail ensures privacy with encryption. At Kinsealy Medical Centre your confidential information is of utmost importance to us, and our preferred communication method is Protonmail. Sign up takes 2 minutes."</em><br>
+        This is included in our automatic replies.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- CLINICAL PATHWAYS SECTION -->
+<div class="section" id="clinical-pathways">
+  <div class="page-header">
+    <h2>Clinical Pathways</h2>
+    <p>Evidence-based management guides. Each pathway references NICE/ICGP guidelines and links to patient text templates.</p>
+  </div>
+  <div class="info-box"><strong>Note:</strong> Text templates are in the <strong>Text Templates</strong> section — referenced by name at each decision point here. FIB-4 Calculator: <a href="https://www.mdcalc.com/calc/2200/fibrosis-4-fib-4-index-liver-fibrosis" target="_blank">MDCalc ↗</a> | QRisk3: <a href="https://qrisk.org/three/" target="_blank">qrisk.org ↗</a></div>
+  <div class="staff-legend">
+    <div class="staff-legend-title">Staff Colour Key</div>
+    <span class="staff-badge badge-pm">🟣 PM</span><span class="staff-badge badge-sec">🔵 Secretary</span><span class="staff-badge badge-nurse">🟢 Nurse</span><span class="staff-badge badge-doc">🔴 Doctor</span><span class="staff-badge badge-phle">🟠 Phlebotomist</span>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Clinical Pathways" data-sop-name="Hypertension">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>❤️</span><h3>Hypertension (HTN)</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="info-box">📖 <a href="https://www.nice.org.uk/guidance/ng136" target="_blank">NICE NG136 — Hypertension in Adults ↗</a></div>
+      <div class="journey">
+        <div class="journey-step"><div class="step-dot dot-nurse">NS</div><div class="step-content step-content-nurse"><div class="step-role step-role-nurse">Nurse / Phlebotomist</div><div class="step-title">Initial Assessment</div><div class="step-detail">Place ABPM (24hr monitor). Bloods: U&amp;E, eGFR, lipids, HbA1c, fasting glucose, FBC. Dipstick urine. ECG. Document in Socrates CDM tab.</div></div></div>
+        <div class="journey-step"><div class="step-dot dot-doc">DR</div><div class="step-content step-content-doc"><div class="step-role step-role-doc">Doctor — ABPM Review</div><div class="step-title">Interpret &amp; Decide</div><div class="step-detail"><strong>ABPM normal (&lt;135/85 daytime):</strong> Continue meds, repeat 1 year → Text: "HTN — BP Monitor Normal"<br><strong>Raised, lifestyle first:</strong> Repeat 4–6 months → Text: "HTN New — Conservative"<br><strong>Raised, start meds:</strong> → Text: "HTN New — Start Meds"<br><strong>On meds, increase:</strong> Repeat ABPM 6 weeks → Text: "HTN — Meds Increase"<br>After consent → Text: "HTN — After Patient Accepts Increase"<br>Target: &lt;135/85 home readings.</div></div></div>
+        <div class="journey-step"><div class="step-dot dot-pm">PM</div><div class="step-content step-content-pm"><div class="step-role step-role-pm">PM</div><div class="step-title">Submit STC (ABPM)</div><div class="step-detail">Submit STC for ABPM via Socrates. Document "STC submitted". Check CDM eligibility.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Clinical Pathways" data-sop-name="Type 2 Diabetes">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>🩸</span><h3>Type 2 Diabetes (T2DM)</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="info-box">📖 <a href="https://www.nice.org.uk/guidance/ng28" target="_blank">NICE NG28 — T2DM in Adults ↗</a> | HbA1c target generally &lt;53 mmol/mol; individualise.</div>
+      <div class="journey">
+        <div class="journey-step"><div class="step-dot dot-nurse">NS</div><div class="step-content step-content-nurse"><div class="step-role step-role-nurse">Nurse / Phlebotomist — CDM Visit</div><div class="step-title">Annual/6-Monthly Review (30-min slot)</div><div class="step-detail">Bloods: HbA1c, U&amp;E, eGFR, lipids, LFTs, FBC, urine ACR. BP, weight, BMI, waist. Foot check. AliveCor ECG. ABPM. <strong>Diabetic patients booked with nurse or doctor only. 30-min appointments.</strong> Advise patient bring all medications.</div></div></div>
+        <div class="journey-step"><div class="step-dot dot-doc">DR</div><div class="step-content step-content-doc"><div class="step-role step-role-doc">Doctor — Review</div><div class="step-title">Interpret &amp; Adjust</div><div class="step-detail"><strong>HbA1c at target:</strong> Continue, 6/12 script, rebook CDM<br><strong>Pre-diabetic:</strong> → Text: "Pre-Diabetic — New"<br><strong>Raised HbA1c, increase meds:</strong> → Text: "Diabetic — Raised HbA1c, Increase Meds" / "Diabetic — Start SGLT2"<br><strong>On insulin, raised HbA1c:</strong> → Text: "Diabetic — On Insulin, Raised HbA1c" (refer Beaumont Diabetes Day Centre)<br>Complete CDM, 6/12 script with pharmacist note.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Clinical Pathways" data-sop-name="Fatty Liver / Deranged LFTs">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>🫀</span><h3>Fatty Liver / Deranged LFTs (NAFLD/MASLD)</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="info-box">📖 <a href="https://www.nice.org.uk/guidance/ng49" target="_blank">NICE NG49 — Non-alcoholic fatty liver disease ↗</a> | FIB-4: <a href="https://www.mdcalc.com/calc/2200/fibrosis-4-fib-4-index-liver-fibrosis" target="_blank">MDCalc ↗</a> | Patient info: <a href="https://tinyurl.com/yc2nfxu3" target="_blank">tinyurl.com/yc2nfxu3 ↗</a></div>
+      <div class="journey">
+        <div class="journey-step"><div class="step-dot dot-doc">DR</div><div class="step-content step-content-doc"><div class="step-role step-role-doc">Doctor — Deranged LFTs Found</div><div class="step-title">Initial Work-Up</div><div class="step-detail">Order liver ultrasound + full LFT screen, hepatitis serology, ferritin/iron, TFT, fasting glucose, lipids, BMI. Exclude: alcohol, medications, viral hepatitis, haemochromatosis, autoimmune hepatitis.<br>→ Text: "Abnormal LFTs — Refer Ultrasound"</div></div></div>
+        <div class="journey-step"><div class="step-dot dot-doc">DR</div><div class="step-content step-content-doc"><div class="step-role step-role-doc">Doctor — Ultrasound Result + FIB-4</div><div class="step-title">FIB-4 Score &amp; Decision</div><div class="step-detail"><strong>FIB-4 = (Age × AST) ÷ (Platelets × √ALT)</strong><br>&lt;1.30 = Low risk → reassure, lifestyle, annual LFTs → Text: "Fatty Liver — New (Low/Intermediate FIB-4)"<br>1.30–2.67 = Intermediate → repeat 1–2 yrs, optimise lifestyle<br>≥1.45/≥2.67 = High risk → refer hepatology Fibroscan → Text: "Fatty Liver — FIB-4 &gt;1.45, Refer Fibroscan"<br>Lifestyle: weight loss 5–10%, reduce alcohol, Mediterranean diet.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Clinical Pathways" data-sop-name="Dyslipidaemia">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>🧪</span><h3>Dyslipidaemia (Raised Cholesterol)</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="info-box">📖 <a href="https://www.nice.org.uk/guidance/cg181" target="_blank">NICE CG181 — Lipid Modification ↗</a> | <a href="https://qrisk.org/three/" target="_blank">QRisk3 Calculator ↗</a></div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        Calculate QRisk3 and document in chart.<br>
+        <strong>QRisk &lt;10%, LDL not markedly raised:</strong> Lifestyle, repeat 1 year → Text: "Cholesterol — Conservative"<br>
+        <strong>QRisk ≥10% or LDL significantly raised:</strong> Offer statin → Text: "Cholesterol — Start Statin"<br>
+        <strong>On statin, not at target:</strong> Increase → Text: "Cholesterol — Statin Increase" or switch → "Cholesterol — Switch to Combination"<br>
+        <strong>CTCA plaque:</strong> Target LDL &lt;1.4 → Text: "CTCA — Minimal Stenosis"
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Clinical Pathways" data-sop-name="Hyperkalaemia">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>⚗️</span><h3>Hyperkalaemia (Raised Potassium)</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="info-box">📖 <a href="https://cks.nice.org.uk/topics/hyperkalaemia/" target="_blank">NICE CKS — Hyperkalaemia ↗</a> | Most mild cases in GP = pseudohyperkalaemia.</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        <strong>Mild (5.5–6.0):</strong> Repeat as morning sample at Beaumont → Text: "Hyperkalemia — Mild, Repeat Beaumont"<br>
+        <strong>Raised, otherwise normal:</strong> Repeat morning sample 1 month → Text: "Potassium high, needing repeat" (no charge)<br>
+        <strong>Confirmed true hyperkalaemia:</strong> Review meds (ACEi, ARBs, spironolactone, NSAIDs). K &gt;6.5 or symptomatic → urgent/ED.
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Clinical Pathways" data-sop-name="Hyperparathyroidism">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>🦴</span><h3>Hyperparathyroidism</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="info-box">📖 <a href="https://cks.nice.org.uk/topics/hypercalcaemia/" target="_blank">NICE CKS — Hypercalcaemia ↗</a></div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        Confirm raised calcium on repeat. Order: PTH (paired), Vit D, phosphate, U&amp;E, 24hr urine calcium, ALP.<br>
+        <strong>Raised PTH + raised Ca = Primary HPT → refer endocrinology/surgery</strong><br>
+        <strong>Low PTH + raised Ca = Malignancy/sarcoid/Vit D toxicity → urgent investigation</strong><br>
+        DEXA if confirmed. Review meds (thiazides, lithium).<br>
+        Asymptomatic (Ca &lt;3.0, age &gt;50): monitor annually. Surgical criteria (Ca &gt;3.0, age &lt;50, osteoporosis, stones): refer.
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Clinical Pathways" data-sop-name="Redirect — What We Don&#39;t Treat">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>🚫</span><h3>Issues We Don't Treat — Redirect Pathways</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="warn-box">⚠️ Reception to redirect at point of booking. Do not book for these.</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        <strong>❌ Dressings:</strong> PHN or Bon Secours wound clinic (no referral needed). Sutures/removal still done here.<br>
+        <strong>❌ Dental:</strong> Redirect to dentist.<br>
+        <strong>❌ Cuts/wounds (OOH):</strong> A&amp;E / urgent care.<br>
+        <strong>❌ Hospital results from another doctor:</strong> Patient contacts ordering team.<br>
+        <strong>❌ Occupational medicals:</strong> Employer arranges.<br><br>
+        <strong>GMS/DVC — What's Covered:</strong><br>
+        ✅ Clinical consultation | ✅ CDM review | ✅ Follow-up (results we ordered)<br>
+        ❌ Letter only | ❌ Form only | ❌ Hospital doctor results | ❌ Dental
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Clinical Pathways" data-sop-name="Doctor Cheat Sheet">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>✅</span><h3>Doctor Cheat Sheet — Opportunistic Claiming</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        <strong>At every GMS/DVC consultation:</strong><br>
+        ☐ STC done? (Asthma 2–8yrs, contraception, CDM opportunistically)<br>
+        ☐ CDM / PP / OCF eligible? Register if not<br>
+        ☐ SW cert needed? Take email, advise IB1 if 3+ days<br>
+        ☐ ABPM due? Submit STC<br>
+        ☐ Contraception consult? Code CF or CL, 12-month script<br>
+        ☐ Update Active Diagnoses in Socrates<br>
+        ☐ Update medications on repeat list<br>
+        ☐ Get patient email for certs/results<br>
+        ☐ CDM review due? 1-month script only, then book CDM
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Clinical Pathways" data-sop-name="Doctor Handoff List">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>🤝</span><h3>Doctor Handoff — What to Delegate &amp; to Whom</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        <strong>→ Medical Secretary:</strong> Accepted referrals (MS completes). AHP/family phone calls (message → task doctor).<br>
+        <strong>→ PM:</strong> New patient acceptances. Consultant bloods coordination. 2/6-week checks (unless Dr O'Reilly seen in pregnancy).<br>
+        <strong>→ Nurse/Phlebotomist:</strong> Vaccine queries. CDM bloods (CIT home visits for housebound). Routine bloods.<br>
+        <strong>Doctor retains:</strong> Clinical decisions, prescribing, medicolegal, complex reviews, capacity, registrar supervision.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- TEXT TEMPLATES -->
+<div class="section" id="text-templates">
+  <div class="page-header">
+    <h2>Text Templates</h2>
+    <p>Copy into Socrates. Replace [X] with patient name/values. Always copy into chart.</p>
+  </div>
+  <div class="info-box">All results texts to be copied into patient chart. Signed forms emailed to <strong>kinsealymedicalcentre@protonmail.com</strong> for scanning. If STC, antenatal, or claimable — PM to be notified for submission.</div>
+
+  <style>
+  .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;margin-bottom:18px}
+  .tpl-card{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);overflow:hidden}
+  .tpl-hdr{padding:9px 13px;background:var(--grey-100);border-bottom:1px solid var(--grey-200);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+  .tpl-hdr h4{font-size:0.79rem;font-weight:600;color:var(--navy);margin:0}
+  .tpl-tag{font-size:0.62rem;padding:2px 6px;border-radius:4px;background:var(--teal-pale);color:var(--teal);font-weight:600;flex-shrink:0;margin-left:8px}
+  .tpl-body{padding:11px 13px;display:none;font-size:0.76rem;line-height:1.65;color:var(--grey-700);white-space:pre-wrap;font-family:'DM Sans',sans-serif;background:#fafafa}
+  .tpl-body.open{display:block}
+  .cpbtn{display:inline-block;margin-top:8px;font-size:0.69rem;font-weight:600;padding:4px 10px;background:var(--navy);color:#fff;border-radius:4px;cursor:pointer;border:none;font-family:'DM Sans',sans-serif}
+  .cpbtn:hover{background:var(--teal)}
+  .cpok{color:var(--teal);font-size:0.69rem;margin-left:8px;display:none}
+  </style>
+
+  <div class="section-label">General Results</div>
+  <div class="tpl-grid">
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Bloods Normal</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+I'm happy to report your recent blood tests were reviewed by myself and are all within acceptable limits.
+Regards Dr O'Reilly, Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Bloods Normal — Repeat 6 Months</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent blood tests were within acceptable limits. No action needed. Please repeat bloods in 6 months.
+Regards, Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Results — Book Any Doctor</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your test results are available, please make an appointment to see any doctor to discuss these.
+Regards, Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok" style="display: none;">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Results — Book Same Doctor</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your test results are available, please make an appointment to see myself to discuss these.
+Regards, Dr [X]<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Results — Consult Advised</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+The results of your [X] are now back. Please contact kinsealymedicalcentre@protonmail.com to arrange a consultation at your convenience.
+Regards, Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Normal Scan / Investigation</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+I'm happy to report your recent [scan/X] was reviewed by myself and is reported without significant findings.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+  </div>
+
+  <div class="section-label">Hypertension</div>
+  <div class="tpl-grid">
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>HTN — BP Monitor Normal, Stay on Meds</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+I reviewed your recent BP monitor, it is in the normal range. Continue with the same medications and repeat the BP monitor in 1 year.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>HTN New — Conservative</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+Your blood pressure monitor has confirmed that your blood pressure is high. Please read the following link to learn more about high blood pressure, and how to reduce it: http://tinyurl.com/a9zjzv8z
+Please repeat the monitor in 4-6 months. If at this point your blood pressure fails to come down we would advise starting medications.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>HTN New — Start Meds</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+Your blood pressure monitor has confirmed that your blood pressure is high. I would like to commence treatment and start you on a medication called [X]. Click https://tinyurl.com/43fud8sb to learn more about BP. Please continue to measure BP at home. Please email kinsealymedicalcentre@protonmail.com if you are happy to proceed.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>HTN — Meds Increase</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+Your 24hr monitor has shown that your BP is raised. I would like to increase your medications, by adding in [X]. Please email kinsealymedicalcentre@protonmail.com if you are agreeable and we will send the new script with instructions to the pharmacy. Click https://tinyurl.com/yc666t8r for more info.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>HTN — After Patient Accepts Increase</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+I have sent your new script to your pharmacist. Please read the accompanying leaflet before commencing. Please monitor your BP from home and aim for readings of less than 135/85. Click https://www.bloodpressureuk.org/your-blood-pressure/how-to-lower-your-blood-pressure/monitoring-your-blood-pressure-at-home/how-to-measure-your-blood-pressure-at-home/ to learn how to check your BP at home. Please book for a repeat BP monitor in [X] or if home readings are over 135/85.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+  </div>
+
+  <div class="section-label">Diabetes &amp; Cholesterol</div>
+  <div class="tpl-grid">
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Pre-Diabetic — New</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent bloods were reviewed and are normal with the exception of a raised HBA1c ('sugar test') at [44]. This puts you in the 'Pre-Diabetic' range. Click https://tinyurl.com/5dn3v3jk for important info. I have referred you to a free Pre-diabetic clinic also. Repeat blood tests in 6 months.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Diabetic — Raised HbA1c, Increase Meds</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent bloods were reviewed and are fine with the exception of a raised HBA1c at [67]. This means your Diabetes control could be improved. Click https://patient.info/diabetes/diabetes-mellitus-leaflet/tests-for-blood-sugar-glucose-and-hba1c for info. I would like to commence you on a medication called [Janumet] and stop [Metformin]. Repeat blood tests in 6 months.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Diabetic — Start SGLT2</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent bloods were reviewed and are fine with the exception of a raised HBA1c at [67]. Diabetes control is not to target. We would like to commence you on Empagliflozin. Click https://tinyurl.com/55j5bsxf for important info. Please contact us if you are happy to commence or book to speak to us.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Diabetic — On Insulin, Raised HbA1c</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your bloods have shown your HBA1c is raised at [X]. As you are on insulin we would recommend you contact the diabetic day centre at (01) 809 2744/2745 or diabetescentreadmin@beaumont.ie as your insulin may need to be adjusted.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Diabetic Review Due</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+You are now due a review for the treatment of your diabetes. Please contact the clinic on 01-8405940 to book an appointment for bloods, ECG and 24hr blood pressure monitor.
+Regards, Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Cholesterol — Conservative</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent bloods are fine with the exception of a raised cholesterol at [X], however your overall risk remains low. Click https://tinyurl.com/ypz88h4b for info. Please repeat in 1 year.
+Regards, Dr [X], Kinsealy Medical Centre
+(Qrisk [X.X]%)<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok" style="display: none;">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Cholesterol — Start Statin</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your bloods show your cholesterol is raised. Click https://tinyurl.com/ypz88h4b for info. I would like to commence you on a 'statin'. Please contact us if you are happy with this and read the leaflet that comes with the medication.
+Best Wishes, Dr [X], Kinsealy Medical Centre
+(Qrisk [X.X]%)<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Cholesterol — Statin Increase</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent bloods were normal with the exception of a cholesterol at [6.4]. If compliant I would like to increase your statin. Please email kinsealymedicalcentre@protonmail.com if agreeable and I'll arrange a prescription to your local pharmacy.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Cholesterol — Switch to Combination</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent bloods were normal with the exception of a cholesterol at [6.4]. If compliant I would like to switch your statin to a combination type medication. Please email kinsealymedicalcentre@protonmail.com if agreeable.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>CTCA — Minimal Stenosis</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+I'm happy to report your recent CT scan of the heart showed no abnormality requiring significant intervention. There was some plaque and we should set targets to reduce the likelihood of this worsening. Click https://tinyurl.com/333vyc5k for important information. We should target your LDL to 1.4 or lower and I would like to start you on a statin combination. Please contact us if agreeable or book in to see me.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+  </div>
+
+  <div class="section-label">Liver / LFTs</div>
+  <div class="tpl-grid">
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Fatty Liver — New (Low/Intermediate FIB-4)</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+I'm happy to report your ultrasound has come back reassuring without significant findings except for a very common finding known as 'fatty liver' or NAFLD. Lifestyle interventions are the best management for this. Please read https://tinyurl.com/yc2nfxu3 for some important information.
+Best wishes, Dr [X], Kinsealy Medical Centre
+(FIB Score [XX], [Low/Intermediate] Risk)<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Fatty Liver — FIB-4 &gt;1.45, Refer Fibroscan</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+Your ultrasound has come back showing a very common finding known as 'fatty liver' or NAFLD. Lifestyle interventions are the best management for this. Please read https://tinyurl.com/yc2nfxu3 for some important information. To complete this work-up we would like to refer you to a liver specialist to have a test known as a fibroscan. Please contact us if you are happy for us to arrange or book in to discuss.
+Best wishes, Dr [X], Kinsealy Medical Centre
+(FIB Score [XX], High Risk)<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Abnormal LFTs — Refer Ultrasound</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent blood tests were normal with the exception of slightly raised 'Liver blood tests'. This is a common finding. I would like to refer you for a liver ultrasound for completeness. Please email the surgery if you are agreeable with this.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Gilbert's Syndrome</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+Your recent bloods were reassuring and point towards a common condition called Gilbert's Syndrome. This occurs in 1 in 10 people and is harmless. Click https://tinyurl.com/4njw56pd for more information and book to see me if you have any questions.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>H. Pylori Positive</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+Your recent sample has come back positive for a bacteria called H. Pylori. Click tinyurl.com/bddpdsrt for info. In order to treat this you will need to take a course of 2 antibiotics and a 'PPI' which I have sent to your pharmacist. Please contact us if you have any questions.
+Regards Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+  </div>
+
+  <div class="section-label">Thyroid / Iron / Vitamins / Haematology</div>
+  <div class="tpl-grid">
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Hypothyroid — Increase Eltroxin</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your blood tests have shown that your thyroid is underactive. If you are compliant with your medications we would recommend increasing your medications (we will send the new script to your pharmacy) and booking for repeat bloods in 6 weeks. Please contact the surgery at kinsealymedicalcentre@protonmail.com if you are happy with this.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Hyperthyroid on Eltroxin — Decrease</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your blood tests have shown that your thyroid is overactive. Our records show you are currently taking [X] mcg. If you are compliant at this dose we would recommend decreasing to [X] (we will send the new script to your pharmacy) and booking for repeat bloods in 2 months. Please contact kinsealymedicalcentre@protonmail.com if you are happy with this.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Iron Deficiency Anaemia — Galfer</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent bloods were normal bar they have shown that your iron stores are low. Click https://tinyurl.com/3vtavjby for important information. I have sent a tablet known as Galfer to your local pharmacist for you to commence. Please repeat this blood test in 6 months.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Low B12 — Start Injections</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent bloods are within acceptable limits apart from your B12 level which is low. Click https://tinyurl.com/mryww5n4 for more info. We normally recommend a series of B12 injections for this. We have sent a prescription to your pharmacist and recommend you book with our nurse or the local public health nurse for administration.
+Regards, Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Low B12 AND Low Folate — B12 First</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your bloods show your B12 AND folic acid level are low. Click https://tinyurl.com/mryww5n4 &amp; https://tinyurl.com/58hj3k3x for info. We recommend B12 injections and folic acid supplements. I have sent a script for the B12 ONLY. YOU MUST start the B12 injections before taking folic acid. Once you have had your course of 5 B12 injections contact us for the folic acid script.
+Regards, Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Low Folic Acid — Conservative</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent bloods were reviewed and I'm happy to report are without significant findings with the exception of a low folic acid level. Click https://tinyurl.com/58hj3k3x for info. Repeat blood tests in 6 months. Please contact us if you have any queries.
+Best wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Low Folic Acid — Start Supplement</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent bloods were reviewed and I'm happy to report are without significant findings with the exception of a low folic acid level. Click https://tinyurl.com/58hj3k3x for info. I have sent a script for a folic acid supplement to the chemist for you. Repeat blood tests in 6 months.
+Best wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Low Vitamin D</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent bloods were reviewed and show a low Vitamin D level. Click https://www2.hse.ie/conditions/vitamins-and-minerals/vitamin-d/ for info. I would like to send a prescription with instructions to your pharmacy for a Vitamin D supplement. Please contact us if you have any queries.
+Regards, Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Hyponatraemia</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+I'm happy to report your recent bloods are normal bar your sodium which is a little low. This is usually of no concern but can be caused by a low salt diet or alcohol. Your medication can rarely cause it also. Please book for further blood tests in 1 month.
+Best Wishes, Dr [X]
+(Order: UE, TFT, 9am cortisol, paired serum osmolality AND urine osmolality &amp; Na)<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Haemochromatosis — Carrier</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Following from our previous discussion your recent blood test has shown you are a carrier for Haemochromatosis. Please read https://tinyurl.com/cwrfcpxb for important information. If you would prefer to book to discuss in person please email kinsealymedicalcentre@protonmail.com.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Haemochromatosis — Raised Ferritin, Venesection</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Your recent blood results show your ferritin is elevated at [296] µg/L, which means it is time to arrange your next venesection. Please contact your usual service to book this in, or get in touch with us if you need any help.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Raised WBC — Repeat 6 Weeks</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your blood tests have come back normal bar a raised 'White cell count'. This is a common finding and usually normalises on repeat. We would recommend booking in for a repeat test in 6 weeks or booking to see us if unwell or concerned.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Low WBC — Repeat 3 Months</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your blood tests have come back normal bar a low 'White cell count'. This is a common finding and usually normalises on repeat. We would recommend booking in for a repeat test in 3 months or booking to see us if unwell or concerned.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Raised Platelets — First Time</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+I'm happy to report your recent bloods showed nothing significant. It did show a very common finding in 'raised platelets'. This is very common and usually in response to a simple virus. For completeness I would like to repeat your bloods in 6 weeks.
+Regards, Dr [X]<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Raised Platelets x2 — Refer Haematology</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Your recent blood tests have come back and have shown again your platelets are raised. This is a very common finding however I would like to refer you to a haematologist for a thorough evaluation. Please let me know if you are happy with this and if you want to go public or private.
+Dr [X]<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Gout — Start/Increase Allopurinol</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your blood has shown that your uric acid (gout blood test) is raised. I would advise starting you on a medication called Allopurinol. Click https://www.versusarthritis.org/media/24665/gout-information-booklet-2022.pdf for info. If you are happy with this please let us know. Please read the leaflet thoroughly before commencing. Repeat blood tests in 6 months.
+Regards, Dr [X]<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+  </div>
+
+  <div class="section-label">Radiology &amp; Scans</div>
+  <div class="tpl-grid">
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>MRI Normal</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+I'm happy to report your recent MRI was reported without any significant findings. If you have concerns please contact us.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Ultrasound Normal</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+I'm happy to report your recent ultrasound was reported without any significant findings. If you have concerns please contact us.
+Best wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Radiology — Further Test Recommended</h4><span class="tpl-tag">📱</span></div><div class="tpl-body open">Dear Patient,
+I am happy to report your recent tests have shown nothing significant. There were some benign findings and they have recommended an MRI to further evaluate which I have referred you for.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>DEXA — Normal</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+I'm happy to report your recent DEXA showed normal bone mineral density.
+Regards Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Osteopenia — DEXA</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your DEXA shows Osteopenia. Click https://tinyurl.com/2t95625m for information. I have prescribed a Calcium/Vitamin D supplement and sent this to your nominated pharmacy. Please arrange for a DEXA in 3-5 years.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Osteoarthritis — X-ray</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent X-Ray shows features in keeping with Osteoarthritis. Please click http://tinyurl.com/ms9fvbbz for important information. If you find your symptoms are not improving please make an appointment.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Osteoarthritis — Refer Orthopaedics</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent Xray shows features in keeping with Osteoarthritis. Click http://tinyurl.com/ms9fvbbz for important information. As discussed we could refer you to the orthopedic team for an assessment. Please let us know if you are happy with this and I will arrange.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>CTCA — Normal</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+I'm happy to report your recent CT scan of the heart showed no abnormality.
+Best Wishes, Dr [X]<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+  </div>
+
+  <div class="section-label">UTI / Swabs / Prostate / Other</div>
+  <div class="tpl-grid">
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>UTI — Script Sent</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your urine sample shows signs of infection (UTI). I have sent a script for an antibiotic to your pharmacist. Please drink lots of fluids over the next few days. If you have any concerns please contact us or make an appointment.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>UTI — Resistant</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your urine sample has come back as resistant to the antibiotic we recently prescribed. If you are still having symptoms please let us know and we will issue an alternate script. Please drink lots of fluids.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Swab — Normal</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
+I'm happy to report your recent swab result is negative for any growth.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Hyperkalemia — Mild, Repeat Beaumont</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your bloods showed your Potassium is slightly raised, your other bloods were normal. This is most likely due to a delay in processing. I would like you to book an appointment in Beaumont hospital to have it repeated where there is a shorter turnaround. Click https://tinyurl.com/aub8te7m to book and email us so we can send you the blood form.
+Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Prostate — Refer Urologist</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+I'm happy to report your recent bloods are normal with the exception of a slightly raised PSA (prostate blood test). This has ever so slowly increased over the years. I'm certainly not concerned however I feel you have just reached the threshold for referral to a Urologist at this stage. Please reply and I will arrange or book in to speak to me.
+Dr [X]<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>PSA — Repeat in 4 Weeks</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+I'm happy to report your recent bloods are normal with the exception of a slightly raised PSA (Prostate blood test). I would like to repeat this test in 4 weeks. Please contact us now to book in for this test.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>PCOS — Refer</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your bloods have shown results consistent with a possible diagnosis of PCOS (polycystic ovary syndrome). I would like to refer you to a specialist for this. If you have any concerns or questions, please contact us.
+Best regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Overdue Child Vaccines</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your child is overdue vaccines. It is important that your child continues to have these important vaccines. Please phone 018405940 to make an appointment.
+Kind Regards, Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Joint Injection Offer — MRI</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+Your recent MRI showed some degeneration changes but thankfully nothing else. If you are still experiencing pain that is not settling down with time and physiotherapy we could arrange for a joint injection performed by myself. Please contact if you would like to arrange now or in the future.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Shoulder — Physio +/- Injection</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+I'm happy to report your recent MRI showed nothing significant. It did show a mild inflammation of your rotator cuff, this should respond well to physiotherapy which I would advise. If not improving with physio, we could offer a steroid injection. Any concerns or if you would like a copy of the MRI please contact the surgery.
+Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+  </div>
+
+  <script>
+  function toggleTpl(h){h.nextElementSibling.classList.toggle('open')}
+  function copyTpl(btn){
+    const b=btn.parentElement;
+    const t=b.innerText.replace('Copy','').replace('\u2713 Copied','').trim();
+    navigator.clipboard.writeText(t).then(()=>{
+      const ok=btn.nextElementSibling;ok.style.display='inline';
+      setTimeout(()=>{ok.style.display='none'},2000);
+    });
+  }
+  </script>
+</div>
+
+<!-- SOCIAL MEDIA -->
+<div class="section" id="social-media">
+  <div class="page-header"><h2>Social Media</h2><p>Staff guidelines, platform strategy, and content calendar.</p></div>
+  <div class="warn-box">⚠️ <strong>Never post patient information, clinical details, or anything identifiable.</strong> When in doubt — don't post. Ask Dr O'Reilly first.</div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Social Media" data-sop-name="Staff Social Media Policy">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>📋</span><h3>Staff Social Media Policy</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        <strong>Never post:</strong> Patient names/photos, clinical details, complaints, practice financials, negative comments about colleagues or other practices.<br><br>
+        <strong>Personal accounts:</strong> Do not identify as a Kinsealy employee when posting anything controversial or that could misrepresent the practice.<br><br>
+        <strong>Practice accounts:</strong> Only approved staff (Dr O'Reilly/PM) post on practice accounts. Posts reviewed before publishing where possible.<br><br>
+        <strong>Reviews:</strong> All responses to Google/social media reviews go through Dr O'Reilly or PM only. Never respond defensively or include clinical detail.
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Social Media" data-sop-name="Platform Strategy">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>📱</span><h3>Platform Strategy &amp; Content Ideas</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="section-label" style="margin-top:0">Instagram — 2–3x/week</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:10px">Health awareness weeks, health facts/infographics, new services (EHA, Saxenda, CDM), team posts (with consent), seasonal campaigns (flu vaccine, skin checks), patient info (Protonmail, Pippo booking, Under-6 card). <strong>Tone:</strong> warm, approachable, professional — no jargon.</div>
+      <div class="section-label">Facebook — 1–2x/week</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:10px">Share HSE/ICGP campaigns, practice news, extended hours/closure notices, CDM/contraception scheme info, local health events. Good for older demographic and community reach.</div>
+      <div class="section-label">X (Twitter) — As needed</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:10px">Health professional networking, sharing ICGP/HSE guidelines and news. Low priority for patient-facing comms. More useful for professional profile.</div>
+      <div class="section-label">Website (kinsealymedicalcentre.ie) — Review Quarterly</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:10px">Keep updated: opening hours, fees, team page, services, CDM info, patient forms (Netlify links). Add news/blog section for SEO. All changes approved by Dr O'Reilly/PM.</div>
+      <div class="section-label">Google Business Profile — Ongoing</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">Hours, phone, address, services must be current at all times. Add Google posts for practice news. Encourage satisfied patients to leave a Google review. All review responses via PM/Dr O'Reilly only.</div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Social Media" data-sop-name="Annual Health Awareness Calendar">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>📅</span><h3>Annual Health Awareness Calendar</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        <strong>Jan:</strong> Dry January, Cervical Check awareness, New Year health goals<br>
+        <strong>Feb:</strong> World Cancer Day (4th), Heart Month<br>
+        <strong>Mar:</strong> Colon Cancer Awareness Month, International Women's Day<br>
+        <strong>Apr:</strong> World Health Day (7th), Stress Awareness Month<br>
+        <strong>May:</strong> Mental Health Awareness Week, Asthma Awareness Month<br>
+        <strong>Jun:</strong> Men's Health Week, Diabetes Ireland events<br>
+        <strong>Jul/Aug:</strong> Sun safety, skin checks, travel vaccines<br>
+        <strong>Sep:</strong> World Heart Day (29th), childhood obesity awareness<br>
+        <strong>Oct:</strong> Breast Cancer Awareness Month, World Menopause Day (18th)<br>
+        <strong>Nov:</strong> Movember, Diabetes Awareness Month, flu vaccine push<br>
+        <strong>Dec:</strong> Alcohol awareness, mental health at Christmas, practice closure dates
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAINTENANCE -->
+<div class="section" id="maintenance">
+  <div class="page-header"><h2>Maintenance</h2><p>Alarm, BLS, equipment, premises and monthly metrics.</p></div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Maintenance" data-sop-name="Alarm System">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>🚨</span><h3>Alarm System</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 PM</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body"><div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+      <strong>Alarm Company:</strong> [Placeholder]<br>
+      <strong>Contact number:</strong> [Placeholder]<br>
+      <strong>First name on call list:</strong> [Placeholder]<br>
+      <strong>Alarm code:</strong> Held by PM and Partners only. Do not share.<br>
+      <strong>Annual service date:</strong> [Placeholder]<br><br>
+      If triggered out of hours: call alarm company first, then PM or a Partner.
+    </div></div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Maintenance" data-sop-name="BLS Training">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>❤️‍🔥</span><h3>BLS (Basic Life Support) Training</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 PM</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body"><div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+      <strong>Frequency:</strong> Annual — all clinical staff. Every 2 years — admin staff.<br>
+      <strong>Provider:</strong> [Placeholder]<br>
+      <strong>Next renewal:</strong> [Placeholder]<br>
+      <strong>AED location:</strong> [Placeholder]<br>
+      <strong>Staff trained &amp; expiry dates:</strong> [Placeholder]<br><br>
+      PM tracks and schedules. Google Calendar reminder set 6 weeks in advance.
+    </div></div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Maintenance" data-sop-name="Equipment Register">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>🩺</span><h3>Equipment Register &amp; Calibration</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 PM</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body"><div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+      <strong>ABPM Devices:</strong> [Model, serial, calibration due]<br>
+      <strong>ECG Machine:</strong> [Placeholder]<br>
+      <strong>AliveCor:</strong> [Devices &amp; assigned to whom]<br>
+      <strong>Cryotherapy Device:</strong> [Placeholder]<br>
+      <strong>Scales / Height:</strong> [Calibration date]<br>
+      <strong>Spirometer:</strong> [Placeholder]<br>
+      <strong>Vaccine Fridge:</strong> Checked and logged daily by nurse. Range: 2°C–8°C.<br><br>
+      Report faults or low stock to PM immediately. Full register held by PM.
+    </div></div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Maintenance" data-sop-name="Premises &amp; Cabin">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>🏠</span><h3>Premises &amp; Garden Cabin</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 PM / Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body"><div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+      <strong>Heating:</strong> [Placeholder — remote control solution when installed]<br>
+      <strong>Garden cabin:</strong> Planning exempt (Fingal rules, 3×3m). Suppliers shortlisted: Loghouse, Moran Timber Cabins.<br>
+      <strong>Building maintenance contact:</strong> [Placeholder]<br>
+      <strong>Cleaning company:</strong> [Placeholder]<br>
+      <strong>Bin collection:</strong> [Day &amp; company]<br>
+      <strong>Broadband provider:</strong> [Placeholder]
+    </div></div>
+  </div>
+
+  <div class="sop-card" data-updated="2026-04-22" data-section-name="Maintenance" data-sop-name="Monthly Metrics Tracker">
+    <div class="sop-header" onclick="toggleSOP(this)"><div class="sop-header-left"><span>📊</span><h3>Monthly Metrics to Track</h3></div><span class="sop-toggle">▼</span></div>
+    <div class="sop-meta"><span>👤 PM / Dr F. O'Reilly</span><span>📅 Active from: 22/04/2026</span><span>🔄 Last updated: 22/04/2026</span></div>
+    <div class="sop-body">
+      <div class="info-box">All metrics on one Google Sheet, updated monthly. PM compiles. Reviewed at partners meeting.</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        <strong>PCRS / Income:</strong><br>
+        ☐ STCs submitted (month vs prev month)<br>
+        ☐ CDMs completed<br>
+        ☐ ABPMs submitted<br>
+        ☐ CDM pending month-on-month<br>
+        ☐ Subsidy claims (leave, study, locum, practice support)<br>
+        ☐ Balance of each account (partnership + company)<br><br>
+        <strong>Operations:</strong><br>
+        ☐ DNAs — number per month by stage (1st/2nd/3rd)<br>
+        ☐ New patient registrations (accepted vs declined)<br>
+        ☐ Referrals sent<br>
+        ☐ Forms revenue
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+// DATE
+const d = new Date();
+document.getElementById('sidebarDate').textContent = d.toLocaleDateString('en-IE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+// SECTION TITLES
+const titles = {
+  'home':'Home & Noticeboard','cdm':'Chronic Disease Management','care-pathways':'Care Pathways','doctor-stuff':'Doctor Stuff',
+  'practice-management':'Practice Management','front-of-house':'Front of House',
+  'clinical-pathways':'Clinical Pathways','text-templates':'Text Templates',
+  'useful-forms':'Useful Forms','quick-links':'Quick Links',
+  'social-media':'Social Media','maintenance':'Maintenance','misc':'Miscellaneous'
+};
+
+// NAVIGATION
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('.section');
+let pmUnlocked = false;
+
+function switchSection(target) {
+  // Check PM lock
+  if(target === 'practice-management' && !pmUnlocked) {
+    document.getElementById('pm-lock').classList.add('show');
+    document.getElementById('pm-password').value = '';
+    document.getElementById('pm-error').style.display = 'none';
+    setTimeout(()=>document.getElementById('pm-password').focus(),100);
+    return;
+  }
+  navLinks.forEach(l => l.classList.remove('active'));
+  sections.forEach(s => s.classList.remove('active'));
+  const link = document.querySelector(`[data-section="${target}"]`);
+  if(link) link.classList.add('active');
+  const sec = document.getElementById(target);
+  if(sec) sec.classList.add('active');
+  document.getElementById('topbarTitle').textContent = titles[target] || target;
+  window.scrollTo(0,0);
+  // Close mobile sidebar
+  closeSidebar();
+}
+
+navLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    switchSection(link.dataset.section);
+  });
+});
+
+// PRACTICE MANAGEMENT PASSWORD
+function checkPmPassword() {
+  const val = document.getElementById('pm-password').value;
+  // Password: KMC2026 (you can change this)
+  if(val === 'KMC2026') {
+    pmUnlocked = true;
+    document.getElementById('pm-lock').classList.remove('show');
+    document.getElementById('pm-lock-badge').style.display = 'none';
+    document.getElementById('pm-unlocked-badge').style.display = 'inline';
+    switchSection('practice-management');
+  } else {
+    document.getElementById('pm-error').style.display = 'block';
+    document.getElementById('pm-password').value = '';
+    document.getElementById('pm-password').focus();
+  }
+}
+function closePmLock() {
+  document.getElementById('pm-lock').classList.remove('show');
+}
+
+// MOBILE SIDEBAR
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// SOP TOGGLE
+function toggleSOP(header) {
+  const body = header.nextElementSibling.nextElementSibling;
+  const toggle = header.querySelector('.sop-toggle');
+  body.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+
+// RECENT UPDATES (within 21 days) — now also loads noticeboard posts from editor
+function buildRecentUpdates() {
+  const now = new Date();
+  const cutoff = 21 * 24 * 60 * 60 * 1000;
+  const cards = document.querySelectorAll('.sop-card[data-updated]');
+  const updates = [];
+  cards.forEach(card => {
+    const dateStr = card.dataset.updated;
+    const updated = new Date(dateStr);
+    if((now - updated) <= cutoff) {
+      updates.push({
+        name: card.dataset.sopName,
+        section: card.dataset.sectionName,
+        date: updated
+      });
+    }
+  });
+  updates.sort((a,b) => b.date - a.date);
+  const list = document.getElementById('recent-updates-list');
+  if(updates.length === 0) {
+    list.innerHTML = '<div class="notice-item"><span class="dot dot-teal"></span><div><h4>No recent updates in the last 21 days</h4><p>When any SOP is updated, it will appear here automatically.</p></div></div>';
+    return;
+  }
+  list.innerHTML = updates.map(u => `
+    <div class="notice-item recent-update">
+      <span class="dot dot-teal"></span>
+      <div>
+        <h4>Updated: ${u.name}</h4>
+        <p>Section: ${u.section}</p>
+      </div>
+      <span class="date">${u.date.toLocaleDateString('en-IE',{day:'numeric',month:'short',year:'numeric'})}</span>
+    </div>
+  `).join('');
+}
+
+// LOAD NOTICEBOARD ANNOUNCEMENTS from editor (stored in localStorage)
+function loadAnnouncements() {
+  const container = document.getElementById('announcements-container');
+  if(!container) return;
+  try {
+    const posts = JSON.parse(localStorage.getItem('kinsealy_notices') || '[]');
+    if(posts.length === 0) { container.innerHTML = ''; return; }
+    const now = new Date();
+    const active = posts.filter(p => !p.expiry || new Date(p.expiry) > now);
+    container.innerHTML = active.map(p => `
+      <div class="notice-strip" style="margin-bottom:10px">
+        <span class="badge" style="background:${p.urgent?'#ef4444':'var(--gold)'};">${p.urgent?'URGENT':'Notice'}</span>
+        <div>
+          <h4>${p.title}</h4>
+          <p>${p.body}</p>
+          <p style="font-size:0.68rem;opacity:0.5;margin-top:4px">Posted by ${p.author} · ${new Date(p.date).toLocaleDateString('en-IE',{day:'numeric',month:'short'})}</p>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) { container.innerHTML = ''; }
+}
+
+buildRecentUpdates();
+loadAnnouncements();
+
+// SEARCH
+document.getElementById('search').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if(!q) {
+    document.querySelectorAll('.sop-card,.form-card,.notice-item,.ql-btn').forEach(el => el.classList.remove('search-hidden'));
+    return;
+  }
+  document.querySelectorAll('.sop-card,.form-card,.notice-item,.ql-btn').forEach(el => {
+    const text = el.textContent.toLowerCase();
+    el.classList.toggle('search-hidden', !text.includes(q));
+  });
+});
+</script>
+
+
+</body></html>     

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noticeboard Editor — Kinsealy Staff Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2d4a;--teal:#2a8a7e;--teal-light:#3aa897;--teal-pale:#e8f5f3;
+  --gold:#c9a84c;--cream:#f8f6f1;--white:#fff;
+  --grey-100:#f4f4f4;--grey-200:#e8e8e8;--grey-400:#9ca3af;--grey-700:#374151;
+  --text:#1f2937;--radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+
+/* HEADER */
+.header{background:var(--navy);color:#fff;padding:18px 32px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-family:'DM Serif Display',serif;font-size:1.2rem}
+.header span{font-size:0.7rem;opacity:0.5;letter-spacing:0.1em;text-transform:uppercase}
+.back-btn{font-size:0.78rem;color:rgba(255,255,255,0.7);text-decoration:none;display:flex;align-items:center;gap:5px;transition:color 0.15s}
+.back-btn:hover{color:#fff}
+
+/* LOGIN SCREEN */
+#login-screen{max-width:400px;margin:80px auto;background:var(--white);border-radius:14px;padding:40px;box-shadow:0 4px 24px rgba(0,0,0,0.08);text-align:center}
+#login-screen h2{font-family:'DM Serif Display',serif;color:var(--navy);margin-bottom:8px}
+#login-screen p{font-size:0.82rem;color:var(--grey-400);margin-bottom:24px}
+#login-screen .lock{font-size:2.5rem;margin-bottom:16px}
+.field{margin-bottom:14px;text-align:left}
+.field label{font-size:0.75rem;font-weight:600;color:var(--grey-700);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--grey-200);border-radius:8px;padding:10px 14px;font-size:0.88rem;font-family:'DM Sans',sans-serif;outline:none;transition:border 0.15s;background:#fff}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--teal)}
+.field textarea{min-height:80px;resize:vertical;line-height:1.5}
+.btn{width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:12px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.15s}
+.btn:hover{background:var(--teal)}
+.btn-danger{background:#dc2626}
+.btn-danger:hover{background:#b91c1c}
+.btn-sm{width:auto;padding:6px 14px;font-size:0.78rem}
+.error{color:#dc2626;font-size:0.75rem;margin-top:8px;display:none}
+
+/* MAIN EDITOR */
+#editor-screen{display:none;max-width:760px;margin:0 auto;padding:32px 20px}
+.section-title{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--navy);margin-bottom:4px}
+.section-sub{font-size:0.82rem;color:var(--grey-400);margin-bottom:28px}
+.card{background:var(--white);border-radius:var(--radius);border:1px solid var(--grey-200);padding:24px;margin-bottom:20px}
+.card-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--teal);margin-bottom:18px;padding-bottom:8px;border-bottom:1px solid var(--teal-pale)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.toggle-row label{font-size:0.82rem;font-weight:500;color:var(--grey-700);cursor:pointer}
+.toggle-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--teal);cursor:pointer}
+
+/* POSTS LIST */
+.post-item{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start}
+.post-item .dot{width:8px;height:8px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.dot-urgent{background:#ef4444}
+.dot-normal{background:var(--teal)}
+.post-content{flex:1}
+.post-content h4{font-size:0.88rem;font-weight:600;color:var(--navy);margin-bottom:3px}
+.post-content p{font-size:0.78rem;color:var(--grey-700);margin-bottom:4px;line-height:1.5}
+.post-meta{font-size:0.68rem;color:var(--grey-400)}
+.post-badge{display:inline-block;font-size:0.62rem;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:6px}
+.badge-urgent{background:#fee2e2;color:#dc2626}
+.badge-active{background:#dcfce7;color:#166534}
+.badge-expired{background:var(--grey-100);color:var(--grey-400)}
+.no-posts{text-align:center;color:var(--grey-400);font-size:0.82rem;padding:24px}
+.success-banner{background:#dcfce7;border:1px solid #86efac;border-radius:var(--radius);padding:12px 16px;font-size:0.82rem;color:#166534;margin-bottom:16px;display:none}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>📋 Noticeboard Editor</h1>
+    <span>Kinsealy Staff Hub — PM / Admin only</span>
+  </div>
+  <a href="index.html" class="back-btn">← Back to Staff Hub</a>
+</div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="lock">🔐</div>
+  <h2>Staff Editor Login</h2>
+  <p>This tool is for Practice Manager and authorised admin only. Enter your editor password to continue.</p>
+  <div class="field">
+    <label>Editor Password</label>
+    <input type="password" id="editor-password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+  </div>
+  <button class="btn" onclick="doLogin()">Login</button>
+  <div class="error" id="login-error">Incorrect password. Please try again.</div>
+</div>
+
+<!-- EDITOR -->
+<div id="editor-screen">
+  <div class="section-title">Post an Announcement</div>
+  <div class="section-sub">Announcements appear on the Staff Hub home page immediately. Staff do not need to refresh.</div>
+
+  <div class="success-banner" id="success-banner">✓ Announcement posted successfully! It will appear on the noticeboard now.</div>
+
+  <!-- NEW POST FORM -->
+  <div class="card">
+    <div class="card-title">New Announcement</div>
+    <div class="field">
+      <label>Title</label>
+      <input type="text" id="post-title" placeholder="e.g. Practice closed Tuesday 29th April">
+    </div>
+    <div class="field">
+      <label>Message</label>
+      <textarea id="post-body" placeholder="Enter the full announcement text here..."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label>Posted by</label>
+        <input type="text" id="post-author" placeholder="e.g. Maria / Dr O'Reilly">
+      </div>
+      <div class="field">
+        <label>Expires (optional)</label>
+        <input type="date" id="post-expiry">
+      </div>
+    </div>
+    <div class="toggle-row">
+      <input type="checkbox" id="post-urgent">
+      <label for="post-urgent">🔴 Mark as Urgent (red banner)</label>
+    </div>
+    <button class="btn" onclick="postAnnouncement()">📢 Post Announcement</button>
+  </div>
+
+  <!-- EXISTING POSTS -->
+  <div class="card">
+    <div class="card-title">Current & Recent Announcements</div>
+    <div id="posts-list"><div class="no-posts">No announcements posted yet.</div></div>
+  </div>
+</div>
+
+<script>
+const EDITOR_PASSWORD = 'Maria2026'; // Change this to your preferred password
+const STORAGE_KEY = 'kinsealy_notices';
+
+function doLogin() {
+  const val = document.getElementById('editor-password').value;
+  if(val === EDITOR_PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('editor-screen').style.display = 'block';
+    loadPosts();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('editor-password').value = '';
+    document.getElementById('editor-password').focus();
+  }
+}
+
+function getPosts() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } 
+  catch(e) { return []; }
+}
+
+function savePosts(posts) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+}
+
+function postAnnouncement() {
+  const title = document.getElementById('post-title').value.trim();
+  const body = document.getElementById('post-body').value.trim();
+  const author = document.getElementById('post-author').value.trim() || 'Admin';
+  const expiry = document.getElementById('post-expiry').value;
+  const urgent = document.getElementById('post-urgent').checked;
+
+  if(!title || !body) {
+    alert('Please enter both a title and message.');
+    return;
+  }
+
+  const posts = getPosts();
+  posts.unshift({
+    id: Date.now(),
+    title,
+    body,
+    author,
+    expiry: expiry || null,
+    urgent,
+    date: new Date().toISOString()
+  });
+  savePosts(posts);
+
+  // Reset form
+  document.getElementById('post-title').value = '';
+  document.getElementById('post-body').value = '';
+  document.getElementById('post-expiry').value = '';
+  document.getElementById('post-urgent').checked = false;
+
+  // Show success
+  const banner = document.getElementById('success-banner');
+  banner.style.display = 'block';
+  setTimeout(() => banner.style.display = 'none', 4000);
+
+  loadPosts();
+}
+
+function deletePost(id) {
+  if(!confirm('Delete this announcement?')) return;
+  const posts = getPosts().filter(p => p.id !== id);
+  savePosts(posts);
+  loadPosts();
+}
+
+function loadPosts() {
+  const posts = getPosts();
+  const list = document.getElementById('posts-list');
+  if(posts.length === 0) {
+    list.innerHTML = '<div class="no-posts">No announcements posted yet.</div>';
+    return;
+  }
+  const now = new Date();
+  list.innerHTML = posts.map(p => {
+    const isExpired = p.expiry && new Date(p.expiry) <= now;
+    const statusBadge = isExpired 
+      ? '<span class="post-badge badge-expired">Expired</span>'
+      : '<span class="post-badge badge-active">Active</span>';
+    const urgentBadge = p.urgent ? '<span class="post-badge badge-urgent">URGENT</span>' : '';
+    const expiryText = p.expiry ? ` · Expires ${new Date(p.expiry).toLocaleDateString('en-IE',{day:'numeric',month:'short',year:'numeric'})}` : '';
+    return `
+      <div class="post-item">
+        <div class="dot ${p.urgent ? 'dot-urgent' : 'dot-normal'}"></div>
+        <div class="post-content">
+          <h4>${p.title} ${urgentBadge} ${statusBadge}</h4>
+          <p>${p.body}</p>
+          <div class="post-meta">Posted by ${p.author} · ${new Date(p.date).toLocaleDateString('en-IE',{day:'numeric',month:'short',year:'numeric'})}${expiryText}</div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="deletePost(${p.id})">Delete</button>
+      </div>
+    `;
+  }).join('');
+}
+</script>
+</body>
+</html>
