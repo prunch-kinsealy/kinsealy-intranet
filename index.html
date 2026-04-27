@@ -189,6 +189,8 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 
 /* SEARCH HIGHLIGHT */
 .search-hidden{display:none!important}
+/* Show all sections while a search is active */
+body.searching .section{display:block;animation:none}
 
 /* ── MOBILE HAMBURGER ── */
 #hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;z-index:200}
@@ -269,7 +271,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <a href="#" class="nav-link" data-section="maintenance"><span class="nav-icon">🔧</span> Maintenance</a>
     <a href="#" class="nav-link" data-section="misc"><span class="nav-icon">📁</span> Miscellaneous</a>
   </nav>
-  <div class="sidebar-footer">Kinsealy Group Practice © 2025</div>
+  <div class="sidebar-footer">Kinsealy Group Practice © 2026</div>
 </aside>
 
 <div id="main">
@@ -1504,7 +1506,7 @@ with the existing intranet style.
 <!-- ════════════════════════════════════════════════════ -->
 <!-- USEFUL FORMS -->
 <!-- ════════════════════════════════════════════════════ -->
-<div class="section active" id="useful-forms">
+<div class="section" id="useful-forms">
   <div class="page-header">
     <h2>Useful Forms</h2>
     <p>All consent forms, patient forms, HSE forms, and templates — in one place.</p>
@@ -1539,7 +1541,7 @@ with the existing intranet style.
   <div class="forms-grid">
     <div class="form-card"><div class="form-icon">🚗</div><div><h4>Driving Medical Form (NDLS)</h4><p>Advise patient to print before attending</p><a href="https://www.ndls.ie/images/Documents/Forms/171315_NDLS_Medical_Form_JAN_2022_WEB_HR.pdf" target="_blank">NDLS form ↗</a></div></div>
     <div class="form-card"><div class="form-icon">👂</div><div><h4>Ear Wax — Patient Advice</h4><p>Send to patients before ear syringing — min 5 days drops</p><a href="https://www.rveeh.ie/app/uploads/2017/04/ear_wax_and_ear_care_advice.pdf" target="_blank">RVEEH leaflet ↗</a></div></div>
-    <div class="form-card"><div class="form-icon">💉</div><div><h4>Steroid Injection Info</h4><p>Send to patient before joint injection</p><a href="https://www.versusarthritis.org/media/23676/steroiation-booklet-june2021.pdfd-injections-inform" target="_blank">Versus Arthritis ↗</a></div></div>
+    <div class="form-card" style="border-left:3px solid #ef4444"><div class="form-icon">💉</div><div><h4>Steroid Injection Info</h4><p>Send to patient before joint injection</p><a href="#" style="color:#ef4444">⚠️ Link broken — needs correct URL</a></div></div>
     <div class="form-card"><div class="form-icon">⚖️</div><div><h4>Saxenda Patient Leaflet</h4><p>Side effects — send before commencing</p><a href="https://www.saxenda.co.uk/public-site/patient-information-leaflet.html" target="_blank">Saxenda PIL ↗</a></div></div>
     <div class="form-card"><div class="form-icon">🔬</div><div><h4>PSA Test Information</h4><p>Send link before unsolicited PSA bloods</p><a href="#" target="_blank">PSA info link ↗</a></div></div>
     <div class="form-card"><div class="form-icon">📋</div><div><h4>Under-6 Card Registration</h4><p>SSPCRS — send to parents</p><a href="https://www.sspcrs.ie/portal/free-gp-care-web/pub" target="_blank">sspcrs.ie ↗</a></div></div>
@@ -1568,7 +1570,7 @@ with the existing intranet style.
     <a href="https://www.sspcrs.ie/" target="_blank" class="ql-btn"><div class="ql-icon">💊</div><div class="ql-label">PCRS Portal</div><div class="ql-sub">sspcrs.ie</div></a>
     <a href="https://www.hse.ie/" target="_blank" class="ql-btn"><div class="ql-icon">🏛️</div><div class="ql-label">HSE</div><div class="ql-sub">hse.ie</div></a>
     <a href="https://www.icgp.ie/" target="_blank" class="ql-btn"><div class="ql-icon">🎓</div><div class="ql-label">ICGP</div><div class="ql-sub">icgp.ie</div></a>
-    <a href="https://kinsealymedicalcentre.gp@healthmail.ie/" class="ql-btn"><div class="ql-icon">📬</div><div class="ql-label">Healthmail</div><div class="ql-sub">Secure email</div></a>
+    <a href="https://webmail.healthmail.ie/" target="_blank" class="ql-btn"><div class="ql-icon">📬</div><div class="ql-label">Healthmail</div><div class="ql-sub">Secure email</div></a>
   </div>
   <div class="section-label">Clinical</div>
   <div class="quicklinks-grid">
@@ -2037,7 +2039,7 @@ Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(t
     <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Swab — Normal</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear Patient,
 I'm happy to report your recent swab result is negative for any growth.
 Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
-    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Hyperkalemia — Mild, Repeat Beaumont</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Hyperkalaemia — Mild, Repeat Beaumont</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
 Your bloods showed your Potassium is slightly raised, your other bloods were normal. This is most likely due to a delay in processing. I would like you to book an appointment in Beaumont hospital to have it repeated where there is a shorter turnaround. Click https://tinyurl.com/aub8te7m to book and email us so we can send you the blood form.
 Regards, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
     <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Prostate — Refer Urologist</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
@@ -2358,13 +2360,15 @@ function loadAnnouncements() {
 buildRecentUpdates();
 loadAnnouncements();
 
-// SEARCH
+// SEARCH — searches across all sections
 document.getElementById('search').addEventListener('input', function() {
   const q = this.value.toLowerCase().trim();
   if(!q) {
     document.querySelectorAll('.sop-card,.form-card,.notice-item,.ql-btn').forEach(el => el.classList.remove('search-hidden'));
+    document.body.classList.remove('searching');
     return;
   }
+  document.body.classList.add('searching');
   document.querySelectorAll('.sop-card,.form-card,.notice-item,.ql-btn').forEach(el => {
     const text = el.textContent.toLowerCase();
     el.classList.toggle('search-hidden', !text.includes(q));
