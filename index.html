@@ -1293,16 +1293,67 @@ with the existing intranet style.
     </div>
     <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
     <div class="sop-body open">
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:12px">
-        <strong>Booking channels:</strong> Pippo (preferred) or by phone.<br><br>
-        <strong>Q1 (all patients):</strong> "Have you had any cough, fever, shortness of breath, runny nose or sore throat in the last 7 days?" — document 'screened'. If yes → must bring negative antigen test and wear mask.<br><br>
-        <strong>Q2 (GMS/DVC/An Post only):</strong> "Can you briefly tell me the reason for the consultation?" — if declined, document 'declined'. Not required for private patients.<br><br>
-        <strong>Important checks before booking:</strong> Do we already have results? Is CDM review due? Is it for a letter/form? Do results need to be sent on?<br><br>
-        <strong>Appointment colour codes:</strong><br>
-        🔵 Blue = Any patient, on the day only (opens at 9am on the day)<br>
-        ⬜ Grey = Any patient, any time<br><br>
-        <strong>Booking on patient's behalf:</strong> Ask: Is the patient aware? Do they have the patient's consent? (GDPR)
+
+      <!-- BOOKING CHANNELS -->
+      <div class="section-label" style="margin-top:0">Booking Channels</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
+        <strong>Preferred:</strong> Pippo (online). <strong>Also accepted:</strong> by phone.<br>
+        <strong>Q1 (all patients):</strong> "Have you had any cough, fever, shortness of breath, runny nose or sore throat in the last 7 days?" — document 'screened'. If yes → must bring negative antigen test and wear mask.
       </div>
+
+      <!-- Q2 DECISION TREE -->
+      <div class="section-label">Q2 — GMS / DVC / An Post: Reason for Visit</div>
+      <div class="info-box" style="margin-bottom:10px">"Can you briefly tell me the reason for the consultation?" — if declined, document 'declined'. <strong>The answer to Q2 should trigger one of three actions below.</strong></div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
+        <strong>→ Is it something we don't see?</strong> Redirect — see list below. Do not book.<br>
+        <strong>→ Is there a care pathway for it?</strong> Check pathway links below — send any pre-appointment form and ask pathway-specific questions before booking.<br>
+        <strong>→ Everything else:</strong> Standard booking. Check if CDM is due, results are in, or a form/letter is involved.
+      </div>
+
+      <!-- GMS/DVC WHAT'S COVERED -->
+      <div class="section-label">GMS / DVC — What's Covered</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
+        ✅ Clinical consultation<br>
+        ✅ CDM / PP review<br>
+        ✅ Follow-up on results <em>we</em> ordered<br>
+        ✅ Letters or forms completed <em>during</em> a clinical visit<br>
+        ⚠️ <strong>Letter or form only (no clinical need)</strong> — advise there is a charge; book only if patient is agreeable<br>
+        ❌ <strong>Results from a hospital doctor</strong> — patient contacts the hospital team directly<br>
+        ❌ <strong>Repeat script with CDM overdue</strong> — issue 1-month script only, then book CDM review
+      </div>
+
+      <!-- DO NOT BOOK -->
+      <div class="warn-box" style="margin-bottom:14px">
+        <strong>⛔ Do Not Book — Redirect Instead</strong><br><br>
+        🦷 <strong>Dental:</strong> Redirect to dentist.<br>
+        🩹 <strong>Dressings / wound reviews:</strong> PHN or Bon Secours wound care clinic — no referral needed. Suture/stitch <em>removal</em> still done here.<br>
+        🩸 <strong>Cuts, wounds, or anything needing sutures:</strong> A&amp;E or urgent care.<br>
+        🚨 <strong>Actively bleeding / serious injury:</strong> ED immediately — do not book, advise 999 if needed.<br>
+        🏥 <strong>Hospital results not ordered by us:</strong> Patient contacts the ordering hospital team.<br>
+        📄 <strong>Forms or results only (no consultation):</strong> See GMS/DVC coverage above — charge applies.
+      </div>
+
+      <!-- CARE PATHWAY LINKS -->
+      <div class="section-label">Care Pathway Check — Send Form Before Booking</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
+        If the reason for booking matches a pathway below, check that section for pre-appointment forms to send and any specific booking instructions.<br><br>
+        <strong>💊 Contraception</strong> — see Care Pathways → Contraception<br>
+        <strong>🔁 CDM / Chronic Disease</strong> — see CDM section (Calendly link, CDM form, morning bloods rule)<br>
+        <strong>🤰 Antenatal</strong> — see Care Pathways → Antenatal (urine sample reminder, Combined Care form)<br>
+        <strong>💉 Baby Vaccines</strong> — see Care Pathways → Baby Vaccines (consent form, age rules)<br>
+        <strong>🔬 Cervical Smear</strong> — see Care Pathways → Cervical Smears (CervicalCheck registration, consent form)<br>
+        <strong>⚖️ Saxenda / Weight Loss</strong> — see Care Pathways → Saxenda (doctor first, GMS criteria)<br>
+        <strong>🫁 Asthma</strong> — see Care Pathways → Asthma Registration
+      </div>
+
+      <!-- COLOUR CODES + GDPR -->
+      <div class="section-label">Appointment Colour Codes</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
+        🔵 <strong>Blue</strong> = Any patient, on the day only (opens at 9am on the day)<br>
+        ⬜ <strong>Grey</strong> = Any patient, any time
+      </div>
+      <div class="info-box"><strong>Booking on a patient's behalf:</strong> Always ask — is the patient aware? Do you have their consent? (GDPR)</div>
+
     </div>
   </div>
 
