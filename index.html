@@ -585,7 +585,7 @@ with the existing intranet style.
     <span class="staff-badge badge-all">⚫ All</span>
   </div>
 
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="CDM" data-sop-name="Chronic Disease Management (CDM)">
+  <div class="sop-card" id="sop-cdm" data-updated="2025-05-23" data-section-name="CDM" data-sop-name="Chronic Disease Management (CDM)">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left">
         <span>🔁</span>
@@ -702,7 +702,7 @@ with the existing intranet style.
   </div>
 
   <!-- CONTRACEPTION -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Contraception">
+  <div class="sop-card" id="sop-contraception" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Contraception">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>💊</span><h3>Contraception (Free Scheme &amp; STCs)</h3></div>
       <span class="sop-toggle">▼</span>
@@ -742,7 +742,7 @@ with the existing intranet style.
   </div>
 
   <!-- ANTENATAL -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Antenatal Care">
+  <div class="sop-card" id="sop-antenatal" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Antenatal Care">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🤰</span><h3>Antenatal / Combined Care</h3></div>
       <span class="sop-toggle">▼</span>
@@ -807,7 +807,7 @@ with the existing intranet style.
   </div>
 
   <!-- BABY VACCINES -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Baby Vaccines">
+  <div class="sop-card" id="sop-baby-vaccines" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Baby Vaccines">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>💉</span><h3>Baby Vaccines Schedule</h3></div>
       <span class="sop-toggle open">▼</span>
@@ -846,7 +846,7 @@ with the existing intranet style.
   </div>
 
   <!-- SMEARS -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Cervical Smears">
+  <div class="sop-card" id="sop-smears" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Cervical Smears">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🔬</span><h3>Cervical Smears (CervicalCheck)</h3></div>
       <span class="sop-toggle">▼</span>
@@ -885,7 +885,7 @@ with the existing intranet style.
   </div>
 
   <!-- WEIGHT LOSS DRUGS -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Weight Loss Drugs (Saxenda)">
+  <div class="sop-card" id="sop-saxenda" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Weight Loss Drugs (Saxenda)">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>⚖️</span><h3>Weight Loss Drugs — Saxenda</h3></div>
       <span class="sop-toggle">▼</span>
@@ -940,7 +940,7 @@ with the existing intranet style.
   </div>
 
   <!-- ASTHMA -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Asthma">
+  <div class="sop-card" id="sop-asthma" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Asthma">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🫁</span><h3>Asthma Registration</h3></div>
       <span class="sop-toggle">▼</span>
@@ -1337,13 +1337,13 @@ with the existing intranet style.
       <div class="section-label">Care Pathway Check — Send Form Before Booking</div>
       <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
         If the reason for booking matches a pathway below, check that section for pre-appointment forms to send and any specific booking instructions.<br><br>
-        <strong>💊 Contraception</strong> — see Care Pathways → Contraception<br>
-        <strong>🔁 CDM / Chronic Disease</strong> — see CDM section (Calendly link, CDM form, morning bloods rule)<br>
-        <strong>🤰 Antenatal</strong> — see Care Pathways → Antenatal (urine sample reminder, Combined Care form)<br>
-        <strong>💉 Baby Vaccines</strong> — see Care Pathways → Baby Vaccines (consent form, age rules)<br>
-        <strong>🔬 Cervical Smear</strong> — see Care Pathways → Cervical Smears (CervicalCheck registration, consent form)<br>
-        <strong>⚖️ Saxenda / Weight Loss</strong> — see Care Pathways → Saxenda (doctor first, GMS criteria)<br>
-        <strong>🫁 Asthma</strong> — see Care Pathways → Asthma Registration
+        <a href="#" onclick="goToSOP('care-pathways','sop-contraception');return false;"><strong>💊 Contraception</strong></a> — age rules, booking codes, consent form<br>
+        <a href="#" onclick="goToSOP('cdm','sop-cdm');return false;"><strong>🔁 CDM / Chronic Disease</strong></a> — Calendly link, CDM form, morning bloods rule<br>
+        <a href="#" onclick="goToSOP('care-pathways','sop-antenatal');return false;"><strong>🤰 Antenatal</strong></a> — urine sample reminder, Combined Care form<br>
+        <a href="#" onclick="goToSOP('care-pathways','sop-baby-vaccines');return false;"><strong>💉 Baby Vaccines</strong></a> — consent form, age rules<br>
+        <a href="#" onclick="goToSOP('care-pathways','sop-smears');return false;"><strong>🔬 Cervical Smear</strong></a> — CervicalCheck registration, consent form<br>
+        <a href="#" onclick="goToSOP('care-pathways','sop-saxenda');return false;"><strong>⚖️ Saxenda / Weight Loss</strong></a> — doctor first, GMS criteria<br>
+        <a href="#" onclick="goToSOP('care-pathways','sop-asthma');return false;"><strong>🫁 Asthma</strong></a> — registration pathway
       </div>
 
       <!-- COLOUR CODES + GDPR -->
@@ -2334,6 +2334,22 @@ function toggleSidebar() {
 function closeSidebar() {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('overlay').classList.remove('show');
+}
+
+// GO TO SPECIFIC SOP — switches section then scrolls to and opens the card
+function goToSOP(sectionId, sopId) {
+  switchSection(sectionId);
+  setTimeout(() => {
+    const el = document.getElementById(sopId);
+    if(!el) return;
+    const body = el.querySelector('.sop-body');
+    const toggle = el.querySelector('.sop-toggle');
+    if(body && !body.classList.contains('open')) {
+      body.classList.add('open');
+      if(toggle) toggle.classList.add('open');
+    }
+    el.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 100);
 }
 
 // SOP TOGGLE
