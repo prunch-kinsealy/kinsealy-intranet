@@ -12,7 +12,7 @@
       --sand:#f7f4f0;--text:#1e2a35;--text-muted:#5a6a7a;--border:#d0dde6;
       --error:#c0392b;--white:#ffffff;
       --warn-bg:#fff8ed;--warn-border:#f6c26b;--warn-text:#7a4600;
-      --info-bg:#e8f4f6;--info-border:rgba(42,124,138,0.25);
+      --info-border:rgba(42,124,138,0.25);
     }
     body{font-family:'DM Sans',sans-serif;background:var(--sand);color:var(--text);min-height:100vh}
     .header{background:var(--navy);padding:28px 40px;display:flex;align-items:center;gap:20px}
@@ -57,8 +57,7 @@
     .radio-item input,.check-item input{width:17px;height:17px;min-width:17px;accent-color:var(--teal);margin-top:1px;cursor:pointer}
     .radio-item label,.check-item label{font-size:0.84rem;color:var(--text);margin-bottom:0;font-weight:400;cursor:pointer;letter-spacing:0}
     /* Condition card */
-    .condition-section{display:none;background:white;border:1px solid var(--border);border-radius:14px;padding:24px 26px;margin-top:16px}
-    .condition-section.active{display:block}
+    .condition-section{display:none;background:white;border:1px solid var(--border);border-radius:14px;padding:24px 26px;margin-top:8px;margin-bottom:4px}
     .condition-section-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--navy);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border)}
     /* Subfield toggle */
     .subfield{display:none;margin-top:12px;padding:14px;background:#f8fafc;border-radius:8px;border:1px solid var(--border)}
@@ -73,6 +72,10 @@
     .consent-item input[type="checkbox"]{width:18px;height:18px;min-width:18px;accent-color:var(--teal);margin-top:2px;cursor:pointer}
     .consent-item label{font-size:0.855rem;color:var(--text);margin-bottom:0;font-weight:400;cursor:pointer;line-height:1.65;letter-spacing:0}
     .consent-item label strong{color:var(--navy);font-weight:600}
+    /* ABPM responsibility box */
+    .resp-box{background:#fffbf0;border:1.5px solid var(--warn-border);border-radius:12px;padding:22px 26px;margin-bottom:20px}
+    .resp-box-title{font-size:0.88rem;font-weight:700;color:var(--warn-text);margin-bottom:10px}
+    .resp-box-desc{font-size:0.83rem;color:var(--warn-text);line-height:1.65;font-weight:300;margin-bottom:18px}
     /* Day-of-visit info panel */
     .day-panel{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px}
     .day-panel-header{background:var(--navy);padding:14px 20px;color:white;font-size:0.85rem;font-weight:600;letter-spacing:0.04em}
@@ -85,6 +88,7 @@
     .submit-btn{width:100%;padding:16px;background:var(--navy);color:white;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;letter-spacing:0.03em;transition:background 0.2s,transform 0.1s;display:flex;align-items:center;justify-content:center;gap:10px}
     .submit-btn:hover{background:var(--teal)}
     .submit-btn:active{transform:scale(0.99)}
+    .submit-btn:disabled{opacity:0.7;cursor:not-allowed}
     /* Errors */
     .field-error{font-size:0.78rem;color:var(--error);margin-top:5px;display:none}
     .field-group.has-error input,.field-group.has-error select,.field-group.has-error textarea{border-color:var(--error)}
@@ -103,91 +107,6 @@
 </head>
 <body>
 
-<!-- Netlify detection form — all possible field names listed here -->
-<form name="cdm-preappointment" data-netlify="true" hidden>
-  <input type="text" name="patient-name"/>
-  <input type="date" name="dob"/>
-  <input type="text" name="pps"/>
-  <input type="tel" name="phone"/>
-  <input type="email" name="email"/>
-  <input type="text" name="gp"/>
-  <select name="condition"></select>
-  <input type="hidden" name="submission-date"/>
-  <textarea name="health-changes"></textarea>
-  <textarea name="hospital-admissions"></textarea>
-  <textarea name="new-specialists"></textarea>
-  <textarea name="current-medications"></textarea>
-  <textarea name="drug-allergies"></textarea>
-  <input type="text" name="other-concerns"/>
-  <!-- HTN -->
-  <input type="text" name="htn-home-bp"/>
-  <input type="text" name="htn-symptoms"/>
-  <select name="htn-alcohol"></select>
-  <select name="htn-medication-compliance"></select>
-  <textarea name="htn-side-effects"></textarea>
-  <!-- T2DM -->
-  <input type="text" name="t2dm-glucose-range"/>
-  <select name="htn-hypos"></select>
-  <select name="t2dm-foot-issues"></select>
-  <select name="t2dm-vision-changes"></select>
-  <input type="text" name="t2dm-last-eye-check"/>
-  <select name="t2dm-medication-compliance"></select>
-  <textarea name="t2dm-lifestyle-changes"></textarea>
-  <!-- CVD -->
-  <select name="cvd-chest-pain"></select>
-  <textarea name="cvd-chest-pain-detail"></textarea>
-  <select name="cvd-sob"></select>
-  <select name="cvd-palpitations"></select>
-  <select name="cvd-ankle-swelling"></select>
-  <select name="cvd-smoking"></select>
-  <input type="text" name="cvd-cigarettes-per-day"/>
-  <select name="cvd-medication-compliance"></select>
-  <!-- HF -->
-  <select name="hf-breathlessness"></select>
-  <select name="hf-swelling"></select>
-  <select name="hf-weight-gain"></select>
-  <input type="text" name="hf-weight-gain-amount"/>
-  <select name="hf-stairs"></select>
-  <select name="hf-medication-compliance"></select>
-  <!-- AF -->
-  <select name="af-palpitations"></select>
-  <select name="af-dizziness"></select>
-  <select name="af-sob"></select>
-  <select name="af-anticoagulant"></select>
-  <select name="af-anticoagulant-compliance"></select>
-  <input type="date" name="af-inr-date"/>
-  <!-- COPD -->
-  <select name="copd-breathlessness-level"></select>
-  <select name="copd-cough"></select>
-  <select name="copd-exacerbations"></select>
-  <select name="copd-rescue-inhaler"></select>
-  <select name="copd-smoking"></select>
-  <!-- Asthma -->
-  <select name="asthma-symptom-freq"></select>
-  <select name="asthma-night-symptoms"></select>
-  <select name="asthma-rescue-freq"></select>
-  <select name="asthma-activity-limit"></select>
-  <select name="asthma-preventer-compliance"></select>
-  <!-- Stroke -->
-  <select name="stroke-new-symptoms"></select>
-  <textarea name="stroke-new-symptoms-detail"></textarea>
-  <select name="stroke-falls"></select>
-  <select name="stroke-memory"></select>
-  <select name="stroke-medication-compliance"></select>
-  <input type="text" name="stroke-home-bp"/>
-  <!-- PP -->
-  <select name="pp-smoking"></select>
-  <input type="text" name="pp-cigarettes-per-day"/>
-  <select name="pp-alcohol"></select>
-  <select name="pp-exercise-days"></select>
-  <select name="pp-diet-concerns"></select>
-  <input type="text" name="pp-home-bp"/>
-  <select name="pp-family-history-changes"></select>
-  <textarea name="pp-concerns"></textarea>
-  <!-- Confirmation -->
-  <input type="checkbox" name="confirm-prep"/>
-</form>
-
 <header class="header">
   <div class="header-logo">
     <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
@@ -202,13 +121,16 @@
   <div class="success-screen" id="successScreen">
     <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
     <h2>Form Received</h2>
-    <p>Thank you. Your health update has been received by Kinsealy Medical Centre.<br>Our team will review this before your appointment.<br><br>Please arrive a few minutes early on the day.</p>
+    <p>Thank you. Your health update has been sent to Kinsealy Medical Centre.<br>Our team will review this before your appointment.<br><br>
+    If you have any questions, contact us at <a href="mailto:kinsealymedicalcentre@protonmail.com" style="color:var(--teal)">kinsealymedicalcentre@protonmail.com</a><br>
+    or call <a href="tel:018452500" style="color:var(--teal)">(01) 845 2500</a>.<br><br>
+    Please arrive a few minutes early on the day.</p>
   </div>
 
   <div id="mainForm">
     <div class="form-badge">CDM Pre-Appointment</div>
     <h1 class="form-title">Chronic Disease Management<br>Pre-Appointment Health Update</h1>
-    <p class="form-intro">Please complete this form before your CDM or Prevention Programme appointment. It helps your nurse and doctor prepare and makes the most of your time at the surgery. The form takes about 5 minutes.</p>
+    <p class="form-intro">Please complete this form before your CDM or Prevention Programme appointment. It helps your nurse and doctor prepare and makes the most of your time at the surgery. If you need help completing the form, please contact us at <a href="mailto:kinsealymedicalcentre@protonmail.com" style="color:var(--teal)">kinsealymedicalcentre@protonmail.com</a> or call <a href="tel:018452500" style="color:var(--teal)">(01) 845 2500</a>.</p>
 
     <!-- Fasting reminder -->
     <div class="warning-box">
@@ -216,24 +138,15 @@
       <div>
         <h3>Fasting Required — Please Read Before Your Appointment</h3>
         <p>You must <strong>fast from midnight the night before your appointment</strong>. This means no food or drink except plain water from midnight onwards. Fasting is needed for accurate blood results (glucose, cholesterol, triglycerides).</p>
-        <p><strong>Medications:</strong> Take all regular medications as normal, with a small sip of water — <em>except</em> as noted below.</p>
+        <p><strong>Medications:</strong> Continue all regular medications as normal with a small sip of water.</p>
       </div>
     </div>
 
-    <!-- ACEi/ARB flag -->
-    <div class="warning-box">
-      <div class="warn-icon">⚠️</div>
-      <div>
-        <h3>Blood Pressure Medication — Morning Appointments Only</h3>
-        <p>If you take a blood pressure medication ending in <strong>-pril</strong> (e.g. Ramipril, Lisinopril, Perindopril, Enalapril) or <strong>-sartan</strong> (e.g. Losartan, Candesartan, Valsartan, Irbesartan), your appointment <strong>must be in the morning</strong>.</p>
-        <p>If you are unsure whether this applies to you, please ring the practice before your appointment. <strong>Do not take these tablets</strong> on the morning of an afternoon appointment.</p>
-      </div>
-    </div>
-
-    <form name="cdm-preappointment" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="cdmForm" novalidate>
-      <input type="hidden" name="form-name" value="cdm-preappointment"/>
-      <input type="hidden" name="bot-field"/>
+    <form id="cdmForm" novalidate>
       <input type="hidden" name="submission-date" id="submissionDate"/>
+      <input type="hidden" name="_subject" value="CDM Pre-Appointment Form — Kinsealy Medical Centre"/>
+      <input type="hidden" name="_template" value="table"/>
+      <input type="hidden" name="_captcha" value="false"/>
 
       <!-- ══ SECTION 1: Patient Details ══ -->
       <div class="section-header">
@@ -266,9 +179,10 @@
           <input type="tel" id="phone" name="phone" placeholder="087 123 4567"/>
           <div class="field-error">Required.</div>
         </div>
-        <div class="field-group">
-          <label for="email">Email Address <span class="optional">(optional)</span></label>
+        <div class="field-group" id="fg-email">
+          <label for="email">Email Address <span class="required">*</span></label>
           <input type="email" id="email" name="email" placeholder="your@email.com"/>
+          <div class="field-error">Please enter a valid email address.</div>
         </div>
       </div>
 
@@ -281,25 +195,24 @@
       <!-- ══ SECTION 2: Your Appointment ══ -->
       <div class="section-header">
         <div class="section-number">2</div>
-        <div class="section-header-text"><h2>Your Appointment</h2><p>Select your condition to load the relevant questions</p></div>
+        <div class="section-header-text"><h2>Your Conditions</h2><p>Tick all that apply — each will load its own questions below</p></div>
       </div>
 
       <div class="field-group" id="fg-condition">
-        <label for="condition">Reason for Today's Appointment <span class="required">*</span></label>
-        <select id="condition" name="condition" onchange="onConditionChange()">
-          <option value="" disabled selected>— Select your condition —</option>
-          <option value="htn">Hypertension (High Blood Pressure)</option>
-          <option value="t2dm">Type 2 Diabetes</option>
-          <option value="cvd">Cardiovascular Disease / Heart Disease / Angina</option>
-          <option value="hf">Heart Failure</option>
-          <option value="af">Atrial Fibrillation (AF / Irregular Heartbeat)</option>
-          <option value="copd">COPD (Chronic Obstructive Pulmonary Disease)</option>
-          <option value="asthma">Asthma</option>
-          <option value="stroke">Stroke / TIA (Mini-Stroke)</option>
-          <option value="pp">Prevention Programme (PP)</option>
-        </select>
-        <div class="field-hint">If you have more than one condition, select the one your appointment is mainly for. You can add additional details in the free text boxes below.</div>
-        <div class="field-error">Please select your condition.</div>
+        <label>Conditions for Today's Appointment <span class="required">*</span></label>
+        <div class="field-hint" style="margin-bottom:10px">Tick all that apply. If you have more than one condition, all relevant question sets will appear below.</div>
+        <div class="check-group">
+          <div class="check-item"><input type="checkbox" name="condition" value="Hypertension" id="cc-htn" onchange="onConditionsChange('htn',this.checked)"/><label for="cc-htn">Hypertension (High Blood Pressure)</label></div>
+          <div class="check-item"><input type="checkbox" name="condition" value="Type 2 Diabetes" id="cc-t2dm" onchange="onConditionsChange('t2dm',this.checked)"/><label for="cc-t2dm">Type 2 Diabetes</label></div>
+          <div class="check-item"><input type="checkbox" name="condition" value="Cardiovascular Disease / Heart Disease / Angina" id="cc-cvd" onchange="onConditionsChange('cvd',this.checked)"/><label for="cc-cvd">Cardiovascular Disease / Heart Disease / Angina</label></div>
+          <div class="check-item"><input type="checkbox" name="condition" value="Heart Failure" id="cc-hf" onchange="onConditionsChange('hf',this.checked)"/><label for="cc-hf">Heart Failure</label></div>
+          <div class="check-item"><input type="checkbox" name="condition" value="Atrial Fibrillation" id="cc-af" onchange="onConditionsChange('af',this.checked)"/><label for="cc-af">Atrial Fibrillation (AF / Irregular Heartbeat)</label></div>
+          <div class="check-item"><input type="checkbox" name="condition" value="COPD" id="cc-copd" onchange="onConditionsChange('copd',this.checked)"/><label for="cc-copd">COPD (Chronic Obstructive Pulmonary Disease)</label></div>
+          <div class="check-item"><input type="checkbox" name="condition" value="Asthma" id="cc-asthma" onchange="onConditionsChange('asthma',this.checked)"/><label for="cc-asthma">Asthma</label></div>
+          <div class="check-item"><input type="checkbox" name="condition" value="Stroke / TIA" id="cc-stroke" onchange="onConditionsChange('stroke',this.checked)"/><label for="cc-stroke">Stroke / TIA (Mini-Stroke)</label></div>
+          <div class="check-item"><input type="checkbox" name="condition" value="Prevention Programme (PP)" id="cc-pp" onchange="onConditionsChange('pp',this.checked)"/><label for="cc-pp">Prevention Programme (PP)</label></div>
+        </div>
+        <div class="field-error">Please select at least one condition.</div>
       </div>
 
       <!-- ══ CONDITION-SPECIFIC SECTIONS ══ -->
@@ -307,11 +220,10 @@
       <!-- HYPERTENSION -->
       <div class="condition-section" id="cond-htn">
         <div class="condition-section-title">❤️ Hypertension — Additional Questions</div>
-
         <div class="field-group">
           <label>Do you check your blood pressure at home? <span class="required">*</span></label>
           <div class="radio-group">
-            <div class="radio-item"><input type="radio" name="htn-home-bp-check" id="htn-bp-yes" value="Yes — readings below" onclick="toggleSubfield('htn-bp-readings',true)"/><label for="htn-bp-yes">Yes — I check at home</label></div>
+            <div class="radio-item"><input type="radio" name="htn-home-bp-check" id="htn-bp-yes" value="Yes" onclick="toggleSubfield('htn-bp-readings',true)"/><label for="htn-bp-yes">Yes — I check at home</label></div>
             <div class="radio-item"><input type="radio" name="htn-home-bp-check" id="htn-bp-no" value="No" onclick="toggleSubfield('htn-bp-readings',false)"/><label for="htn-bp-no">No</label></div>
           </div>
           <div class="subfield" id="htn-bp-readings">
@@ -319,7 +231,6 @@
             <input type="text" id="htn-home-bp" name="htn-home-bp" placeholder="e.g. 138/82 mmHg"/>
           </div>
         </div>
-
         <div class="field-group">
           <label>Any symptoms since your last visit? <span class="required">*</span><br><span style="font-size:0.75rem;color:var(--text-muted);font-weight:300">Tick all that apply</span></label>
           <div class="check-group">
@@ -331,7 +242,6 @@
             <div class="check-item"><input type="checkbox" name="htn-symptoms" value="None" id="htn-s0"/><label for="htn-s0">None of the above</label></div>
           </div>
         </div>
-
         <div class="field-group">
           <label for="htn-alcohol">Approximate alcohol intake (units per week)</label>
           <select id="htn-alcohol" name="htn-alcohol">
@@ -343,7 +253,6 @@
             <option>22+ units</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="htn-medication-compliance">Are you taking your blood pressure medication every day? <span class="required">*</span></label>
           <select id="htn-medication-compliance" name="htn-medication-compliance">
@@ -355,7 +264,6 @@
             <option>I am not currently on any blood pressure medication</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="htn-side-effects">Any side effects from your medication you would like to discuss? <span class="optional">(optional)</span></label>
           <textarea id="htn-side-effects" name="htn-side-effects" placeholder="e.g. persistent cough, swollen ankles, dizziness when standing — or write 'None'"></textarea>
@@ -365,7 +273,6 @@
       <!-- TYPE 2 DIABETES -->
       <div class="condition-section" id="cond-t2dm">
         <div class="condition-section-title">🩸 Type 2 Diabetes — Additional Questions</div>
-
         <div class="field-group">
           <label>Do you check your blood sugar (glucose) at home? <span class="required">*</span></label>
           <div class="radio-group">
@@ -377,10 +284,9 @@
             <input type="text" id="t2dm-glucose-range" name="t2dm-glucose-range" placeholder="e.g. mostly 6–9 mmol/L"/>
           </div>
         </div>
-
         <div class="field-group">
-          <label for="htn-hypos">Have you had any hypos (low blood sugar) since your last visit? <span class="required">*</span></label>
-          <select id="htn-hypos" name="htn-hypos">
+          <label for="t2dm-hypos">Have you had any hypos (low blood sugar) since your last visit? <span class="required">*</span></label>
+          <select id="t2dm-hypos" name="t2dm-hypos">
             <option value="" disabled selected>Select</option>
             <option>No — none at all</option>
             <option>Yes — one or two, mild</option>
@@ -390,7 +296,6 @@
           </select>
           <div class="field-hint">A hypo is when blood sugar drops too low — symptoms include shakiness, sweating, confusion, or feeling faint.</div>
         </div>
-
         <div class="field-group">
           <label for="t2dm-foot-issues">Foot health — any sores, cuts, wounds, numbness, or tingling in your feet? <span class="required">*</span></label>
           <select id="t2dm-foot-issues" name="t2dm-foot-issues">
@@ -401,7 +306,6 @@
             <option>Yes — other issue</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="t2dm-vision-changes">Any changes in your vision since your last visit? <span class="required">*</span></label>
           <select id="t2dm-vision-changes" name="t2dm-vision-changes">
@@ -411,13 +315,11 @@
             <option>Not sure</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="t2dm-last-eye-check">When did you last have a Diabetic Eye Screening (DES) check? <span class="optional">(optional)</span></label>
           <input type="text" id="t2dm-last-eye-check" name="t2dm-last-eye-check" placeholder="e.g. January 2025, or 'Not yet had one'"/>
-          <div class="field-hint">The HSE Diabetic Eye Screening (DES) programme sends a letter or text for your eye check. This is separate from a regular optician visit.</div>
+          <div class="field-hint">The HSE DES programme sends a letter or text for your eye check — separate from a routine optician visit.</div>
         </div>
-
         <div class="field-group">
           <label for="t2dm-medication-compliance">Are you taking your diabetes medication as prescribed? <span class="required">*</span></label>
           <select id="t2dm-medication-compliance" name="t2dm-medication-compliance">
@@ -429,7 +331,6 @@
             <option>I manage my diabetes with diet only (no medication)</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="t2dm-lifestyle-changes">Any changes to your diet or exercise since your last visit? <span class="optional">(optional)</span></label>
           <textarea id="t2dm-lifestyle-changes" name="t2dm-lifestyle-changes" placeholder="e.g. started walking 30 mins daily, changed diet, put on weight — or write 'No change'"></textarea>
@@ -439,7 +340,6 @@
       <!-- CARDIOVASCULAR DISEASE -->
       <div class="condition-section" id="cond-cvd">
         <div class="condition-section-title">💛 Cardiovascular Disease / Angina — Additional Questions</div>
-
         <div class="field-group">
           <label for="cvd-chest-pain">Have you had any chest pain or chest tightness since your last visit? <span class="required">*</span></label>
           <select id="cvd-chest-pain" name="cvd-chest-pain" onchange="toggleSubfieldSelect(this,'yes','cvd-chest-pain-detail-wrap')">
@@ -452,7 +352,6 @@
             <textarea id="cvd-chest-pain-detail" name="cvd-chest-pain-detail" placeholder="e.g. comes on walking uphill, lasts 2–3 minutes, relieved by rest"></textarea>
           </div>
         </div>
-
         <div class="field-group">
           <label for="cvd-sob">Shortness of breath on exertion (walking, climbing stairs)? <span class="required">*</span></label>
           <select id="cvd-sob" name="cvd-sob">
@@ -463,7 +362,6 @@
             <option>Yes — better than before</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="cvd-palpitations">Any palpitations or awareness of your heartbeat? <span class="required">*</span></label>
           <select id="cvd-palpitations" name="cvd-palpitations">
@@ -473,7 +371,6 @@
             <option>Yes — frequent</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="cvd-ankle-swelling">Any swelling in your ankles or legs? <span class="required">*</span></label>
           <select id="cvd-ankle-swelling" name="cvd-ankle-swelling">
@@ -483,7 +380,6 @@
             <option>Yes — significant</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="cvd-smoking">Smoking status <span class="required">*</span></label>
           <select id="cvd-smoking" name="cvd-smoking" onchange="toggleSubfieldSelect(this,'currently','cvd-cigs-wrap')">
@@ -497,7 +393,6 @@
             <input type="text" id="cvd-cigarettes-per-day" name="cvd-cigarettes-per-day" placeholder="e.g. 10 per day"/>
           </div>
         </div>
-
         <div class="field-group">
           <label for="cvd-medication-compliance">Are you taking all your heart medications as prescribed? <span class="required">*</span></label>
           <select id="cvd-medication-compliance" name="cvd-medication-compliance">
@@ -513,7 +408,6 @@
       <!-- HEART FAILURE -->
       <div class="condition-section" id="cond-hf">
         <div class="condition-section-title">💙 Heart Failure — Additional Questions</div>
-
         <div class="field-group">
           <label for="hf-breathlessness">Breathlessness — compared to your last visit? <span class="required">*</span></label>
           <select id="hf-breathlessness" name="hf-breathlessness">
@@ -525,7 +419,6 @@
             <option>Much worse</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="hf-swelling">Ankle / leg swelling? <span class="required">*</span></label>
           <select id="hf-swelling" name="hf-swelling">
@@ -536,7 +429,6 @@
             <option>Swelling is better than last visit</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="hf-weight-gain">Have you noticed any recent weight gain (possible fluid retention)? <span class="required">*</span></label>
           <select id="hf-weight-gain" name="hf-weight-gain" onchange="toggleSubfieldSelect(this,'yes','hf-weight-amount-wrap')">
@@ -551,7 +443,6 @@
           </div>
           <div class="field-hint">Gaining more than 2 kg in a week can be a sign of fluid build-up — let a member of staff know today if this has happened.</div>
         </div>
-
         <div class="field-group">
           <label for="hf-stairs">Exercise tolerance — can you climb a flight of stairs? <span class="required">*</span></label>
           <select id="hf-stairs" name="hf-stairs">
@@ -562,7 +453,6 @@
             <option>I cannot manage stairs at all</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="hf-medication-compliance">Are you taking all your medications as prescribed? <span class="required">*</span></label>
           <select id="hf-medication-compliance" name="hf-medication-compliance">
@@ -578,7 +468,6 @@
       <!-- ATRIAL FIBRILLATION -->
       <div class="condition-section" id="cond-af">
         <div class="condition-section-title">💓 Atrial Fibrillation (AF) — Additional Questions</div>
-
         <div class="field-group">
           <label for="af-palpitations">Are you currently experiencing palpitations or an irregular heartbeat? <span class="required">*</span></label>
           <select id="af-palpitations" name="af-palpitations">
@@ -589,7 +478,6 @@
             <option>Yes — almost constantly</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="af-dizziness">Any dizziness or lightheadedness? <span class="required">*</span></label>
           <select id="af-dizziness" name="af-dizziness">
@@ -599,7 +487,6 @@
             <option>Yes — frequent</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="af-sob">Shortness of breath? <span class="required">*</span></label>
           <select id="af-sob" name="af-sob">
@@ -609,7 +496,6 @@
             <option>Yes — at rest</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="af-anticoagulant">Are you on a blood-thinning medication (e.g. Eliquis / Apixaban, Xarelto / Rivaroxaban, Pradaxa / Dabigatran, Warfarin)? <span class="required">*</span></label>
           <select id="af-anticoagulant" name="af-anticoagulant" onchange="toggleSubfieldSelect(this,'yes','af-anticoag-wrap')">
@@ -630,7 +516,7 @@
               </select>
               <div class="field-hint">Missing doses of blood-thinning medication significantly increases the risk of stroke. Please mention this to your nurse or doctor today.</div>
             </div>
-            <div class="field-group">
+            <div class="field-group" style="margin-bottom:0">
               <label for="af-inr-date">If on Warfarin — when was your last INR (blood clotting) check? <span class="optional">(if applicable)</span></label>
               <input type="date" id="af-inr-date" name="af-inr-date"/>
             </div>
@@ -641,19 +527,17 @@
       <!-- COPD -->
       <div class="condition-section" id="cond-copd">
         <div class="condition-section-title">🫁 COPD — Additional Questions</div>
-
         <div class="field-group">
           <label for="copd-breathlessness-level">How breathless are you generally day-to-day? <span class="required">*</span></label>
           <select id="copd-breathlessness-level" name="copd-breathlessness-level">
             <option value="" disabled selected>Select</option>
             <option>I only get breathless with very hard exercise</option>
             <option>I get short of breath walking uphill or hurrying on the flat</option>
-            <option>I walk slower than most people on the flat, or stop for breath when walking at my own pace</option>
+            <option>I walk slower than most people on the flat, or stop for breath at my own pace</option>
             <option>I need to stop for breath every few minutes on the flat</option>
             <option>I am too breathless to leave the house</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="copd-cough">How would you describe your cough? <span class="required">*</span></label>
           <select id="copd-cough" name="copd-cough">
@@ -665,18 +549,13 @@
             <option>Persistent cough with blood-stained phlegm (please mention to staff today)</option>
           </select>
         </div>
-
         <div class="field-group">
-          <label for="copd-exacerbations">How many chest infections or COPD flare-ups have you had since your last visit? <span class="required">*</span></label>
+          <label for="copd-exacerbations">How many chest infections or COPD flare-ups since your last visit? <span class="required">*</span></label>
           <select id="copd-exacerbations" name="copd-exacerbations">
             <option value="" disabled selected>Select</option>
-            <option>None</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3 or more</option>
+            <option>None</option><option>1</option><option>2</option><option>3 or more</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="copd-rescue-inhaler">How often are you using your blue rescue inhaler (e.g. Ventolin / Salbutamol)? <span class="required">*</span></label>
           <select id="copd-rescue-inhaler" name="copd-rescue-inhaler">
@@ -689,7 +568,6 @@
             <option>I don't have / use a rescue inhaler</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="copd-smoking">Smoking status <span class="required">*</span></label>
           <select id="copd-smoking" name="copd-smoking">
@@ -705,66 +583,45 @@
       <!-- ASTHMA -->
       <div class="condition-section" id="cond-asthma">
         <div class="condition-section-title">🌬️ Asthma — Additional Questions</div>
-
-        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;font-weight:300">The following questions are based on the standard Asthma Control Test (ACT). They help your nurse and doctor check how well controlled your asthma has been.</p>
-
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;font-weight:300">The following questions are based on the standard Asthma Control Test (ACT).</p>
         <div class="field-group">
           <label for="asthma-symptom-freq">Over the past month, how often did you have asthma symptoms (wheeze, cough, shortness of breath, chest tightness)? <span class="required">*</span></label>
           <select id="asthma-symptom-freq" name="asthma-symptom-freq">
             <option value="" disabled selected>Select</option>
-            <option>Not at all</option>
-            <option>1 or 2 times</option>
-            <option>3–6 times</option>
-            <option>More than once a week</option>
-            <option>Every day</option>
+            <option>Not at all</option><option>1 or 2 times</option><option>3–6 times</option>
+            <option>More than once a week</option><option>Every day</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="asthma-night-symptoms">Over the past month, how often were you woken at night by asthma symptoms? <span class="required">*</span></label>
           <select id="asthma-night-symptoms" name="asthma-night-symptoms">
             <option value="" disabled selected>Select</option>
-            <option>Never</option>
-            <option>Once or twice</option>
-            <option>Once a week</option>
-            <option>Several nights a week</option>
-            <option>Every night</option>
+            <option>Never</option><option>Once or twice</option><option>Once a week</option>
+            <option>Several nights a week</option><option>Every night</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="asthma-rescue-freq">How many times per week did you use your blue rescue inhaler (e.g. Ventolin)? <span class="required">*</span></label>
           <select id="asthma-rescue-freq" name="asthma-rescue-freq">
             <option value="" disabled selected>Select</option>
-            <option>Not at all</option>
-            <option>1–2 times per week</option>
-            <option>3–6 times per week</option>
-            <option>Once a day</option>
-            <option>More than once a day</option>
+            <option>Not at all</option><option>1–2 times per week</option><option>3–6 times per week</option>
+            <option>Once a day</option><option>More than once a day</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="asthma-activity-limit">Did asthma limit your daily activities (work, exercise, housework)? <span class="required">*</span></label>
           <select id="asthma-activity-limit" name="asthma-activity-limit">
             <option value="" disabled selected>Select</option>
-            <option>Not at all</option>
-            <option>A little</option>
-            <option>Moderately</option>
-            <option>Quite a lot</option>
-            <option>A lot — asthma is significantly limiting my life</option>
+            <option>Not at all</option><option>A little</option><option>Moderately</option>
+            <option>Quite a lot</option><option>A lot — asthma is significantly limiting my life</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="asthma-preventer-compliance">Are you using your preventer inhaler (brown / purple / red / orange) as prescribed? <span class="required">*</span></label>
           <select id="asthma-preventer-compliance" name="asthma-preventer-compliance">
             <option value="" disabled selected>Select</option>
-            <option>Yes — every day as prescribed</option>
-            <option>Most days</option>
-            <option>Occasionally</option>
-            <option>No — I only use my blue reliever inhaler</option>
-            <option>I have no preventer inhaler</option>
+            <option>Yes — every day as prescribed</option><option>Most days</option><option>Occasionally</option>
+            <option>No — I only use my blue reliever inhaler</option><option>I have no preventer inhaler</option>
           </select>
         </div>
       </div>
@@ -772,7 +629,6 @@
       <!-- STROKE / TIA -->
       <div class="condition-section" id="cond-stroke">
         <div class="condition-section-title">🧠 Stroke / TIA — Additional Questions</div>
-
         <div class="field-group">
           <label for="stroke-new-symptoms">Have you noticed any new or worsening neurological symptoms since your last visit? <span class="required">*</span></label>
           <select id="stroke-new-symptoms" name="stroke-new-symptoms" onchange="toggleSubfieldSelect(this,'yes','stroke-symptoms-detail-wrap')">
@@ -786,7 +642,6 @@
           </div>
           <div class="field-hint">Neurological symptoms include: weakness, numbness or tingling on one side, slurred speech, vision changes, sudden confusion, or difficulty finding words.</div>
         </div>
-
         <div class="field-group">
           <label for="stroke-falls">Any falls or balance problems since your last visit? <span class="required">*</span></label>
           <select id="stroke-falls" name="stroke-falls">
@@ -797,7 +652,6 @@
             <option>No falls but I have noticed balance problems</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="stroke-memory">Any concerns about your memory or concentration? <span class="required">*</span></label>
           <select id="stroke-memory" name="stroke-memory">
@@ -807,7 +661,6 @@
             <option>Family members have raised concerns</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="stroke-medication-compliance">Are you taking all your medications as prescribed (especially aspirin or blood thinners)? <span class="required">*</span></label>
           <select id="stroke-medication-compliance" name="stroke-medication-compliance">
@@ -818,7 +671,6 @@
             <option>No — I have stopped one or more</option>
           </select>
         </div>
-
         <div class="field-group">
           <label>Do you check your blood pressure at home?</label>
           <div class="radio-group">
@@ -835,7 +687,6 @@
       <!-- PREVENTION PROGRAMME -->
       <div class="condition-section" id="cond-pp">
         <div class="condition-section-title">🛡️ Prevention Programme (PP) — Additional Questions</div>
-
         <div class="field-group">
           <label for="pp-smoking">Smoking status <span class="required">*</span></label>
           <select id="pp-smoking" name="pp-smoking" onchange="toggleSubfieldSelect(this,'currently','pp-cigs-wrap')">
@@ -849,7 +700,6 @@
             <input type="text" id="pp-cigarettes-per-day" name="pp-cigarettes-per-day" placeholder="e.g. 10 per day"/>
           </div>
         </div>
-
         <div class="field-group">
           <label for="pp-alcohol">Approximate alcohol intake (units per week)</label>
           <select id="pp-alcohol" name="pp-alcohol">
@@ -861,18 +711,13 @@
             <option>22+ units</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="pp-exercise-days">How many days per week do you do physical activity or exercise (at least 30 minutes)? <span class="required">*</span></label>
           <select id="pp-exercise-days" name="pp-exercise-days">
             <option value="" disabled selected>Select</option>
-            <option>0 days</option>
-            <option>1–2 days</option>
-            <option>3–4 days</option>
-            <option>5 or more days</option>
+            <option>0 days</option><option>1–2 days</option><option>3–4 days</option><option>5 or more days</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="pp-diet-concerns">Any concerns about your diet you would like to discuss? <span class="optional">(optional)</span></label>
           <select id="pp-diet-concerns" name="pp-diet-concerns">
@@ -883,7 +728,6 @@
             <option>Yes — I am struggling with my weight</option>
           </select>
         </div>
-
         <div class="field-group">
           <label>Do you check your blood pressure at home?</label>
           <div class="radio-group">
@@ -895,7 +739,6 @@
             <input type="text" id="pp-home-bp" name="pp-home-bp" placeholder="e.g. 128/76 mmHg"/>
           </div>
         </div>
-
         <div class="field-group">
           <label for="pp-family-history-changes">Any new family history of heart disease, stroke, or diabetes since your last visit? <span class="required">*</span></label>
           <select id="pp-family-history-changes" name="pp-family-history-changes">
@@ -907,7 +750,6 @@
             <option>Yes — other</option>
           </select>
         </div>
-
         <div class="field-group">
           <label for="pp-concerns">Any other concerns you would like to discuss at your appointment? <span class="optional">(optional)</span></label>
           <textarea id="pp-concerns" name="pp-concerns" placeholder="Anything else you would like your nurse or doctor to know"></textarea>
@@ -921,8 +763,8 @@
       </div>
 
       <div class="field-group">
-        <label for="health-changes">Has your overall health changed since your last visit? <span class="required">*</span></label>
-        <select id="health-changes-select" onchange="toggleSubfieldSelect(this,'yes','health-changes-detail-wrap')">
+        <label>Has your overall health changed since your last visit? <span class="required">*</span></label>
+        <select onchange="toggleSubfieldSelect(this,'yes','health-changes-detail-wrap')">
           <option value="" disabled selected>Select</option>
           <option value="no">No significant changes</option>
           <option value="yes">Yes — I have noticed changes</option>
@@ -934,7 +776,7 @@
       </div>
 
       <div class="field-group">
-        <label for="hospital-admissions">Any hospital admissions or A&amp;E visits since your last appointment? <span class="required">*</span></label>
+        <label>Any hospital admissions or A&amp;E visits since your last appointment? <span class="required">*</span></label>
         <select onchange="toggleSubfieldSelect(this,'yes','hospital-detail-wrap')">
           <option value="" disabled selected>Select</option>
           <option value="no">No</option>
@@ -947,7 +789,7 @@
       </div>
 
       <div class="field-group">
-        <label for="new-specialists">Any new diagnoses or new hospital specialists since your last visit? <span class="required">*</span></label>
+        <label>Any new diagnoses or new hospital specialists since your last visit? <span class="required">*</span></label>
         <select onchange="toggleSubfieldSelect(this,'yes','specialists-detail-wrap')">
           <option value="" disabled selected>Select</option>
           <option value="no">No</option>
@@ -979,9 +821,75 @@
         <textarea id="drug-allergies" name="drug-allergies" placeholder="e.g. Penicillin — rash. Write 'NKDA' if none known."></textarea>
       </div>
 
-      <!-- ══ SECTION 5: What Happens on the Day ══ -->
+      <!-- ══ SECTION 5: ABPM Consent ══ -->
       <div class="section-header">
         <div class="section-number">5</div>
+        <div class="section-header-text"><h2>24-Hour Blood Pressure Monitor (ABPM)</h2><p>Consent and device responsibility</p></div>
+      </div>
+
+      <div class="info-box">
+        <strong>What is an ABPM?</strong> The ABPM is a small device worn on your upper arm for 24 hours. It automatically checks your blood pressure every 30 minutes during the day and every hour at night, giving a much more accurate picture than a single surgery reading.<br><br>
+        <strong>We recommend an ABPM for patients aged 50 or over</strong> with any of the following: hypertension, cardiovascular disease, type 2 diabetes, heart failure, atrial fibrillation, or a history of stroke or TIA. If you are unsure whether this applies to you, your nurse will advise you at your appointment.
+      </div>
+
+      <div class="field-group" id="fg-abpm-consent">
+        <label for="abpm-consent">ABPM Consent <span class="required">*</span></label>
+        <select id="abpm-consent" name="abpm-consent" onchange="onAbpmChange()">
+          <option value="" disabled selected>— Select —</option>
+          <option value="yes">Yes — I consent to wearing the ABPM if my nurse recommends it</option>
+          <option value="discuss">I would like to discuss this further at my appointment</option>
+          <option value="no">No — I decline the ABPM at this time</option>
+        </select>
+        <div class="field-error">Please make a selection regarding the ABPM.</div>
+      </div>
+
+      <!-- ABPM: consented — show care instructions and responsibility agreement -->
+      <div id="abpm-yes-section" style="display:none">
+        <div class="consent-block" style="margin-bottom:18px">
+          <div class="consent-block-header"><h3>ABPM Care Instructions — Please Read</h3></div>
+          <div class="consent-item" style="flex-direction:column;gap:0">
+            <ul style="font-size:0.83rem;color:var(--text);line-height:1.85;font-weight:300;padding-left:18px;list-style:disc;margin:0;width:100%">
+              <li><strong>Keep dry</strong> — no baths, showers, or swimming while wearing the monitor. A sponge bath is fine.</li>
+              <li><strong>During readings</strong> — the cuff inflates every 30 minutes during the day and every hour overnight. Keep your arm still and relaxed at your side until each reading is complete.</li>
+              <li><strong>Clothing</strong> — wear loose-fitting clothing that allows the cuff to sit freely on your upper arm for the full 24 hours.</li>
+              <li><strong>Exercise</strong> — avoid heavy or vigorous exercise during the monitoring period.</li>
+              <li><strong>Sleep</strong> — the monitor will take readings overnight. This is normal and expected.</li>
+              <li><strong>Discomfort</strong> — you may adjust the cuff slightly if it becomes uncomfortable. Do not remove the device unless you are in severe discomfort. Contact the practice if needed: <strong>(01) 845 2500</strong>.</li>
+              <li><strong>Return</strong> — return the device to Kinsealy Medical Centre the following morning, or at the time agreed with your nurse. Failure to return the device will result in a replacement charge.</li>
+              <li><strong>Damage or loss</strong> — you are responsible for the device while it is in your care. Any damage or loss will be assessed by the practice and a replacement charge may apply.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="resp-box">
+          <p class="resp-box-title">📋 Device Responsibility Agreement</p>
+          <p class="resp-box-desc">By entering your full name below and ticking the box, you confirm you have read and understood the care instructions above and that you accept responsibility for the ABPM device for the duration of the monitoring period. Any damage, loss, or failure to return the device may result in a replacement charge being applied to your account.</p>
+
+          <div class="field-group" id="fg-abpm-responsibility-name" style="margin-bottom:14px">
+            <label for="abpm-responsibility-name" style="color:var(--warn-text)">Full Name — Electronic Signature <span class="required">*</span></label>
+            <input type="text" id="abpm-responsibility-name" name="abpm-responsibility-name" placeholder="Type your full name to sign this agreement"/>
+            <div class="field-hint">Entering your full name serves as your electronic signature for this responsibility agreement.</div>
+            <div class="field-error">Please enter your full name to complete the responsibility agreement.</div>
+          </div>
+
+          <div class="check-item" style="border-color:var(--warn-border);background:#fffbf0">
+            <input type="checkbox" id="abpm-responsibility-confirm" name="abpm-responsibility-confirm" value="confirmed"/>
+            <label for="abpm-responsibility-confirm" style="color:var(--warn-text);font-size:0.84rem">I confirm I have read the ABPM care instructions above and I accept full responsibility for the device while it is in my care. I understand that damage, loss, or failure to return the device may result in a replacement charge.</label>
+          </div>
+          <input type="hidden" name="abpm-signed-date" id="abpmSignedDate"/>
+        </div>
+      </div>
+
+      <!-- ABPM: discuss / declined -->
+      <div id="abpm-other-section" style="display:none">
+        <div class="info-box">
+          That is absolutely fine. You can discuss the ABPM with your nurse at your appointment — they will be happy to answer any questions you have before you decide.
+        </div>
+      </div>
+
+      <!-- ══ SECTION 6: What Happens on the Day ══ -->
+      <div class="section-header">
+        <div class="section-number">6</div>
         <div class="section-header-text"><h2>What to Expect on the Day</h2><p>Your appointment at a glance</p></div>
       </div>
 
@@ -989,7 +897,7 @@
         <div class="day-panel-header">🏥 Your CDM / PP Appointment</div>
         <div class="day-step">
           <div class="day-step-num">1</div>
-          <div class="day-step-text"><strong>Arrive fasting</strong> — no food or drink (except water) from midnight the night before. Continue all medications as normal unless you take an ACE inhibitor or ARB and have an afternoon appointment (see the orange box above).</div>
+          <div class="day-step-text"><strong>Arrive fasting</strong> — no food or drink (except water) from midnight the night before. Continue all regular medications as normal.</div>
         </div>
         <div class="day-step">
           <div class="day-step-num">2</div>
@@ -997,7 +905,7 @@
         </div>
         <div class="day-step">
           <div class="day-step-num">3</div>
-          <div class="day-step-text"><strong>Nurse / Phlebotomist</strong> — will take blood samples, check your blood pressure, weight, and height, and place a 24-hour blood pressure monitor (ABPM) if required. This may take 20–30 minutes.</div>
+          <div class="day-step-text"><strong>Nurse / Phlebotomist</strong> — will take blood samples, check your blood pressure, weight, and height, and fit a 24-hour blood pressure monitor (ABPM) if required. This may take 20–30 minutes.</div>
         </div>
         <div class="day-step">
           <div class="day-step-num">4</div>
@@ -1009,21 +917,29 @@
         </div>
         <div class="day-step">
           <div class="day-step-num">6</div>
-          <div class="day-step-text"><strong>Bring with you</strong> — medication list or tablets, glasses if needed, and your ABPM monitor if you already have one fitted.</div>
+          <div class="day-step-text"><strong>Bring with you</strong> — medication list or tablets, and your ABPM monitor if you already have one fitted from a previous visit.</div>
         </div>
       </div>
 
-      <!-- ══ SECTION 6: Confirmation ══ -->
+      <!-- ══ SECTION 7: Data Consent & Confirmation ══ -->
       <div class="section-header">
-        <div class="section-number">6</div>
-        <div class="section-header-text"><h2>Confirmation</h2><p>Please confirm before submitting</p></div>
+        <div class="section-number">7</div>
+        <div class="section-header-text"><h2>Data Consent &amp; Confirmation</h2><p>Please read and confirm before submitting</p></div>
+      </div>
+
+      <div class="consent-block">
+        <div class="consent-block-header"><h3>Data Protection</h3></div>
+        <div class="consent-item">
+          <input type="checkbox" id="data-consent" name="data-consent" value="confirmed"/>
+          <label for="data-consent">I consent to the information in this form being stored securely as part of my medical record at Kinsealy Medical Centre and used for my clinical care. I understand that relevant information may be shared with other healthcare providers directly involved in my care, including HSE services and hospital specialists, in line with applicable data protection legislation.</label>
+        </div>
       </div>
 
       <div class="consent-block">
         <div class="consent-block-header"><h3>Patient Confirmation</h3></div>
         <div class="consent-item">
           <input type="checkbox" id="confirm-prep" name="confirm-prep" value="confirmed"/>
-          <label for="confirm-prep">I have read the preparation instructions above. I understand I must <strong>fast from midnight</strong> before my appointment, and I am aware of the <strong>ACE inhibitor / ARB morning appointment rule</strong>. The information I have provided is accurate to the best of my knowledge.</label>
+          <label for="confirm-prep">I confirm that I must <strong>fast from midnight</strong> before my appointment (water only), and that the information I have provided in this form is accurate to the best of my knowledge.</label>
         </div>
       </div>
 
@@ -1031,52 +947,59 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         Submit Health Update
       </button>
+
+      <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:16px;font-weight:300">
+        Submissions are sent to <a href="mailto:kinsealymedicalcentre@protonmail.com" style="color:var(--teal)">kinsealymedicalcentre@protonmail.com</a>
+      </p>
     </form>
   </div>
 </div>
 
 <script>
-  // Auto-populate submission date (ISO format for secretary records)
+  // Auto-populate submission date
   const now = new Date();
   document.getElementById('submissionDate').value = now.toLocaleString('en-IE', {
     day:'2-digit', month:'2-digit', year:'numeric',
     hour:'2-digit', minute:'2-digit', timeZone:'Europe/Dublin'
   });
 
-  // ── Condition dropdown ──────────────────────────────────────────
-  function onConditionChange() {
-    const val = document.getElementById('condition').value;
-    document.querySelectorAll('.condition-section').forEach(el => {
-      el.style.display = 'none';
-    });
-    if (val) {
-      const section = document.getElementById('cond-' + val);
-      if (section) {
-        section.style.display = 'block';
-        section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-    }
-    // Clear condition error
+  // ── Multi-condition checkboxes ─────────────────────────────────
+  function onConditionsChange(key, checked) {
+    const section = document.getElementById('cond-' + key);
+    if (section) section.style.display = checked ? 'block' : 'none';
     document.getElementById('fg-condition').classList.remove('has-error');
   }
 
-  // ── Show/hide subfields ─────────────────────────────────────────
+  // ── ABPM show/hide ────────────────────────────────────────────
+  function onAbpmChange() {
+    const val = document.getElementById('abpm-consent').value;
+    document.getElementById('abpm-yes-section').style.display   = val === 'yes'     ? 'block' : 'none';
+    document.getElementById('abpm-other-section').style.display = val !== 'yes' && val ? 'block' : 'none';
+    if (val === 'yes') {
+      document.getElementById('abpmSignedDate').value = now.toLocaleDateString('en-IE', {
+        day:'numeric', month:'long', year:'numeric'
+      });
+    }
+    document.getElementById('fg-abpm-consent').classList.remove('has-error');
+  }
+
+  // ── Subfield toggle helpers ───────────────────────────────────
   function toggleSubfield(id, show) {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('visible', show);
   }
-
   function toggleSubfieldSelect(selectEl, triggerValue, subId) {
-    const show = selectEl.value === triggerValue;
-    toggleSubfield(subId, show);
+    toggleSubfield(subId, selectEl.value === triggerValue);
   }
 
-  // ── Validation ──────────────────────────────────────────────────
+  // ── Validation helpers ────────────────────────────────────────
   function setError(id, show) {
     const fg = document.getElementById('fg-' + id);
     if (fg) fg.classList.toggle('has-error', show);
   }
+  function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
+  // ── Form submit ───────────────────────────────────────────────
   const form = document.getElementById('cdmForm');
 
   form.addEventListener('submit', async function(e) {
@@ -1084,63 +1007,104 @@
     let valid = true;
 
     // Required text fields
-    ['patient-name', 'dob', 'pps', 'phone', 'gp'].forEach(f => {
+    ['patient-name','dob','pps','phone','gp'].forEach(f => {
       const el = document.getElementById(f);
       const empty = !el || !el.value.trim();
       setError(f, empty);
       if (empty) valid = false;
     });
 
-    // Condition
-    const condEl = document.getElementById('condition');
-    if (!condEl.value) {
+    // Email
+    const emailEl = document.getElementById('email');
+    const emailBad = !emailEl.value.trim() || !validateEmail(emailEl.value);
+    setError('email', emailBad);
+    if (emailBad) valid = false;
+
+    // At least one condition ticked
+    const checkedConds = document.querySelectorAll('input[name="condition"]:checked');
+    if (checkedConds.length === 0) {
       document.getElementById('fg-condition').classList.add('has-error');
       valid = false;
     }
 
-    // Confirmation checkbox
+    // ABPM consent required
+    const abpmEl = document.getElementById('abpm-consent');
+    if (!abpmEl.value) {
+      document.getElementById('fg-abpm-consent').classList.add('has-error');
+      valid = false;
+    }
+
+    // If ABPM consented: require name + checkbox
+    if (abpmEl.value === 'yes') {
+      const sigName = document.getElementById('abpm-responsibility-name');
+      if (!sigName.value.trim()) {
+        document.getElementById('fg-abpm-responsibility-name').classList.add('has-error');
+        valid = false;
+      }
+      if (!document.getElementById('abpm-responsibility-confirm').checked) {
+        alert('Please tick the ABPM device responsibility agreement box before submitting.');
+        valid = false;
+      }
+    }
+
+    // Data consent
+    if (!document.getElementById('data-consent').checked) {
+      alert('Please tick the data consent box before submitting.');
+      valid = false;
+    }
+
+    // Prep confirmation
     if (!document.getElementById('confirm-prep').checked) {
-      alert('Please tick the confirmation box at the bottom before submitting.');
+      alert('Please tick the patient confirmation box before submitting.');
       valid = false;
     }
 
     if (!valid) {
-      // Scroll to first error
-      const firstError = document.querySelector('.has-error, .field-group.has-error');
-      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const firstError = document.querySelector('.has-error');
+      if (firstError) firstError.scrollIntoView({ behavior:'smooth', block:'center' });
       return;
     }
 
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
-    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg> Submitting…';
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg> Submitting…';
 
-    const data = new FormData(form);
+    // Build JSON payload
+    const fd = new FormData(form);
+    const payload = {};
+    fd.forEach((v, k) => {
+      if (payload[k]) {
+        payload[k] = Array.isArray(payload[k]) ? [...payload[k], v] : [payload[k], v];
+      } else {
+        payload[k] = v;
+      }
+    });
+    // Flatten multi-value condition array to string for email readability
+    if (Array.isArray(payload.condition)) payload.condition = payload.condition.join(', ');
 
     try {
-      const res = await fetch('/cdm-form.html', {
+      const res = await fetch('https://formsubmit.co/ajax/kinsealymedicalcentre@protonmail.com', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(data).toString()
+        headers: { 'Content-Type':'application/json', 'Accept':'application/json' },
+        body: JSON.stringify(payload)
       });
-      if (res.ok) {
+      const json = await res.json();
+      if (json.success) {
         document.getElementById('mainForm').style.display = 'none';
         document.getElementById('successScreen').style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top:0, behavior:'smooth' });
       } else {
-        alert('There was a problem submitting the form. Please try again or contact the practice on (01) 845 2500.');
-        btn.disabled = false;
-        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Submit Health Update';
+        throw new Error('Not OK');
       }
     } catch {
-      alert('Network error. Please check your connection and try again.');
+      alert('There was a problem submitting the form. Please try again or contact us at kinsealymedicalcentre@protonmail.com or call (01) 845 2500.');
       btn.disabled = false;
       btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Submit Health Update';
     }
   });
 
-  // Clear field errors on input
-  ['patient-name', 'dob', 'pps', 'phone', 'gp'].forEach(f => {
+  // Clear errors on input
+  ['patient-name','dob','pps','phone','gp','email'].forEach(f => {
     const el = document.getElementById(f);
     if (el) el.addEventListener('input', () => setError(f, false));
   });
