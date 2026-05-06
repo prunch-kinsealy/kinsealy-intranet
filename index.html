@@ -187,10 +187,19 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 #sidebar::-webkit-scrollbar{width:4px}
 #sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:2px}
 
+/* SEARCH BUTTON */
+#search-btn{background:var(--teal);color:#fff;border:none;border-radius:6px;padding:7px 12px;font-size:0.9rem;cursor:pointer;transition:background 0.15s;flex-shrink:0}
+#search-btn:hover{background:var(--teal-light)}
+
+/* SEARCH RESULTS */
+.search-result-card{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:14px 18px;margin-bottom:10px;cursor:pointer;transition:background 0.15s,border-color 0.15s}
+.search-result-card:hover{background:var(--teal-pale);border-color:var(--teal)}
+.search-result-title{font-size:0.92rem;font-weight:600;color:var(--navy);margin-bottom:4px}
+.search-result-section{font-size:0.75rem;color:var(--grey-400)}
+.search-no-results{color:var(--grey-400);font-size:0.88rem;padding:24px 0}
+
 /* SEARCH HIGHLIGHT */
 .search-hidden{display:none!important}
-/* Show all sections while a search is active */
-body.searching .section{display:block;animation:none}
 
 /* ── MOBILE HAMBURGER ── */
 #hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px;z-index:200}
@@ -283,7 +292,8 @@ body.searching .section{display:block;animation:none}
       <div class="topbar-title" id="topbarTitle">Home &amp; Noticeboard</div>
     </div>
     <div class="topbar-right">
-      <input type="text" id="search" placeholder="🔍  Search hub…">
+      <input type="text" id="search" placeholder="Search hub…" autocomplete="off">
+      <button id="search-btn" title="Search">🔍</button>
       <div class="avatar" title="Dr O&#39;Reilly">FO</div>
     </div>
   </div>
@@ -2295,6 +2305,15 @@ Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyT
   </div>
 </div>
 
+<!-- SEARCH RESULTS -->
+<div class="section" id="search-results">
+  <div class="page-header">
+    <h2>Search Results</h2>
+    <p id="search-results-summary"></p>
+  </div>
+  <div id="search-results-list"></div>
+</div>
+
   </div><!-- /content -->
 </div><!-- /main -->
 
@@ -2309,7 +2328,8 @@ const titles = {
   'practice-management':'Practice Management','front-of-house':'Front of House',
   'clinical-pathways':'Clinical Pathways','text-templates':'Text Templates',
   'useful-forms':'Useful Forms','quick-links':'Quick Links',
-  'social-media':'Social Media','maintenance':'Maintenance','misc':'Miscellaneous'
+  'social-media':'Social Media','maintenance':'Maintenance','misc':'Miscellaneous',
+  'search-results':'Search Results'
 };
 
 // NAVIGATION
@@ -2338,9 +2358,13 @@ function switchSection(target) {
   closeSidebar();
 }
 
+let lastSection = 'home';
+
 navLinks.forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
+    lastSection = link.dataset.section;
+    document.getElementById('search').value = '';
     switchSection(link.dataset.section);
   });
 });
@@ -2423,19 +2447,68 @@ function loadAnnouncements() {
 
 loadAnnouncements();
 
-// SEARCH — searches across all sections
-document.getElementById('search').addEventListener('input', function() {
-  const q = this.value.toLowerCase().trim();
-  if(!q) {
-    document.querySelectorAll('.sop-card,.form-card,.notice-item,.ql-btn').forEach(el => el.classList.remove('search-hidden'));
-    document.body.classList.remove('searching');
+// SEARCH
+function runSearch() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  if (!q) {
+    switchSection(lastSection);
     return;
   }
-  document.body.classList.add('searching');
+
+  const results = [];
   document.querySelectorAll('.sop-card,.form-card,.notice-item,.ql-btn').forEach(el => {
-    const text = el.textContent.toLowerCase();
-    el.classList.toggle('search-hidden', !text.includes(q));
+    if (!el.textContent.toLowerCase().includes(q)) return;
+    const parentSection = el.closest('.section');
+    if (!parentSection || parentSection.id === 'search-results') return;
+    const sectionId = parentSection.id;
+    const sectionTitle = titles[sectionId] || sectionId;
+    const h3 = el.querySelector('h3');
+    const h4 = el.querySelector('h4');
+    const title = h3 ? h3.textContent : h4 ? h4.textContent : el.textContent.trim().slice(0, 80);
+    results.push({ sectionId, sectionTitle, title, el });
   });
+
+  document.getElementById('search-results-summary').textContent =
+    results.length
+      ? `${results.length} result${results.length === 1 ? '' : 's'} for "${document.getElementById('search').value.trim()}"`
+      : `No results found for "${document.getElementById('search').value.trim()}"`;
+
+  document.getElementById('search-results-list').innerHTML = results.length
+    ? results.map((r, i) => `
+        <div class="search-result-card" onclick="goToSearchResult(${i})">
+          <div class="search-result-title">${r.title}</div>
+          <div class="search-result-section">📁 ${r.sectionTitle}</div>
+        </div>`).join('')
+    : '<p class="search-no-results">Try a different keyword — search checks all sections including SOPs, forms, and quick links.</p>';
+
+  window._searchResults = results;
+  switchSection('search-results');
+}
+
+function goToSearchResult(idx) {
+  const r = window._searchResults[idx];
+  if (!r) return;
+  document.getElementById('search').value = '';
+  lastSection = r.sectionId;
+  switchSection(r.sectionId);
+  const el = r.el;
+  if (el.classList.contains('sop-card')) {
+    const body = el.querySelector('.sop-body');
+    const toggle = el.querySelector('.sop-toggle');
+    if (body && !body.classList.contains('open')) {
+      body.classList.add('open');
+      if (toggle) toggle.classList.add('open');
+    }
+  }
+  setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+}
+
+document.getElementById('search-btn').addEventListener('click', runSearch);
+document.getElementById('search').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') runSearch();
+});
+document.getElementById('search').addEventListener('input', function() {
+  if (!this.value.trim()) switchSection(lastSection);
 });
 </script>
 
