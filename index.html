@@ -1313,59 +1313,72 @@ with the existing intranet style.
   </div>
 
   <!-- APPOINTMENTS -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Appointments — Booking">
+  <div class="sop-card" data-updated="2026-05-07" data-section-name="Front of House" data-sop-name="Appointments — Booking">
     <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>📅</span><h3>Appointments — Booking &amp; Colour Coding</h3></div>
+      <div class="sop-header-left"><span>📅</span><h3>Appointments — Booking &amp; Triage</h3></div>
       <span class="sop-toggle open">▼</span>
     </div>
-    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🔄 Last updated: 07/05/2026</span></div>
     <div class="sop-body open">
 
-      <!-- BOOKING CHANNELS -->
-      <div class="section-label" style="margin-top:0">Booking Channels</div>
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
-        <strong>Preferred:</strong> Pippo (online). <strong>Also accepted:</strong> by phone.<br>
-        <strong>Q1 (all patients):</strong> "Have you had any cough, fever, shortness of breath, runny nose or sore throat in the last 7 days?" — document 'screened'. If yes → must bring negative antigen test and wear mask.
+      <!-- PURPOSE -->
+      <div class="info-box" style="margin-bottom:16px">
+        <strong>Purpose</strong><br>
+        To offer every patient the right appointment with the right clinician — and to protect appointment availability for those who genuinely need it. This means establishing the reason for every visit before booking, checking whether a structured pathway already exists, and redirecting appropriately where it does. Particular attention is required for GMS and DVC patients, where appointment demand is highest.
       </div>
 
-      <!-- Q2 DECISION TREE -->
-      <div class="section-label">Q2 — GMS / DVC / An Post: Reason for Visit</div>
-      <div class="info-box" style="margin-bottom:10px">"Can you briefly tell me the reason for the consultation?" — if declined, document 'declined'. <strong>The answer to Q2 should trigger one of three actions below.</strong></div>
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
-        <strong>→ Is it something we don't see?</strong> Redirect — see list below. Do not book.<br>
-        <strong>→ Is there a care pathway for it?</strong> Check pathway links below — send any pre-appointment form and ask pathway-specific questions before booking.<br>
-        <strong>→ Everything else:</strong> Standard booking. Check if CDM is due, results are in, or a form/letter is involved.
-      </div>
-
-      <!-- GMS/DVC WHAT'S COVERED -->
-      <div class="section-label">GMS / DVC — What's Covered</div>
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
-        ✅ Clinical consultation<br>
-        ✅ CDM / PP review<br>
-        ✅ Follow-up on results <em>we</em> ordered<br>
-        ✅ Letters or forms completed <em>during</em> a clinical visit<br>
-        ⚠️ <strong>Letter or form only (no clinical need)</strong> — advise there is a charge; book only if patient is agreeable<br>
-        ❌ <strong>Results from a hospital doctor</strong> — patient contacts the hospital team directly<br>
-        ❌ <strong>Repeat script with CDM overdue</strong> — issue 1-month script only, then book CDM review
-      </div>
-
-      <!-- DO NOT BOOK -->
+      <!-- STEP 1: RED FLAGS -->
+      <div class="section-label" style="margin-top:0">Step 1 — Red Flags: Redirect Before Booking</div>
       <div class="warn-box" style="margin-bottom:14px">
-        <strong>⛔ Do Not Book — Redirect Instead</strong><br><br>
-        🦷 <strong>Dental:</strong> Redirect to dentist.<br>
-        🩹 <strong>Dressings / wound reviews:</strong> PHN or Bon Secours wound care clinic — no referral needed. Suture/stitch <em>removal</em> still done here.<br>
-        🩸 <strong>Cuts, wounds, or anything needing sutures:</strong> A&amp;E or urgent care.<br>
-        🚨 <strong>Actively bleeding / serious injury:</strong> ED immediately — do not book, advise 999 if needed.<br>
-        🏥 <strong>Hospital results not ordered by us:</strong> Patient contacts the ordering hospital team.<br>
-        📄 <strong>Forms or results only (no consultation):</strong> See GMS/DVC coverage above — charge applies.
+        <strong>⚠️ If any of the following are reported, do not book — redirect immediately:</strong><br><br>
+        🚨 <strong>Chest pain</strong> → ED. Severe or persistent → call 999.<br>
+        🫁 <strong>Shortness of breath</strong> → ED. Severe → call 999.<br>
+        🩸 <strong>Active or significant bleeding / wound needing sutures</strong> → ED.<br>
+        🧠 <strong>Suspected stroke</strong> (face drooping, arm weakness, speech difficulty) → call 999 immediately.<br>
+        😰 <strong>Anaphylaxis / severe allergic reaction</strong> → call 999 immediately.<br>
+        🤕 <strong>Head injury with loss of consciousness</strong> → ED.<br>
+        🌡️ <strong>Child with high fever and rash</strong> → ED.<br>
+        🔪 <strong>Severe abdominal pain</strong> → ED.<br>
+        🆘 <strong>Mental health crisis / active self-harm</strong> → Pieta House 116 123. If immediate risk → ED.
       </div>
 
-      <!-- CARE PATHWAY LINKS -->
-      <div class="section-label">Care Pathway Check — Send Form Before Booking</div>
+      <!-- STEP 2: REASON FOR VISIT -->
+      <div class="section-label">Step 2 — Establish the Reason for the Visit</div>
+      <div class="info-box" style="margin-bottom:14px">
+        Always ask: <em>"Can you briefly tell me the reason for your visit today?"</em><br>
+        If the patient declines → document <strong>"Patient declined"</strong> and use your judgement.<br>
+        The reason for the visit should trigger one of the steps below before any booking is confirmed.
+      </div>
+
+      <!-- STEP 3: GMS -->
+      <div class="section-label">Step 3 — GMS / DVC Patients</div>
+      <div class="warn-box" style="margin-bottom:14px">
+        <strong>GMS patients account for the highest volume of appointment requests and require particular attention at the booking stage.</strong> The reason for the visit must be established before booking. If an alternative pathway — a form, a hospital query, a pharmacy — can resolve the issue without a GP appointment, offer that first.<br><br>
+        <strong>CDM check:</strong> Before booking any GMS patient into a routine slot, check whether a CDM review is due. If so, <strong>do not book a standard appointment</strong> — route them through the CDM programme pathway instead. A routine slot must not be used to conduct a CDM review.
+      </div>
+
+      <!-- STEP 4: HOSPITAL RESULTS -->
+      <div class="section-label">Step 4 — Hospital Results</div>
       <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
-        If the reason for booking matches a pathway below, check that section for pre-appointment forms to send and any specific booking instructions.<br><br>
+        <strong>Do not book an appointment for results issued by a hospital doctor.</strong> The patient must contact the hospital team directly — it is their result to communicate.<br><br>
+        If the patient cannot get through to the hospital: advise them to contact the hospital's <strong>PALS service</strong> (Patient Advocacy and Liaison Service) for assistance. Do not book a GP slot as a workaround.
+      </div>
+
+      <!-- STEP 5: FORM / LETTER -->
+      <div class="section-label">Step 5 — Form or Letter Requests</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
+        If the visit is primarily to complete a form or letter with no accompanying clinical need, gather as much information as possible and check whether another pathway can handle it. Where a charge applies, advise the patient before confirming the booking.<br><br>
+        ⚠️ <strong>Do not book a CDM or PP appointment until the patient has fully completed the CDM Pre-Appointment Form.</strong> Send the link first: <a href="cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a>
+      </div>
+
+      <!-- STEP 6: PATIENT JOURNEYS -->
+      <div class="section-label">Step 6 — Check Patient Journeys</div>
+      <div class="info-box" style="margin-bottom:10px">
+        Before confirming any booking, check the <strong>Patient Journeys</strong> section of this hub. Many conditions have a structured pathway with specific booking instructions, pre-appointment forms, or a different clinician route. If a journey exists for the patient's reason for visit, follow it — do not book into a standard slot.
+      </div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
         <a href="#" onclick="goToSOP('care-pathways','sop-contraception');return false;"><strong>💊 Contraception</strong></a> — age rules, booking codes, consent form<br>
-        <a href="#" onclick="goToSOP('cdm','sop-cdm');return false;"><strong>🔁 CDM / Chronic Disease</strong></a> — Calendly link, CDM form, morning bloods rule<br>
+        <a href="#" onclick="goToSOP('cdm','sop-cdm');return false;"><strong>🔁 CDM / Chronic Disease</strong></a> — CDM form, morning bloods rule<br>
         <a href="#" onclick="goToSOP('care-pathways','sop-antenatal');return false;"><strong>🤰 Antenatal</strong></a> — urine sample reminder, Combined Care form<br>
         <a href="#" onclick="goToSOP('care-pathways','sop-baby-vaccines');return false;"><strong>💉 Baby Vaccines</strong></a> — consent form, age rules<br>
         <a href="#" onclick="goToSOP('care-pathways','sop-smears');return false;"><strong>🔬 Cervical Smear</strong></a> — CervicalCheck registration, consent form<br>
@@ -1373,10 +1386,29 @@ with the existing intranet style.
         <a href="#" onclick="goToSOP('care-pathways','sop-asthma');return false;"><strong>🫁 Asthma</strong></a> — registration pathway
       </div>
 
-      <!-- COLOUR CODES + GDPR -->
+      <!-- DO NOT BOOK -->
+      <div class="section-label">Do Not Book — Redirect Instead</div>
+      <div class="warn-box" style="margin-bottom:14px">
+        🦷 <strong>Dental:</strong> Redirect to dentist.<br>
+        🩹 <strong>Dressings / wound reviews:</strong> PHN or Bon Secours wound care clinic — no referral needed. Suture/stitch <em>removal</em> still done here.<br>
+        🩸 <strong>Cuts or wounds needing sutures:</strong> ED or urgent care.<br>
+        🏥 <strong>Hospital results not ordered by us:</strong> Patient contacts the hospital team directly — see Step 4.<br>
+        💊 <strong>Prescription request only (no clinical need):</strong> Redirect to the prescription request process. Do not book a slot.<br>
+        📄 <strong>Form or letter only (no consultation):</strong> Charge applies — advise patient before booking.
+      </div>
+
+      <!-- BOOKING + COLOUR CODES -->
+      <div class="section-label">Booking Channels &amp; General Notes</div>
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
+        <strong>Preferred:</strong> Pippo (online). <strong>Also accepted:</strong> by phone.<br>
+        <strong>Screening question (all patients):</strong> "Have you had any cough, fever, shortness of breath, runny nose or sore throat in the last 7 days?" — document 'screened'. If yes → must bring negative antigen test and wear mask.<br><br>
+        <strong>If unsure about a booking decision:</strong> Check with the PM or senior secretary on duty before confirming.<br>
+        <strong>Before confirming:</strong> Check the doctor's calendar — CDM days and short sessions have restricted slots.
+      </div>
+
       <div class="section-label">Appointment Colour Codes</div>
       <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
-        🔵 <strong>Blue</strong> = Any patient, on the day only (opens at 9am on the day)<br>
+        🔵 <strong>Blue</strong> = Any patient, on the day only (opens at 9am)<br>
         ⬜ <strong>Grey</strong> = Any patient, any time
       </div>
       <div class="info-box"><strong>Booking on a patient's behalf:</strong> Always ask — is the patient aware? Do you have their consent? (GDPR)</div>
