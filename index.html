@@ -1357,13 +1357,15 @@ with the existing intranet style.
         <strong>CDM check:</strong> Before booking any GMS patient into a routine slot, check whether a CDM review is due. If so, <strong>do not book a standard appointment</strong> — route them through the CDM programme pathway instead. A routine slot must not be used to conduct a CDM review.
       </div>
 
-      <!-- STEP 4: HOSPITAL RESULTS + FORMS -->
-      <div class="section-label">Step 4 — Hospital Results &amp; Form Requests</div>
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
-        <strong>Do not book an appointment for results issued by a hospital doctor.</strong> The patient must contact the hospital team directly — it is their result to communicate.<br><br>
-        If the patient cannot get through to the hospital: advise them to contact the hospital's <strong>PALS service</strong> (Patient Advocacy and Liaison Service) for assistance. Do not book a GP slot as a workaround.<br><br>
-        If the visit is primarily to complete a form or letter with no accompanying clinical need, gather as much information as possible and check whether another pathway can handle it. Where a charge applies, advise the patient before confirming the booking.<br><br>
-        ⚠️ <strong>Do not book a CDM or PP appointment until the patient has fully completed the CDM Pre-Appointment Form.</strong> Send the link first: <a href="cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a>
+      <!-- STEP 4: DO NOT BOOK -->
+      <div class="section-label">Step 4 — Do Not Book: Redirect Instead</div>
+      <div class="warn-box" style="margin-bottom:14px">
+        🏥 <strong>Hospital results not ordered by us:</strong> Patient contacts the hospital team directly. If they cannot get through, advise them to contact the hospital's <strong>PALS service</strong>. Do not book a GP slot as a workaround.<br>
+        📄 <strong>Form or letter only (no clinical need):</strong> Gather as much information as possible and check whether another pathway can handle it. A charge applies — advise the patient before confirming.<br>
+        💊 <strong>Prescription request only (no clinical need):</strong> Redirect to the prescription request process. Do not book a slot.<br>
+        🦷 <strong>Dental:</strong> Redirect to dentist.<br>
+        🩹 <strong>Dressings / wound reviews:</strong> PHN or Bon Secours wound care clinic — no referral needed. Suture/stitch <em>removal</em> still done here.<br>
+        🩸 <strong>Cuts or wounds needing sutures:</strong> ED or urgent care.
       </div>
 
       <!-- STEP 5: PATIENT JOURNEYS -->
@@ -1373,21 +1375,10 @@ with the existing intranet style.
       </div>
       <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
         <a href="#" onclick="goToSOP('care-pathways','sop-contraception');return false;"><strong>💊 Contraception</strong></a> — age rules, booking codes, consent form<br>
-        <a href="#" onclick="goToSOP('cdm','sop-cdm');return false;"><strong>🔁 CDM / Chronic Disease</strong></a> — CDM form, morning bloods rule<br>
+        <a href="#" onclick="goToSOP('cdm','sop-cdm');return false;"><strong>🔁 CDM / Chronic Disease</strong></a> — CDM form required before booking: <a href="cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a><br>
         <a href="#" onclick="goToSOP('care-pathways','sop-antenatal');return false;"><strong>🤰 Antenatal</strong></a> — urine sample reminder, Combined Care form<br>
         <a href="#" onclick="goToSOP('care-pathways','sop-baby-vaccines');return false;"><strong>💉 Baby Vaccines</strong></a> — consent form, age rules<br>
-        <a href="#" onclick="goToSOP('care-pathways','sop-smears');return false;"><strong>🔬 Cervical Smear</strong></a> — CervicalCheck registration, consent form<br>
-      </div>
-
-      <!-- DO NOT BOOK -->
-      <div class="section-label">Do Not Book — Redirect Instead</div>
-      <div class="warn-box" style="margin-bottom:14px">
-        🦷 <strong>Dental:</strong> Redirect to dentist.<br>
-        🩹 <strong>Dressings / wound reviews:</strong> PHN or Bon Secours wound care clinic — no referral needed. Suture/stitch <em>removal</em> still done here.<br>
-        🩸 <strong>Cuts or wounds needing sutures:</strong> ED or urgent care.<br>
-        🏥 <strong>Hospital results not ordered by us:</strong> Patient contacts the hospital team directly — see Step 4.<br>
-        💊 <strong>Prescription request only (no clinical need):</strong> Redirect to the prescription request process. Do not book a slot.<br>
-        📄 <strong>Form or letter only (no consultation):</strong> Charge applies — advise patient before booking.
+        <a href="#" onclick="goToSOP('care-pathways','sop-smears');return false;"><strong>🔬 Cervical Smear</strong></a> — CervicalCheck registration, consent form
       </div>
 
       <!-- BOOKING + COLOUR CODES -->
