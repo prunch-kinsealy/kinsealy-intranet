@@ -130,7 +130,7 @@
   <div id="mainForm">
     <div class="form-badge">CDM Pre-Appointment</div>
     <h1 class="form-title">Chronic Disease Management<br>Pre-Appointment Health Update</h1>
-    <p class="form-intro">Please complete this form before your CDM or Prevention Programme appointment. It helps your nurse and doctor prepare and makes the most of your time at the surgery. If you need help completing the form, please contact us at <a href="mailto:kinsealymedicalcentre@protonmail.com" style="color:var(--teal)">kinsealymedicalcentre@protonmail.com</a> or call <a href="tel:018452500" style="color:var(--teal)">(01) 845 2500</a>.</p>
+    <p class="form-intro">Please complete this form before your CDM or Prevention Programme appointment. It helps your nurse and doctor prepare and makes the most of your time at the surgery. If you need help completing the form, please contact us at <a href="mailto:kinsealymedicalcentre@protonmail.com" style="color:var(--teal)">kinsealymedicalcentre@protonmail.com</a>.</p>
 
     <!-- Fasting reminder -->
     <div class="warning-box">
@@ -184,12 +184,6 @@
           <input type="email" id="email" name="email" placeholder="your@email.com"/>
           <div class="field-error">Please enter a valid email address.</div>
         </div>
-      </div>
-
-      <div class="field-group" id="fg-gp">
-        <label for="gp">Your GP <span class="required">*</span></label>
-        <input type="text" id="gp" name="gp" placeholder="e.g. Dr F. O'Reilly"/>
-        <div class="field-error">Required.</div>
       </div>
 
       <!-- ══ SECTION 2: Your Appointment ══ -->
@@ -816,11 +810,6 @@
         <textarea id="current-medications" name="current-medications" placeholder="List any new medications — name, dose, and who prescribed them. Write 'None' if nothing new."></textarea>
       </div>
 
-      <div class="field-group">
-        <label for="drug-allergies">Any known drug allergies or adverse reactions? <span class="required">*</span></label>
-        <textarea id="drug-allergies" name="drug-allergies" placeholder="e.g. Penicillin — rash. Write 'NKDA' if none known."></textarea>
-      </div>
-
       <!-- ══ SECTION 5: ABPM Consent ══ -->
       <div class="section-header">
         <div class="section-number">5</div>
@@ -1007,7 +996,7 @@
     let valid = true;
 
     // Required text fields
-    ['patient-name','dob','pps','phone','gp'].forEach(f => {
+    ['patient-name','dob','pps','phone'].forEach(f => {
       const el = document.getElementById(f);
       const empty = !el || !el.value.trim();
       setError(f, empty);
@@ -1104,7 +1093,7 @@
   });
 
   // Clear errors on input
-  ['patient-name','dob','pps','phone','gp','email'].forEach(f => {
+  ['patient-name','dob','pps','phone','email'].forEach(f => {
     const el = document.getElementById(f);
     if (el) el.addEventListener('input', () => setError(f, false));
   });
