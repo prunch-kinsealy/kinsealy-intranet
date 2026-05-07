@@ -33,6 +33,7 @@ nav a:hover{background:rgba(255,255,255,0.06);color:#fff;border-left-color:rgba(
 nav a.active{background:rgba(42,138,126,0.15);color:#fff;border-left-color:var(--teal-light);font-weight:500}
 nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .sidebar-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.68rem;color:rgba(255,255,255,0.3)}
+.nav-group-label{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.28);padding:14px 20px 4px;margin-top:4px}
 
 /* MAIN */
 #main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
@@ -267,18 +268,19 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
   <div class="sidebar-date" id="sidebarDate">Thursday 23 April 2026</div>
   <nav>
     <a href="#" class="nav-link active" data-section="home"><span class="nav-icon">🏠</span> Home &amp; Noticeboard</a>
+    <div class="nav-group-label">Clinical</div>
     <a href="#" class="nav-link" data-section="cdm"><span class="nav-icon">🔁</span> CDM</a>
-    <a href="#" class="nav-link" data-section="care-pathways"><span class="nav-icon">🩺</span> Care Pathways</a>
-    <a href="#" class="nav-link" data-section="doctor-stuff"><span class="nav-icon">👨‍⚕️</span> Doctor Stuff</a>
-    <a href="#" class="nav-link" data-section="practice-management" id="pm-nav-link"><span class="nav-icon">📋</span> Practice Management <span class="future-lock" id="pm-lock-badge">🔒</span><span class="pm-unlocked-badge" id="pm-unlocked-badge">✓ Unlocked</span></a>
-    <a href="#" class="nav-link" data-section="front-of-house"><span class="nav-icon">🏥</span> Front of House</a>
+    <a href="#" class="nav-link" data-section="care-pathways"><span class="nav-icon">🩺</span> Patient Journeys</a>
     <a href="#" class="nav-link" data-section="clinical-pathways"><span class="nav-icon">🧬</span> Clinical Pathways</a>
+    <a href="#" class="nav-link" data-section="doctor-stuff"><span class="nav-icon">👨‍⚕️</span> Doctor Protocols</a>
+    <div class="nav-group-label">Operations</div>
+    <a href="#" class="nav-link" data-section="front-of-house"><span class="nav-icon">🏥</span> Front of House</a>
+    <a href="#" class="nav-link" data-section="practice-management" id="pm-nav-link"><span class="nav-icon">📋</span> Practice Management <span class="future-lock" id="pm-lock-badge">🔒</span><span class="pm-unlocked-badge" id="pm-unlocked-badge">✓ Unlocked</span></a>
     <a href="#" class="nav-link" data-section="text-templates"><span class="nav-icon">💬</span> Text Templates</a>
     <a href="#" class="nav-link" data-section="useful-forms"><span class="nav-icon">📄</span> Useful Forms</a>
-    <a href="#" class="nav-link" data-section="quick-links"><span class="nav-icon">⚡</span> Quick Links</a>
+    <div class="nav-group-label">Practice</div>
     <a href="#" class="nav-link" data-section="social-media"><span class="nav-icon">📱</span> Social Media</a>
     <a href="#" class="nav-link" data-section="maintenance"><span class="nav-icon">🔧</span> Maintenance</a>
-    <a href="#" class="nav-link" data-section="misc"><span class="nav-icon">📁</span> Miscellaneous</a>
   </nav>
   <div class="sidebar-footer">Kinsealy Group Practice © 2026</div>
 </aside>
@@ -569,6 +571,7 @@ with the existing intranet style.
             <li><a href="https://sspcrs.ie/" target="_blank">💊 PCRS Portal</a><span class="tag">↗</span></li>
             <li><a href="https://secure.goldfish.ie/login.aspx" target="_blank">📞 Phone System</a><span class="tag">↗</span></li>
             <li><a href="#" onclick="switchSection(&#39;useful-forms&#39;)">📄 Forms Library</a><span class="tag">Hub</span></li>
+            <li><a href="#" onclick="switchSection(&#39;quick-links&#39;)">⚡ All Quick Links</a><span class="tag">Hub</span></li>
           </ul>
         </div>
       </div>
@@ -706,7 +709,7 @@ with the existing intranet style.
 <!-- ════════════════════════════════════════════════════ -->
 <div class="section" id="care-pathways">
   <div class="page-header">
-    <h2>Care Pathways</h2>
+    <h2>Patient Journeys</h2>
     <p>Patient journey maps — each step shows which staff member is responsible. Follow the flow.</p>
   </div>
 
@@ -721,7 +724,7 @@ with the existing intranet style.
   </div>
 
   <!-- CONTRACEPTION -->
-  <div class="sop-card" id="sop-contraception" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Contraception">
+  <div class="sop-card" id="sop-contraception" data-updated="2025-05-23" data-section-name="Patient Journeys" data-sop-name="Contraception">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>💊</span><h3>Contraception (Free Scheme &amp; STCs)</h3></div>
       <span class="sop-toggle">▼</span>
@@ -761,7 +764,7 @@ with the existing intranet style.
   </div>
 
   <!-- ANTENATAL -->
-  <div class="sop-card" id="sop-antenatal" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Antenatal Care">
+  <div class="sop-card" id="sop-antenatal" data-updated="2025-05-23" data-section-name="Patient Journeys" data-sop-name="Antenatal Care">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🤰</span><h3>Antenatal / Combined Care</h3></div>
       <span class="sop-toggle">▼</span>
@@ -826,7 +829,7 @@ with the existing intranet style.
   </div>
 
   <!-- BABY VACCINES -->
-  <div class="sop-card" id="sop-baby-vaccines" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Baby Vaccines">
+  <div class="sop-card" id="sop-baby-vaccines" data-updated="2025-05-23" data-section-name="Patient Journeys" data-sop-name="Baby Vaccines">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>💉</span><h3>Baby Vaccines Schedule</h3></div>
       <span class="sop-toggle open">▼</span>
@@ -865,7 +868,7 @@ with the existing intranet style.
   </div>
 
   <!-- SMEARS -->
-  <div class="sop-card" id="sop-smears" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Cervical Smears">
+  <div class="sop-card" id="sop-smears" data-updated="2025-05-23" data-section-name="Patient Journeys" data-sop-name="Cervical Smears">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🔬</span><h3>Cervical Smears (CervicalCheck)</h3></div>
       <span class="sop-toggle">▼</span>
@@ -904,7 +907,7 @@ with the existing intranet style.
   </div>
 
   <!-- WEIGHT LOSS DRUGS -->
-  <div class="sop-card" id="sop-saxenda" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Weight Loss Drugs (Saxenda)">
+  <div class="sop-card" id="sop-saxenda" data-updated="2025-05-23" data-section-name="Patient Journeys" data-sop-name="Weight Loss Drugs (Saxenda)">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>⚖️</span><h3>Weight Loss Drugs — Saxenda</h3></div>
       <span class="sop-toggle">▼</span>
@@ -959,7 +962,7 @@ with the existing intranet style.
   </div>
 
   <!-- ASTHMA -->
-  <div class="sop-card" id="sop-asthma" data-updated="2025-05-23" data-section-name="Care Pathways" data-sop-name="Asthma">
+  <div class="sop-card" id="sop-asthma" data-updated="2025-05-23" data-section-name="Patient Journeys" data-sop-name="Asthma">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🫁</span><h3>Asthma Registration</h3></div>
       <span class="sop-toggle">▼</span>
@@ -994,13 +997,13 @@ with the existing intranet style.
 <!-- ════════════════════════════════════════════════════ -->
 <div class="section" id="doctor-stuff">
   <div class="page-header">
-    <h2>Doctor Stuff</h2>
+    <h2>Doctor Protocols</h2>
     <p>Clinical resources, medicolegal, tasks, prescribing, and GP training.</p>
   </div>
 
   <div class="section-label">Tasks &amp; Responsibilities</div>
 
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="Task System &amp; Colour Coding">
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Protocols" data-sop-name="Task System &amp; Colour Coding">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>📋</span><h3>Task System, Colour Coding &amp; Buddy System</h3></div>
       <span class="sop-toggle">▼</span>
@@ -1039,7 +1042,7 @@ with the existing intranet style.
     </div>
   </div>
 
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="Bloods — Clinical">
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Protocols" data-sop-name="Bloods — Clinical">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🩸</span><h3>Bloods — Ordering, Special Tests &amp; Under 16s</h3></div>
       <span class="sop-toggle">▼</span>
@@ -1061,7 +1064,7 @@ with the existing intranet style.
     </div>
   </div>
 
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="Medicolegal">
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Protocols" data-sop-name="Medicolegal">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>⚖️</span><h3>Medicolegal Reports &amp; PMAs</h3></div>
       <span class="sop-toggle open">▼</span>
@@ -1105,7 +1108,7 @@ with the existing intranet style.
     </div>
   </div>
 
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="EPOA / Testamentary Capacity">
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Protocols" data-sop-name="EPOA / Testamentary Capacity">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>📜</span><h3>Enduring Power of Attorney / Testamentary Capacity</h3></div>
       <span class="sop-toggle">▼</span>
@@ -1151,7 +1154,7 @@ with the existing intranet style.
 
   <div class="section-label">Prescribing</div>
 
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="Psych Prescriptions (PCRS 016/24)">
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Protocols" data-sop-name="Psych Prescriptions (PCRS 016/24)">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🧠</span><h3>Psych Prescriptions — PCRS Circular 016/24</h3></div>
       <span class="sop-toggle">▼</span>
@@ -1166,7 +1169,7 @@ with the existing intranet style.
     </div>
   </div>
 
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Stuff" data-sop-name="High-Tech / Controlled Medications">
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Doctor Protocols" data-sop-name="High-Tech / Controlled Medications">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>💊</span><h3>High-Tech / Controlled Medication Prescriptions</h3></div>
       <span class="sop-toggle">▼</span>
@@ -1594,6 +1597,80 @@ with the existing intranet style.
     </div>
   </div>
 
+  <div class="section-label">Systems &amp; Communications</div>
+
+  <div class="sop-card" data-updated="2026-02-11" data-section-name="Front of House" data-sop-name="Interpretation Service">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🌐</span><h3>Interpretation Service — No Longer HSE Funded</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 11/02/2026</span></div>
+    <div class="sop-body">
+      <div class="warn-box">⚠️ As of 11th February 2026, Lingua Translation Services invoices are sent directly to the practice. HSE Social Inclusion will no longer approve bookings. Contact: Antonio Fernando, Lingua Translation Services, 30 Wicklow Street, Dublin 2.</div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-29" data-section-name="Front of House" data-sop-name="Healthmail MFA">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🔐</span><h3>Healthmail — Multi-Factor Authentication (from 29/05/2025)</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 IT / Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 29/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        New swipe/code login required from 29th May 2025. Two Samsung tablets available — downstairs and one with the nurse.<br>
+        Verified once every 24 hours per computer. Re-verification needed if: you sign out, computer shuts down, or browser history cleared.<br>
+        Support: 061 203779 or <a href="mailto:ictsupport@three.ie">ictsupport@three.ie</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Phone System">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📞</span><h3>Phone System — Voicemail &amp; Out of Hours</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 PM</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        Login: <a href="https://secure.goldfish.ie/login.aspx" target="_blank">secure.goldfish.ie</a> | Email: kinsealymedicalcentre@gmail.com | Password: 4H3C6TD8<br><br>
+        To turn voicemail on: Select 'Your Numbers' → '018405940' → 'Routing Wizard' → 'Play a message to caller' → select message (e.g. 'PhonesClosedFriday').
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Post Handling">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📮</span><h3>Post Handling</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 PM / Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        PM opens post 8–8:30am. Date stamp and scan to patient file (select doctor from drop-down in pop-up).<br>
+        When PM absent → early shift admin opens and stamps.<br><br>
+        <strong>Test results (CT/MRI/Ultrasound/DEXA/X-ray ordered by us):</strong> Give to ordering doctor — even if not present that day.<br>
+        <strong>All other post:</strong> Divide equally between doctors on duty.<br>
+        PM posts outgoing letters twice weekly (Tue &amp; Fri). Stamps in PM desk drawer. If PM absent → admin leaving at 4/4:30 brings post before 5:30.
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Protonmail / Email Privacy">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🔒</span><h3>Patient Email — Protonmail Preference</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        Encourage ALL patients to sign up to Protonmail where possible.<br>
+        Suggested wording: <em>"Popular email providers scan content for profit, while Proton Mail ensures privacy with encryption. At Kinsealy Medical Centre your confidential information is of utmost importance to us, and our preferred communication method is Protonmail. Sign up takes 2 minutes."</em><br>
+        This is included in our automatic replies.
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ════════════════════════════════════════════════════ -->
@@ -1676,105 +1753,6 @@ with the existing intranet style.
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════ -->
-<!-- MISCELLANEOUS -->
-<!-- ════════════════════════════════════════════════════ -->
-<div class="section" id="misc">
-  <div class="page-header">
-    <h2>Miscellaneous</h2>
-    <p>Anything that doesn't fit neatly elsewhere — still important!</p>
-  </div>
-
-  <div class="sop-card" data-updated="2026-02-11" data-section-name="Miscellaneous" data-sop-name="Interpretation Service">
-    <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>🌐</span><h3>Interpretation Service — No Longer HSE Funded</h3></div>
-      <span class="sop-toggle">▼</span>
-    </div>
-    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 11/02/2026</span></div>
-    <div class="sop-body">
-      <div class="warn-box">⚠️ As of 11th February 2026, Lingua Translation Services invoices are sent directly to the practice. HSE Social Inclusion will no longer approve bookings. Contact: Antonio Fernando, Lingua Translation Services, 30 Wicklow Street, Dublin 2.</div>
-    </div>
-  </div>
-
-  <div class="sop-card" data-updated="2025-05-29" data-section-name="Miscellaneous" data-sop-name="Healthmail MFA">
-    <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>🔐</span><h3>Healthmail — Multi-Factor Authentication (from 29/05/2025)</h3></div>
-      <span class="sop-toggle">▼</span>
-    </div>
-    <div class="sop-meta"><span>👤 IT / Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 29/05/2025</span></div>
-    <div class="sop-body">
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
-        New swipe/code login required from 29th May 2025. Two Samsung tablets available — downstairs and one with the nurse.<br>
-        Verified once every 24 hours per computer. Re-verification needed if: you sign out, computer shuts down, or browser history cleared.<br>
-        Support: 061 203779 or <a href="mailto:ictsupport@three.ie">ictsupport@three.ie</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Miscellaneous" data-sop-name="Phone System">
-    <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>📞</span><h3>Phone System — Voicemail &amp; Out of Hours</h3></div>
-      <span class="sop-toggle">▼</span>
-    </div>
-    <div class="sop-meta"><span>👤 PM</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
-    <div class="sop-body">
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
-        Login: <a href="https://secure.goldfish.ie/login.aspx" target="_blank">secure.goldfish.ie</a> | Email: kinsealymedicalcentre@gmail.com | Password: 4H3C6TD8<br><br>
-        To turn voicemail on: Select 'Your Numbers' → '018405940' → 'Routing Wizard' → 'Play a message to caller' → select message (e.g. 'PhonesClosedFriday').
-      </div>
-    </div>
-  </div>
-
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Miscellaneous" data-sop-name="Power Outage">
-    <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>⚡</span><h3>Power Outage Protocol</h3></div>
-      <span class="sop-toggle">▼</span>
-    </div>
-    <div class="sop-meta"><span>👤 PM / Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
-    <div class="sop-body">
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
-        PCs and desk phones will not work. PM organises brief meeting.<br>
-        Take names, DOB, address of patients checking in. Check which doctor/nurse they're due to see. Text via WhatsApp to doctor/nurse.<br>
-        Handwritten notes taken during consultation — transferred to Socrates when restored.<br>
-        Non-routine bloods → reschedule appointment.<br>
-        Encourage online payment. Payment link sent once system restored.
-      </div>
-    </div>
-  </div>
-
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Miscellaneous" data-sop-name="Post Handling">
-    <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>📮</span><h3>Post Handling</h3></div>
-      <span class="sop-toggle">▼</span>
-    </div>
-    <div class="sop-meta"><span>👤 PM / Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
-    <div class="sop-body">
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
-        PM opens post 8–8:30am. Date stamp and scan to patient file (select doctor from drop-down in pop-up).<br>
-        When PM absent → early shift admin opens and stamps.<br><br>
-        <strong>Test results (CT/MRI/Ultrasound/DEXA/X-ray ordered by us):</strong> Give to ordering doctor — even if not present that day.<br>
-        <strong>All other post:</strong> Divide equally between doctors on duty.<br>
-        PM posts outgoing letters twice weekly (Tue &amp; Fri). Stamps in PM desk drawer. If PM absent → admin leaving at 4/4:30 brings post before 5:30.
-      </div>
-    </div>
-  </div>
-
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Miscellaneous" data-sop-name="Protonmail / Email Privacy">
-    <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>🔒</span><h3>Patient Email — Protonmail Preference</h3></div>
-      <span class="sop-toggle">▼</span>
-    </div>
-    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
-    <div class="sop-body">
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
-        Encourage ALL patients to sign up to Protonmail where possible.<br>
-        Suggested wording: <em>"Popular email providers scan content for profit, while Proton Mail ensures privacy with encryption. At Kinsealy Medical Centre your confidential information is of utmost importance to us, and our preferred communication method is Protonmail. Sign up takes 2 minutes."</em><br>
-        This is included in our automatic replies.
-      </div>
-    </div>
-  </div>
-
-</div>
 
 
 
@@ -2303,6 +2281,24 @@ Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyT
       </div>
     </div>
   </div>
+
+  <div class="sop-card" data-updated="2025-05-23" data-section-name="Maintenance" data-sop-name="Power Outage">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>⚡</span><h3>Power Outage Protocol</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 PM / Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        PCs and desk phones will not work. PM organises brief meeting.<br>
+        Take names, DOB, address of patients checking in. Check which doctor/nurse they're due to see. Text via WhatsApp to doctor/nurse.<br>
+        Handwritten notes taken during consultation — transferred to Socrates when restored.<br>
+        Non-routine bloods → reschedule appointment.<br>
+        Encourage online payment. Payment link sent once system restored.
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- SEARCH RESULTS -->
@@ -2324,11 +2320,11 @@ document.getElementById('sidebarDate').textContent = d.toLocaleDateString('en-IE
 
 // SECTION TITLES
 const titles = {
-  'home':'Home & Noticeboard','cdm':'Chronic Disease Management','care-pathways':'Care Pathways','doctor-stuff':'Doctor Stuff',
+  'home':'Home & Noticeboard','cdm':'Chronic Disease Management','care-pathways':'Patient Journeys','doctor-stuff':'Doctor Protocols',
   'practice-management':'Practice Management','front-of-house':'Front of House',
   'clinical-pathways':'Clinical Pathways','text-templates':'Text Templates',
   'useful-forms':'Useful Forms','quick-links':'Quick Links',
-  'social-media':'Social Media','maintenance':'Maintenance','misc':'Miscellaneous',
+  'social-media':'Social Media','maintenance':'Maintenance',
   'search-results':'Search Results'
 };
 
