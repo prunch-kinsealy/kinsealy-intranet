@@ -239,7 +239,32 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
   #content{padding:16px}
   .home-grid{grid-template-columns:1fr}
   .topbar-title{font-size:1rem}
+  .flow-branch-row{flex-direction:column;align-items:center}
+  .flow-branch-item{width:100%;max-width:260px}
 }
+/* CDM Flow Diagram */
+.cdm-flow{display:flex;flex-direction:column;align-items:center;gap:0;margin:4px 0 24px}
+.flow-node{padding:10px 18px;border-radius:8px;font-size:0.8rem;font-weight:600;text-align:center;min-width:220px;max-width:320px;line-height:1.4}
+.flow-node small{font-weight:400;font-size:0.72rem}
+.flow-node-all{background:#f1f5f9;border:2px solid #64748b;color:#334155}
+.flow-node-sec{background:#eff6ff;border:2px solid #3b82f6;color:#1e40af}
+.flow-node-nurse{background:#f0fdf4;border:2px solid #22c55e;color:#166534}
+.flow-node-doc{background:#fef2f2;border:2px solid #ef4444;color:#991b1b}
+.flow-node-phle{background:#fff7ed;border:2px solid #f97316;color:#9a3412}
+.flow-node-pm{background:#faf5ff;border:2px solid #a855f7;color:#6b21a8}
+.flow-node-cit{background:#f8fafc;border:2px dashed #94a3b8;color:#94a3b8}
+.flow-arrow{font-size:1.1rem;color:#94a3b8;line-height:1;padding:2px 0}
+.flow-branch-row{display:flex;gap:10px;justify-content:center;width:100%}
+.flow-branch-item{display:flex;flex-direction:column;align-items:center;gap:0;flex:1;min-width:0}
+.flow-coming-soon{opacity:0.5}
+.flow-soon-tag{font-size:0.65rem;background:#e2e8f0;color:#64748b;padding:2px 8px;border-radius:10px;margin-top:4px;font-weight:500}
+/* CDM Bulk Text Reminder */
+.cdm-reminder-widget{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-top:12px;font-size:0.8rem}
+.cdm-reminder-widget .reminder-ok{color:#166534;font-weight:600}
+.cdm-reminder-widget .reminder-warn{color:#92400e;font-weight:600}
+.cdm-reminder-widget .reminder-overdue{color:#991b1b;font-weight:600}
+.cdm-reminder-btn{background:var(--teal);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:0.78rem;cursor:pointer;margin-top:8px;font-weight:600;font-family:'DM Sans',sans-serif}
+.cdm-reminder-btn:hover{background:var(--navy)}
 </style>
 </head>
 <body>
@@ -584,7 +609,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <span class="staff-badge badge-all">⚫ All</span>
   </div>
 
-  <div class="sop-card" id="sop-cdm" data-updated="2025-05-23" data-section-name="CDM" data-sop-name="Chronic Disease Management (CDM)">
+  <div class="sop-card" id="sop-cdm" data-updated="2026-05-08" data-section-name="CDM" data-sop-name="Chronic Disease Management (CDM)">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left">
         <span>🔁</span>
@@ -594,96 +619,222 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     </div>
     <div class="sop-meta">
       <span>👤 Created by: Dr F. O'Reilly</span>
-      <span>🚧 Under Construction</span>
-      <span>🔄 Last updated: 23/05/2025</span>
-      <span>📌 v1.0</span>
+      <span>🔄 Last updated: 08/05/2026</span>
+      <span>📌 v2.0</span>
     </div>
     <div class="sop-body">
 
+      <div class="info-box" style="margin-bottom:18px">
+        <strong>Purpose</strong><br>
+        To provide excellence in CDM care, to allow efficient use of our resources, and to match the correct patient with the correct service.
+      </div>
+
       <div class="warn-box" style="margin-bottom:18px">
-        <strong>📋 No Form = No Appointment — Secretary Rule</strong><br><br>
+        <strong>📋 No Form = No Appointment</strong><br><br>
         Do <strong>NOT</strong> book a CDM or PP appointment until the patient has <strong>fully completed</strong> the CDM Pre-Appointment Form.<br><br>
-        <strong>Send the form link:</strong> <a href="cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> — send via text or email from Socrates when making contact.<br><br>
-        <strong>Elderly / non-IT patients:</strong> A physical copy of the form is in the <strong>folder behind the front door</strong>. Patient takes it home, completes it fully, and returns it to reception before any appointment is given. The form must be fully completed — partial forms are not accepted.<br><br>
-        Once the completed form is received (online submission or physical copy scanned), the appointment may be booked.
+        <strong>Send the form:</strong> <a href="cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> — send via text or email from Socrates.<br><br>
+        <strong>Elderly / poor IT literacy:</strong> Advise the patient that a <strong>family member or next of kin can email us</strong> on their behalf — we will email the form directly for completion and return.
+      </div>
+
+      <h4 style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin:0 0 10px">CDM Pathway Overview</h4>
+      <div class="cdm-flow">
+        <div class="flow-node flow-node-all">⚫ All Staff — CDM Aware<br><small>Identify patients due · Send form link</small></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node flow-node-all">📋 No Form = No Appointment<br><small>Text / email form via Socrates</small></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node flow-node-sec">🔵 Form Received → Secretary Books<br><small>Phone call or email to confirm appointment</small></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node flow-node-sec">🔵 Secretary Pre-Appointment Setup<br><small>Upload to CDM section · STC 65 (ECG) · STC 66 (ABPM) · PM tray</small></div>
+        <div class="flow-arrow">↓</div>
+        <div style="font-size:0.7rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px">Select Pathway</div>
+        <div class="flow-branch-row">
+          <div class="flow-branch-item">
+            <div class="flow-arrow">↓</div>
+            <div class="flow-node flow-node-phle" style="font-size:0.76rem">🟠 Phlebotomist-led<br><small style="color:#c2410c">Non-diabetics only</small></div>
+          </div>
+          <div class="flow-branch-item">
+            <div class="flow-arrow">↓</div>
+            <div class="flow-node flow-node-nurse" style="font-size:0.76rem">🟢 Nurse-led</div>
+          </div>
+          <div class="flow-branch-item">
+            <div class="flow-arrow">↓</div>
+            <div class="flow-node flow-node-doc" style="font-size:0.76rem">🔴 Doctor-led</div>
+          </div>
+          <div class="flow-branch-item flow-coming-soon">
+            <div class="flow-arrow">↓</div>
+            <div class="flow-node flow-node-cit" style="font-size:0.76rem">🏠 CIT-led<br><small>Housebound</small></div>
+            <div class="flow-soon-tag">Coming Soon</div>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node flow-node-nurse">🟢 End of Consult — Task Doctor</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node flow-node-doc">🔴 Doctor Remote Review + Script</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node flow-node-pm">🟣 PM Weekly Submission</div>
       </div>
 
       <div class="journey">
-        <div class="journey-step">
-          <div class="step-dot dot-sec">MS</div>
-          <div class="step-content step-content-sec">
-            <div class="step-role step-role-sec">Step 1 — Medical Secretary / All Staff</div>
-            <div class="step-title">Book the Patient</div>
-            <div class="step-detail">
-              <strong>Step 1a — Send the form first.</strong> Send the <a href="cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> via text or email (Socrates). Do not book until it is fully completed and received.<br><br>
-              <strong>Step 1b — Book once form is in.</strong> Preferred: Calendly link (text/email from Socrates) — <a href="#">Calendly Link</a>. Cancel a slot at time of booking.<br>
-              PP (annual) bookable from 9–10 months. CDM (bi-annual) bookable from 4–5 months.<br>
-              Book with: Nurse OR Phlebotomist + GP (if CDM). PP does not require GP visit unless Phlebotomist + CDM.<br>
-              <strong>❌ No afternoon bookings</strong> for patients on ACE inhibitors (ending in 'pril') or ARBs (ending in 'sartan'). If unsure — ask a GP.
-            </div>
-          </div>
-        </div>
-        <div class="journey-step">
-          <div class="step-dot dot-nurse">NS</div>
-          <div class="step-content step-content-nurse">
-            <div class="step-role step-role-nurse">Step 2 — Nurse / Phlebotomist</div>
-            <div class="step-title">Surgery Visit</div>
-            <div class="step-detail">
-              <ul>
-                <li>Ensure CDM Patient Information form is uploaded before calling patient</li>
-                <li>Use 'CDM Note' template in Socrates</li>
-                <li>Update Diagnoses → Register any chronic condition</li>
-                <li>Use AliveCor — if not NSR, arrange full ECG. Place ABPM</li>
-                <li>Complete CDM bloods as per note template (other bloods are chargeable)</li>
-                <li>For OCF, task nurse for PP follow-up if eligible</li>
-                <li>Populate all into Socrates CDM tab. Submit STC (ECG &amp; ABPM) via Socrates</li>
-                <li>🟠 Task doctor: "CDM doctor review and 6/12 script" — include bloods + ABPM under same doctor name. Distribute evenly (Orange priority)</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="journey-step">
-          <div class="step-dot dot-doc">DR</div>
-          <div class="step-content step-content-doc">
-            <div class="step-role step-role-doc">Step 3 — Doctor</div>
-            <div class="step-title">GP Review &amp; Script</div>
-            <div class="step-detail">
-              Review: Bloods, ABPM, AliveCor/ECG, chart notes.<br>
-              Decide if follow-up needed (call, visit, text).<br>
-              Do 6/12 (CDM) or 12/12 (PP) script. Include note to pharmacist:<br>
-              <em>"Please advise patient to book CDM review when script finishes"</em><br>
-              Remind patient: next script requires CDM review. Rebook when last script is issued — do not order script, book CDM/PP.
-            </div>
-          </div>
-        </div>
-        <div class="journey-step">
-          <div class="step-dot dot-pm">PM</div>
-          <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">Step 4 — Practice Manager</div>
-            <div class="step-title">Submission (Weekly)</div>
-            <div class="step-detail">
-              <ul>
-                <li>Confirm CDM/PP submission. Confirm STC submitted (ECG, ABPM)</li>
-                <li>Document in chart: "CDM/PP submitted"</li>
-                <li>Review failed submissions every 1–2 weeks</li>
-                <li>Bulk text reminders every 3 months (Google Calendar reminder set)</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+
         <div class="journey-step">
           <div class="step-dot dot-all">ALL</div>
           <div class="step-content step-content-all">
-            <div class="step-role step-role-all">Opportunistic — All Staff</div>
-            <div class="step-title">OCF — Opportunistic Case Finding</div>
+            <div class="step-role step-role-all">Step 1 — All Staff</div>
+            <div class="step-title">CDM Aware — Identify &amp; Contact</div>
             <div class="step-detail">
-              See a GMS/DVC patient? Check if CDM/PP/OCF is due! Add CDM/PP as Active Diagnosis in chart.<br>
-              If script requested, check last CDM visit. No recent CDM → give 1/12 script only and send CDM text template.<br>
-              <strong>Eligibility:</strong> CDM (8 HSE conditions). PP if Qrisk &gt;20%, Pre-diabetic, or Hypertension + GMS/DVC + Age &gt;45. Any woman with Gestational DM or Pre-Eclampsia since 01/2023.<br>
-              OCF = first step, then PP or CDM. Claim both!
+              Every staff member — doctors, secretaries, nurses — should be <strong>CDM aware</strong>. Anyone identifying a patient due for CDM should act:
+              <ul>
+                <li>Text or email the patient the <a href="cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> via Socrates</li>
+                <li><strong>No form, no appointment</strong> — do not book until form is fully completed and received</li>
+                <li>If the patient is elderly or has poor IT literacy: advise that a <strong>family member or next of kin can email us</strong> — we will email the form to them for completion and return</li>
+                <li>PP (annual): contactable from 9–10 months. CDM (bi-annual): contactable from 4–5 months</li>
+              </ul>
             </div>
           </div>
         </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Step 2 — Secretary</div>
+            <div class="step-title">Form Received → Book Appointment</div>
+            <div class="step-detail">
+              Once the completed CDM form is received:
+              <ul>
+                <li><strong>Contact the patient</strong> by phone call or email to book — Calendly is no longer used</li>
+                <li><strong>Diabetic patients must be booked with a Nurse or Doctor</strong> — foot examination is required</li>
+                <li>All other CDM patients: Phlebotomist, Nurse, or Doctor as available</li>
+                <li><strong>❌ No afternoon bookings</strong> for patients on ACE inhibitors (ending in 'pril') or ARBs (ending in 'sartan') — if unsure, ask a GP</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Step 3 — Secretary</div>
+            <div class="step-title">Pre-Appointment Setup</div>
+            <div class="step-detail">
+              Once appointment is booked:
+              <ul>
+                <li>Upload all form information into the <strong>CDM section in Socrates</strong> — this ensures 3 tasks are ready on the day: ECG, bloods, ABPM</li>
+                <li>Complete <strong>STC 65 (ECG)</strong> and <strong>STC 66 (ABPM)</strong> — if applicable. Date = date of attendance</li>
+                <li>Leave completed STC forms in the <strong>PM's tray</strong></li>
+                <li>Document: <em>"STC 65 &amp; STC 66 submitted"</em> in the chart</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-all">ALL</div>
+          <div class="step-content step-content-all">
+            <div class="step-role step-role-all">Step 4 — On the Day</div>
+            <div class="step-title">Clinical Visit (by Pathway)</div>
+            <div class="step-detail">
+              <div class="warn-box" style="margin-bottom:14px;font-size:0.8rem">
+                ⚠️ <strong>Diabetic patients must be seen by a Nurse or Doctor</strong> — foot examination is required as part of the diabetic CDM review.
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px">
+                <div style="background:#fff7ed;border:1.5px solid #f97316;border-radius:8px;padding:12px">
+                  <div style="font-size:0.7rem;font-weight:700;color:#9a3412;text-transform:uppercase;margin-bottom:8px">🟠 Phlebotomist-led<br><span style="font-weight:400;text-transform:none;font-size:0.68rem">Non-diabetics only</span></div>
+                  <ul style="margin:0;padding-left:16px;font-size:0.77rem;line-height:1.75">
+                    <li>Confirm CDM form uploaded before calling patient</li>
+                    <li>Use 'CDM Note' template in Socrates</li>
+                    <li>Update Diagnoses — register chronic conditions</li>
+                    <li>AliveCor — if not NSR, arrange full ECG</li>
+                    <li>Place ABPM (24hr)</li>
+                    <li>Bloods as per CDM note template</li>
+                    <li>Populate Socrates CDM tab</li>
+                    <li>Task doctor (orange): <em>"CDM review and 6/12 script"</em> — ABPM + bloods under same doctor name</li>
+                  </ul>
+                </div>
+                <div style="background:#f0fdf4;border:1.5px solid #22c55e;border-radius:8px;padding:12px">
+                  <div style="font-size:0.7rem;font-weight:700;color:#166534;text-transform:uppercase;margin-bottom:8px">🟢 Nurse-led</div>
+                  <ul style="margin:0;padding-left:16px;font-size:0.77rem;line-height:1.75">
+                    <li>All steps as Phlebotomist-led above</li>
+                    <li>Clinical assessment: BP, weight, urinalysis</li>
+                    <li>Review current medications</li>
+                    <li><strong>Diabetics: foot examination required</strong></li>
+                    <li>For OCF, task nurse for PP follow-up if eligible</li>
+                    <li>Task doctor (orange): <em>"CDM review and 6/12 script"</em></li>
+                  </ul>
+                </div>
+                <div style="background:#fef2f2;border:1.5px solid #ef4444;border-radius:8px;padding:12px">
+                  <div style="font-size:0.7rem;font-weight:700;color:#991b1b;text-transform:uppercase;margin-bottom:8px">🔴 Doctor-led</div>
+                  <ul style="margin:0;padding-left:16px;font-size:0.77rem;line-height:1.75">
+                    <li>All steps as Nurse-led above</li>
+                    <li>Full clinical consultation</li>
+                    <li><strong>Diabetics: foot examination required</strong></li>
+                    <li>Can issue 6/12 (CDM) or 12/12 (PP) script directly</li>
+                    <li>Decide if follow-up warranted</li>
+                  </ul>
+                </div>
+              </div>
+              <div style="background:#f8fafc;border:1.5px dashed #94a3b8;border-radius:8px;padding:12px;opacity:0.65">
+                <div style="font-size:0.7rem;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:4px">🏠 CIT-led — Housebound Patients <span style="background:#e2e8f0;color:#64748b;padding:2px 8px;border-radius:10px;font-weight:500;text-transform:none">Coming Soon</span></div>
+                <p style="font-size:0.77rem;color:#94a3b8;margin:0">Community Intervention Team pathway for housebound patients. Details to follow.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Step 5 — Nurse / Phlebotomist</div>
+            <div class="step-title">End of Consult — Task Doctor</div>
+            <div class="step-detail">
+              At the end of the visit, task the doctor on duty:
+              <ul>
+                <li>Task: <strong>"CDM review and 6/12 script"</strong> (or <strong>"PP review and 12/12 script"</strong> for PP patients)</li>
+                <li>Include bloods result and ABPM under the <strong>same doctor's name</strong></li>
+                <li>Distribute tasks evenly across doctors on the day</li>
+                <li>Priority: Orange</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Step 6 — Doctor</div>
+            <div class="step-title">Remote Consultation &amp; Script</div>
+            <div class="step-detail">
+              Doctor reviews remotely — bloods, ABPM, AliveCor/ECG, chart notes:
+              <ul>
+                <li>If no changes needed: issue <strong>6/12 (CDM)</strong> or <strong>12/12 (PP)</strong> script</li>
+                <li>Include pharmacist note: <em>"Please advise patient to book CDM review when script finishes"</em></li>
+                <li>If changes or concerns: decide whether <strong>text / phone call / in-person consultation</strong> is required</li>
+                <li>Remind patient: next script requires CDM review — rebook when last script is issued</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">Step 7 — Practice Manager</div>
+            <div class="step-title">Submission (Weekly)</div>
+            <div class="step-detail">
+              <ul>
+                <li>Confirm CDM/PP submission</li>
+                <li>Confirm STC 65 (ECG) and STC 66 (ABPM) submitted</li>
+                <li>Document in chart: <em>"CDM/PP submitted"</em></li>
+                <li>Review failed submissions every 1–2 weeks</li>
+                <li>Bulk text reminders: every 2 months</li>
+              </ul>
+              <div class="cdm-reminder-widget">
+                <div style="font-weight:600;margin-bottom:8px">📱 Bulk Text Reminder Tracker</div>
+                <div id="cdm-reminder-status"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -2413,6 +2564,38 @@ function goToSOP(sectionId, sopId) {
   }, 100);
 }
 
+// CDM BULK TEXT REMINDER TRACKER
+function initCDMReminder() {
+  const el = document.getElementById('cdm-reminder-status');
+  if (!el) return;
+  renderCDMReminder(el);
+}
+function renderCDMReminder(el) {
+  const raw = localStorage.getItem('cdm-bulk-text-last');
+  const TWO_MONTHS = 60 * 24 * 60 * 60 * 1000;
+  if (!raw) {
+    el.innerHTML = '<span class="reminder-overdue">⚠️ No bulk text logged yet</span><br><button class="cdm-reminder-btn" onclick="logCDMBulkText()">Log bulk text sent today</button>';
+    return;
+  }
+  const last = new Date(raw);
+  const next = new Date(last.getTime() + TWO_MONTHS);
+  const days = Math.round((next - new Date()) / (24 * 60 * 60 * 1000));
+  let status;
+  if (days < 0) {
+    status = `<span class="reminder-overdue">⚠️ Overdue — was due ${next.toLocaleDateString('en-IE')} (${Math.abs(days)} days ago)</span>`;
+  } else if (days <= 14) {
+    status = `<span class="reminder-warn">⚡ Due soon: ${next.toLocaleDateString('en-IE')} (${days} days)</span>`;
+  } else {
+    status = `<span class="reminder-ok">✅ Next due: ${next.toLocaleDateString('en-IE')} (${days} days)</span>`;
+  }
+  el.innerHTML = `<div style="margin-bottom:6px">Last sent: <strong>${last.toLocaleDateString('en-IE')}</strong></div>${status}<br><button class="cdm-reminder-btn" onclick="logCDMBulkText()">Log bulk text sent today</button>`;
+}
+function logCDMBulkText() {
+  localStorage.setItem('cdm-bulk-text-last', new Date().toISOString());
+  const el = document.getElementById('cdm-reminder-status');
+  if (el) renderCDMReminder(el);
+}
+
 // SOP TOGGLE
 function toggleSOP(header) {
   const body = header.nextElementSibling.nextElementSibling;
@@ -2444,6 +2627,7 @@ function loadAnnouncements() {
 }
 
 loadAnnouncements();
+initCDMReminder();
 
 // SEARCH
 function runSearch() {
