@@ -351,16 +351,19 @@
         <textarea id="drug-allergies" name="drug-allergies" placeholder="List any drug allergies or adverse reactions. Write 'NKDA' if none known."></textarea>
       </div>
 
-      <!-- ══ SECTION 3: Uploads (Optional) ══ -->
+      <!-- ══ SECTION 3: Uploads ══ -->
       <div class="section-header">
         <div class="section-number">3</div>
-        <div class="section-header-text"><h2>Supporting Documents</h2><p>Optional — photographs and referral letters</p></div>
+        <div class="section-header-text"><h2>Supporting Documents</h2><p>Photographs optional — referral letter required if not registered at this practice</p></div>
       </div>
 
       <div class="upload-section">
         <div class="upload-header">📷 Acne Photographs — Optional</div>
         <div class="upload-body">
-          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;font-weight:300;">Uploading photographs of your acne helps your GP assess severity before your appointment. This is optional but encouraged.</p>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px;font-weight:300;">Uploading photographs of your acne helps your GP assess severity before your appointment. This is optional but encouraged.</p>
+          <div style="background:#fff8e1;border-left:3px solid #f59e0b;border-radius:4px;padding:10px 12px;margin-bottom:12px;font-size:0.8rem;color:#7c5c00;">
+            <strong>Privacy guidance:</strong> Please photograph only the affected area of skin. Before uploading, ensure your face, eyes, and any other identifying features are covered or cropped out of the image. Do not include your name, date of birth, or any other personal information in the photo.
+          </div>
           <div class="upload-zone">
             <input type="file" name="acne-photos" accept="image/*" multiple/>
             <p><strong>Click to upload photos</strong> or drag and drop here</p>
@@ -371,15 +374,15 @@
       </div>
 
       <div class="upload-section">
-        <div class="upload-header">📄 Referral Letter — Optional</div>
+        <div class="upload-header">📄 Referral Letter — Required if not registered at Kinsealy Medical Centre</div>
         <div class="upload-body">
-          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;font-weight:300;">If you have been referred by another GP or dermatologist, please upload the referral letter here.</p>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;font-weight:300;">If you are <strong>not a registered patient at Kinsealy Medical Centre</strong>, a referral letter from your own GP or a dermatologist is required to process this form. If you are already registered here, this does not apply to you.</p>
           <div class="upload-zone">
             <input type="file" name="referral-letter" accept=".pdf,.doc,.docx,image/*"/>
             <p><strong>Click to upload referral letter</strong> or drag and drop here</p>
             <p style="margin-top:4px">PDF, Word document, or image</p>
           </div>
-          <p class="upload-optional">Optional — complete the form without a referral letter if not applicable.</p>
+          <p class="upload-optional">Required for non-registered patients — optional if you are already registered at this practice.</p>
         </div>
       </div>
 
