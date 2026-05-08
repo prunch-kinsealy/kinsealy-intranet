@@ -743,8 +743,8 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
                     <li>Confirm CDM form uploaded before calling patient</li>
                     <li>Use 'CDM Note' template in Socrates</li>
                     <li>Update Diagnoses — register chronic conditions</li>
-                    <li>AliveCor — if not NSR, arrange full ECG</li>
-                    <li>Place ABPM (24hr)</li>
+                    <li><a href="#" onclick="goToSOP('care-pathways','sop-alivecor');return false;">AliveCor ↗</a> — if not NSR, arrange full <a href="#" onclick="goToSOP('care-pathways','sop-ecg');return false;">ECG ↗</a></li>
+                    <li>Place <a href="#" onclick="goToSOP('care-pathways','sop-abpm');return false;">ABPM ↗</a> (24hr)</li>
                     <li>Bloods as per CDM note template</li>
                     <li>Populate Socrates CDM tab</li>
                     <li>Task doctor (orange): <em>"CDM review and 6/12 script"</em> — ABPM + bloods under same doctor name</li>
@@ -836,6 +836,14 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
         </div>
 
       </div>
+
+      <div class="info-box" style="margin-top:18px">
+        <strong>See also — Clinical Device Guides (Patient Journeys)</strong><br>
+        <a href="#" onclick="goToSOP('care-pathways','sop-alivecor');return false;">📱 AliveCor — KardiaMobile</a> &nbsp;·&nbsp;
+        <a href="#" onclick="goToSOP('care-pathways','sop-ecg');return false;">🫀 ECG — ProMed 12-Lead</a> &nbsp;·&nbsp;
+        <a href="#" onclick="goToSOP('care-pathways','sop-abpm');return false;">💪 ABPM — ProMed Tubeless</a>
+      </div>
+
     </div>
   </div>
 
@@ -1092,6 +1100,256 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
             <div class="step-role step-role-nurse">Nurse</div>
             <div class="step-title">Follow-Up Visit (4–6 months)</div>
             <div class="step-detail">Follow-up visit with nurse at 4–6 months. Review weight, assess progress. Task doctor if &lt;5% loss for discontinuation decision.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALIVECOR -->
+  <div class="sop-card" id="sop-alivecor" data-updated="2026-05-08" data-section-name="Patient Journeys" data-sop-name="AliveCor (KardiaMobile)">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📱</span><h3>AliveCor — KardiaMobile (Rhythm Screening)</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🔄 Last updated: 08/05/2026</span><span>📌 v1.0</span></div>
+    <div class="sop-body">
+      <div class="info-box" style="margin-bottom:18px">
+        <strong>Purpose</strong><br>
+        Quick single-lead ECG screening for AF and rhythm abnormalities. Used opportunistically during CDM visits or on clinical request. No formal booking required — takes approximately 30 seconds.
+      </div>
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Booking / Setup</div>
+            <div class="step-title">No Formal Booking Required</div>
+            <div class="step-detail">
+              AliveCor is used opportunistically — no dedicated appointment needed:
+              <ul>
+                <li>Used routinely as part of CDM visits (phlebotomist or nurse)</li>
+                <li>Can be requested by a doctor at any consultation</li>
+                <li>Device should be charged and paired with the Kardia app before clinic</li>
+                <li>🎥 Video guide: <a href="#" style="color:var(--teal)">[Add KardiaMobile tutorial link]</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Nurse / Phlebotomist</div>
+            <div class="step-title">During the Recording</div>
+            <div class="step-detail">
+              <ul>
+                <li>Patient sits comfortably, relaxed — no talking during recording</li>
+                <li>Place both thumbs (or index fingers) on the two electrodes on the device</li>
+                <li>Hold still for 30 seconds — app will confirm when complete</li>
+                <li>Alternatively: place device directly on bare chest for a chest lead recording</li>
+                <li>If result is "Too Noisy": ensure dry hands, reposition, try again</li>
+                <li>Save trace and result to Socrates patient chart</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Doctor</div>
+            <div class="step-title">Interpretation &amp; Follow-Up</div>
+            <div class="step-detail">
+              <ul>
+                <li><strong>Normal Sinus Rhythm (NSR)</strong> — document, no further action required</li>
+                <li><strong>Possible AF</strong> — arrange full 12-lead ECG; consider Holter monitor if paroxysmal suspected; review clinically</li>
+                <li><strong>Unclassified</strong> — review trace clinically; consider full ECG if any concern</li>
+                <li><strong>Too Noisy / Inconclusive</strong> — repeat attempt or arrange full ECG</li>
+                <li>Document interpretation in chart. If abnormal, task appropriately.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ECG — ProMed -->
+  <div class="sop-card" id="sop-ecg" data-updated="2026-05-08" data-section-name="Patient Journeys" data-sop-name="ECG (ProMed)">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🫀</span><h3>ECG — ProMed (12-Lead)</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🔄 Last updated: 08/05/2026</span><span>📌 v1.0</span></div>
+    <div class="sop-body">
+      <div class="info-box" style="margin-bottom:18px">
+        <strong>Purpose</strong><br>
+        12-lead ECG for rhythm assessment, ischaemia screening, and baseline cardiac evaluation. Ordered as part of CDM, on doctor request, or when AliveCor yields an abnormal result.
+      </div>
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary</div>
+            <div class="step-title">Booking</div>
+            <div class="step-detail">
+              <ul>
+                <li>ECG is booked as part of a CDM visit, or separately on doctor request</li>
+                <li>Allow 15–20 minutes for the appointment</li>
+                <li>Advise patient: no lotions or oils on chest or limbs on the day; loose-fitting clothing preferred</li>
+                <li>Book with nurse or phlebotomist</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Nurse / Phlebotomist</div>
+            <div class="step-title">During the Procedure</div>
+            <div class="step-detail">
+              <ul>
+                <li>Patient lies flat and relaxed — explain each step to reduce anxiety</li>
+                <li>Expose chest, wrists, and ankles. Clean and dry the skin — no lotions</li>
+                <li>Apply electrodes in correct positions:</li>
+              </ul>
+              <div style="background:#f1f5f9;border-radius:6px;padding:10px 12px;margin:8px 0 10px;font-size:0.78rem;line-height:1.85">
+                <strong style="color:var(--navy)">Limb leads:</strong> RA (right wrist), LA (left wrist), RL (right ankle — ground), LL (left ankle)<br>
+                <strong style="color:var(--navy)">Chest leads:</strong><br>
+                V1 — Right sternal border, 4th intercostal space<br>
+                V2 — Left sternal border, 4th intercostal space<br>
+                V3 — Between V2 and V4<br>
+                V4 — Midclavicular line, 5th intercostal space<br>
+                V5 — Anterior axillary line, level with V4<br>
+                V6 — Mid-axillary line, level with V4 &amp; V5
+              </div>
+              <ul>
+                <li>Ask patient to lie still and breathe normally — run 10-second trace</li>
+                <li>Check trace quality: no artefact, all leads present</li>
+                <li>Save trace to Socrates. If clearly abnormal, alert doctor immediately</li>
+                <li>🎥 Video guide: <a href="#" style="color:var(--teal)">[Add ECG lead placement tutorial link]</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Doctor</div>
+            <div class="step-title">Interpretation &amp; Follow-Up</div>
+            <div class="step-detail">
+              Systematic review: rate → rhythm → axis → intervals (PR, QRS, QTc) → ST changes → T-wave morphology → comparison with previous if available.
+              <ul>
+                <li><strong>Normal trace</strong> — document, no action</li>
+                <li><strong>AF / flutter / heart block</strong> — urgent review, consider cardiology referral</li>
+                <li><strong>ST elevation</strong> — emergency management protocol</li>
+                <li><strong>ST depression / T-wave changes</strong> — clinical context, consider stress test or cardiology referral</li>
+                <li><strong>Long QTc</strong> — review medications, consider cardiology</li>
+                <li>Document interpretation and any action taken in chart</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABPM — ProMed Tubeless -->
+  <div class="sop-card" id="sop-abpm" data-updated="2026-05-08" data-section-name="Patient Journeys" data-sop-name="ABPM (ProMed Tubeless)">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>💪</span><h3>ABPM — ProMed Tubeless (24-Hour BP Monitor)</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🔄 Last updated: 08/05/2026</span><span>📌 v1.0</span></div>
+    <div class="sop-body">
+      <div class="info-box" style="margin-bottom:14px">
+        <strong>Purpose</strong><br>
+        24-hour ambulatory BP monitoring gives a far more accurate picture of blood pressure than a single surgery reading. It captures daytime, night-time, and average readings and is essential for diagnosing hypertension, white coat effect, and masked hypertension.
+      </div>
+      <div class="warn-box" style="margin-bottom:18px">
+        <strong>⚠️ Written consent required before fitting</strong><br>
+        The ProMed tubeless ABPM is an expensive device taken home by the patient. Consent — including acknowledgement of care responsibilities and replacement cost — must be completed in the CDM Pre-Appointment Form <strong>before</strong> the device is fitted. Do not fit without confirmed consent on file.
+      </div>
+      <div class="journey">
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary</div>
+            <div class="step-title">Booking</div>
+            <div class="step-detail">
+              <ul>
+                <li>ABPM is booked as part of a CDM visit, or separately on doctor request</li>
+                <li>Morning appointment preferred — patient wears device for 24 hours and returns it the following morning</li>
+                <li>Confirm patient has completed the <a href="cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> and consented to ABPM before appointment</li>
+                <li>Advise patient: wear a loose-fitting short-sleeved top on the day; avoid tight-fitting sleeves</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Nurse / Phlebotomist</div>
+            <div class="step-title">Fitting the Device</div>
+            <div class="step-detail">
+              Before fitting, confirm consent is documented in Socrates:
+              <ul>
+                <li>Fit the ProMed tubeless cuff to the <strong>non-dominant upper arm</strong></li>
+                <li>Cuff should be snug but not tight — two fingers should fit underneath</li>
+                <li>Programme device: readings every <strong>30 minutes</strong> during the day (07:00–23:00) and every <strong>60 minutes</strong> at night</li>
+                <li>Give patient the verbal and written care instructions:
+                  <ul style="margin-top:6px">
+                    <li>Keep the device dry — no baths, showers, or swimming</li>
+                    <li>Sleep with arm flat, avoid lying on the cuffed arm if possible</li>
+                    <li>Avoid vigorous exercise during readings — keep arm still when device inflates</li>
+                    <li>Do not remove or adjust the device between readings</li>
+                    <li>If the arm becomes very uncomfortable, contact the practice</li>
+                  </ul>
+                </li>
+                <li>Device return: patient to return device next morning or as agreed</li>
+                <li>Advise patient: if device is lost or damaged, a replacement cost will apply — as per current ProMed pricing</li>
+                <li>Document fitting in Socrates: <em>"ABPM fitted [date]. Return expected [date]."</em></li>
+                <li>🎥 Video guide: <a href="#" style="color:var(--teal)">[Add ProMed ABPM fitting tutorial link]</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Nurse / Phlebotomist</div>
+            <div class="step-title">Device Return &amp; Download</div>
+            <div class="step-detail">
+              <ul>
+                <li>Receive returned device, check for damage</li>
+                <li>Download 24-hour trace using ProMed software</li>
+                <li>Save report to Socrates patient chart</li>
+                <li>Task doctor: <em>"ABPM report available for review"</em></li>
+                <li>If device not returned within agreed timeframe: contact patient; escalate to PM if not returned within 1 week</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Doctor</div>
+            <div class="step-title">Interpretation &amp; Follow-Up</div>
+            <div class="step-detail">
+              Review full 24-hour report alongside bloods and CDM context:
+              <div style="background:#f1f5f9;border-radius:6px;padding:10px 12px;margin:8px 0 10px;font-size:0.78rem;line-height:1.85">
+                <strong style="color:var(--navy)">Target thresholds:</strong><br>
+                24-hour average: &lt;130/80 mmHg<br>
+                Daytime average: &lt;135/85 mmHg<br>
+                Night-time average: &lt;120/70 mmHg
+              </div>
+              <ul>
+                <li><strong>Within targets</strong> — document, no medication change</li>
+                <li><strong>Above targets</strong> — review medications, lifestyle advice, consider up-titration</li>
+                <li><strong>Non-dipping pattern</strong> (night BP does not fall &gt;10%) — clinical significance; consider secondary causes, cardiology input if indicated</li>
+                <li><strong>White coat hypertension</strong> (surgery BP high, ABPM normal) — reassure, monitor, avoid over-treating</li>
+                <li><strong>Masked hypertension</strong> (surgery BP normal, ABPM elevated) — treat as per guidelines</li>
+                <li>Document interpretation and management plan in chart</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
