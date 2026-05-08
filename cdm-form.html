@@ -795,9 +795,44 @@
         </div>
       </div>
 
-      <!-- ══ SECTION 4: Medications ══ -->
+      <!-- ══ SECTION 4: Physical Measurements (Optional) ══ -->
       <div class="section-header">
         <div class="section-number">4</div>
+        <div class="section-header-text"><h2>Physical Measurements</h2><p>Optional — will be taken at your appointment if not provided</p></div>
+      </div>
+
+      <div class="info-box">
+        If you are able to weigh yourself and measure your waist at home, please complete the fields below. Both are entirely optional — we will take these measurements at your appointment if you prefer.
+      </div>
+
+      <div class="field-group">
+        <label for="weight">Weight <span class="optional">(optional)</span></label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <input type="number" id="weight" name="weight" placeholder="e.g. 75" min="20" max="300" step="0.1" style="max-width:160px"/>
+          <span style="font-size:0.88rem;color:var(--text-muted)">kg</span>
+        </div>
+        <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;font-weight:300">Weigh yourself in the morning before eating, with light clothing and no shoes. If you don't have scales, no problem — we'll measure at your appointment.</p>
+      </div>
+
+      <div class="field-group">
+        <label for="waist">Waist Circumference <span class="optional">(optional)</span></label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <input type="number" id="waist" name="waist-circumference" placeholder="e.g. 88" min="40" max="200" step="0.5" style="max-width:160px"/>
+          <span style="font-size:0.88rem;color:var(--text-muted)">cm</span>
+        </div>
+        <div style="background:#f1f5f9;border-radius:6px;padding:10px 12px;margin-top:10px;font-size:0.78rem;color:var(--text-muted);line-height:1.8">
+          <strong style="color:var(--navy)">How to measure your waist:</strong><br>
+          1. Stand upright and breathe normally.<br>
+          2. Find the midpoint between your lowest rib and the top of your hip bone — roughly level with your belly button.<br>
+          3. Wrap a tape measure around your bare skin at this point. It should sit flat without pressing in.<br>
+          4. Take the reading at the end of a gentle exhale.
+        </div>
+        <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;font-weight:300">If you are unable to measure or would prefer not to, we will do this at your appointment.</p>
+      </div>
+
+      <!-- ══ SECTION 5: Medications ══ -->
+      <div class="section-header">
+        <div class="section-number">5</div>
         <div class="section-header-text"><h2>Medications &amp; Allergies</h2><p>Current medication list</p></div>
       </div>
 
@@ -810,9 +845,9 @@
         <textarea id="current-medications" name="current-medications" placeholder="List any new medications — name, dose, and who prescribed them. Write 'None' if nothing new."></textarea>
       </div>
 
-      <!-- ══ SECTION 5: ABPM Consent ══ -->
+      <!-- ══ SECTION 6: ABPM Consent ══ -->
       <div class="section-header">
-        <div class="section-number">5</div>
+        <div class="section-number">6</div>
         <div class="section-header-text"><h2>24-Hour Blood Pressure Monitor (ABPM)</h2><p>Consent and device responsibility</p></div>
       </div>
 
@@ -876,9 +911,9 @@
         </div>
       </div>
 
-      <!-- ══ SECTION 6: What Happens on the Day ══ -->
+      <!-- ══ SECTION 7: What Happens on the Day ══ -->
       <div class="section-header">
-        <div class="section-number">6</div>
+        <div class="section-number">7</div>
         <div class="section-header-text"><h2>What to Expect on the Day</h2><p>Your appointment at a glance</p></div>
       </div>
 
@@ -910,9 +945,9 @@
         </div>
       </div>
 
-      <!-- ══ SECTION 7: Data Consent & Confirmation ══ -->
+      <!-- ══ SECTION 8: Data Consent & Confirmation ══ -->
       <div class="section-header">
-        <div class="section-number">7</div>
+        <div class="section-number">8</div>
         <div class="section-header-text"><h2>Data Consent &amp; Confirmation</h2><p>Please read and confirm before submitting</p></div>
       </div>
 
