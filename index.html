@@ -831,6 +831,11 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
                 <div style="font-weight:600;margin-bottom:8px">📱 Bulk Text Reminder Tracker</div>
                 <div id="cdm-reminder-status"></div>
               </div>
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-top:10px;font-size:0.8rem">
+                <div style="font-weight:600;margin-bottom:8px">✉️ Bulk Text Template <span style="font-weight:400;color:var(--text-muted);font-size:0.72rem">(160 characters — replace [FORM LINK] with your Netlify URL)</span></div>
+                <div id="cdm-sms-template" style="background:white;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.6;color:var(--text);font-family:'DM Sans',sans-serif">Hi, your CDM review is due at Kinsealy MC. Please complete the form before booking: [FORM LINK] No form = no appointment.</div>
+                <button class="cdm-reminder-btn" style="margin-top:8px" onclick="(function(){var t=document.getElementById('cdm-sms-template');navigator.clipboard.writeText(t.innerText).then(function(){var b=event.target;b.textContent='Copied!';setTimeout(function(){b.textContent='Copy text'},1800)})})()">Copy text</button>
+              </div>
             </div>
           </div>
         </div>
@@ -2823,6 +2828,7 @@ function goToSOP(sectionId, sopId) {
 }
 
 // CDM BULK TEXT REMINDER TRACKER
+const CDM_INTERVAL = 30 * 24 * 60 * 60 * 1000; // monthly
 function initCDMReminder() {
   const el = document.getElementById('cdm-reminder-status');
   if (!el) return;
@@ -2830,26 +2836,40 @@ function initCDMReminder() {
 }
 function renderCDMReminder(el) {
   const raw = localStorage.getItem('cdm-bulk-text-last');
-  const TWO_MONTHS = 60 * 24 * 60 * 60 * 1000;
+  const prev = localStorage.getItem('cdm-bulk-text-prev');
   if (!raw) {
     el.innerHTML = '<span class="reminder-overdue">⚠️ No bulk text logged yet</span><br><button class="cdm-reminder-btn" onclick="logCDMBulkText()">Log bulk text sent today</button>';
     return;
   }
   const last = new Date(raw);
-  const next = new Date(last.getTime() + TWO_MONTHS);
+  const next = new Date(last.getTime() + CDM_INTERVAL);
   const days = Math.round((next - new Date()) / (24 * 60 * 60 * 1000));
   let status;
   if (days < 0) {
     status = `<span class="reminder-overdue">⚠️ Overdue — was due ${next.toLocaleDateString('en-IE')} (${Math.abs(days)} days ago)</span>`;
-  } else if (days <= 14) {
+  } else if (days <= 10) {
     status = `<span class="reminder-warn">⚡ Due soon: ${next.toLocaleDateString('en-IE')} (${days} days)</span>`;
   } else {
     status = `<span class="reminder-ok">✅ Next due: ${next.toLocaleDateString('en-IE')} (${days} days)</span>`;
   }
-  el.innerHTML = `<div style="margin-bottom:6px">Last sent: <strong>${last.toLocaleDateString('en-IE')}</strong></div>${status}<br><button class="cdm-reminder-btn" onclick="logCDMBulkText()">Log bulk text sent today</button>`;
+  const undoBtn = prev !== null ? `<button class="cdm-reminder-btn" style="background:#64748b;margin-left:6px" onclick="undoCDMBulkText()">Undo</button>` : '';
+  el.innerHTML = `<div style="margin-bottom:6px">Last sent: <strong>${last.toLocaleDateString('en-IE')}</strong></div>${status}<br><button class="cdm-reminder-btn" onclick="logCDMBulkText()">Log bulk text sent today</button>${undoBtn}`;
 }
 function logCDMBulkText() {
+  const current = localStorage.getItem('cdm-bulk-text-last');
+  localStorage.setItem('cdm-bulk-text-prev', current || '');
   localStorage.setItem('cdm-bulk-text-last', new Date().toISOString());
+  const el = document.getElementById('cdm-reminder-status');
+  if (el) renderCDMReminder(el);
+}
+function undoCDMBulkText() {
+  const prev = localStorage.getItem('cdm-bulk-text-prev');
+  if (prev === '') {
+    localStorage.removeItem('cdm-bulk-text-last');
+  } else if (prev) {
+    localStorage.setItem('cdm-bulk-text-last', prev);
+  }
+  localStorage.removeItem('cdm-bulk-text-prev');
   const el = document.getElementById('cdm-reminder-status');
   if (el) renderCDMReminder(el);
 }
