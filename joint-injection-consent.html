@@ -515,12 +515,11 @@
 
     // Consent checkboxes
     const boxes = ['consent_risks', 'consent_no_guarantee', 'consent_records', 'consent_final'];
-    boxes.forEach(id => {
-      if (!document.getElementById(id).checked) {
-        alert('Please tick all consent checkboxes before submitting.');
-        valid = false;
-      }
-    });
+    const unchecked = boxes.filter(id => !document.getElementById(id).checked);
+    if (unchecked.length > 0) {
+      alert('Please tick all consent checkboxes before submitting.');
+      valid = false;
+    }
 
     if (!hasSig) {
       alert('Please provide your signature before submitting.');
@@ -534,7 +533,7 @@
     const data = new FormData(form);
 
     try {
-      const res = await fetch('/joint-injection-consent.html', {
+      const res = await fetch(window.location.pathname, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data).toString()
