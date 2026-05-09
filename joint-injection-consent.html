@@ -528,12 +528,11 @@
 
     if (!valid) return;
 
-    sigHidden.value = 'Signed digitally on ' + dateStr;
-
     const data = new FormData(form);
+    data.set('signature', 'Signed digitally on ' + dateStr);
 
     try {
-      const res = await fetch(window.location.pathname, {
+      const res = await fetch('/joint-injection-consent.html', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data).toString()
