@@ -1796,44 +1796,182 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
   </div>
 
   <div class="section-label">New Patient Onboarding</div>
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Practice Management" data-sop-name="New Patient Onboarding">
+  <div class="sop-card" data-updated="2026-05-11" data-section-name="Practice Management" data-sop-name="New Patient Onboarding">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🆕</span><h3>New Patient Onboarding</h3></div>
       <span class="sop-toggle">▼</span>
     </div>
-    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🔄 Last updated: 11/05/2026</span></div>
     <div class="sop-body">
+
+      <div class="info-box" style="margin-bottom:16px">
+        <strong>Purpose</strong><br>
+        To register appropriate new patients efficiently, protect the practice from high-risk or out-of-catchment registrations, identify CDM and GMS/DVC obligations at the point of entry, and ensure all card transfers are completed without delay.
+      </div>
+
       <div class="journey">
+
+        <!-- STEP 1 -->
         <div class="journey-step">
-          <div class="step-dot dot-sec">MS</div>
+          <div class="step-dot dot-sec">1</div>
           <div class="step-content step-content-sec">
             <div class="step-role step-role-sec">Secretary</div>
-            <div class="step-title">Step 1 — Patient Submits Form</div>
-            <div class="step-detail">Direct patient to complete New Patient Registration Form on website.</div>
-          </div>
-        </div>
-        <div class="journey-step">
-          <div class="step-dot dot-pm">PM</div>
-          <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">PM / Admin</div>
-            <div class="step-title">Step 2 — Assessment</div>
+            <div class="step-title">Step 1 — Enquiry Received (Phone / Walk-in)</div>
             <div class="step-detail">
-              Patient accepted ONLY if ALL of the following apply:<br>
-              📍 <strong>Catchment:</strong> Closest GP to address (proof required) and not registered elsewhere — OR has first-degree relative attending.<br>
-              💊 <strong>Medication check:</strong> Must NOT be on benzodiazepines or opioids. If so → escalate to GP Partner.<br>
-              🏥 <strong>Previous GP:</strong> Do not accept if from Swords or Malahide (unless moved address).<br>
-              💳 <strong>Medical card:</strong> If GMS — switch on PCRS immediately and document.
+              If a patient calls or walks in asking about registering, <strong>direct them to the website</strong> — all information and the registration form are there.<br><br>
+              Tell them: <em>"All the information about registering and our prescribing policy is on our website at kinsealymedicalcentre.ie — there's an online form to complete there."</em><br><br>
+              Do <strong>not</strong> take details over the phone or add them to a waiting list. The website form is the only intake route.
             </div>
           </div>
         </div>
+
+        <!-- STEP 2 -->
         <div class="journey-step">
-          <div class="step-dot dot-pm">PM</div>
+          <div class="step-dot dot-pm">2</div>
           <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">PM</div>
-            <div class="step-title">Step 3 — Decision</div>
-            <div class="step-detail">Accepted: Add to Socrates, schedule appointment if requested, send welcome text/email, update medical card status.<br>Declined: Politely inform, suggest HSE Find-a-GP tool. Document in 'DECLINED REGISTRATIONS' file.</div>
+            <div class="step-role step-role-pm">PM / Admin</div>
+            <div class="step-title">Step 2 — Review Submitted Application</div>
+            <div class="step-detail">
+              Applications arrive via Formspree (email). Review the following:<br><br>
+              <ul>
+                <li>📍 <strong>Catchment:</strong> Are we the closest GP to their address? Check on Google Maps if unsure. If clearly outside catchment → decline.</li>
+                <li>🏥 <strong>No GP in area:</strong> Is there currently no GP accepting patients near them? If confirmed → can proceed without GP Partner sign-off.</li>
+                <li>💊 <strong>Medications:</strong> Scan the medication list they submitted — see Step 3 below for the AI screening prompt.</li>
+                <li>📋 <strong>Previous GP:</strong> Note which practice they are leaving and the reason given.</li>
+              </ul>
+            </div>
           </div>
         </div>
+
+        <!-- STEP 3 -->
+        <div class="journey-step">
+          <div class="step-dot dot-pm">3</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM / Admin</div>
+            <div class="step-title">Step 3 — AI Medication Screen (CDM &amp; Risk)</div>
+            <div class="step-detail">
+              Copy the patient's medication list from their form and paste it into Claude or ChatGPT using the prompt below. The AI will flag any CDM conditions to enrol, prescribing concerns to escalate, and GMS/DVC obligations.<br><br>
+
+              <div style="background:#1a2d4a;color:#e2f0ee;border-radius:8px;padding:16px 18px;font-family:monospace;font-size:0.78rem;line-height:1.75;white-space:pre-wrap;margin-top:8px;margin-bottom:8px;">You are a GP practice administrator in Ireland. A new patient has submitted this medication list as part of their registration form:
+
+[PASTE MEDICATION LIST HERE]
+
+Please do the following:
+1. Identify any medications that indicate a CDM (Chronic Disease Management) condition under the Irish GMS scheme — specifically: Type 1 or Type 2 Diabetes, Asthma, COPD, Cardiovascular Disease (hypertension, heart failure, ischaemic heart disease), or Chronic Kidney Disease. List each condition and the medication that indicates it.
+2. Flag any opioids, benzodiazepines, z-drugs (zopiclone, zolpidem), or other controlled drugs. List each one.
+3. Note any other high-complexity medications that a GP Partner should be aware of before accepting this patient.
+4. Provide a brief summary: (a) CDM enrolments to action, (b) whether this application should be escalated to the GP Partner, and (c) any immediate actions recommended.
+
+Keep the response concise and structured for a non-clinical administrator.</div>
+
+              <strong>What to do with the output:</strong>
+              <ul style="margin-top:6px">
+                <li>If <strong>CDM conditions identified</strong> → note them for enrolment at Step 6.</li>
+                <li>If <strong>opioids / controlled drugs flagged</strong> → do NOT proceed — escalate to GP Partner (Step 4b).</li>
+                <li>If <strong>no controlled drugs</strong>, in catchment, and no GP in area → proceed to accept (Step 4a).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4 BRANCH -->
+        <div class="journey-step">
+          <div class="step-dot dot-pm">4</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM</div>
+            <div class="step-title">Step 4 — Accept / Escalate Decision</div>
+            <div class="step-detail">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px">
+                <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:12px">
+                  <strong style="color:#166534;display:block;margin-bottom:6px">✅ Can accept without GP Partner</strong>
+                  ALL of the following must apply:
+                  <ul style="margin-top:6px;font-size:0.78rem">
+                    <li>In catchment area</li>
+                    <li>No GP accepting patients near them</li>
+                    <li>No opioids or controlled drugs on medication list</li>
+                  </ul>
+                  <span style="font-size:0.75rem;color:#166534;display:block;margin-top:8px">→ Proceed to Step 5</span>
+                </div>
+                <div style="background:#fff7ed;border:1.5px solid #fed7aa;border-radius:8px;padding:12px">
+                  <strong style="color:#9a3412;display:block;margin-bottom:6px">⚠️ Must escalate to GP Partner</strong>
+                  Any of the following apply:
+                  <ul style="margin-top:6px;font-size:0.78rem">
+                    <li>Opioids or controlled drugs on list</li>
+                    <li>Outside catchment</li>
+                    <li>GPs available in their area</li>
+                    <li>Any other concern flagged by AI screen</li>
+                  </ul>
+                  <span style="font-size:0.75rem;color:#9a3412;display:block;margin-top:8px">→ Hold application — notify GP Partner with AI summary</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="journey-step">
+          <div class="step-dot dot-pm">5</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">PM / Admin</div>
+            <div class="step-title">Step 5 — Add to Socrates &amp; Card Transfer</div>
+            <div class="step-detail">
+              <ul>
+                <li>Create new patient record in Socrates (full name, DOB, PPS, address, phone, email).</li>
+                <li>Record previous GP and reason for leaving.</li>
+                <li><strong>If GMS (Medical Card) or DVC (GP Visit Card)</strong> → <strong>transfer card on PCRS immediately</strong>. Do not delay — this activates the capitation payment. Log transfer date in patient notes.</li>
+                <li><strong>If patient is under 8 or over 70</strong> → <strong>register for GMS/DVC immediately</strong> regardless of whether they have presented a card. Check entitlement on PCRS and action same day.</li>
+                <li>Send welcome text/email: <em>"Welcome to Kinsealy Medical Centre. Your registration is confirmed. Our number is (01) 840 5940."</em></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 6 -->
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">6</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">PM / Admin</div>
+            <div class="step-title">Step 6 — CDM Enrolment &amp; Book</div>
+            <div class="step-detail">
+              If the AI screen (Step 3) identified any CDM conditions:<br><br>
+              <ul>
+                <li>Enrol in relevant CDM programme(s) on Socrates: Diabetes / Asthma / COPD / CVD / CKD.</li>
+                <li>Book the patient for their CDM cycle review — use the CDM appointment type in Socrates.</li>
+                <li>Flag to the nurse coordinator so bloods / recalls can be scheduled appropriately.</li>
+              </ul>
+              If no CDM conditions identified, no action required at this step.
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 7 -->
+        <div class="journey-step">
+          <div class="step-dot dot-sec">7</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary</div>
+            <div class="step-title">Step 7 — Request Records from Previous GP</div>
+            <div class="step-detail">
+              Send a records request to the previous GP practice via <strong>Healthmail</strong> (kinsealymedicalcentre.gp@healthmail.ie).<br><br>
+              Include: patient full name, DOB, PPS number, and signed records-release authorisation (submitted with registration form).<br><br>
+              Note the request date in Socrates patient notes. Chase after 4 weeks if no response. File records in Socrates when received.
+            </div>
+          </div>
+        </div>
+
+        <!-- DECLINE -->
+        <div class="journey-step">
+          <div class="step-dot dot-all">✕</div>
+          <div class="step-content step-content-all">
+            <div class="step-role step-role-all">PM / Admin — If Declining</div>
+            <div class="step-title">Declining an Application</div>
+            <div class="step-detail">
+              Contact the patient by phone or email. Be polite and brief — do not give clinical reasons.<br><br>
+              <em>"Thank you for your application. Unfortunately we are unable to register you at this time. You can find a GP in your area using the HSE Find-a-GP tool at hse.ie."</em><br><br>
+              Log the declined application in the <strong>DECLINED REGISTRATIONS</strong> file (PM shared drive) with date, name, and reason (internal use only).
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
