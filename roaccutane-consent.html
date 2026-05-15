@@ -192,7 +192,7 @@
   <input type="checkbox" name="consent-mental-health"/><input type="checkbox" name="consent-side-effects"/>
   <input type="checkbox" name="consent-bloods"/><input type="checkbox" name="consent-sun"/>
   <input type="checkbox" name="consent-alcohol"/><input type="checkbox" name="consent-skincare"/>
-  <input type="checkbox" name="consent-data"/>
+  <input type="checkbox" name="consent-monthly"/><input type="checkbox" name="consent-data"/>
   <input type="text" name="guardian-name"/><input type="text" name="guardian-relation"/>
   <input type="hidden" name="signature"/><input type="hidden" name="guardian-signature"/>
 </form>
@@ -560,6 +560,14 @@
       </div>
 
       <div class="consent-block">
+        <div class="consent-block-header"><h3>Monthly Follow-up Requirement</h3></div>
+        <div class="consent-item">
+          <input type="checkbox" id="c-monthly" name="consent-monthly" value="agreed"/>
+          <label for="c-monthly"><strong>Monthly consultations are mandatory</strong> throughout my treatment. I understand that a prescription can only be issued following a consultation with doctor sign-off. If I miss my monthly appointment, <strong>no prescription can be provided.</strong></label>
+        </div>
+      </div>
+
+      <div class="consent-block">
         <div class="consent-block-header"><h3>Data Consent</h3></div>
         <div class="consent-item">
           <input type="checkbox" id="c-data" name="consent-data" value="agreed"/>
@@ -788,7 +796,7 @@
   // ── Validation ──────────────────────────────────────────────────
   const form = document.getElementById('roaccutaneForm');
   const femaleIds = ['pB2','pB3','pB4','pB5','pB6','pB7','pB8','pB9','pB10','pB11','pB12','pB13','pB14'];
-  const allIds = ['pB1','pB15','pB16','c-mh','c-se','c-sun','c-alc','c-bl','c-data','c-skin'];
+  const allIds = ['pB1','pB15','pB16','c-mh','c-se','c-sun','c-alc','c-bl','c-monthly','c-data','c-skin'];
 
   function setError(id,show){const fg=document.getElementById('fg-'+id);if(fg)fg.classList.toggle('has-error',show);}
   function validateEmail(v){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
