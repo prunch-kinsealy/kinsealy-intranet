@@ -175,7 +175,7 @@
   <input type="text" name="patient-name"/><input type="date" name="dob"/>
   <input type="text" name="pps"/><input type="email" name="email"/>
   <input type="tel" name="phone"/><input type="text" name="address"/>
-  <select name="sex"></select><input type="text" name="gp"/>
+  <select name="sex"></select><input type="text" name="gp"/><input type="number" name="weight"/>
   <input type="number" name="age-onset"/><textarea name="topical-products"></textarea>
   <textarea name="oral-products"></textarea><textarea name="prior-roaccutane"></textarea>
   <select name="mental-health-hx"></select><textarea name="mental-health-detail"></textarea>
@@ -288,6 +288,12 @@
             <button type="button" class="sex-btn" id="btnFemale" onclick="setSex('female')">♀ Female</button>
           </div>
         </div>
+      </div>
+      <div class="field-group" id="fg-weight">
+        <label for="weight">Weight (kg) <span class="required">*</span></label>
+        <input type="number" id="weight" name="weight" placeholder="e.g. 65" min="30" max="200"/>
+        <div class="field-hint" style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">Required to determine your dose of medication.</div>
+        <div class="field-error">Please enter your weight.</div>
       </div>
 
       <!-- ══ SECTION 2: Medical History ══ -->
@@ -791,7 +797,7 @@
     e.preventDefault(); let valid = true;
 
     // Required text fields
-    ['patient-name','dob','pps','email','phone','address','gp'].forEach(f=>{
+    ['patient-name','dob','pps','email','phone','address','gp','weight'].forEach(f=>{
       const el=document.getElementById(f);
       const empty=!el.value.trim();
       const emailBad=f==='email'&&!empty&&!validateEmail(el.value);
@@ -839,7 +845,7 @@
     } catch { alert('Network error. Please check your connection and try again.'); }
   });
 
-  ['patient-name','dob','pps','email','phone','address','gp'].forEach(f=>{
+  ['patient-name','dob','pps','email','phone','address','gp','weight'].forEach(f=>{
     const el=document.getElementById(f); if(el) el.addEventListener('input',()=>setError(f,false));
   });
 </script>
