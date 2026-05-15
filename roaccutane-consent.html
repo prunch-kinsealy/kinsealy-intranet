@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Roaccutane Consent Form – Kinsealy Medical Centre</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>emailjs.init('EMAILJS_PUBLIC_KEY');</script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -211,7 +213,7 @@
   <div class="success-screen" id="successScreen">
     <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
     <h2>Form Submitted</h2>
-    <p>Thank you. Your Roaccutane consent form has been received by Kinsealy Medical Centre.<br>Your GP will review this before your next appointment.</p>
+    <p>Thank you. Your Roaccutane consent form has been received by Kinsealy Medical Centre.<br>A copy has been sent to your email address for your records.<br>Your GP will review this before your next appointment.</p>
   </div>
 
   <div id="mainForm">
@@ -846,6 +848,34 @@
     try {
       const res = await fetch('/roaccutane-consent.html',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(data).toString()});
       if (res.ok) {
+        // Send confirmation email to patient
+        const name = document.getElementById('patient-name').value;
+        const email = document.getElementById('email').value;
+        const dob = document.getElementById('dob').value;
+        const weight = document.getElementById('weight').value;
+        const gp = document.getElementById('gp').value;
+        const isFemale = selectedSex === 'female';
+        emailjs.send('EMAILJS_SERVICE_ID', 'EMAILJS_TEMPLATE_ID', {
+          patient_name: name,
+          patient_email: email,
+          dob: dob,
+          weight_kg: weight,
+          gp: gp,
+          submitted_date: dateStr,
+          contraception_section: isFemale ? 'Yes — contraception and pregnancy prevention sections completed.' : 'N/A',
+          consent_summary: [
+            'I understand why I have been prescribed Roaccutane® and that it is for severe acne that has not responded to other treatments.',
+            isFemale ? 'I understand Roaccutane® can seriously harm an unborn baby and have completed the full pregnancy prevention programme.' : null,
+            'I am aware of the mental health and mood risks and agree to contact my GP immediately if I notice any changes.',
+            'I have been informed of the potential side effects of isotretinoin.',
+            'I understand the blood monitoring schedule and that all tests must be completed fasting before each appointment.',
+            'I understand that monthly consultations are mandatory and no prescription can be issued without doctor sign-off at each visit.',
+            'I understand sun sensitivity risks and will use SPF 30+ daily.',
+            'I understand alcohol should be minimised during treatment.',
+            'I have read and understood the skincare advice.',
+            'I consent to my data being stored securely as part of my medical record.'
+          ].filter(Boolean).join('\n• ')
+        });
         document.getElementById('mainForm').style.display='none';
         document.getElementById('successScreen').style.display='block';
         window.scrollTo({top:0,behavior:'smooth'});
