@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Roaccutane Consent Form – Kinsealy Medical Centre</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>emailjs.init('EMAILJS_PUBLIC_KEY');</script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -177,7 +175,7 @@
   <input type="text" name="patient-name"/><input type="date" name="dob"/>
   <input type="text" name="pps"/><input type="email" name="email"/>
   <input type="tel" name="phone"/><input type="text" name="address"/>
-  <select name="sex"></select><input type="text" name="gp"/><input type="number" name="weight"/>
+  <select name="sex"></select><input type="text" name="gp"/>
   <input type="number" name="age-onset"/><textarea name="topical-products"></textarea>
   <textarea name="oral-products"></textarea><textarea name="prior-roaccutane"></textarea>
   <select name="mental-health-hx"></select><textarea name="mental-health-detail"></textarea>
@@ -194,7 +192,7 @@
   <input type="checkbox" name="consent-mental-health"/><input type="checkbox" name="consent-side-effects"/>
   <input type="checkbox" name="consent-bloods"/><input type="checkbox" name="consent-sun"/>
   <input type="checkbox" name="consent-alcohol"/><input type="checkbox" name="consent-skincare"/>
-  <input type="checkbox" name="consent-monthly"/><input type="checkbox" name="consent-data"/>
+  <input type="checkbox" name="consent-data"/>
   <input type="text" name="guardian-name"/><input type="text" name="guardian-relation"/>
   <input type="hidden" name="signature"/><input type="hidden" name="guardian-signature"/>
 </form>
@@ -213,7 +211,7 @@
   <div class="success-screen" id="successScreen">
     <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
     <h2>Form Submitted</h2>
-    <p>Thank you. Your Roaccutane consent form has been received by Kinsealy Medical Centre.<br>A copy has been sent to your email address for your records.<br>Your GP will review this before your next appointment.</p>
+    <p>Thank you. Your Roaccutane consent form has been received by Kinsealy Medical Centre.<br>Your GP will review this before your next appointment.</p>
   </div>
 
   <div id="mainForm">
@@ -290,12 +288,6 @@
             <button type="button" class="sex-btn" id="btnFemale" onclick="setSex('female')">♀ Female</button>
           </div>
         </div>
-      </div>
-      <div class="field-group" id="fg-weight">
-        <label for="weight">Weight (kg) <span class="required">*</span></label>
-        <input type="number" id="weight" name="weight" placeholder="e.g. 65" min="30" max="200"/>
-        <div class="field-hint" style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">Required to determine your dose of medication.</div>
-        <div class="field-error">Please enter your weight.</div>
       </div>
 
       <!-- ══ SECTION 2: Medical History ══ -->
@@ -531,26 +523,26 @@
             As per NICE guidance, the following blood tests are required before and during treatment. Your GP will arrange these at the appropriate timepoints.
           </div>
           <div class="bloods-table">
-            <div class="bloods-table-header">Blood Monitoring Schedule (NICE CG184 / BNF)</div>
+            <div class="bloods-table-header">Blood Monitoring Schedule</div>
             <div class="bloods-row">
-              <div class="bl-time">Before starting</div>
+              <div class="bl-time">Prior to initiation or on same day</div>
               <div class="bl-tests"><span>LFTs</span><span>Fasting lipids</span><span>FBC</span><span>Pregnancy test (females)</span></div>
             </div>
             <div class="bloods-row">
-              <div class="bl-time">After 4–8 weeks</div>
-              <div class="bl-tests"><span>LFTs</span><span>Fasting lipids</span><span>Pregnancy test (females)</span> — first on-treatment check, typically at 4–6 weeks into treatment</div>
+              <div class="bl-time">At 1 month</div>
+              <div class="bl-tests"><span>LFTs</span><span>Fasting lipids</span><span>Pregnancy test (females)</span></div>
             </div>
             <div class="bloods-row">
-              <div class="bl-time">At peak / dose change</div>
-              <div class="bl-tests"><span>LFTs</span><span>Fasting lipids</span><span>FBC</span><span>Pregnancy test (females)</span> — repeat whenever dose is increased or at peak dose</div>
+              <div class="bl-time">At 2 months</div>
+              <div class="bl-tests"><span>LFTs</span><span>Fasting lipids</span><span>Pregnancy test (females)</span></div>
+            </div>
+            <div class="bloods-row">
+              <div class="bl-time">Dose change or clinically indicated</div>
+              <div class="bl-tests"><span>LFTs</span><span>Fasting lipids</span><span>FBC</span><span>Pregnancy test (females)</span></div>
             </div>
             <div class="bloods-row">
               <div class="bl-time">Monthly (females)</div>
               <div class="bl-tests"><span>Pregnancy test</span> — required every 4 weeks throughout treatment and 1 month post-treatment</div>
-            </div>
-            <div class="bloods-row">
-              <div class="bl-time">End of treatment</div>
-              <div class="bl-tests"><span>LFTs</span><span>Fasting lipids</span><span>Pregnancy test (females)</span></div>
             </div>
           </div>
           <p style="font-size:0.8rem;color:var(--text-muted);font-weight:300;line-height:1.6;">Treatment may need to be <strong>paused or stopped</strong> if liver enzymes or triglycerides are significantly elevated. Your GP will review all results before each prescription.</p>
@@ -562,10 +554,10 @@
       </div>
 
       <div class="consent-block">
-        <div class="consent-block-header"><h3>Monthly Follow-up Requirement</h3></div>
+        <div class="consent-block-header"><h3>Monthly Consultations</h3></div>
         <div class="consent-item">
-          <input type="checkbox" id="c-monthly" name="consent-monthly" value="agreed"/>
-          <label for="c-monthly"><strong>Monthly consultations are mandatory</strong> throughout my treatment. I understand that a prescription can only be issued following a consultation with doctor sign-off. If I miss my monthly appointment, <strong>no prescription can be provided.</strong></label>
+          <input type="checkbox" id="c-monthly" name="consent-monthly-consult" value="agreed"/>
+          <label for="c-monthly">Monthly consultations are mandatory throughout my treatment. I understand that a prescription can only be issued following a consultation with doctor sign-off. If I miss my monthly appointment, no prescription can be provided. Monthly appointments are required to monitor progress, mental health and any potential side effects.</label>
         </div>
       </div>
 
@@ -798,7 +790,7 @@
   // ── Validation ──────────────────────────────────────────────────
   const form = document.getElementById('roaccutaneForm');
   const femaleIds = ['pB2','pB3','pB4','pB5','pB6','pB7','pB8','pB9','pB10','pB11','pB12','pB13','pB14'];
-  const allIds = ['pB1','pB15','pB16','c-mh','c-se','c-sun','c-alc','c-bl','c-monthly','c-data','c-skin'];
+  const allIds = ['pB1','pB15','pB16','c-mh','c-se','c-sun','c-alc','c-bl','c-data','c-skin'];
 
   function setError(id,show){const fg=document.getElementById('fg-'+id);if(fg)fg.classList.toggle('has-error',show);}
   function validateEmail(v){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
@@ -807,7 +799,7 @@
     e.preventDefault(); let valid = true;
 
     // Required text fields
-    ['patient-name','dob','pps','email','phone','address','gp','weight'].forEach(f=>{
+    ['patient-name','dob','pps','email','phone','address','gp'].forEach(f=>{
       const el=document.getElementById(f);
       const empty=!el.value.trim();
       const emailBad=f==='email'&&!empty&&!validateEmail(el.value);
@@ -848,34 +840,6 @@
     try {
       const res = await fetch('/roaccutane-consent.html',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(data).toString()});
       if (res.ok) {
-        // Send confirmation email to patient
-        const name = document.getElementById('patient-name').value;
-        const email = document.getElementById('email').value;
-        const dob = document.getElementById('dob').value;
-        const weight = document.getElementById('weight').value;
-        const gp = document.getElementById('gp').value;
-        const isFemale = selectedSex === 'female';
-        emailjs.send('EMAILJS_SERVICE_ID', 'EMAILJS_TEMPLATE_ID', {
-          patient_name: name,
-          patient_email: email,
-          dob: dob,
-          weight_kg: weight,
-          gp: gp,
-          submitted_date: dateStr,
-          contraception_section: isFemale ? 'Yes — contraception and pregnancy prevention sections completed.' : 'N/A',
-          consent_summary: [
-            'I understand why I have been prescribed Roaccutane® and that it is for severe acne that has not responded to other treatments.',
-            isFemale ? 'I understand Roaccutane® can seriously harm an unborn baby and have completed the full pregnancy prevention programme.' : null,
-            'I am aware of the mental health and mood risks and agree to contact my GP immediately if I notice any changes.',
-            'I have been informed of the potential side effects of isotretinoin.',
-            'I understand the blood monitoring schedule and that all tests must be completed fasting before each appointment.',
-            'I understand that monthly consultations are mandatory and no prescription can be issued without doctor sign-off at each visit.',
-            'I understand sun sensitivity risks and will use SPF 30+ daily.',
-            'I understand alcohol should be minimised during treatment.',
-            'I have read and understood the skincare advice.',
-            'I consent to my data being stored securely as part of my medical record.'
-          ].filter(Boolean).join('\n• ')
-        });
         document.getElementById('mainForm').style.display='none';
         document.getElementById('successScreen').style.display='block';
         window.scrollTo({top:0,behavior:'smooth'});
@@ -883,7 +847,7 @@
     } catch { alert('Network error. Please check your connection and try again.'); }
   });
 
-  ['patient-name','dob','pps','email','phone','address','gp','weight'].forEach(f=>{
+  ['patient-name','dob','pps','email','phone','address','gp'].forEach(f=>{
     const el=document.getElementById(f); if(el) el.addEventListener('input',()=>setError(f,false));
   });
 </script>
