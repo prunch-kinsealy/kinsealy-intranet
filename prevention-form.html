@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prevention Programme Pre-Appointment Form – Kinsealy Medical Centre</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --navy:#1a2e44;--teal:#2a7c8a;--teal-pale:#e8f4f6;
+      --sand:#f7f4f0;--text:#1e2a35;--text-muted:#5a6a7a;--border:#d0dde6;
+      --error:#c0392b;--white:#ffffff;
+      --warn-bg:#fff8ed;--warn-border:#f6c26b;--warn-text:#7a4600;
+      --info-border:rgba(42,124,138,0.25);
+    }
+    body{font-family:'DM Sans',sans-serif;background:var(--sand);color:var(--text);min-height:100vh}
+    .header{background:var(--navy);padding:28px 40px;display:flex;align-items:center;gap:20px}
+    .header-logo{width:48px;height:48px;background:var(--teal);border-radius:12px;display:flex;align-items:center;justify-content:center}
+    .header-logo svg{width:28px;height:28px;fill:white}
+    .header-text h1{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;color:white}
+    .header-text p{font-size:0.78rem;color:rgba(255,255,255,0.55);font-weight:300;margin-top:2px;letter-spacing:0.06em;text-transform:uppercase}
+    .container{max-width:780px;margin:0 auto;padding:48px 24px 80px}
+    .form-badge{display:inline-flex;align-items:center;gap:6px;background:var(--teal-pale);color:var(--teal);font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:5px 12px;border-radius:20px;margin-bottom:14px}
+    .form-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:600;color:var(--navy);line-height:1.2;margin-bottom:12px}
+    .form-intro{font-size:0.88rem;color:var(--text-muted);line-height:1.7;font-weight:300;border-left:3px solid var(--teal);padding-left:14px;margin-bottom:30px}
+    .warning-box{background:var(--warn-bg);border:1.5px solid var(--warn-border);border-radius:12px;padding:20px 24px;margin-bottom:16px;display:flex;gap:14px;align-items:flex-start}
+    .warning-box .warn-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+    .warning-box h3{font-size:0.88rem;font-weight:600;color:var(--warn-text);margin-bottom:6px}
+    .warning-box p{font-size:0.82rem;color:var(--warn-text);line-height:1.65;font-weight:300}
+    .warning-box p+p{margin-top:8px}
+    .info-box{background:var(--teal-pale);border:1px solid var(--info-border);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:0.83rem;color:var(--navy);line-height:1.65;font-weight:300}
+    .info-box strong{font-weight:600;color:var(--teal)}
+    .section-header{display:flex;align-items:center;gap:14px;margin:36px 0 18px}
+    .section-number{width:32px;height:32px;min-width:32px;background:var(--navy);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:700}
+    .section-header-text h2{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--navy)}
+    .section-header-text p{font-size:0.78rem;color:var(--text-muted);font-weight:300;margin-top:2px}
+    .section-header::after{content:'';flex:1;height:1px;background:var(--border)}
+    .field-group{margin-bottom:20px}
+    label{display:block;font-size:0.82rem;font-weight:600;color:var(--navy);margin-bottom:7px;letter-spacing:0.03em}
+    label .required{color:var(--teal);margin-left:3px}
+    label .optional{font-size:0.72rem;color:var(--text-muted);font-weight:400;margin-left:4px}
+    input[type="text"],input[type="email"],input[type="date"],input[type="tel"],input[type="number"],select,textarea{
+      width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:8px;
+      font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--text);background:white;
+      transition:border-color 0.2s,box-shadow 0.2s;appearance:none;-webkit-appearance:none
+    }
+    textarea{resize:vertical;min-height:80px}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(42,124,138,0.12)}
+    select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;cursor:pointer}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .field-hint{font-size:0.75rem;color:var(--text-muted);margin-top:5px;font-weight:300}
+    .radio-group,.check-group{display:flex;flex-direction:column;gap:9px}
+    .radio-item,.check-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;background:white;cursor:pointer;transition:border-color 0.15s}
+    .radio-item:hover,.check-item:hover{border-color:var(--teal)}
+    .radio-item input,.check-item input{width:17px;height:17px;min-width:17px;accent-color:var(--teal);margin-top:1px;cursor:pointer}
+    .radio-item label,.check-item label{font-size:0.84rem;color:var(--text);margin-bottom:0;font-weight:400;cursor:pointer;letter-spacing:0}
+    .subfield{display:none;margin-top:12px;padding:14px;background:#f8fafc;border-radius:8px;border:1px solid var(--border)}
+    .subfield.visible{display:block}
+    .consent-block{background:white;border:1px solid var(--border);border-radius:12px;margin-bottom:14px;overflow:hidden}
+    .consent-block-header{padding:12px 20px;background:#f8fafc;border-bottom:1px solid var(--border)}
+    .consent-block-header h3{font-size:0.78rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.08em;display:flex;align-items:center;gap:7px}
+    .consent-block-header h3::before{content:'';width:6px;height:6px;background:var(--teal);border-radius:50%;display:inline-block}
+    .consent-item{display:flex;gap:14px;align-items:flex-start;padding:14px 20px;border-bottom:1px solid #f0f4f6}
+    .consent-item:last-child{border-bottom:none}
+    .consent-item input[type="checkbox"]{width:18px;height:18px;min-width:18px;accent-color:var(--teal);margin-top:2px;cursor:pointer}
+    .consent-item label{font-size:0.855rem;color:var(--text);margin-bottom:0;font-weight:400;cursor:pointer;line-height:1.65;letter-spacing:0}
+    .consent-item label strong{color:var(--navy);font-weight:600}
+    .resp-box{background:#fffbf0;border:1.5px solid var(--warn-border);border-radius:12px;padding:22px 26px;margin-bottom:20px}
+    .resp-box-title{font-size:0.88rem;font-weight:700;color:var(--warn-text);margin-bottom:10px}
+    .resp-box-desc{font-size:0.83rem;color:var(--warn-text);line-height:1.65;font-weight:300;margin-bottom:18px}
+    .day-panel{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px}
+    .day-panel-header{background:var(--navy);padding:14px 20px;color:white;font-size:0.85rem;font-weight:600;letter-spacing:0.04em}
+    .day-step{display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid #f0f4f6;align-items:flex-start}
+    .day-step:last-child{border-bottom:none}
+    .day-step-num{width:28px;height:28px;min-width:28px;background:var(--teal-pale);color:var(--teal);border-radius:50%;font-size:0.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+    .day-step-text{font-size:0.83rem;color:var(--text);line-height:1.6;font-weight:300}
+    .day-step-text strong{color:var(--navy);font-weight:600}
+    .submit-btn{width:100%;padding:16px;background:var(--navy);color:white;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;letter-spacing:0.03em;transition:background 0.2s,transform 0.1s;display:flex;align-items:center;justify-content:center;gap:10px}
+    .submit-btn:hover{background:var(--teal)}
+    .submit-btn:active{transform:scale(0.99)}
+    .submit-btn:disabled{opacity:0.7;cursor:not-allowed}
+    .field-error{font-size:0.78rem;color:var(--error);margin-top:5px;display:none}
+    .field-group.has-error input,.field-group.has-error select,.field-group.has-error textarea{border-color:var(--error)}
+    .field-group.has-error .field-error{display:block}
+    .success-screen{display:none;text-align:center;padding:60px 20px}
+    .success-icon{width:72px;height:72px;background:var(--teal-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+    .success-icon svg{width:36px;height:36px;stroke:var(--teal);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+    .success-screen h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--navy);margin-bottom:10px}
+    .success-screen p{font-size:0.9rem;color:var(--text-muted);font-weight:300;line-height:1.7}
+    @media(max-width:580px){
+      .field-row{grid-template-columns:1fr}
+      .header{padding:20px}.container{padding:32px 16px 60px}.form-title{font-size:1.5rem}
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-logo">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+  </div>
+  <div class="header-text">
+    <h1>Kinsealy Medical Centre</h1>
+    <p>Patient Forms Portal</p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h2>Form Received</h2>
+    <p>Thank you. Your health update has been sent to Kinsealy Medical Centre.<br>Our team will review this before your appointment.<br><br>
+    If you have any questions, contact us at <a href="mailto:kinsealymedicalcentre@protonmail.com" style="color:var(--teal)">kinsealymedicalcentre@protonmail.com</a><br>
+    or call <a href="tel:018452500" style="color:var(--teal)">(01) 845 2500</a>.<br><br>
+    Please arrive a few minutes early on the day.</p>
+  </div>
+
+  <div id="mainForm">
+    <div class="form-badge">Prevention Programme</div>
+    <h1 class="form-title">Prevention Programme<br>Pre-Appointment Health Update</h1>
+    <p class="form-intro">Please complete this form before your Prevention Programme appointment. It helps your nurse and doctor prepare and makes the most of your time at the surgery. If you need help completing the form, please contact us at <a href="mailto:kinsealymedicalcentre@protonmail.com" style="color:var(--teal)">kinsealymedicalcentre@protonmail.com</a>.</p>
+
+    <div class="warning-box">
+      <div class="warn-icon">🍽️</div>
+      <div>
+        <h3>Fasting Required — Please Read Before Your Appointment</h3>
+        <p>You must <strong>fast from midnight the night before your appointment</strong>. This means no food or drink except plain water from midnight onwards. Fasting is needed for accurate blood results (cholesterol, triglycerides, glucose).</p>
+        <p><strong>Medications:</strong> Continue all regular medications as normal with a small sip of water.</p>
+      </div>
+    </div>
+
+    <form id="ppForm" novalidate>
+      <input type="hidden" name="submission-date" id="submissionDate"/>
+      <input type="hidden" name="_subject" value="Prevention Programme Pre-Appointment Form — Kinsealy Medical Centre"/>
+      <input type="hidden" name="_template" value="table"/>
+      <input type="hidden" name="_captcha" value="false"/>
+
+      <!-- ══ SECTION 1: Patient Details ══ -->
+      <div class="section-header">
+        <div class="section-number">1</div>
+        <div class="section-header-text"><h2>Patient Details</h2><p>Your personal information</p></div>
+      </div>
+
+      <div class="field-group" id="fg-patient-name">
+        <label for="patient-name">Full Name <span class="required">*</span></label>
+        <input type="text" id="patient-name" name="patient-name" placeholder="First and last name" autocomplete="name"/>
+        <div class="field-error">Please enter your full name.</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group" id="fg-dob">
+          <label for="dob">Date of Birth <span class="required">*</span></label>
+          <input type="date" id="dob" name="dob"/>
+          <div class="field-error">Required.</div>
+        </div>
+        <div class="field-group" id="fg-pps">
+          <label for="pps">PPS Number <span class="required">*</span></label>
+          <input type="text" id="pps" name="pps" placeholder="e.g. 1234567A"/>
+          <div class="field-error">Required.</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group" id="fg-phone">
+          <label for="phone">Phone Number <span class="required">*</span></label>
+          <input type="tel" id="phone" name="phone" placeholder="087 123 4567"/>
+          <div class="field-error">Required.</div>
+        </div>
+        <div class="field-group" id="fg-email">
+          <label for="email">Email Address <span class="required">*</span></label>
+          <input type="email" id="email" name="email" placeholder="your@email.com"/>
+          <div class="field-error">Please enter a valid email address.</div>
+        </div>
+      </div>
+
+      <!-- ══ SECTION 2: Health & Lifestyle ══ -->
+      <div class="section-header">
+        <div class="section-number">2</div>
+        <div class="section-header-text"><h2>Your Health &amp; Lifestyle</h2><p>Prevention Programme questions</p></div>
+      </div>
+
+      <div class="field-group" id="fg-pp-smoking">
+        <label for="pp-smoking">Smoking status <span class="required">*</span></label>
+        <select id="pp-smoking" name="pp-smoking" onchange="toggleSubfieldSelect(this,'currently','pp-cigs-wrap')">
+          <option value="" disabled selected>Select</option>
+          <option value="never">Never smoked</option>
+          <option value="ex">Ex-smoker</option>
+          <option value="currently">Currently smoking</option>
+        </select>
+        <div class="subfield" id="pp-cigs-wrap">
+          <label for="pp-cigarettes-per-day">Approximately how many per day?</label>
+          <input type="text" id="pp-cigarettes-per-day" name="pp-cigarettes-per-day" placeholder="e.g. 10 per day"/>
+        </div>
+        <div class="field-error">Required.</div>
+      </div>
+
+      <div class="field-group">
+        <label for="pp-alcohol">Approximate alcohol intake (units per week) <span class="optional">(optional)</span></label>
+        <select id="pp-alcohol" name="pp-alcohol">
+          <option value="" disabled selected>Select</option>
+          <option>0 — I don't drink</option>
+          <option>1–7 units (low)</option>
+          <option>8–14 units (moderate)</option>
+          <option>15–21 units (high)</option>
+          <option>22+ units</option>
+        </select>
+      </div>
+
+      <div class="field-group" id="fg-pp-exercise-days">
+        <label for="pp-exercise-days">How many days per week do you do physical activity or exercise (at least 30 minutes)? <span class="required">*</span></label>
+        <select id="pp-exercise-days" name="pp-exercise-days">
+          <option value="" disabled selected>Select</option>
+          <option>0 days</option>
+          <option>1–2 days</option>
+          <option>3–4 days</option>
+          <option>5 or more days</option>
+        </select>
+        <div class="field-error">Required.</div>
+      </div>
+
+      <div class="field-group">
+        <label for="pp-diet-concerns">Any concerns about your diet you would like to discuss? <span class="optional">(optional)</span></label>
+        <select id="pp-diet-concerns" name="pp-diet-concerns">
+          <option value="" disabled selected>Select</option>
+          <option>No — diet is fine</option>
+          <option>Yes — I would like some advice on healthy eating</option>
+          <option>Yes — I have recently changed my diet</option>
+          <option>Yes — I am struggling with my weight</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>Do you check your blood pressure at home?</label>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="pp-home-bp-check" id="pp-bp-yes" value="Yes" onclick="toggleSubfield('pp-bp-readings-wrap',true)"/><label for="pp-bp-yes">Yes</label></div>
+          <div class="radio-item"><input type="radio" name="pp-home-bp-check" id="pp-bp-no" value="No" onclick="toggleSubfield('pp-bp-readings-wrap',false)"/><label for="pp-bp-no">No</label></div>
+        </div>
+        <div class="subfield" id="pp-bp-readings-wrap">
+          <label for="pp-home-bp">Average reading over the past week (e.g. 128/76)</label>
+          <input type="text" id="pp-home-bp" name="pp-home-bp" placeholder="e.g. 128/76 mmHg"/>
+        </div>
+      </div>
+
+      <div class="field-group" id="fg-pp-family-history-changes">
+        <label for="pp-family-history-changes">Any new family history of heart disease, stroke, or diabetes since your last visit? <span class="required">*</span></label>
+        <select id="pp-family-history-changes" name="pp-family-history-changes">
+          <option value="" disabled selected>Select</option>
+          <option>No changes</option>
+          <option>Yes — a close family member has been newly diagnosed with heart disease</option>
+          <option>Yes — a close family member has been newly diagnosed with stroke</option>
+          <option>Yes — a close family member has been newly diagnosed with diabetes</option>
+          <option>Yes — other</option>
+        </select>
+        <div class="field-error">Required.</div>
+      </div>
+
+      <div class="field-group">
+        <label for="pp-concerns">Any other concerns you would like to discuss at your appointment? <span class="optional">(optional)</span></label>
+        <textarea id="pp-concerns" name="pp-concerns" placeholder="Anything else you would like your nurse or doctor to know"></textarea>
+      </div>
+
+      <!-- ══ SECTION 3: General Health Update ══ -->
+      <div class="section-header">
+        <div class="section-number">3</div>
+        <div class="section-header-text"><h2>General Health Update</h2><p>Since your last visit</p></div>
+      </div>
+
+      <div class="field-group">
+        <label>Has your overall health changed since your last visit? <span class="required">*</span></label>
+        <select onchange="toggleSubfieldSelect(this,'yes','health-changes-detail-wrap')">
+          <option value="" disabled selected>Select</option>
+          <option value="no">No significant changes</option>
+          <option value="yes">Yes — I have noticed changes</option>
+        </select>
+        <div class="subfield" id="health-changes-detail-wrap">
+          <label for="health-changes">Please briefly describe the changes</label>
+          <textarea id="health-changes" name="health-changes" placeholder="e.g. feeling more tired, lost weight, new pain"></textarea>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Any hospital admissions or A&amp;E visits since your last appointment? <span class="required">*</span></label>
+        <select onchange="toggleSubfieldSelect(this,'yes','hospital-detail-wrap')">
+          <option value="" disabled selected>Select</option>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+        <div class="subfield" id="hospital-detail-wrap">
+          <label for="hospital-admissions">Please briefly describe what happened and which hospital</label>
+          <textarea id="hospital-admissions" name="hospital-admissions" placeholder="e.g. admitted to Beaumont for chest pain, January 2026"></textarea>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Any new diagnoses or new hospital specialists since your last visit? <span class="required">*</span></label>
+        <select onchange="toggleSubfieldSelect(this,'yes','specialists-detail-wrap')">
+          <option value="" disabled selected>Select</option>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+        <div class="subfield" id="specialists-detail-wrap">
+          <label for="new-specialists">Please give details</label>
+          <textarea id="new-specialists" name="new-specialists" placeholder="e.g. referred to cardiology at Beaumont, new diagnosis of high cholesterol"></textarea>
+        </div>
+      </div>
+
+      <!-- ══ SECTION 4: Physical Measurements ══ -->
+      <div class="section-header">
+        <div class="section-number">4</div>
+        <div class="section-header-text"><h2>Physical Measurements</h2><p>Optional — will be taken at your appointment if not provided</p></div>
+      </div>
+
+      <div class="info-box">
+        If you are able to weigh yourself and measure your waist at home, please complete the fields below. Both are entirely optional — we will take these measurements at your appointment if you prefer.
+      </div>
+
+      <div class="field-group">
+        <label for="weight">Weight <span class="optional">(optional)</span></label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <input type="number" id="weight" name="weight" placeholder="e.g. 75" min="20" max="300" step="0.1" style="max-width:160px"/>
+          <span style="font-size:0.88rem;color:var(--text-muted)">kg</span>
+        </div>
+        <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;font-weight:300">Weigh yourself in the morning before eating, with light clothing and no shoes. If you don't have scales, no problem — we'll measure at your appointment.</p>
+      </div>
+
+      <div class="field-group">
+        <label for="waist">Waist Circumference <span class="optional">(optional)</span></label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <input type="number" id="waist" name="waist-circumference" placeholder="e.g. 88" min="40" max="200" step="0.5" style="max-width:160px"/>
+          <span style="font-size:0.88rem;color:var(--text-muted)">cm</span>
+        </div>
+        <div style="background:#f1f5f9;border-radius:6px;padding:10px 12px;margin-top:10px;font-size:0.78rem;color:var(--text-muted);line-height:1.8">
+          <strong style="color:var(--navy)">How to measure your waist:</strong><br>
+          1. Stand upright and breathe normally.<br>
+          2. Find the midpoint between your lowest rib and the top of your hip bone — roughly level with your belly button.<br>
+          3. Wrap a tape measure around your bare skin at this point. It should sit flat without pressing in.<br>
+          4. Take the reading at the end of a gentle exhale.
+        </div>
+        <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;font-weight:300">If you are unable to measure or would prefer not to, we will do this at your appointment.</p>
+      </div>
+
+      <!-- ══ SECTION 5: Medications & Allergies ══ -->
+      <div class="section-header">
+        <div class="section-number">5</div>
+        <div class="section-header-text"><h2>Medications &amp; Allergies</h2><p>Current medication list</p></div>
+      </div>
+
+      <div class="info-box">
+        <strong>Please bring your medication list or tablets to your appointment.</strong> If you have any new medications from a hospital, specialist, or other doctor since your last visit, please list them below.
+      </div>
+
+      <div class="field-group">
+        <label for="current-medications">Any new medications added since your last visit? <span class="required">*</span></label>
+        <textarea id="current-medications" name="current-medications" placeholder="List any new medications — name, dose, and who prescribed them. Write 'None' if nothing new."></textarea>
+      </div>
+
+      <!-- ══ SECTION 6: ABPM Consent ══ -->
+      <div class="section-header">
+        <div class="section-number">6</div>
+        <div class="section-header-text"><h2>24-Hour Blood Pressure Monitor (ABPM)</h2><p>Consent and device responsibility</p></div>
+      </div>
+
+      <div class="info-box">
+        <strong>What is an ABPM?</strong> The ABPM is a small device worn on your upper arm for 24 hours. It automatically checks your blood pressure every 30 minutes during the day and every hour at night, giving a much more accurate picture than a single surgery reading.<br><br>
+        Your nurse may recommend an ABPM at your appointment based on your blood pressure reading and overall cardiovascular risk profile. If you are unsure whether this applies to you, your nurse will advise you on the day.
+      </div>
+
+      <div class="field-group" id="fg-abpm-consent">
+        <label for="abpm-consent">ABPM Consent <span class="required">*</span></label>
+        <select id="abpm-consent" name="abpm-consent" onchange="onAbpmChange()">
+          <option value="" disabled selected>— Select —</option>
+          <option value="yes">Yes — I consent to wearing the ABPM if my nurse recommends it</option>
+          <option value="discuss">I would like to discuss this further at my appointment</option>
+          <option value="no">No — I decline the ABPM at this time</option>
+        </select>
+        <div class="field-error">Please make a selection regarding the ABPM.</div>
+      </div>
+
+      <div id="abpm-yes-section" style="display:none">
+        <div class="consent-block" style="margin-bottom:18px">
+          <div class="consent-block-header"><h3>ABPM Care Instructions — Please Read</h3></div>
+          <div class="consent-item" style="flex-direction:column;gap:0">
+            <ul style="font-size:0.83rem;color:var(--text);line-height:1.85;font-weight:300;padding-left:18px;list-style:disc;margin:0;width:100%">
+              <li><strong>Keep dry</strong> — no baths, showers, or swimming while wearing the monitor. A sponge bath is fine.</li>
+              <li><strong>During readings</strong> — the cuff inflates every 30 minutes during the day and every hour overnight. Keep your arm still and relaxed at your side until each reading is complete.</li>
+              <li><strong>Clothing</strong> — wear loose-fitting clothing that allows the cuff to sit freely on your upper arm for the full 24 hours.</li>
+              <li><strong>Exercise</strong> — avoid heavy or vigorous exercise during the monitoring period.</li>
+              <li><strong>Sleep</strong> — the monitor will take readings overnight. This is normal and expected.</li>
+              <li><strong>Discomfort</strong> — you may adjust the cuff slightly if it becomes uncomfortable. Do not remove the device unless you are in severe discomfort. Contact the practice if needed: <strong>(01) 845 2500</strong>.</li>
+              <li><strong>Return</strong> — return the device to Kinsealy Medical Centre the following morning, or at the time agreed with your nurse. Failure to return the device will result in a replacement charge.</li>
+              <li><strong>Damage or loss</strong> — you are responsible for the device while it is in your care. Any damage or loss will be assessed by the practice and a replacement charge may apply.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="resp-box">
+          <p class="resp-box-title">📋 Device Responsibility Agreement</p>
+          <p class="resp-box-desc">By entering your full name below and ticking the box, you confirm you have read and understood the care instructions above and that you accept responsibility for the ABPM device for the duration of the monitoring period. Any damage, loss, or failure to return the device may result in a replacement charge being applied to your account.</p>
+
+          <div class="field-group" id="fg-abpm-responsibility-name" style="margin-bottom:14px">
+            <label for="abpm-responsibility-name" style="color:var(--warn-text)">Full Name — Electronic Signature <span class="required">*</span></label>
+            <input type="text" id="abpm-responsibility-name" name="abpm-responsibility-name" placeholder="Type your full name to sign this agreement"/>
+            <div class="field-hint">Entering your full name serves as your electronic signature for this responsibility agreement.</div>
+            <div class="field-error">Please enter your full name to complete the responsibility agreement.</div>
+          </div>
+
+          <div class="check-item" style="border-color:var(--warn-border);background:#fffbf0">
+            <input type="checkbox" id="abpm-responsibility-confirm" name="abpm-responsibility-confirm" value="confirmed"/>
+            <label for="abpm-responsibility-confirm" style="color:var(--warn-text);font-size:0.84rem">I confirm I have read the ABPM care instructions above and I accept full responsibility for the device while it is in my care. I understand that damage, loss, or failure to return the device may result in a replacement charge.</label>
+          </div>
+          <input type="hidden" name="abpm-signed-date" id="abpmSignedDate"/>
+        </div>
+      </div>
+
+      <div id="abpm-other-section" style="display:none">
+        <div class="info-box">
+          That is absolutely fine. You can discuss the ABPM with your nurse at your appointment — they will be happy to answer any questions you have before you decide.
+        </div>
+      </div>
+
+      <!-- ══ SECTION 7: What Happens on the Day ══ -->
+      <div class="section-header">
+        <div class="section-number">7</div>
+        <div class="section-header-text"><h2>What to Expect on the Day</h2><p>Your appointment at a glance</p></div>
+      </div>
+
+      <div class="day-panel">
+        <div class="day-panel-header">🛡️ Your Prevention Programme Appointment</div>
+        <div class="day-step">
+          <div class="day-step-num">1</div>
+          <div class="day-step-text"><strong>Arrive fasting</strong> — no food or drink (except water) from midnight the night before. Continue all regular medications as normal.</div>
+        </div>
+        <div class="day-step">
+          <div class="day-step-num">2</div>
+          <div class="day-step-text"><strong>Check in at reception</strong> — let staff know you are here for your Prevention Programme review.</div>
+        </div>
+        <div class="day-step">
+          <div class="day-step-num">3</div>
+          <div class="day-step-text"><strong>Nurse / Phlebotomist</strong> — will take blood samples (cholesterol, glucose, and other relevant tests), check your blood pressure, weight, and height, and fit a 24-hour blood pressure monitor (ABPM) if required. This may take 20–30 minutes.</div>
+        </div>
+        <div class="day-step">
+          <div class="day-step-num">4</div>
+          <div class="day-step-text"><strong>Doctor review</strong> — your GP will review your results and discuss any lifestyle or medication recommendations. If follow-up is needed, they will contact you.</div>
+        </div>
+        <div class="day-step">
+          <div class="day-step-num">5</div>
+          <div class="day-step-text"><strong>Your script</strong> — a 12-month prescription will be issued. A note is sent to your pharmacy to remind you to book your next review when the script is running out.</div>
+        </div>
+        <div class="day-step">
+          <div class="day-step-num">6</div>
+          <div class="day-step-text"><strong>Bring with you</strong> — your medication list or tablets, and your ABPM monitor if you already have one fitted from a previous visit.</div>
+        </div>
+      </div>
+
+      <!-- ══ SECTION 8: Data Consent & Confirmation ══ -->
+      <div class="section-header">
+        <div class="section-number">8</div>
+        <div class="section-header-text"><h2>Data Consent &amp; Confirmation</h2><p>Please read and confirm before submitting</p></div>
+      </div>
+
+      <div class="consent-block">
+        <div class="consent-block-header"><h3>Data Protection</h3></div>
+        <div class="consent-item">
+          <input type="checkbox" id="data-consent" name="data-consent" value="confirmed"/>
+          <label for="data-consent">I consent to the information in this form being stored securely as part of my medical record at Kinsealy Medical Centre and used for my clinical care. I understand that relevant information may be shared with other healthcare providers directly involved in my care, including HSE services and hospital specialists, in line with applicable data protection legislation.</label>
+        </div>
+      </div>
+
+      <div class="consent-block">
+        <div class="consent-block-header"><h3>Patient Confirmation</h3></div>
+        <div class="consent-item">
+          <input type="checkbox" id="confirm-prep" name="confirm-prep" value="confirmed"/>
+          <label for="confirm-prep">I confirm that I must <strong>fast from midnight</strong> before my appointment (water only), and that the information I have provided in this form is accurate to the best of my knowledge.</label>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Submit Health Update
+      </button>
+
+      <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:16px;font-weight:300">
+        Submissions are sent to <a href="mailto:kinsealymedicalcentre@protonmail.com" style="color:var(--teal)">kinsealymedicalcentre@protonmail.com</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+<script>
+  const now = new Date();
+  document.getElementById('submissionDate').value = now.toLocaleString('en-IE', {
+    day:'2-digit', month:'2-digit', year:'numeric',
+    hour:'2-digit', minute:'2-digit', timeZone:'Europe/Dublin'
+  });
+
+  function onAbpmChange() {
+    const val = document.getElementById('abpm-consent').value;
+    document.getElementById('abpm-yes-section').style.display   = val === 'yes'     ? 'block' : 'none';
+    document.getElementById('abpm-other-section').style.display = val !== 'yes' && val ? 'block' : 'none';
+    if (val === 'yes') {
+      document.getElementById('abpmSignedDate').value = now.toLocaleDateString('en-IE', {
+        day:'numeric', month:'long', year:'numeric'
+      });
+    }
+    document.getElementById('fg-abpm-consent').classList.remove('has-error');
+  }
+
+  function toggleSubfield(id, show) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('visible', show);
+  }
+  function toggleSubfieldSelect(selectEl, triggerValue, subId) {
+    toggleSubfield(subId, selectEl.value === triggerValue);
+  }
+
+  function setError(id, show) {
+    const fg = document.getElementById('fg-' + id);
+    if (fg) fg.classList.toggle('has-error', show);
+  }
+  function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  const form = document.getElementById('ppForm');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    let valid = true;
+
+    ['patient-name','dob','pps','phone'].forEach(f => {
+      const el = document.getElementById(f);
+      const empty = !el || !el.value.trim();
+      setError(f, empty);
+      if (empty) valid = false;
+    });
+
+    const emailEl = document.getElementById('email');
+    const emailBad = !emailEl.value.trim() || !validateEmail(emailEl.value);
+    setError('email', emailBad);
+    if (emailBad) valid = false;
+
+    const smokingEl = document.getElementById('pp-smoking');
+    if (!smokingEl.value) {
+      setError('pp-smoking', true);
+      valid = false;
+    }
+
+    const exerciseEl = document.getElementById('pp-exercise-days');
+    if (!exerciseEl.value) {
+      setError('pp-exercise-days', true);
+      valid = false;
+    }
+
+    const familyEl = document.getElementById('pp-family-history-changes');
+    if (!familyEl.value) {
+      setError('pp-family-history-changes', true);
+      valid = false;
+    }
+
+    const abpmEl = document.getElementById('abpm-consent');
+    if (!abpmEl.value) {
+      document.getElementById('fg-abpm-consent').classList.add('has-error');
+      valid = false;
+    }
+
+    if (abpmEl.value === 'yes') {
+      const sigName = document.getElementById('abpm-responsibility-name');
+      if (!sigName.value.trim()) {
+        document.getElementById('fg-abpm-responsibility-name').classList.add('has-error');
+        valid = false;
+      }
+      if (!document.getElementById('abpm-responsibility-confirm').checked) {
+        alert('Please tick the ABPM device responsibility agreement box before submitting.');
+        valid = false;
+      }
+    }
+
+    if (!document.getElementById('data-consent').checked) {
+      alert('Please tick the data consent box before submitting.');
+      valid = false;
+    }
+
+    if (!document.getElementById('confirm-prep').checked) {
+      alert('Please tick the patient confirmation box before submitting.');
+      valid = false;
+    }
+
+    if (!valid) {
+      const firstError = document.querySelector('.has-error');
+      if (firstError) firstError.scrollIntoView({ behavior:'smooth', block:'center' });
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg> Submitting…';
+
+    const fd = new FormData(form);
+    const payload = {};
+    fd.forEach((v, k) => {
+      if (payload[k]) {
+        payload[k] = Array.isArray(payload[k]) ? [...payload[k], v] : [payload[k], v];
+      } else {
+        payload[k] = v;
+      }
+    });
+
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/kinsealymedicalcentre@protonmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json', 'Accept':'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (json.success) {
+        document.getElementById('mainForm').style.display = 'none';
+        document.getElementById('successScreen').style.display = 'block';
+        window.scrollTo({ top:0, behavior:'smooth' });
+      } else {
+        throw new Error('Not OK');
+      }
+    } catch {
+      alert('There was a problem submitting the form. Please try again or contact us at kinsealymedicalcentre@protonmail.com or call (01) 845 2500.');
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Submit Health Update';
+    }
+  });
+
+  ['patient-name','dob','pps','phone','email'].forEach(f => {
+    const el = document.getElementById(f);
+    if (el) el.addEventListener('input', () => setError(f, false));
+  });
+
+  document.getElementById('pp-smoking').addEventListener('change', () => setError('pp-smoking', false));
+  document.getElementById('pp-exercise-days').addEventListener('change', () => setError('pp-exercise-days', false));
+  document.getElementById('pp-family-history-changes').addEventListener('change', () => setError('pp-family-history-changes', false));
+</script>
+</body>
+</html>
