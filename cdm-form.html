@@ -1099,31 +1099,31 @@
     btn.disabled = true;
     btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg> Submitting…';
 
-    // Strip name attributes from hidden fields so FormData excludes them
-    const stripped = [];
-    function stripNames(container) {
-      container.querySelectorAll('[name]').forEach(f => {
-        stripped.push({el: f, name: f.name});
-        f.removeAttribute('name');
-      });
-    }
-    document.querySelectorAll('.condition-section').forEach(s => {
-      if (s.style.display !== 'block') stripNames(s);
+    // Build payload manually — only include fields that are actually visible
+    const data = new URLSearchParams();
+    form.querySelectorAll('input, select, textarea').forEach(el => {
+      if (!el.name) return;
+      if (el.type === 'radio' && !el.checked) return;
+      if (el.type === 'checkbox' && !el.checked) return;
+      // Skip if inside a hidden condition section
+      const cond = el.closest('.condition-section');
+      if (cond && cond.style.display !== 'block') return;
+      // Skip if inside a hidden subfield
+      const sub = el.closest('.subfield');
+      if (sub && !sub.classList.contains('visible')) return;
+      // Skip if inside a hidden ABPM panel
+      const abpmYes = el.closest('#abpm-yes-section');
+      if (abpmYes && document.getElementById('abpm-yes-section').style.display !== 'block') return;
+      const abpmOther = el.closest('#abpm-other-section');
+      if (abpmOther && document.getElementById('abpm-other-section').style.display !== 'block') return;
+      data.append(el.name, el.value);
     });
-    document.querySelectorAll('.subfield:not(.visible)').forEach(s => stripNames(s));
-    ['abpm-yes-section','abpm-other-section'].forEach(id => {
-      const s = document.getElementById(id);
-      if (s && s.style.display !== 'block') stripNames(s);
-    });
-
-    const fd = new FormData(form);
-    stripped.forEach(({el, name}) => el.setAttribute('name', name));
 
     try {
       const res = await fetch('/cdm-form.html', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(fd).toString()
+        body: data.toString()
       });
       if (res.ok) {
         document.getElementById('mainForm').style.display = 'none';
