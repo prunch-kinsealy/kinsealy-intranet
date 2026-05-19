@@ -601,17 +601,19 @@
     btn.disabled = true;
     btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg> Submitting…';
 
-    // Disable fields inside hidden sections so they are excluded from submission
+    // Disable fields in hidden sections so they are excluded from submission
     const disabledFields = [];
-    form.querySelectorAll('input, select, textarea').forEach(field => {
-      let el = field.parentElement;
-      while (el && el !== form) {
-        if (window.getComputedStyle(el).display === 'none') {
-          if (!field.disabled) { field.disabled = true; disabledFields.push(field); }
-          break;
-        }
-        el = el.parentElement;
-      }
+    function disableFields(container) {
+      container.querySelectorAll('input, select, textarea').forEach(f => {
+        if (!f.disabled) { f.disabled = true; disabledFields.push(f); }
+      });
+    }
+    // Hidden subfields (only shown when they have class 'visible')
+    document.querySelectorAll('.subfield:not(.visible)').forEach(s => disableFields(s));
+    // Hidden ABPM panels
+    ['abpm-yes-section','abpm-other-section'].forEach(id => {
+      const s = document.getElementById(id);
+      if (s && s.style.display !== 'block') disableFields(s);
     });
 
     const fd = new FormData(form);
