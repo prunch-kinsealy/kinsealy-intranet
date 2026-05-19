@@ -216,28 +216,28 @@
         <div class="field-group">
           <label>Do you check your blood pressure at home? <span class="required">*</span></label>
           <div class="radio-group">
-            <div class="radio-item"><input type="radio" name="htn-home-bp-check" id="htn-bp-yes" value="Yes" onclick="toggleSubfield('htn-bp-readings',true)"/><label for="htn-bp-yes">Yes — I check at home</label></div>
-            <div class="radio-item"><input type="radio" name="htn-home-bp-check" id="htn-bp-no" value="No" onclick="toggleSubfield('htn-bp-readings',false)"/><label for="htn-bp-no">No</label></div>
+            <div class="radio-item"><input type="radio" data-n="htn-home-bp-check" id="htn-bp-yes" value="Yes" onclick="toggleSubfield('htn-bp-readings',true)"/><label for="htn-bp-yes">Yes — I check at home</label></div>
+            <div class="radio-item"><input type="radio" data-n="htn-home-bp-check" id="htn-bp-no" value="No" onclick="toggleSubfield('htn-bp-readings',false)"/><label for="htn-bp-no">No</label></div>
           </div>
           <div class="subfield" id="htn-bp-readings">
             <label for="htn-home-bp">Average reading over the past week (e.g. 138/82)</label>
-            <input type="text" id="htn-home-bp" name="htn-home-bp" placeholder="e.g. 138/82 mmHg"/>
+            <input type="text" id="htn-home-bp" data-n="htn-home-bp" placeholder="e.g. 138/82 mmHg"/>
           </div>
         </div>
         <div class="field-group">
           <label>Any symptoms since your last visit? <span class="required">*</span><br><span style="font-size:0.75rem;color:var(--text-muted);font-weight:300">Tick all that apply</span></label>
           <div class="check-group">
-            <div class="check-item"><input type="checkbox" name="htn-symptoms" value="Headaches" id="htn-s1"/><label for="htn-s1">Headaches</label></div>
-            <div class="check-item"><input type="checkbox" name="htn-symptoms" value="Dizziness or lightheadedness" id="htn-s2"/><label for="htn-s2">Dizziness or lightheadedness</label></div>
-            <div class="check-item"><input type="checkbox" name="htn-symptoms" value="Chest pain or chest tightness" id="htn-s3"/><label for="htn-s3">Chest pain or chest tightness</label></div>
-            <div class="check-item"><input type="checkbox" name="htn-symptoms" value="Shortness of breath" id="htn-s4"/><label for="htn-s4">Shortness of breath</label></div>
-            <div class="check-item"><input type="checkbox" name="htn-symptoms" value="Swelling in legs or ankles" id="htn-s5"/><label for="htn-s5">Swelling in legs or ankles</label></div>
-            <div class="check-item"><input type="checkbox" name="htn-symptoms" value="None" id="htn-s0"/><label for="htn-s0">None of the above</label></div>
+            <div class="check-item"><input type="checkbox" data-n="htn-symptoms" value="Headaches" id="htn-s1"/><label for="htn-s1">Headaches</label></div>
+            <div class="check-item"><input type="checkbox" data-n="htn-symptoms" value="Dizziness or lightheadedness" id="htn-s2"/><label for="htn-s2">Dizziness or lightheadedness</label></div>
+            <div class="check-item"><input type="checkbox" data-n="htn-symptoms" value="Chest pain or chest tightness" id="htn-s3"/><label for="htn-s3">Chest pain or chest tightness</label></div>
+            <div class="check-item"><input type="checkbox" data-n="htn-symptoms" value="Shortness of breath" id="htn-s4"/><label for="htn-s4">Shortness of breath</label></div>
+            <div class="check-item"><input type="checkbox" data-n="htn-symptoms" value="Swelling in legs or ankles" id="htn-s5"/><label for="htn-s5">Swelling in legs or ankles</label></div>
+            <div class="check-item"><input type="checkbox" data-n="htn-symptoms" value="None" id="htn-s0"/><label for="htn-s0">None of the above</label></div>
           </div>
         </div>
         <div class="field-group">
           <label for="htn-alcohol">Approximate alcohol intake (units per week)</label>
-          <select id="htn-alcohol" name="htn-alcohol">
+          <select id="htn-alcohol" data-n="htn-alcohol">
             <option value="" disabled selected>Select</option>
             <option>0 — I don't drink</option>
             <option>1–7 units (low)</option>
@@ -248,7 +248,7 @@
         </div>
         <div class="field-group">
           <label for="htn-medication-compliance">Are you taking your blood pressure medication every day? <span class="required">*</span></label>
-          <select id="htn-medication-compliance" name="htn-medication-compliance">
+          <select id="htn-medication-compliance" data-n="htn-medication-compliance">
             <option value="" disabled selected>Select</option>
             <option>Yes — every day</option>
             <option>Most days</option>
@@ -259,7 +259,7 @@
         </div>
         <div class="field-group">
           <label for="htn-side-effects">Any side effects from your medication you would like to discuss? <span class="optional">(optional)</span></label>
-          <textarea id="htn-side-effects" name="htn-side-effects" placeholder="e.g. persistent cough, swollen ankles, dizziness when standing — or write 'None'"></textarea>
+          <textarea id="htn-side-effects" data-n="htn-side-effects" placeholder="e.g. persistent cough, swollen ankles, dizziness when standing — or write 'None'"></textarea>
         </div>
       </div>
 
@@ -269,17 +269,17 @@
         <div class="field-group">
           <label>Do you check your blood sugar (glucose) at home? <span class="required">*</span></label>
           <div class="radio-group">
-            <div class="radio-item"><input type="radio" name="t2dm-home-glucose" id="t2-g-yes" value="Yes" onclick="toggleSubfield('t2dm-glucose-range-wrap',true)"/><label for="t2-g-yes">Yes — I have a monitor at home</label></div>
-            <div class="radio-item"><input type="radio" name="t2dm-home-glucose" id="t2-g-no" value="No" onclick="toggleSubfield('t2dm-glucose-range-wrap',false)"/><label for="t2-g-no">No</label></div>
+            <div class="radio-item"><input type="radio" data-n="t2dm-home-glucose" id="t2-g-yes" value="Yes" onclick="toggleSubfield('t2dm-glucose-range-wrap',true)"/><label for="t2-g-yes">Yes — I have a monitor at home</label></div>
+            <div class="radio-item"><input type="radio" data-n="t2dm-home-glucose" id="t2-g-no" value="No" onclick="toggleSubfield('t2dm-glucose-range-wrap',false)"/><label for="t2-g-no">No</label></div>
           </div>
           <div class="subfield" id="t2dm-glucose-range-wrap">
             <label for="t2dm-glucose-range">What range have your readings been over the past week or two? (e.g. 5.2–9.4 mmol/L)</label>
-            <input type="text" id="t2dm-glucose-range" name="t2dm-glucose-range" placeholder="e.g. mostly 6–9 mmol/L"/>
+            <input type="text" id="t2dm-glucose-range" data-n="t2dm-glucose-range" placeholder="e.g. mostly 6–9 mmol/L"/>
           </div>
         </div>
         <div class="field-group">
           <label for="t2dm-hypos">Have you had any hypos (low blood sugar) since your last visit? <span class="required">*</span></label>
-          <select id="t2dm-hypos" name="t2dm-hypos">
+          <select id="t2dm-hypos" data-n="t2dm-hypos">
             <option value="" disabled selected>Select</option>
             <option>No — none at all</option>
             <option>Yes — one or two, mild</option>
@@ -291,7 +291,7 @@
         </div>
         <div class="field-group">
           <label for="t2dm-foot-issues">Foot health — any sores, cuts, wounds, numbness, or tingling in your feet? <span class="required">*</span></label>
-          <select id="t2dm-foot-issues" name="t2dm-foot-issues">
+          <select id="t2dm-foot-issues" data-n="t2dm-foot-issues">
             <option value="" disabled selected>Select</option>
             <option>No — feet are fine</option>
             <option>Yes — I have a sore or wound on my foot (please tell a member of staff today)</option>
@@ -301,7 +301,7 @@
         </div>
         <div class="field-group">
           <label for="t2dm-vision-changes">Any changes in your vision since your last visit? <span class="required">*</span></label>
-          <select id="t2dm-vision-changes" name="t2dm-vision-changes">
+          <select id="t2dm-vision-changes" data-n="t2dm-vision-changes">
             <option value="" disabled selected>Select</option>
             <option>No change</option>
             <option>Yes — some blurring or changes</option>
@@ -310,12 +310,12 @@
         </div>
         <div class="field-group">
           <label for="t2dm-last-eye-check">When did you last have a Diabetic Eye Screening (DES) check? <span class="optional">(optional)</span></label>
-          <input type="text" id="t2dm-last-eye-check" name="t2dm-last-eye-check" placeholder="e.g. January 2025, or 'Not yet had one'"/>
+          <input type="text" id="t2dm-last-eye-check" data-n="t2dm-last-eye-check" placeholder="e.g. January 2025, or 'Not yet had one'"/>
           <div class="field-hint">The HSE DES programme sends a letter or text for your eye check — separate from a routine optician visit.</div>
         </div>
         <div class="field-group">
           <label for="t2dm-medication-compliance">Are you taking your diabetes medication as prescribed? <span class="required">*</span></label>
-          <select id="t2dm-medication-compliance" name="t2dm-medication-compliance">
+          <select id="t2dm-medication-compliance" data-n="t2dm-medication-compliance">
             <option value="" disabled selected>Select</option>
             <option>Yes — every day as prescribed</option>
             <option>Most days</option>
@@ -326,13 +326,13 @@
         </div>
         <div class="field-group">
           <label for="t2dm-lifestyle-changes">Any changes to your diet or exercise since your last visit? <span class="optional">(optional)</span></label>
-          <textarea id="t2dm-lifestyle-changes" name="t2dm-lifestyle-changes" placeholder="e.g. started walking 30 mins daily, changed diet, put on weight — or write 'No change'"></textarea>
+          <textarea id="t2dm-lifestyle-changes" data-n="t2dm-lifestyle-changes" placeholder="e.g. started walking 30 mins daily, changed diet, put on weight — or write 'No change'"></textarea>
         </div>
         <div class="info-box" style="margin-top:4px">
           🧪 <strong>Please bring a urine sample to your appointment.</strong> A small amount of urine (in a clean container) is needed to check your kidney health as part of your diabetes review. You can collect this first thing in the morning on the day of your appointment.
         </div>
         <div class="check-item" style="margin-top:8px">
-          <input type="checkbox" id="t2dm-urine-sample" name="t2dm-urine-sample" value="confirmed"/>
+          <input type="checkbox" id="t2dm-urine-sample" data-n="t2dm-urine-sample" value="confirmed"/>
           <label for="t2dm-urine-sample">I confirm I will bring a urine sample to my appointment.</label>
         </div>
       </div>
@@ -342,19 +342,19 @@
         <div class="condition-section-title">💛 Cardiovascular Disease / Angina — Additional Questions</div>
         <div class="field-group">
           <label for="cvd-chest-pain">Have you had any chest pain or chest tightness since your last visit? <span class="required">*</span></label>
-          <select id="cvd-chest-pain" name="cvd-chest-pain" onchange="toggleSubfieldSelect(this,'yes','cvd-chest-pain-detail-wrap')">
+          <select id="cvd-chest-pain" data-n="cvd-chest-pain" onchange="toggleSubfieldSelect(this,'yes','cvd-chest-pain-detail-wrap')">
             <option value="" disabled selected>Select</option>
             <option value="no">No — none</option>
             <option value="yes">Yes</option>
           </select>
           <div class="subfield" id="cvd-chest-pain-detail-wrap">
             <label for="cvd-chest-pain-detail">Please briefly describe: when does it happen, how long does it last, what brings it on?</label>
-            <textarea id="cvd-chest-pain-detail" name="cvd-chest-pain-detail" placeholder="e.g. comes on walking uphill, lasts 2–3 minutes, relieved by rest"></textarea>
+            <textarea id="cvd-chest-pain-detail" data-n="cvd-chest-pain-detail" placeholder="e.g. comes on walking uphill, lasts 2–3 minutes, relieved by rest"></textarea>
           </div>
         </div>
         <div class="field-group">
           <label for="cvd-sob">Shortness of breath on exertion (walking, climbing stairs)? <span class="required">*</span></label>
-          <select id="cvd-sob" name="cvd-sob">
+          <select id="cvd-sob" data-n="cvd-sob">
             <option value="" disabled selected>Select</option>
             <option>No breathlessness</option>
             <option>Yes — same as before</option>
@@ -364,7 +364,7 @@
         </div>
         <div class="field-group">
           <label for="cvd-palpitations">Any palpitations or awareness of your heartbeat? <span class="required">*</span></label>
-          <select id="cvd-palpitations" name="cvd-palpitations">
+          <select id="cvd-palpitations" data-n="cvd-palpitations">
             <option value="" disabled selected>Select</option>
             <option>No</option>
             <option>Yes — occasional</option>
@@ -373,7 +373,7 @@
         </div>
         <div class="field-group">
           <label for="cvd-ankle-swelling">Any swelling in your ankles or legs? <span class="required">*</span></label>
-          <select id="cvd-ankle-swelling" name="cvd-ankle-swelling">
+          <select id="cvd-ankle-swelling" data-n="cvd-ankle-swelling">
             <option value="" disabled selected>Select</option>
             <option>No</option>
             <option>Yes — mild</option>
@@ -382,7 +382,7 @@
         </div>
         <div class="field-group">
           <label for="cvd-smoking">Smoking status <span class="required">*</span></label>
-          <select id="cvd-smoking" name="cvd-smoking" onchange="toggleSubfieldSelect(this,'currently','cvd-cigs-wrap')">
+          <select id="cvd-smoking" data-n="cvd-smoking" onchange="toggleSubfieldSelect(this,'currently','cvd-cigs-wrap')">
             <option value="" disabled selected>Select</option>
             <option value="never">Never smoked</option>
             <option value="ex">Ex-smoker</option>
@@ -390,12 +390,12 @@
           </select>
           <div class="subfield" id="cvd-cigs-wrap">
             <label for="cvd-cigarettes-per-day">Approximately how many per day?</label>
-            <input type="text" id="cvd-cigarettes-per-day" name="cvd-cigarettes-per-day" placeholder="e.g. 10 per day"/>
+            <input type="text" id="cvd-cigarettes-per-day" data-n="cvd-cigarettes-per-day" placeholder="e.g. 10 per day"/>
           </div>
         </div>
         <div class="field-group">
           <label for="cvd-medication-compliance">Are you taking all your heart medications as prescribed? <span class="required">*</span></label>
-          <select id="cvd-medication-compliance" name="cvd-medication-compliance">
+          <select id="cvd-medication-compliance" data-n="cvd-medication-compliance">
             <option value="" disabled selected>Select</option>
             <option>Yes — every day as prescribed</option>
             <option>Most days</option>
@@ -410,7 +410,7 @@
         <div class="condition-section-title">💙 Heart Failure — Additional Questions</div>
         <div class="field-group">
           <label for="hf-breathlessness">Breathlessness — compared to your last visit? <span class="required">*</span></label>
-          <select id="hf-breathlessness" name="hf-breathlessness">
+          <select id="hf-breathlessness" data-n="hf-breathlessness">
             <option value="" disabled selected>Select</option>
             <option>Much better</option>
             <option>Slightly better</option>
@@ -421,7 +421,7 @@
         </div>
         <div class="field-group">
           <label for="hf-swelling">Ankle / leg swelling? <span class="required">*</span></label>
-          <select id="hf-swelling" name="hf-swelling">
+          <select id="hf-swelling" data-n="hf-swelling">
             <option value="" disabled selected>Select</option>
             <option>No swelling</option>
             <option>Mild swelling — same as before</option>
@@ -431,7 +431,7 @@
         </div>
         <div class="field-group">
           <label for="hf-weight-gain">Have you noticed any recent weight gain (possible fluid retention)? <span class="required">*</span></label>
-          <select id="hf-weight-gain" name="hf-weight-gain" onchange="toggleSubfieldSelect(this,'yes','hf-weight-amount-wrap')">
+          <select id="hf-weight-gain" data-n="hf-weight-gain" onchange="toggleSubfieldSelect(this,'yes','hf-weight-amount-wrap')">
             <option value="" disabled selected>Select</option>
             <option value="no">No</option>
             <option value="yes">Yes</option>
@@ -439,13 +439,13 @@
           </select>
           <div class="subfield" id="hf-weight-amount-wrap">
             <label for="hf-weight-gain-amount">Approximately how much? (e.g. 2 kg over 2 weeks)</label>
-            <input type="text" id="hf-weight-gain-amount" name="hf-weight-gain-amount" placeholder="e.g. about 2 kg"/>
+            <input type="text" id="hf-weight-gain-amount" data-n="hf-weight-gain-amount" placeholder="e.g. about 2 kg"/>
           </div>
           <div class="field-hint">Gaining more than 2 kg in a week can be a sign of fluid build-up — let a member of staff know today if this has happened.</div>
         </div>
         <div class="field-group">
           <label for="hf-stairs">Exercise tolerance — can you climb a flight of stairs? <span class="required">*</span></label>
-          <select id="hf-stairs" name="hf-stairs">
+          <select id="hf-stairs" data-n="hf-stairs">
             <option value="" disabled selected>Select</option>
             <option>Yes — without stopping or getting breathless</option>
             <option>Yes — but I need to stop and rest halfway</option>
@@ -455,7 +455,7 @@
         </div>
         <div class="field-group">
           <label for="hf-medication-compliance">Are you taking all your medications as prescribed? <span class="required">*</span></label>
-          <select id="hf-medication-compliance" name="hf-medication-compliance">
+          <select id="hf-medication-compliance" data-n="hf-medication-compliance">
             <option value="" disabled selected>Select</option>
             <option>Yes — every day as prescribed</option>
             <option>Most days</option>
@@ -470,7 +470,7 @@
         <div class="condition-section-title">💓 Atrial Fibrillation (AF) — Additional Questions</div>
         <div class="field-group">
           <label for="af-palpitations">Are you currently experiencing palpitations or an irregular heartbeat? <span class="required">*</span></label>
-          <select id="af-palpitations" name="af-palpitations">
+          <select id="af-palpitations" data-n="af-palpitations">
             <option value="" disabled selected>Select</option>
             <option>No — I feel no palpitations</option>
             <option>Yes — occasionally</option>
@@ -480,7 +480,7 @@
         </div>
         <div class="field-group">
           <label for="af-dizziness">Any dizziness or lightheadedness? <span class="required">*</span></label>
-          <select id="af-dizziness" name="af-dizziness">
+          <select id="af-dizziness" data-n="af-dizziness">
             <option value="" disabled selected>Select</option>
             <option>No</option>
             <option>Yes — occasional</option>
@@ -489,7 +489,7 @@
         </div>
         <div class="field-group">
           <label for="af-sob">Shortness of breath? <span class="required">*</span></label>
-          <select id="af-sob" name="af-sob">
+          <select id="af-sob" data-n="af-sob">
             <option value="" disabled selected>Select</option>
             <option>No</option>
             <option>Yes — on exertion only</option>
@@ -498,7 +498,7 @@
         </div>
         <div class="field-group">
           <label for="af-anticoagulant">Are you on a blood-thinning medication (e.g. Eliquis / Apixaban, Xarelto / Rivaroxaban, Pradaxa / Dabigatran, Warfarin)? <span class="required">*</span></label>
-          <select id="af-anticoagulant" name="af-anticoagulant" onchange="toggleSubfieldSelect(this,'yes','af-anticoag-wrap')">
+          <select id="af-anticoagulant" data-n="af-anticoagulant" onchange="toggleSubfieldSelect(this,'yes','af-anticoag-wrap')">
             <option value="" disabled selected>Select</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
@@ -507,7 +507,7 @@
           <div class="subfield" id="af-anticoag-wrap">
             <div class="field-group">
               <label for="af-anticoagulant-compliance">Are you taking it every day without missing doses?</label>
-              <select id="af-anticoagulant-compliance" name="af-anticoagulant-compliance">
+              <select id="af-anticoagulant-compliance" data-n="af-anticoagulant-compliance">
                 <option value="" disabled selected>Select</option>
                 <option>Yes — never miss a dose</option>
                 <option>Mostly — occasionally miss one</option>
@@ -518,7 +518,7 @@
             </div>
             <div class="field-group" style="margin-bottom:0">
               <label for="af-inr-date">If on Warfarin — when was your last INR (blood clotting) check? <span class="optional">(if applicable)</span></label>
-              <input type="date" id="af-inr-date" name="af-inr-date"/>
+              <input type="date" id="af-inr-date" data-n="af-inr-date"/>
             </div>
           </div>
         </div>
@@ -529,7 +529,7 @@
         <div class="condition-section-title">🫁 COPD — Additional Questions</div>
         <div class="field-group">
           <label for="copd-breathlessness-level">How breathless are you generally day-to-day? <span class="required">*</span></label>
-          <select id="copd-breathlessness-level" name="copd-breathlessness-level">
+          <select id="copd-breathlessness-level" data-n="copd-breathlessness-level">
             <option value="" disabled selected>Select</option>
             <option>I only get breathless with very hard exercise</option>
             <option>I get short of breath walking uphill or hurrying on the flat</option>
@@ -540,7 +540,7 @@
         </div>
         <div class="field-group">
           <label for="copd-cough">How would you describe your cough? <span class="required">*</span></label>
-          <select id="copd-cough" name="copd-cough">
+          <select id="copd-cough" data-n="copd-cough">
             <option value="" disabled selected>Select</option>
             <option>No cough</option>
             <option>Occasional dry cough</option>
@@ -551,14 +551,14 @@
         </div>
         <div class="field-group">
           <label for="copd-exacerbations">How many chest infections or COPD flare-ups since your last visit? <span class="required">*</span></label>
-          <select id="copd-exacerbations" name="copd-exacerbations">
+          <select id="copd-exacerbations" data-n="copd-exacerbations">
             <option value="" disabled selected>Select</option>
             <option>None</option><option>1</option><option>2</option><option>3 or more</option>
           </select>
         </div>
         <div class="field-group">
           <label for="copd-rescue-inhaler">How often are you using your blue rescue inhaler (e.g. Ventolin / Salbutamol)? <span class="required">*</span></label>
-          <select id="copd-rescue-inhaler" name="copd-rescue-inhaler">
+          <select id="copd-rescue-inhaler" data-n="copd-rescue-inhaler">
             <option value="" disabled selected>Select</option>
             <option>Not at all (or rarely)</option>
             <option>1–2 times a week</option>
@@ -570,7 +570,7 @@
         </div>
         <div class="field-group">
           <label for="copd-smoking">Smoking status <span class="required">*</span></label>
-          <select id="copd-smoking" name="copd-smoking">
+          <select id="copd-smoking" data-n="copd-smoking">
             <option value="" disabled selected>Select</option>
             <option>Never smoked</option>
             <option>Ex-smoker</option>
@@ -586,7 +586,7 @@
         <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;font-weight:300">The following questions are based on the standard Asthma Control Test (ACT).</p>
         <div class="field-group">
           <label for="asthma-symptom-freq">Over the past month, how often did you have asthma symptoms (wheeze, cough, shortness of breath, chest tightness)? <span class="required">*</span></label>
-          <select id="asthma-symptom-freq" name="asthma-symptom-freq">
+          <select id="asthma-symptom-freq" data-n="asthma-symptom-freq">
             <option value="" disabled selected>Select</option>
             <option>Not at all</option><option>1 or 2 times</option><option>3–6 times</option>
             <option>More than once a week</option><option>Every day</option>
@@ -594,7 +594,7 @@
         </div>
         <div class="field-group">
           <label for="asthma-night-symptoms">Over the past month, how often were you woken at night by asthma symptoms? <span class="required">*</span></label>
-          <select id="asthma-night-symptoms" name="asthma-night-symptoms">
+          <select id="asthma-night-symptoms" data-n="asthma-night-symptoms">
             <option value="" disabled selected>Select</option>
             <option>Never</option><option>Once or twice</option><option>Once a week</option>
             <option>Several nights a week</option><option>Every night</option>
@@ -602,7 +602,7 @@
         </div>
         <div class="field-group">
           <label for="asthma-rescue-freq">How many times per week did you use your blue rescue inhaler (e.g. Ventolin)? <span class="required">*</span></label>
-          <select id="asthma-rescue-freq" name="asthma-rescue-freq">
+          <select id="asthma-rescue-freq" data-n="asthma-rescue-freq">
             <option value="" disabled selected>Select</option>
             <option>Not at all</option><option>1–2 times per week</option><option>3–6 times per week</option>
             <option>Once a day</option><option>More than once a day</option>
@@ -610,7 +610,7 @@
         </div>
         <div class="field-group">
           <label for="asthma-activity-limit">Did asthma limit your daily activities (work, exercise, housework)? <span class="required">*</span></label>
-          <select id="asthma-activity-limit" name="asthma-activity-limit">
+          <select id="asthma-activity-limit" data-n="asthma-activity-limit">
             <option value="" disabled selected>Select</option>
             <option>Not at all</option><option>A little</option><option>Moderately</option>
             <option>Quite a lot</option><option>A lot — asthma is significantly limiting my life</option>
@@ -618,7 +618,7 @@
         </div>
         <div class="field-group">
           <label for="asthma-preventer-compliance">Are you using your preventer inhaler (brown / purple / red / orange) as prescribed? <span class="required">*</span></label>
-          <select id="asthma-preventer-compliance" name="asthma-preventer-compliance">
+          <select id="asthma-preventer-compliance" data-n="asthma-preventer-compliance">
             <option value="" disabled selected>Select</option>
             <option>Yes — every day as prescribed</option><option>Most days</option><option>Occasionally</option>
             <option>No — I only use my blue reliever inhaler</option><option>I have no preventer inhaler</option>
@@ -631,20 +631,20 @@
         <div class="condition-section-title">🧠 Stroke / TIA — Additional Questions</div>
         <div class="field-group">
           <label for="stroke-new-symptoms">Have you noticed any new or worsening neurological symptoms since your last visit? <span class="required">*</span></label>
-          <select id="stroke-new-symptoms" name="stroke-new-symptoms" onchange="toggleSubfieldSelect(this,'yes','stroke-symptoms-detail-wrap')">
+          <select id="stroke-new-symptoms" data-n="stroke-new-symptoms" onchange="toggleSubfieldSelect(this,'yes','stroke-symptoms-detail-wrap')">
             <option value="" disabled selected>Select</option>
             <option value="no">No — none</option>
             <option value="yes">Yes</option>
           </select>
           <div class="subfield" id="stroke-symptoms-detail-wrap">
             <label for="stroke-new-symptoms-detail">Please briefly describe what you have noticed</label>
-            <textarea id="stroke-new-symptoms-detail" name="stroke-new-symptoms-detail" placeholder="e.g. weakness in right arm, slurred speech, blurred vision, difficulty finding words"></textarea>
+            <textarea id="stroke-new-symptoms-detail" data-n="stroke-new-symptoms-detail" placeholder="e.g. weakness in right arm, slurred speech, blurred vision, difficulty finding words"></textarea>
           </div>
           <div class="field-hint">Neurological symptoms include: weakness, numbness or tingling on one side, slurred speech, vision changes, sudden confusion, or difficulty finding words.</div>
         </div>
         <div class="field-group">
           <label for="stroke-falls">Any falls or balance problems since your last visit? <span class="required">*</span></label>
-          <select id="stroke-falls" name="stroke-falls">
+          <select id="stroke-falls" data-n="stroke-falls">
             <option value="" disabled selected>Select</option>
             <option>No</option>
             <option>Yes — one fall</option>
@@ -654,7 +654,7 @@
         </div>
         <div class="field-group">
           <label for="stroke-memory">Any concerns about your memory or concentration? <span class="required">*</span></label>
-          <select id="stroke-memory" name="stroke-memory">
+          <select id="stroke-memory" data-n="stroke-memory">
             <option value="" disabled selected>Select</option>
             <option>No concerns</option>
             <option>Yes — I have noticed some changes I would like to discuss</option>
@@ -663,7 +663,7 @@
         </div>
         <div class="field-group">
           <label for="stroke-medication-compliance">Are you taking all your medications as prescribed (especially aspirin or blood thinners)? <span class="required">*</span></label>
-          <select id="stroke-medication-compliance" name="stroke-medication-compliance">
+          <select id="stroke-medication-compliance" data-n="stroke-medication-compliance">
             <option value="" disabled selected>Select</option>
             <option>Yes — every day as prescribed</option>
             <option>Most days</option>
@@ -674,12 +674,12 @@
         <div class="field-group">
           <label>Do you check your blood pressure at home?</label>
           <div class="radio-group">
-            <div class="radio-item"><input type="radio" name="stroke-home-bp-check" id="stroke-bp-yes" value="Yes" onclick="toggleSubfield('stroke-bp-readings-wrap',true)"/><label for="stroke-bp-yes">Yes</label></div>
-            <div class="radio-item"><input type="radio" name="stroke-home-bp-check" id="stroke-bp-no" value="No" onclick="toggleSubfield('stroke-bp-readings-wrap',false)"/><label for="stroke-bp-no">No</label></div>
+            <div class="radio-item"><input type="radio" data-n="stroke-home-bp-check" id="stroke-bp-yes" value="Yes" onclick="toggleSubfield('stroke-bp-readings-wrap',true)"/><label for="stroke-bp-yes">Yes</label></div>
+            <div class="radio-item"><input type="radio" data-n="stroke-home-bp-check" id="stroke-bp-no" value="No" onclick="toggleSubfield('stroke-bp-readings-wrap',false)"/><label for="stroke-bp-no">No</label></div>
           </div>
           <div class="subfield" id="stroke-bp-readings-wrap">
             <label for="stroke-home-bp">Average reading over the past week (e.g. 128/76)</label>
-            <input type="text" id="stroke-home-bp" name="stroke-home-bp" placeholder="e.g. 128/76 mmHg"/>
+            <input type="text" id="stroke-home-bp" data-n="stroke-home-bp" placeholder="e.g. 128/76 mmHg"/>
           </div>
         </div>
       </div>
@@ -689,7 +689,7 @@
         <div class="condition-section-title">🛡️ Prevention Programme (PP) — Additional Questions</div>
         <div class="field-group">
           <label for="pp-smoking">Smoking status <span class="required">*</span></label>
-          <select id="pp-smoking" name="pp-smoking" onchange="toggleSubfieldSelect(this,'currently','pp-cigs-wrap')">
+          <select id="pp-smoking" data-n="pp-smoking" onchange="toggleSubfieldSelect(this,'currently','pp-cigs-wrap')">
             <option value="" disabled selected>Select</option>
             <option value="never">Never smoked</option>
             <option value="ex">Ex-smoker</option>
@@ -697,12 +697,12 @@
           </select>
           <div class="subfield" id="pp-cigs-wrap">
             <label for="pp-cigarettes-per-day">Approximately how many per day?</label>
-            <input type="text" id="pp-cigarettes-per-day" name="pp-cigarettes-per-day" placeholder="e.g. 10 per day"/>
+            <input type="text" id="pp-cigarettes-per-day" data-n="pp-cigarettes-per-day" placeholder="e.g. 10 per day"/>
           </div>
         </div>
         <div class="field-group">
           <label for="pp-alcohol">Approximate alcohol intake (units per week)</label>
-          <select id="pp-alcohol" name="pp-alcohol">
+          <select id="pp-alcohol" data-n="pp-alcohol">
             <option value="" disabled selected>Select</option>
             <option>0 — I don't drink</option>
             <option>1–7 units (low)</option>
@@ -713,14 +713,14 @@
         </div>
         <div class="field-group">
           <label for="pp-exercise-days">How many days per week do you do physical activity or exercise (at least 30 minutes)? <span class="required">*</span></label>
-          <select id="pp-exercise-days" name="pp-exercise-days">
+          <select id="pp-exercise-days" data-n="pp-exercise-days">
             <option value="" disabled selected>Select</option>
             <option>0 days</option><option>1–2 days</option><option>3–4 days</option><option>5 or more days</option>
           </select>
         </div>
         <div class="field-group">
           <label for="pp-diet-concerns">Any concerns about your diet you would like to discuss? <span class="optional">(optional)</span></label>
-          <select id="pp-diet-concerns" name="pp-diet-concerns">
+          <select id="pp-diet-concerns" data-n="pp-diet-concerns">
             <option value="" disabled selected>Select</option>
             <option>No — diet is fine</option>
             <option>Yes — I would like some advice on healthy eating</option>
@@ -731,17 +731,17 @@
         <div class="field-group">
           <label>Do you check your blood pressure at home?</label>
           <div class="radio-group">
-            <div class="radio-item"><input type="radio" name="pp-home-bp-check" id="pp-bp-yes" value="Yes" onclick="toggleSubfield('pp-bp-readings-wrap',true)"/><label for="pp-bp-yes">Yes</label></div>
-            <div class="radio-item"><input type="radio" name="pp-home-bp-check" id="pp-bp-no" value="No" onclick="toggleSubfield('pp-bp-readings-wrap',false)"/><label for="pp-bp-no">No</label></div>
+            <div class="radio-item"><input type="radio" data-n="pp-home-bp-check" id="pp-bp-yes" value="Yes" onclick="toggleSubfield('pp-bp-readings-wrap',true)"/><label for="pp-bp-yes">Yes</label></div>
+            <div class="radio-item"><input type="radio" data-n="pp-home-bp-check" id="pp-bp-no" value="No" onclick="toggleSubfield('pp-bp-readings-wrap',false)"/><label for="pp-bp-no">No</label></div>
           </div>
           <div class="subfield" id="pp-bp-readings-wrap">
             <label for="pp-home-bp">Average reading over the past week (e.g. 128/76)</label>
-            <input type="text" id="pp-home-bp" name="pp-home-bp" placeholder="e.g. 128/76 mmHg"/>
+            <input type="text" id="pp-home-bp" data-n="pp-home-bp" placeholder="e.g. 128/76 mmHg"/>
           </div>
         </div>
         <div class="field-group">
           <label for="pp-family-history-changes">Any new family history of heart disease, stroke, or diabetes since your last visit? <span class="required">*</span></label>
-          <select id="pp-family-history-changes" name="pp-family-history-changes">
+          <select id="pp-family-history-changes" data-n="pp-family-history-changes">
             <option value="" disabled selected>Select</option>
             <option>No changes</option>
             <option>Yes — a close family member has been newly diagnosed with heart disease</option>
@@ -752,7 +752,7 @@
         </div>
         <div class="field-group">
           <label for="pp-concerns">Any other concerns you would like to discuss at your appointment? <span class="optional">(optional)</span></label>
-          <textarea id="pp-concerns" name="pp-concerns" placeholder="Anything else you would like your nurse or doctor to know"></textarea>
+          <textarea id="pp-concerns" data-n="pp-concerns" placeholder="Anything else you would like your nurse or doctor to know"></textarea>
         </div>
       </div>
 
