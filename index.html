@@ -304,6 +304,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <a href="#" class="nav-link" data-section="text-templates"><span class="nav-icon">💬</span> Text Templates</a>
     <a href="#" class="nav-link" data-section="useful-forms"><span class="nav-icon">📄</span> Useful Forms</a>
     <div class="nav-group-label">Practice</div>
+    <a href="#" class="nav-link" data-section="ai-at-kinsealy"><span class="nav-icon">🤖</span> AI at Kinsealy</a>
     <a href="#" class="nav-link" data-section="social-media"><span class="nav-icon">📱</span> Social Media</a>
     <a href="#" class="nav-link" data-section="maintenance"><span class="nav-icon">🔧</span> Maintenance</a>
   </nav>
@@ -2618,6 +2619,71 @@ Keep the response concise and structured for a non-clinical administrator.</div>
     <div class="form-card"><div class="form-icon">🔬</div><div><h4>PSA Test Information</h4><p>Send link before unsolicited PSA bloods</p><a href="#" target="_blank">PSA info link ↗</a></div></div>
     <div class="form-card"><div class="form-icon">📋</div><div><h4>Under-6 Card Registration</h4><p>SSPCRS — send to parents</p><a href="https://www.sspcrs.ie/portal/free-gp-care-web/pub" target="_blank">sspcrs.ie ↗</a></div></div>
   </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- AI AT KINSEALY -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="ai-at-kinsealy">
+  <div class="page-header">
+    <h2>AI at Kinsealy 🤖</h2>
+    <p>Using Claude to draft letters, respond to patients, and save time on paperwork.</p>
+  </div>
+
+  <div class="notice-strip">
+    <span class="badge">Important</span>
+    <div>
+      <h4>Never enter real patient details into Claude</h4>
+      <p>Use anonymous descriptions — "a 65-year-old male with hypertension" is fine. Real names, PPS numbers, or dates of birth must never be typed into AI tools. Always review and personalise AI output before sending anything.</p>
+    </div>
+  </div>
+
+  <!-- ── LETTER GENERATION ── -->
+  <div class="section-label">Letter &amp; Document Generation</div>
+
+  <div class="sop-card">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>✉️</span><h3>How to Use Claude to Write Letters</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 All Staff</span><span>✅ Active</span><span>🔄 Last updated: 19/05/2026</span></div>
+    <div class="sop-body">
+      <div class="info-box"><strong>Your Claude account is ready to use</strong> — speak to the Practice Manager for your login details. Think of it like texting a very knowledgeable colleague. Type your request in plain English, read the result, personalise it, and send. If the first answer isn't quite right, just say "make it shorter" or "try again" — it's a conversation, not a one-shot tool.</div>
+
+      <div class="section-label" style="margin-top:16px">Example Prompts — Copy and Adapt</div>
+
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:8px"><strong>Referral letter:</strong></div>
+      <div class="claude-box" style="margin-bottom:16px">
+        <div class="prompt-box">Write a GP referral letter from Kinsealy Medical Centre to the Cardiology Department at Beaumont Hospital. The patient is a 67-year-old man with known hypertension, type 2 diabetes, and a recent ECG showing left bundle branch block. He has no chest pain but has had increasing shortness of breath on exertion over the past 3 months. He is on amlodipine, metformin, and aspirin. Please request an urgent outpatient assessment. Professional and concise.</div>
+      </div>
+
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:8px"><strong>Patient letter — diagnosis explanation:</strong></div>
+      <div class="claude-box" style="margin-bottom:16px">
+        <div class="prompt-box">Write a friendly, plain-English letter from a GP to a patient explaining a new diagnosis of pre-diabetes (HbA1c 44 mmol/mol). Include what it means, what lifestyle changes can help, and that we will recheck bloods in 6 months. Keep it warm, reassuring, and under 250 words. Sign off from Kinsealy Medical Centre.</div>
+      </div>
+
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:8px"><strong>Responding to a patient query:</strong></div>
+      <div class="claude-box" style="margin-bottom:16px">
+        <div class="prompt-box">A patient has emailed asking why their repeat prescription request was declined. The reason is that they are overdue a medication review — their last review was over 12 months ago and we need to see them before issuing further supply. Write a polite, clear reply explaining this, letting them know they can call to book a review appointment, and that we understand this may be inconvenient. From Kinsealy Medical Centre reception.</div>
+      </div>
+
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:8px"><strong>Responding to a complaint:</strong></div>
+      <div class="claude-box" style="margin-bottom:16px">
+        <div class="prompt-box">A patient has complained that their waiting time was too long and that reception staff were dismissive. Draft a response that acknowledges their experience, apologises sincerely, and explains that we are looking into the matter. Tone should be empathetic and professional. From the Practice Manager at Kinsealy Medical Centre.</div>
+      </div>
+
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:8px"><strong>Sick certificate / fitness-to-work letter:</strong></div>
+      <div class="claude-box" style="margin-bottom:16px">
+        <div class="prompt-box">Write a fitness-to-work letter for a patient who has been absent from their office job for 2 weeks with a lower back injury. They are now fit to return on a phased basis — 3 days per week for 2 weeks, avoiding heavy lifting and prolonged sitting. Letter from Kinsealy Medical Centre.</div>
+      </div>
+
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:8px"><strong>Insurance / PMA report:</strong></div>
+      <div class="claude-box">
+        <div class="prompt-box">Draft a medical report letter for a life insurance company. The patient is a 45-year-old woman, non-smoker, with well-controlled hypertension on a single agent. No other significant past medical history. BMI 26. Last bloods normal. Factual, professional tone suitable for an insurance medical report. From Kinsealy Medical Centre.</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ════════════════════════════════════════════════════ -->
