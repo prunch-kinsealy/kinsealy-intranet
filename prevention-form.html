@@ -601,23 +601,22 @@
     btn.disabled = true;
     btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg> Submitting…';
 
-    // Disable fields in hidden sections so they are excluded from submission
-    const disabledFields = [];
-    function disableFields(container) {
-      container.querySelectorAll('input, select, textarea').forEach(f => {
-        if (!f.disabled) { f.disabled = true; disabledFields.push(f); }
+    // Strip name attributes from hidden fields so FormData excludes them
+    const stripped = [];
+    function stripNames(container) {
+      container.querySelectorAll('[name]').forEach(f => {
+        stripped.push({el: f, name: f.name});
+        f.removeAttribute('name');
       });
     }
-    // Hidden subfields (only shown when they have class 'visible')
-    document.querySelectorAll('.subfield:not(.visible)').forEach(s => disableFields(s));
-    // Hidden ABPM panels
+    document.querySelectorAll('.subfield:not(.visible)').forEach(s => stripNames(s));
     ['abpm-yes-section','abpm-other-section'].forEach(id => {
       const s = document.getElementById(id);
-      if (s && s.style.display !== 'block') disableFields(s);
+      if (s && s.style.display !== 'block') stripNames(s);
     });
 
     const fd = new FormData(form);
-    disabledFields.forEach(f => f.disabled = false);
+    stripped.forEach(({el, name}) => el.setAttribute('name', name));
 
     try {
       const res = await fetch('/prevention-form.html', {
