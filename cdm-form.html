@@ -764,40 +764,40 @@
 
       <div class="field-group">
         <label>Has your overall health changed since your last visit? <span class="required">*</span></label>
-        <select onchange="toggleSubfieldSelect(this,'yes','health-changes-detail-wrap')">
+        <select name="overall-health-change" onchange="toggleSubfieldSelect(this,'yes','health-changes-detail-wrap')">
           <option value="" disabled selected>Select</option>
-          <option value="no">No significant changes</option>
+          <option value="No significant changes">No significant changes</option>
           <option value="yes">Yes — I have noticed changes</option>
         </select>
         <div class="subfield" id="health-changes-detail-wrap">
           <label for="health-changes">Please briefly describe the changes</label>
-          <textarea id="health-changes" name="health-changes" placeholder="e.g. feeling more tired, lost weight, new pain"></textarea>
+          <textarea id="health-changes" data-n="health-changes" placeholder="e.g. feeling more tired, lost weight, new pain"></textarea>
         </div>
       </div>
 
       <div class="field-group">
         <label>Any hospital admissions or A&amp;E visits since your last appointment? <span class="required">*</span></label>
-        <select onchange="toggleSubfieldSelect(this,'yes','hospital-detail-wrap')">
+        <select name="hospital-admission" onchange="toggleSubfieldSelect(this,'yes','hospital-detail-wrap')">
           <option value="" disabled selected>Select</option>
-          <option value="no">No</option>
+          <option value="No">No</option>
           <option value="yes">Yes</option>
         </select>
         <div class="subfield" id="hospital-detail-wrap">
           <label for="hospital-admissions">Please briefly describe what happened and which hospital</label>
-          <textarea id="hospital-admissions" name="hospital-admissions" placeholder="e.g. admitted to Beaumont for chest pain, January 2026"></textarea>
+          <textarea id="hospital-admissions" data-n="hospital-admissions" placeholder="e.g. admitted to Beaumont for chest pain, January 2026"></textarea>
         </div>
       </div>
 
       <div class="field-group">
         <label>Any new diagnoses or new hospital specialists since your last visit? <span class="required">*</span></label>
-        <select onchange="toggleSubfieldSelect(this,'yes','specialists-detail-wrap')">
+        <select name="new-diagnosis" onchange="toggleSubfieldSelect(this,'yes','specialists-detail-wrap')">
           <option value="" disabled selected>Select</option>
-          <option value="no">No</option>
+          <option value="No">No</option>
           <option value="yes">Yes</option>
         </select>
         <div class="subfield" id="specialists-detail-wrap">
           <label for="new-specialists">Please give details</label>
-          <textarea id="new-specialists" name="new-specialists" placeholder="e.g. referred to cardiology at Beaumont, new diagnosis of CKD"></textarea>
+          <textarea id="new-specialists" data-n="new-specialists" placeholder="e.g. referred to cardiology at Beaumont, new diagnosis of CKD"></textarea>
         </div>
       </div>
 
@@ -1029,7 +1029,12 @@
   // ── Subfield toggle helpers ───────────────────────────────────
   function toggleSubfield(id, show) {
     const el = document.getElementById(id);
-    if (el) el.classList.toggle('visible', show);
+    if (!el) return;
+    el.classList.toggle('visible', show);
+    el.querySelectorAll('[data-n]').forEach(f => {
+      if (show) f.setAttribute('name', f.dataset.n);
+      else f.removeAttribute('name');
+    });
   }
   function toggleSubfieldSelect(selectEl, triggerValue, subId) {
     toggleSubfield(subId, selectEl.value === triggerValue);
