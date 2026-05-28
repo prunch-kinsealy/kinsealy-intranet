@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kinsealy Medical Centre — Staff Login</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:#1a2d4a;min-height:100vh;display:flex;align-items:center;justify-content:center}
+  .card{background:#fff;border-radius:14px;padding:48px 40px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+  .logo{text-align:center;margin-bottom:32px}
+  .logo h1{font-family:'DM Serif Display',serif;font-size:1.3rem;color:#1a2d4a;line-height:1.3}
+  .logo span{display:block;font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#2a8a7e;margin-top:4px}
+  .logo-divider{width:40px;height:3px;background:#2a8a7e;border-radius:2px;margin:16px auto 0}
+  label{display:block;font-size:0.78rem;font-weight:600;color:#374151;margin-bottom:6px;letter-spacing:0.03em}
+  input[type=password]{width:100%;padding:11px 14px;border:1.5px solid #e8e8e8;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:#1f2937;outline:none;transition:border 0.15s}
+  input[type=password]:focus{border-color:#2a8a7e}
+  button{width:100%;margin-top:20px;padding:12px;background:#1a2d4a;color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.15s;letter-spacing:0.02em}
+  button:hover{background:#2a8a7e}
+  .error{margin-top:14px;font-size:0.78rem;color:#b91c1c;text-align:center;display:none}
+  .footer{margin-top:28px;text-align:center;font-size:0.68rem;color:#9ca3af}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <h1>Kinsealy Medical Centre</h1>
+    <span>Staff Hub</span>
+    <div class="logo-divider"></div>
+  </div>
+  <label for="pwd">Password</label>
+  <input type="password" id="pwd" placeholder="Enter staff password" autofocus onkeydown="if(event.key==='Enter')login()">
+  <button onclick="login()">Sign In</button>
+  <div class="error" id="err">Incorrect password. Please try again.</div>
+  <div class="footer">For access issues contact the Practice Manager</div>
+</div>
+<script>
+async function login() {
+  const pwd = document.getElementById('pwd').value;
+  const err = document.getElementById('err');
+  err.style.display = 'none';
+  if (!pwd) return;
+  const hash = await sha256(pwd);
+  if (hash === 'ddaa0cda9c03244f5110a632676fbf28ffc71be3063438928064a55972c3f205') {
+    sessionStorage.setItem('kmc-auth', '1');
+    const dest = sessionStorage.getItem('kmc-redirect') || 'index.html';
+    sessionStorage.removeItem('kmc-redirect');
+    window.location.href = dest;
+  } else {
+    err.style.display = 'block';
+    document.getElementById('pwd').value = '';
+    document.getElementById('pwd').focus();
+  }
+}
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+</script>
+</body>
+</html>
