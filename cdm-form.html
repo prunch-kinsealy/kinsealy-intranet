@@ -104,6 +104,7 @@
       .header{padding:20px}.container{padding:32px 16px 60px}.form-title{font-size:1.5rem}
     }
   </style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -993,6 +994,248 @@
     hour:'2-digit', minute:'2-digit', timeZone:'Europe/Dublin'
   });
 
+  // ── EmailJS Configuration ─────────────────────────────────────
+  const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // ← replace after setup
+  const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // ← replace after setup
+  const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // ← replace after setup
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+  // ── Email builder helpers ─────────────────────────────────────
+  function getVal(id) {
+    const el = document.getElementById(id);
+    if (!el) return '—';
+    if (el.tagName === 'SELECT') {
+      const opt = el.selectedIndex >= 0 ? el.options[el.selectedIndex] : null;
+      return (opt && opt.value) ? opt.text : '—';
+    }
+    return el.value.trim() || '—';
+  }
+  function getByName(n) {
+    const el = document.querySelector('[name="' + n + '"]');
+    if (!el) return '—';
+    if (el.tagName === 'SELECT') {
+      const opt = el.selectedIndex >= 0 ? el.options[el.selectedIndex] : null;
+      return (opt && opt.value) ? opt.text : '—';
+    }
+    return el.value.trim() || '—';
+  }
+  function radioVal(dname) {
+    const el = document.querySelector('[data-n="' + dname + '"]:checked');
+    return el ? el.value : '—';
+  }
+  function checkVals(dname) {
+    const els = document.querySelectorAll('[data-n="' + dname + '"]:checked');
+    return els.length ? Array.from(els).map(e => e.value).join(', ') : '—';
+  }
+  function condChecked(key) {
+    const el = document.getElementById('cc-' + key);
+    return !!(el && el.checked);
+  }
+  function esc(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function eRow(label, value) {
+    if (!value || value === '—') return '';
+    return '<tr>'
+      + '<td style="padding:7px 12px;font-size:13px;color:#64748b;width:42%;vertical-align:top;border-bottom:1px solid #f1f5f9">' + esc(label) + '</td>'
+      + '<td style="padding:7px 12px;font-size:13px;color:#1e293b;font-weight:500;border-bottom:1px solid #f1f5f9">' + esc(value) + '</td>'
+      + '</tr>';
+  }
+  function eSection(title, color, rows) {
+    if (!rows) return '';
+    return '<div style="margin-bottom:20px">'
+      + '<div style="background:' + color + ';padding:10px 16px;border-radius:6px 6px 0 0">'
+      + '<strong style="font-size:13px;color:#fff;letter-spacing:0.04em">' + title + '</strong></div>'
+      + '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;background:#fff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 6px 6px">'
+      + rows + '</table></div>';
+  }
+
+  function buildEmailHTML() {
+    const conditions = Array.from(document.querySelectorAll('input[name="condition"]:checked')).map(e => e.value);
+    const condStr = conditions.length ? conditions.join(' · ') : '—';
+    const subDate = getVal('submissionDate');
+
+    let h = '<div style="font-family:Arial,sans-serif;max-width:700px;margin:0 auto;background:#f8fafc;padding:24px">';
+
+    // Header
+    h += '<div style="background:#1a2d4a;border-radius:8px 8px 0 0;padding:20px 24px;margin-bottom:20px">'
+       + '<h2 style="color:#fff;font-size:18px;margin:0 0 4px 0;font-family:Arial,sans-serif">CDM Pre-Appointment Form</h2>'
+       + '<p style="color:rgba(255,255,255,0.65);font-size:12px;margin:0;font-family:Arial,sans-serif">Kinsealy Medical Centre &nbsp;&middot;&nbsp; Submitted: ' + esc(subDate) + '</p>'
+       + '</div>';
+
+    // ── 1. Patient Details ────────────────────────────────────
+    let s1 = '';
+    s1 += eRow('Full Name',  getVal('patient-name'));
+    s1 += eRow('Date of Birth', getVal('dob'));
+    s1 += eRow('PPS Number', getVal('pps'));
+    s1 += eRow('Phone',      getVal('phone'));
+    s1 += eRow('Email',      getVal('email'));
+    s1 += eRow('Conditions', condStr);
+    h += eSection('1. Patient Details', '#1a2d4a', s1);
+
+    // ── Hypertension ──────────────────────────────────────────
+    if (condChecked('htn')) {
+      const homeBP = radioVal('htn-home-bp-check');
+      let s = '';
+      s += eRow('Home BP Monitoring', homeBP);
+      if (homeBP === 'Yes — I check at home') s += eRow('Average Home BP Reading', getVal('htn-home-bp'));
+      s += eRow('Symptoms Since Last Visit',    checkVals('htn-symptoms'));
+      s += eRow('Alcohol Intake (units/week)',  getVal('htn-alcohol'));
+      s += eRow('BP Medication Compliance',     getVal('htn-medication-compliance'));
+      s += eRow('Medication Side Effects',      getVal('htn-side-effects'));
+      h += eSection('&#10084;&#65039; Hypertension', '#b91c1c', s);
+    }
+
+    // ── Type 2 Diabetes ───────────────────────────────────────
+    if (condChecked('t2dm')) {
+      const homeGluc = radioVal('t2dm-home-glucose');
+      let s = '';
+      s += eRow('Home Glucose Monitoring', homeGluc);
+      if (homeGluc === 'Yes — I have a monitor at home') s += eRow('Glucose Range (past week)', getVal('t2dm-glucose-range'));
+      s += eRow('Hypos Since Last Visit',          getVal('t2dm-hypos'));
+      s += eRow('Foot Health',                     getVal('t2dm-foot-issues'));
+      s += eRow('Vision Changes',                  getVal('t2dm-vision-changes'));
+      s += eRow('Last Diabetic Eye Screening',     getVal('t2dm-last-eye-check'));
+      s += eRow('Diabetes Medication Compliance',  getVal('t2dm-medication-compliance'));
+      s += eRow('Lifestyle Changes',               getVal('t2dm-lifestyle-changes'));
+      const urine = document.getElementById('t2dm-urine-sample');
+      s += eRow('Urine Sample Confirmed', (urine && urine.checked) ? 'Yes' : 'No');
+      h += eSection('&#129656; Type 2 Diabetes', '#d97706', s);
+    }
+
+    // ── Cardiovascular Disease ────────────────────────────────
+    if (condChecked('cvd')) {
+      let s = '';
+      s += eRow('Chest Pain / Tightness',      getVal('cvd-chest-pain'));
+      s += eRow('Chest Pain — Detail',         getVal('cvd-chest-pain-detail'));
+      s += eRow('Shortness of Breath',         getVal('cvd-sob'));
+      s += eRow('Palpitations',                getVal('cvd-palpitations'));
+      s += eRow('Ankle / Leg Swelling',        getVal('cvd-ankle-swelling'));
+      s += eRow('Smoking Status',              getVal('cvd-smoking'));
+      s += eRow('Cigarettes Per Day',          getVal('cvd-cigarettes-per-day'));
+      s += eRow('Heart Medication Compliance', getVal('cvd-medication-compliance'));
+      h += eSection('&#128155; Cardiovascular Disease / Angina', '#b45309', s);
+    }
+
+    // ── Heart Failure ─────────────────────────────────────────
+    if (condChecked('hf')) {
+      let s = '';
+      s += eRow('Breathlessness vs Last Visit', getVal('hf-breathlessness'));
+      s += eRow('Ankle / Leg Swelling',         getVal('hf-swelling'));
+      s += eRow('Recent Weight Gain',           getVal('hf-weight-gain'));
+      s += eRow('Weight Gain Amount',           getVal('hf-weight-gain-amount'));
+      s += eRow('Stair / Exercise Tolerance',   getVal('hf-stairs'));
+      s += eRow('Medication Compliance',        getVal('hf-medication-compliance'));
+      h += eSection('&#128153; Heart Failure', '#1d4ed8', s);
+    }
+
+    // ── Atrial Fibrillation ───────────────────────────────────
+    if (condChecked('af')) {
+      let s = '';
+      s += eRow('Palpitations / Irregular Heartbeat', getVal('af-palpitations'));
+      s += eRow('Dizziness / Lightheadedness',        getVal('af-dizziness'));
+      s += eRow('Shortness of Breath',               getVal('af-sob'));
+      s += eRow('On Anticoagulant (blood thinner)',  getVal('af-anticoagulant'));
+      s += eRow('Anticoagulant Compliance',          getVal('af-anticoagulant-compliance'));
+      s += eRow('Last INR Date (if on Warfarin)',    getVal('af-inr-date'));
+      h += eSection('&#128147; Atrial Fibrillation (AF)', '#7c3aed', s);
+    }
+
+    // ── COPD ──────────────────────────────────────────────────
+    if (condChecked('copd')) {
+      let s = '';
+      s += eRow('Day-to-Day Breathlessness',        getVal('copd-breathlessness-level'));
+      s += eRow('Cough',                            getVal('copd-cough'));
+      s += eRow('Exacerbations / Chest Infections', getVal('copd-exacerbations'));
+      s += eRow('Rescue Inhaler Use',               getVal('copd-rescue-inhaler'));
+      s += eRow('Smoking Status',                   getVal('copd-smoking'));
+      h += eSection('&#129753; COPD', '#0891b2', s);
+    }
+
+    // ── Asthma ────────────────────────────────────────────────
+    if (condChecked('asthma')) {
+      let s = '';
+      s += eRow('Symptom Frequency (past month)',   getVal('asthma-symptom-freq'));
+      s += eRow('Night Symptoms (past month)',      getVal('asthma-night-symptoms'));
+      s += eRow('Rescue Inhaler Use (per week)',    getVal('asthma-rescue-freq'));
+      s += eRow('Activity Limitation',             getVal('asthma-activity-limit'));
+      s += eRow('Preventer Inhaler Compliance',    getVal('asthma-preventer-compliance'));
+      h += eSection('&#127788;&#65039; Asthma', '#0284c7', s);
+    }
+
+    // ── Stroke / TIA ──────────────────────────────────────────
+    if (condChecked('stroke')) {
+      const homeBP = radioVal('stroke-home-bp-check');
+      let s = '';
+      s += eRow('New Neurological Symptoms', getVal('stroke-new-symptoms'));
+      s += eRow('Symptoms — Detail',         getVal('stroke-new-symptoms-detail'));
+      s += eRow('Falls / Balance Problems',  getVal('stroke-falls'));
+      s += eRow('Memory / Concentration',    getVal('stroke-memory'));
+      s += eRow('Medication Compliance',     getVal('stroke-medication-compliance'));
+      s += eRow('Home BP Monitoring',        homeBP);
+      if (homeBP === 'Yes') s += eRow('Average Home BP Reading', getVal('stroke-home-bp'));
+      h += eSection('&#129504; Stroke / TIA', '#4f46e5', s);
+    }
+
+    // ── Prevention Programme ──────────────────────────────────
+    if (condChecked('pp')) {
+      const homeBP = radioVal('pp-home-bp-check');
+      let s = '';
+      s += eRow('Smoking Status',              getVal('pp-smoking'));
+      s += eRow('Cigarettes Per Day',          getVal('pp-cigarettes-per-day'));
+      s += eRow('Alcohol Intake (units/week)', getVal('pp-alcohol'));
+      s += eRow('Exercise (days/week)',        getVal('pp-exercise-days'));
+      s += eRow('Diet Concerns',              getVal('pp-diet-concerns'));
+      s += eRow('Home BP Monitoring',         homeBP);
+      if (homeBP === 'Yes') s += eRow('Average Home BP Reading', getVal('pp-home-bp'));
+      s += eRow('New Family History',         getVal('pp-family-history-changes'));
+      s += eRow('Other Concerns',             getVal('pp-concerns'));
+      h += eSection('&#128737;&#65039; Prevention Programme', '#059669', s);
+    }
+
+    // ── 3. General Health Update ──────────────────────────────
+    let s3 = '';
+    s3 += eRow('Overall Health Change',       getByName('overall-health-change'));
+    s3 += eRow('Health Changes — Detail',     getVal('health-changes'));
+    s3 += eRow('Hospital / A&E Visits',       getByName('hospital-admission'));
+    s3 += eRow('Hospital — Detail',           getVal('hospital-admissions'));
+    s3 += eRow('New Diagnoses / Specialists', getByName('new-diagnosis'));
+    s3 += eRow('Specialists — Detail',        getVal('new-specialists'));
+    h += eSection('3. General Health Update', '#334155', s3);
+
+    // ── 4. Physical Measurements ──────────────────────────────
+    let s4 = '';
+    const wtRaw = getVal('weight');
+    const wsRaw = getVal('waist');
+    s4 += eRow('Weight',              wtRaw !== '—' ? wtRaw + ' kg' : '—');
+    s4 += eRow('Waist Circumference', wsRaw !== '—' ? wsRaw + ' cm' : '—');
+    h += eSection('4. Physical Measurements', '#475569', s4);
+
+    // ── 5. Medications ────────────────────────────────────────
+    let s5 = '';
+    s5 += eRow('New Medications Since Last Visit', getVal('current-medications'));
+    h += eSection('5. Medications &amp; Allergies', '#475569', s5);
+
+    // ── 6. ABPM ───────────────────────────────────────────────
+    let s6 = '';
+    s6 += eRow('ABPM Consent', getVal('abpm-consent'));
+    const abpmEl = document.getElementById('abpm-consent');
+    if (abpmEl && abpmEl.value === 'yes') {
+      s6 += eRow('ABPM Signed By', getVal('abpm-responsibility-name'));
+      const abpmConf = document.getElementById('abpm-responsibility-confirm');
+      s6 += eRow('Device Responsibility Confirmed', (abpmConf && abpmConf.checked) ? 'Yes' : 'No');
+    }
+    h += eSection('6. ABPM — 24-Hour Blood Pressure Monitor', '#475569', s6);
+
+    // Footer
+    h += '<div style="background:#f1f5f9;border-radius:0 0 8px 8px;padding:14px 20px;text-align:center;font-size:11px;color:#94a3b8;font-family:Arial,sans-serif">'
+       + 'Kinsealy Medical Centre &nbsp;&middot;&nbsp; CDM Pre-Appointment Form &nbsp;&middot;&nbsp; Submitted: ' + esc(subDate)
+       + '</div>';
+
+    h += '</div>';
+    return h;
+  }
+
   // Strip names from all condition-section fields at page load
   // so Netlify doesn't register them and they never appear in emails unless selected
   document.querySelectorAll('.condition-section [name]').forEach(el => {
@@ -1131,18 +1374,27 @@
     stripped.forEach(({el, n}) => el.setAttribute('name', n));
 
     try {
-      const res = await fetch('/cdm-form.html', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(fd).toString()
+      // 1. Send beautifully formatted HTML email via EmailJS
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        to_email:        'kinsealymedicalcentre@protonmail.com',
+        patient_name:    document.getElementById('patient-name').value || 'Unknown',
+        submission_date: document.getElementById('submissionDate').value,
+        email_html:      buildEmailHTML()
       });
-      if (res.ok) {
-        document.getElementById('mainForm').style.display = 'none';
-        document.getElementById('successScreen').style.display = 'block';
-        window.scrollTo({ top:0, behavior:'smooth' });
-      } else {
-        throw new Error('Not OK');
-      }
+
+      // 2. Also POST to Netlify as a backup record
+      try {
+        await fetch('/cdm-form.html', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(fd).toString()
+        });
+      } catch(e) { /* Netlify backup failed — EmailJS already delivered */ }
+
+      // 3. Show success screen
+      document.getElementById('mainForm').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+      window.scrollTo({ top:0, behavior:'smooth' });
     } catch {
       alert('There was a problem submitting the form. Please try again or contact us at kinsealymedicalcentre@protonmail.com or call (01) 845 2500.');
       btn.disabled = false;
