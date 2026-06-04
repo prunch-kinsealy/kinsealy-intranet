@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hypertension &amp; Blood Pressure Advice – Kinsealy Medical Centre</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1a2e44;
+      --teal: #2a7c8a;
+      --teal-light: #3a9aaa;
+      --teal-pale: #e8f4f6;
+      --sand: #f7f4f0;
+      --text: #1e2a35;
+      --text-muted: #5a6a7a;
+      --border: #d0dde6;
+      --error: #c0392b;
+      --warning: #b45309;
+      --warning-pale: #fef3c7;
+      --success: #1a7a5e;
+      --success-pale: #ecfdf5;
+      --white: #ffffff;
+      --red-pale: #fef2f2;
+      --red: #c0392b;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--sand);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: var(--navy);
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-logo {
+      width: 48px;
+      height: 48px;
+      background: var(--teal);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .header-logo svg {
+      width: 28px;
+      height: 28px;
+      fill: white;
+    }
+
+    .header-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: white;
+      letter-spacing: 0.01em;
+    }
+
+    .header-text p {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+      margin-top: 2px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* Container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* Title block */
+    .form-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--teal-pale);
+      color: var(--teal);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+
+    .form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .form-intro {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 300;
+      border-left: 3px solid var(--teal);
+      padding-left: 14px;
+      margin-bottom: 36px;
+    }
+
+    /* Section headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 36px 0 16px;
+    }
+
+    .section-header .icon {
+      width: 34px;
+      height: 34px;
+      background: var(--teal-pale);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-header .icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--teal);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    /* Info cards */
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 26px;
+      margin-bottom: 14px;
+    }
+
+    .card h3 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h3::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--teal);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .card p, .card li {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    .card ul, .card ol {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    .card li { margin-bottom: 4px; }
+
+    /* Step list */
+    .steps {
+      counter-reset: steps;
+      list-style: none;
+      padding: 0;
+      margin-top: 8px;
+    }
+
+    .steps li {
+      counter-increment: steps;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .steps li::before {
+      content: counter(steps);
+      background: var(--teal);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 600;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Target table */
+    .bp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.875rem;
+    }
+
+    .bp-table th {
+      background: var(--navy);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      text-align: left;
+    }
+
+    .bp-table th:first-child { border-radius: 8px 0 0 0; }
+    .bp-table th:last-child  { border-radius: 0 8px 0 0; }
+
+    .bp-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    .bp-table tr:last-child td { border-bottom: none; }
+    .bp-table tr:nth-child(even) td { background: var(--sand); }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .tag-green  { background: var(--success-pale); color: var(--success); }
+    .tag-amber  { background: var(--warning-pale); color: var(--warning); }
+    .tag-red    { background: var(--red-pale);     color: var(--red); }
+
+    /* Alert banner */
+    .alert {
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 14px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .alert-amber {
+      background: var(--warning-pale);
+      border: 1px solid #fcd34d;
+    }
+
+    .alert-red {
+      background: var(--red-pale);
+      border: 1px solid #fca5a5;
+    }
+
+    .alert-green {
+      background: var(--success-pale);
+      border: 1px solid #6ee7b7;
+    }
+
+    .alert-teal {
+      background: var(--teal-pale);
+      border: 1px solid #7dd3da;
+    }
+
+    .alert-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .alert-body p {
+      font-size: 0.875rem;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    .alert-body strong {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    .alert-amber  .alert-body strong { color: var(--warning); }
+    .alert-red    .alert-body strong { color: var(--red); }
+    .alert-green  .alert-body strong { color: var(--success); }
+    .alert-teal   .alert-body strong { color: var(--teal); }
+
+    .alert-body p { color: var(--text-muted); }
+
+    /* CTA button */
+    .cta-block {
+      background: var(--navy);
+      border-radius: 14px;
+      padding: 30px 32px;
+      margin-top: 36px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .cta-block .cta-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .cta-block .cta-text p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .cta-btn {
+      flex-shrink: 0;
+      background: var(--teal);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 22px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .cta-btn:hover { background: var(--teal-light); }
+
+    /* Print / footer */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 36px 0 24px;
+    }
+
+    .footer-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .footer-note strong { font-weight: 500; color: var(--text); }
+
+    /* Print styles */
+    @media print {
+      body { background: white; }
+      .header { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .cta-block { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .bp-table th { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @media (max-width: 600px) {
+      .header { padding: 20px; }
+      .container { padding: 28px 16px 60px; }
+      .form-title { font-size: 1.6rem; }
+      .cta-block { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-logo">
+    <!-- Medical cross icon -->
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+    </svg>
+  </div>
+  <div class="header-text">
+    <h1>Kinsealy Medical Centre</h1>
+    <p>Hypertension Management &amp; Blood Pressure Advice</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Title -->
+  <div class="form-badge">NICE NG136 · Patient &amp; Home Monitoring Guidance</div>
+  <h1 class="form-title">Home Blood Pressure Monitoring &amp; Hypertension Management</h1>
+  <p class="form-intro">
+    This guidance is produced in accordance with <strong>NICE Guideline NG136 (Hypertension in Adults, 2019, updated 2023)</strong>
+    and the <strong>British and Irish Hypertension Society (BIHS)</strong> standards. It is intended to support patients at
+    Kinsealy Medical Centre in monitoring their blood pressure accurately at home and understanding when further assessment
+    is needed.
+  </p>
+
+  <!-- ─── SECTION 1: Why home monitoring? ─── -->
+  <div class="section-header">
+    <div class="icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+    </div>
+    <h2>How to Take Your Blood Pressure at Home</h2>
+  </div>
+
+  <div class="alert alert-teal">
+    <div class="alert-icon">ℹ️</div>
+    <div class="alert-body">
+      <strong>Use a Validated Upper-Arm Monitor</strong>
+      <p>NICE NG136 recommends using a <strong>validated upper-arm electronic blood pressure monitor</strong> for home
+      monitoring. Wrist monitors and finger monitors are not recommended — they are less accurate and are not accepted for
+      clinical decision-making. See the validated devices section below for recommended brands available in Ireland.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Before You Take Your Reading — Preparation</h3>
+    <ul class="steps">
+      <li><strong>Sit quietly for 5 minutes</strong> before taking a reading. Do not measure straight after walking in from outside or climbing stairs.</li>
+      <li>Avoid <strong>caffeine, smoking, or exercise</strong> for at least 30 minutes beforehand — all can temporarily raise your blood pressure.</li>
+      <li>Sit in a chair with your <strong>back supported</strong>, feet flat on the floor, and legs uncrossed. Rest your arm on a flat surface at roughly heart height.</li>
+      <li>Make sure your <strong>bladder is empty</strong> before measuring — a full bladder can add 10–15 mmHg to your reading.</li>
+      <li>Stay <strong>quiet and still</strong> throughout the reading — do not talk, check your phone, or watch TV.</li>
+      <li>Roll up or remove any <strong>tight clothing</strong> from your upper arm. Never take a reading through a thick sleeve.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Applying the Cuff Correctly</h3>
+    <ul class="steps">
+      <li>Sit with your arm resting on a table, palm facing upwards. The cuff should sit on your <strong>bare upper arm</strong>, roughly 2 cm above the elbow crease.</li>
+      <li>The cuff should be <strong>snug but not tight</strong> — you should be able to slide two fingers underneath.</li>
+      <li>Most monitors have an <strong>artery marker</strong> on the cuff — align this with the inside of your arm over the brachial artery (the inner crease of your elbow).</li>
+      <li>On your <strong>first session</strong>, take readings from both arms and use whichever gives the higher reading going forward. If there is a consistent difference of more than 15 mmHg between arms, tell your GP.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Taking the Reading — NICE HBPM Protocol</h3>
+    <ul class="steps">
+      <li>Take <strong>two readings</strong>, one minute apart, each session. Discard the first and record the second — or if your monitor averages them, use that value.</li>
+      <li>Take readings <strong>twice daily</strong>: once in the <strong>morning</strong> (before medication and before breakfast) and once in the <strong>evening</strong>.</li>
+      <li>Do this for <strong>at least 4 days</strong>, ideally 7 consecutive days, to get a reliable average for your GP.</li>
+      <li>Record the date, time, and reading in a diary or the monitor's app. <strong>Do not round</strong> readings — write down exactly what the monitor shows.</li>
+      <li>Ignore the first day of readings when calculating your average — the first day can be artificially high due to anxiety.</li>
+      <li>Bring your monitor or diary record to your next appointment so the practice can review your readings.</li>
+    </ul>
+  </div>
+
+  <div class="alert alert-amber">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>White-Coat Effect</strong>
+      <p>Many people have higher blood pressure when measured in a clinic setting — this is called the white-coat effect.
+      Home monitoring avoids this and gives your GP a much more accurate picture of your true blood pressure. However, home
+      monitoring alone cannot replace a <strong>24-hour ambulatory monitor (ABPM)</strong> in all cases — see below for
+      when an ABPM is recommended.</p>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 1b: Validated Devices ─── -->
+  <div class="section-header">
+    <div class="icon">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+    </div>
+    <h2>Validated Home BP Monitors — Available in Ireland</h2>
+  </div>
+
+  <div class="alert alert-teal">
+    <div class="alert-icon">ℹ️</div>
+    <div class="alert-body">
+      <strong>Only Use a Validated Device</strong>
+      <p>Not all BP monitors sold in pharmacies or online are clinically validated. The devices below have been independently
+      validated to BIHS / ESH International Protocol standards and are suitable for home monitoring. Always use an
+      <strong>upper-arm cuff</strong> — wrist monitors are not recommended for routine monitoring.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Omron — Widely Available in Irish Pharmacies &amp; Online</h3>
+    <table class="bp-table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Cuff Size Included</th>
+          <th>Key Features</th>
+          <th>Where to Buy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Omron M3 Comfort</strong></td>
+          <td>22–42 cm (standard + large)</td>
+          <td>BIHS validated · 2-user memory · irregular heartbeat detection</td>
+          <td>Boots, Lloyds Pharmacy, Amazon.ie</td>
+        </tr>
+        <tr>
+          <td><strong>Omron M6 Comfort</strong></td>
+          <td>22–42 cm (ComFit)</td>
+          <td>BIHS validated · advanced averaging · wide-range ComFit cuff</td>
+          <td>Boots, Lloyds Pharmacy, Amazon.ie</td>
+        </tr>
+        <tr>
+          <td><strong>Omron M7 Intelli IT</strong></td>
+          <td>22–42 cm (ComFit)</td>
+          <td>BIHS validated · Bluetooth app sync · morning hypertension indicator</td>
+          <td>Boots, Amazon.ie, pharmacies</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Microlife — ESH Validated, Available in Ireland</h3>
+    <table class="bp-table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Cuff Size Included</th>
+          <th>Key Features</th>
+          <th>Where to Buy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Microlife BP A3 Plus</strong></td>
+          <td>22–42 cm</td>
+          <td>ESH validated · AFib detection · 60-reading memory</td>
+          <td>Selected pharmacies, Amazon.ie</td>
+        </tr>
+        <tr>
+          <td><strong>Microlife BP A6 PC</strong></td>
+          <td>22–42 cm</td>
+          <td>ESH validated · PC software · advanced arrhythmia detection</td>
+          <td>Amazon.ie, medical suppliers</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>A&amp;D Medical — Available in Ireland</h3>
+    <table class="bp-table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Cuff Size Included</th>
+          <th>Key Features</th>
+          <th>Where to Buy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>A&amp;D UA-651</strong></td>
+          <td>22–32 cm (standard)</td>
+          <td>BIHS validated · compact · easy to use</td>
+          <td>Amazon.ie, selected pharmacies</td>
+        </tr>
+        <tr>
+          <td><strong>A&amp;D UA-767F</strong></td>
+          <td>23–37 cm</td>
+          <td>BIHS validated · 4-user memory · irregular pulse detection</td>
+          <td>Amazon.ie, medical suppliers</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Connected / App-Based — For Patients Who Prefer Digital Records</h3>
+    <table class="bp-table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Connectivity</th>
+          <th>Key Features</th>
+          <th>Where to Buy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Withings BPM Connect</strong></td>
+          <td>Wi-Fi + Bluetooth</td>
+          <td>BIHS validated · automatic cloud sync · Health Mate app · shareable readings</td>
+          <td>Currys Ireland, Amazon.ie</td>
+        </tr>
+        <tr>
+          <td><strong>Omron Evolv</strong></td>
+          <td>Bluetooth</td>
+          <td>BIHS validated · cuffless display (screen on cuff) · Omron Connect app</td>
+          <td>Boots, Amazon.ie</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-amber">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Check Your Cuff Size</strong>
+      <p>Using the wrong cuff size is one of the most common causes of inaccurate home readings. Measure your mid-arm
+      circumference (halfway between your elbow and shoulder). Most standard cuffs fit 22–32 cm; large cuffs fit up to
+      42 cm. If in doubt, ask at the pharmacy before purchasing. Using a cuff that is too small will give falsely high
+      readings.</p>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 2: Diagnosis & Staging ─── -->
+  <div class="section-header">
+    <div class="icon">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    </div>
+    <h2>Diagnosis &amp; Staging (NICE NG136)</h2>
+  </div>
+
+  <div class="card">
+    <h3>Clinic BP Thresholds for Diagnosis</h3>
+    <table class="bp-table">
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Clinic Systolic</th>
+          <th>Clinic Diastolic</th>
+          <th>ABPM / HBPM Confirmation</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Normal</td>
+          <td>&lt; 130 mmHg</td>
+          <td>&lt; 85 mmHg</td>
+          <td>—</td>
+          <td><span class="tag tag-green">Normal</span></td>
+        </tr>
+        <tr>
+          <td>High-Normal</td>
+          <td>130–139 mmHg</td>
+          <td>85–89 mmHg</td>
+          <td>Consider ABPM / HBPM</td>
+          <td><span class="tag tag-amber">Monitor</span></td>
+        </tr>
+        <tr>
+          <td><strong>Stage 1 Hypertension</strong></td>
+          <td>140–159 mmHg</td>
+          <td>90–99 mmHg</td>
+          <td>ABPM/HBPM ≥ 135/85 mmHg</td>
+          <td><span class="tag tag-amber">Stage 1</span></td>
+        </tr>
+        <tr>
+          <td><strong>Stage 2 Hypertension</strong></td>
+          <td>160–179 mmHg</td>
+          <td>100–109 mmHg</td>
+          <td>ABPM/HBPM ≥ 150/95 mmHg</td>
+          <td><span class="tag tag-red">Stage 2</span></td>
+        </tr>
+        <tr>
+          <td><strong>Stage 3 / Severe</strong></td>
+          <td>≥ 180 mmHg</td>
+          <td>≥ 110 mmHg</td>
+          <td>Treat without delay — no ABPM needed</td>
+          <td><span class="tag tag-red">Urgent</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>ABPM Daytime Averages for Diagnosis</h3>
+    <p>When interpreting ABPM results, use <strong>daytime average</strong> readings (08:00–22:00). NICE thresholds are:</p>
+    <ul style="padding-left:18px; margin-top:10px;">
+      <li style="font-size:0.875rem; color:var(--text-muted); font-weight:300; margin-bottom:6px;">Stage 1 Hypertension: daytime average ≥ <strong>135/85 mmHg</strong></li>
+      <li style="font-size:0.875rem; color:var(--text-muted); font-weight:300; margin-bottom:6px;">Stage 2 Hypertension: daytime average ≥ <strong>150/95 mmHg</strong></li>
+      <li style="font-size:0.875rem; color:var(--text-muted); font-weight:300;">Nocturnal dip: a non-dipping pattern (&lt;10% fall at night) increases cardiovascular risk — document when present.</li>
+    </ul>
+  </div>
+
+  <!-- ─── SECTION 3: BP Targets ─── -->
+  <div class="section-header">
+    <div class="icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+    </div>
+    <h2>Treatment Targets (NICE NG136)</h2>
+  </div>
+
+  <div class="card">
+    <h3>Clinic BP Targets by Patient Group</h3>
+    <table class="bp-table">
+      <thead>
+        <tr>
+          <th>Patient Group</th>
+          <th>Clinic BP Target</th>
+          <th>ABPM / HBPM Target</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Under 80 years (no comorbidities)</td>
+          <td>&lt; 140/90 mmHg</td>
+          <td>&lt; 135/85 mmHg</td>
+        </tr>
+        <tr>
+          <td>80 years and over</td>
+          <td>&lt; 150/90 mmHg</td>
+          <td>&lt; 145/85 mmHg</td>
+        </tr>
+        <tr>
+          <td>Type 1 or Type 2 Diabetes</td>
+          <td>&lt; 140/90 mmHg</td>
+          <td>&lt; 135/85 mmHg</td>
+        </tr>
+        <tr>
+          <td>Chronic Kidney Disease (CKD) with proteinuria</td>
+          <td>&lt; 130/80 mmHg</td>
+          <td>&lt; 125/75 mmHg</td>
+        </tr>
+        <tr>
+          <td>Established CVD / high cardiovascular risk</td>
+          <td>&lt; 130/80 mmHg</td>
+          <td>&lt; 125/75 mmHg</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-amber">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Not at Target?</strong>
+      <p>If your blood pressure remains above your target despite lifestyle changes and/or medication, your GP may arrange a
+      <strong>24-hour Ambulatory Blood Pressure Monitor (ABPM)</strong>. This gives a much more accurate picture of your
+      blood pressure throughout the day and night and helps guide any changes to your treatment. See the booking section below.</p>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 4: Lifestyle Advice ─── -->
+  <div class="section-header">
+    <div class="icon">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    </div>
+    <h2>Lifestyle Advice (NICE-Endorsed)</h2>
+  </div>
+
+  <div class="card">
+    <h3>Diet &amp; Salt Intake</h3>
+    <p>Try to <strong>reduce your salt intake to less than 6g per day</strong> (roughly 1 teaspoon). This is one of the
+    most effective things you can do — it can lower your systolic blood pressure by 5–10 mmHg on its own. Aim for a diet
+    rich in fruit, vegetables, and low-fat dairy, and cut back on saturated fat and processed foods.</p>
+  </div>
+
+  <div class="card">
+    <h3>Physical Activity</h3>
+    <p>Aim for at least <strong>150 minutes of moderate exercise per week</strong> — for example brisk walking, cycling,
+    or swimming. You do not need to do this all at once; 30 minutes on five days a week is ideal. Regular activity can
+    lower your systolic BP by up to 8 mmHg.</p>
+  </div>
+
+  <div class="card">
+    <h3>Alcohol</h3>
+    <p>Keep your alcohol intake to <strong>no more than 14 units per week</strong>, spread over at least three days, and
+    avoid binge drinking. Drinking heavily is a common and reversible cause of raised blood pressure.</p>
+  </div>
+
+  <div class="card">
+    <h3>Smoking &amp; Weight</h3>
+    <p>If you smoke, stopping is one of the most important steps you can take for your heart health — smoking
+    significantly increases your risk of heart attack and stroke alongside high blood pressure. If you are overweight,
+    even losing <strong>5–10 kg can reduce your systolic BP by up to 10 mmHg</strong>. Ask your GP about weight
+    management support if needed.</p>
+  </div>
+
+  <div class="card">
+    <h3>Caffeine &amp; Stress</h3>
+    <p>Large amounts of caffeine can temporarily raise your blood pressure — consider cutting back if you drink a lot of
+    tea, coffee, or energy drinks. Getting enough sleep and managing stress (through relaxation, mindfulness, or gentle
+    exercise) also helps, though results vary between individuals.</p>
+  </div>
+
+  <!-- ─── SECTION 5: When to seek emergency help ─── -->
+  <div class="section-header">
+    <div class="icon">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <h2>When to Seek Emergency Help</h2>
+  </div>
+
+  <div class="alert alert-red">
+    <div class="alert-icon">🚨</div>
+    <div class="alert-body">
+      <strong>Call 112 / 999 or Go Straight to Your Nearest Emergency Department (ED) Immediately If You Have a Very High Reading AND Any of the Following Symptoms</strong>
+      <p>If your home monitor shows a reading of <strong>180/120 mmHg or higher</strong> and you have <em>any</em> of these
+      symptoms, do not wait — call 112 or 999 or get someone to drive you to the Emergency Department straight away:</p>
+      <ul style="padding-left:18px; margin-top:10px;">
+        <li style="font-size:0.875rem; line-height:1.8; margin-bottom:4px; color:var(--text-muted);">Sudden severe headache unlike any you have had before</li>
+        <li style="font-size:0.875rem; line-height:1.8; margin-bottom:4px; color:var(--text-muted);">Chest pain or tightness</li>
+        <li style="font-size:0.875rem; line-height:1.8; margin-bottom:4px; color:var(--text-muted);">Sudden blurred vision or loss of vision</li>
+        <li style="font-size:0.875rem; line-height:1.8; margin-bottom:4px; color:var(--text-muted);">Sudden confusion, difficulty speaking, or weakness/numbness in your face, arm, or leg (possible stroke)</li>
+        <li style="font-size:0.875rem; line-height:1.8; margin-bottom:4px; color:var(--text-muted);">Shortness of breath or difficulty breathing</li>
+        <li style="font-size:0.875rem; line-height:1.8; margin-bottom:4px; color:var(--text-muted);">Nausea or vomiting alongside a very high reading</li>
+        <li style="font-size:0.875rem; line-height:1.8; color:var(--text-muted);">Seizure (fit)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert alert-amber">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Very High Reading Without Symptoms — Contact the Practice Urgently the Same Day</strong>
+      <p>If your home monitor shows <strong>180/120 mmHg or higher</strong> but you feel well and have none of the symptoms
+      above, do not ignore it. <strong>Phone the practice the same day</strong> to speak to a GP or nurse. Do not simply
+      re-check the reading and wait — a blood pressure this high needs urgent review, even without symptoms, and your
+      medication may need to be started or adjusted that day.</p>
+    </div>
+  </div>
+
+  <div class="alert alert-amber">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Consistently High Readings at Home — Book an Appointment</strong>
+      <p>If your home readings are consistently <strong>140/90 mmHg or above</strong> over several days, contact the
+      practice to arrange a review. Your GP may recommend a 24-hour blood pressure monitor (ABPM) or a medication review.
+      Do not wait for your next routine check-up if your readings are persistently elevated.</p>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 6: ABPM Booking CTA ─── -->
+  <div class="section-header">
+    <div class="icon">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    </div>
+    <h2>24-Hour ABPM — Booking</h2>
+  </div>
+
+  <div class="alert alert-green">
+    <div class="alert-icon">✅</div>
+    <div class="alert-body">
+      <strong>The Most Accurate Way to Check Your Blood Pressure</strong>
+      <p>A 24-hour monitor gives your GP a much more complete picture of your blood pressure than a single clinic reading.
+      It records your BP throughout the day and overnight while you go about your normal routine — removing the anxiety
+      of a clinic appointment and revealing patterns that a one-off reading can miss.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Your GP May Recommend an ABPM If…</h3>
+    <ul style="padding-left:18px; margin-top:6px;">
+      <li style="font-size:0.875rem; color:var(--text-muted); font-weight:300; line-height:1.7; margin-bottom:6px;">Your blood pressure was <strong>high-normal or elevated</strong> at a recent appointment and needs confirming</li>
+      <li style="font-size:0.875rem; color:var(--text-muted); font-weight:300; line-height:1.7; margin-bottom:6px;">Your readings are <strong>not reaching your target</strong> despite medication and lifestyle changes</li>
+      <li style="font-size:0.875rem; color:var(--text-muted); font-weight:300; line-height:1.7; margin-bottom:6px;">Your BP is <strong>higher in the clinic</strong> than at home (white-coat effect) and needs clarifying</li>
+      <li style="font-size:0.875rem; color:var(--text-muted); font-weight:300; line-height:1.7; margin-bottom:6px;">Your BP is <strong>normal in clinic</strong> but your home readings are higher (masked hypertension)</li>
+      <li style="font-size:0.875rem; color:var(--text-muted); font-weight:300; line-height:1.7; margin-bottom:6px;">Your GP wants to <strong>review how your medication is working</strong> over a full 24-hour period</li>
+      <li style="font-size:0.875rem; color:var(--text-muted); font-weight:300; line-height:1.7;">You have symptoms that may be related to <strong>blood pressure changes overnight</strong></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>What to Expect on the Day</h3>
+    <ul class="steps">
+      <li>The monitor is worn on the upper arm for <strong>24 hours</strong>, typically fitted in clinic and returned the following day.</li>
+      <li>The cuff inflates automatically — usually <strong>every 30 minutes during the day</strong> (07:00–22:00) and <strong>every 60 minutes at night</strong> (22:00–07:00).</li>
+      <li>Each time the cuff inflates, <strong>stop what you are doing, keep your arm still, and breathe normally</strong> until it deflates.</li>
+      <li>Carry on with your <strong>normal daily routine</strong> — the whole point is to capture what your blood pressure is like in real life.</li>
+      <li>You can shower — just keep the <strong>small monitor unit dry</strong> and do not submerge it in water.</li>
+      <li>Fill in the <strong>diary provided</strong>, noting your sleep and wake times, meals, any exercise, and any symptoms you notice during the recording period.</li>
+      <li>A GP or nurse will review your results and contact you to discuss the findings and whether any changes to your care are needed.</li>
+    </ul>
+  </div>
+
+  <!-- CTA Block -->
+  <div class="cta-block">
+    <div class="cta-text">
+      <h3>Book Your 24-Hour Blood Pressure Monitor</h3>
+      <p>If your GP has recommended a 24-hour monitor, please contact the practice to arrange an appointment to have it
+      fitted. Before the monitor is fitted you will be asked to read and sign a short consent form.</p>
+    </div>
+    <a href="tel:+35318001234" class="cta-btn">Call the Practice →</a>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- Footer -->
+  <p class="footer-note">
+    <strong>Guideline references:</strong> NICE NG136 — Hypertension in Adults: Diagnosis and Management (2019, updated 2023) ·
+    British and Irish Hypertension Society (BIHS) Guidelines · BHS/NICE Joint Guidance on Blood Pressure Measurement.<br><br>
+    This information has been prepared by Kinsealy Medical Centre for patients who have been asked to monitor their blood
+    pressure at home. It is not a substitute for advice from your own GP or nurse. If you are unsure about your readings
+    or have any symptoms, please contact the practice or seek emergency care as described above.<br><br>
+    <strong>Kinsealy Medical Centre</strong> · Patient Information · Version 1.0 · June 2026
+  </p>
+
+</div>
+</body>
+</html>
