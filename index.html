@@ -3818,19 +3818,96 @@ document.getElementById('search').addEventListener('input', function() {
 
 // ── Metrics ──────────────────────────────────────────────────────────────────
 (function() {
-  const STORE_KEY = 'kmc_metrics_v1';
+  // ─────────────────────────────────────────────────────────────────────────
+  // GITHUB CONFIG — paste your Personal Access Token below after creating it
+  // Steps: github.com → Settings → Developer settings → Personal access tokens
+  //        → Fine-grained tokens → New token → Repository: kinsealy-intranet
+  //        → Permissions: Contents = Read and write → Generate token → copy it
+  // ─────────────────────────────────────────────────────────────────────────
+  const GH_TOKEN  = 'YOUR_GITHUB_PAT';   // ← replace this with your token
+  const GH_REPO   = 'prunch-kinsealy/kinsealy-intranet';
+  const GH_FILE   = 'metrics-data.json';
+  const GH_BRANCH = 'main';
+  const API_URL   = 'https://api.github.com/repos/'+GH_REPO+'/contents/'+GH_FILE;
+  const RAW_URL   = 'https://raw.githubusercontent.com/'+GH_REPO+'/'+GH_BRANCH+'/'+GH_FILE;
+  const STORE_KEY = 'kmc_metrics_v1';   // localStorage cache key
   const METRICS = [
     { id:'stc_abpm',   label:'STC — ABPM',          icon:'💪', badge:'STC',     type:'number',   color:'#2a8a7e' },
     { id:'stc_ecg',    label:'STC — ECG',            icon:'🫀', badge:'STC',     type:'number',   color:'#1a2d4a' },
     { id:'priv_income',label:'Private Income',       icon:'💰', badge:'Finance', type:'currency', color:'#c9a84c' },
     { id:'cdm_claims', label:'CDM Claims Submitted', icon:'🔁', badge:'CDM',     type:'number',   color:'#7c3aed' },
   ];
-  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const MONTHS      = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const _charts = {};
+  const _charts     = {};
+  const configured  = GH_TOKEN !== 'YOUR_GITHUB_PAT' && GH_TOKEN.trim() !== '';
 
-  function storageGet() { try { return JSON.parse(localStorage.getItem(STORE_KEY))||{}; } catch(e) { return {}; } }
-  function storageSet(d) { try { localStorage.setItem(STORE_KEY,JSON.stringify(d)); } catch(e) {} }
+  // ── localStorage cache (instant reads, fallback when offline) ──────────────
+  function cacheGet()  { try { return JSON.parse(localStorage.getItem(STORE_KEY))||{}; } catch(e) { return {}; } }
+  function cacheSet(d) { try { localStorage.setItem(STORE_KEY,JSON.stringify(d)); }     catch(e) {} }
+
+  // ── GitHub API read (all devices) ─────────────────────────────────────────
+  async function remoteGet() {
+    try {
+      const r = await fetch(RAW_URL+'?t='+Date.now(), {cache:'no-store'});
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+
+  // ── GitHub API write ──────────────────────────────────────────────────────
+  function b64(str) { return btoa(unescape(encodeURIComponent(str))); }
+
+  async function remoteSet(data) {
+    // 1. Get current SHA (required for update)
+    const infoResp = await fetch(API_URL+'?t='+Date.now(), {
+      headers:{ 'Authorization':'Bearer '+GH_TOKEN, 'Accept':'application/vnd.github+json' },
+      cache:'no-store'
+    });
+    let sha = null;
+    if (infoResp.ok) { const info = await infoResp.json(); sha = info.sha; }
+
+    // 2. PUT new content
+    const body = {
+      message:'Update metrics data '+new Date().toISOString().slice(0,10),
+      content: b64(JSON.stringify(data, null, 2)),
+      branch:  GH_BRANCH
+    };
+    if (sha) body.sha = sha;
+
+    const putResp = await fetch(API_URL, {
+      method:'PUT',
+      headers:{
+        'Authorization':'Bearer '+GH_TOKEN,
+        'Content-Type':'application/json',
+        'Accept':'application/vnd.github+json'
+      },
+      body: JSON.stringify(body)
+    });
+    if (!putResp.ok) {
+      const err = await putResp.json().catch(()=>({}));
+      throw new Error(err.message||'GitHub API error '+putResp.status);
+    }
+  }
+
+  // ── Combined get: remote first, fall back to cache ─────────────────────────
+  async function getData() {
+    if (configured) {
+      const remote = await remoteGet();
+      if (remote !== null) { cacheSet(remote); return remote; }
+    }
+    return cacheGet();
+  }
+
+  // ── Combined set: always update cache; remote if configured ───────────────
+  async function setData(data) {
+    cacheSet(data);
+    if (!configured) return { ok:false, reason:'not-configured' };
+    await remoteSet(data);
+    return { ok:true };
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
   function monthKey(y,m) { return y+'-'+(m<10?'0':'')+m; }
   function prevMonth(y,m) { return m===1?[y-1,12]:[y,m-1]; }
   function sameMonthLastYear(y,m) { return [y-1,m]; }
@@ -3931,77 +4008,116 @@ document.getElementById('search').addEventListener('input', function() {
     });
   }
 
-  function renderMetrics() {
-    const yearSel=document.getElementById('metrics-year');
-    const monthSel=document.getElementById('metrics-month');
-    if(!yearSel||!monthSel) return;
-    const y=parseInt(yearSel.value), m=parseInt(monthSel.value);
-    const [py,pm_]=prevMonth(y,m);
-    const [lpy,lpm]=sameMonthLastYear(y,m);
-    const data=storageGet();
-
-    METRICS.forEach(function(metric){
-      const curVal=getValue(data,y,m,metric.id);
-      const prevVal=getValue(data,py,pm_,metric.id);
-      const lyVal=getValue(data,lpy,lpm,metric.id);
-      const inp=document.getElementById('mi-'+metric.id);
-      if(inp&&inp!==document.activeElement) inp.value=curVal!==null?curVal:'';
-      const prevDisp=document.getElementById('mv-prev-'+metric.id);
-      const prevTrend=document.getElementById('mt-prev-'+metric.id);
-      if(prevDisp){const fv=formatVal(prevVal,metric.type);prevDisp.innerHTML=fv!==null?'<span class="metric-val">'+fv+'</span>':'<span class="metric-val empty">—</span>';}
-      if(prevTrend) prevTrend.innerHTML=trendHTML(curVal,prevVal,metric.type);
-      const lyDisp=document.getElementById('mv-ly-'+metric.id);
-      const lyTrend=document.getElementById('mt-ly-'+metric.id);
-      if(lyDisp){const fv=formatVal(lyVal,metric.type);lyDisp.innerHTML=fv!==null?'<span class="metric-val">'+fv+'</span>':'<span class="metric-val empty">—</span>';}
-      if(lyTrend) lyTrend.innerHTML=trendHTML(curVal,lyVal,metric.type);
-    });
-    // update period label
-    const lbl=document.getElementById('metrics-period-label');
-    if(lbl) lbl.textContent=MONTHS_LONG[m-1]+' '+y;
-    renderCharts(y,m);
+  function setSyncStatus(msg, colour) {
+    const el = document.getElementById('metrics-sync-status');
+    if (!el) return;
+    el.textContent = msg;
+    el.style.color  = colour || 'var(--teal)';
+    el.style.display = msg ? 'inline' : 'none';
   }
 
-  function saveMetrics() {
-    const y=parseInt(document.getElementById('metrics-year').value);
-    const m=parseInt(document.getElementById('metrics-month').value);
-    const k=monthKey(y,m);
-    const data=storageGet();
-    if(!data[k]) data[k]={};
+  function populateCards(data, y, m) {
+    const [py,pm_] = prevMonth(y,m);
+    const [lpy,lpm] = sameMonthLastYear(y,m);
     METRICS.forEach(function(metric){
-      const inp=document.getElementById('mi-'+metric.id);
-      if(inp) data[k][metric.id]=inp.value.trim();
+      const curVal  = getValue(data,y,m,metric.id);
+      const prevVal = getValue(data,py,pm_,metric.id);
+      const lyVal   = getValue(data,lpy,lpm,metric.id);
+      const inp = document.getElementById('mi-'+metric.id);
+      if (inp && inp!==document.activeElement) inp.value = curVal!==null?curVal:'';
+      const prevDisp  = document.getElementById('mv-prev-'+metric.id);
+      const prevTrend = document.getElementById('mt-prev-'+metric.id);
+      if (prevDisp) { const fv=formatVal(prevVal,metric.type); prevDisp.innerHTML=fv!==null?'<span class="metric-val">'+fv+'</span>':'<span class="metric-val empty">—</span>'; }
+      if (prevTrend) prevTrend.innerHTML = trendHTML(curVal,prevVal,metric.type);
+      const lyDisp  = document.getElementById('mv-ly-'+metric.id);
+      const lyTrend = document.getElementById('mt-ly-'+metric.id);
+      if (lyDisp) { const fv=formatVal(lyVal,metric.type); lyDisp.innerHTML=fv!==null?'<span class="metric-val">'+fv+'</span>':'<span class="metric-val empty">—</span>'; }
+      if (lyTrend) lyTrend.innerHTML = trendHTML(curVal,lyVal,metric.type);
     });
-    storageSet(data);
-    renderMetrics();
-    const msg=document.getElementById('metrics-saved-msg');
-    if(msg){msg.style.display='inline';setTimeout(function(){msg.style.display='none';},2500);}
+    const lbl = document.getElementById('metrics-period-label');
+    if (lbl) lbl.textContent = MONTHS_LONG[m-1]+' '+y;
+    renderCharts(y,m,data);
+  }
+
+  async function renderMetrics() {
+    const yearSel  = document.getElementById('metrics-year');
+    const monthSel = document.getElementById('metrics-month');
+    if (!yearSel||!monthSel) return;
+    const y = parseInt(yearSel.value), m = parseInt(monthSel.value);
+    // Show cached data immediately while fetching
+    populateCards(cacheGet(), y, m);
+    if (configured) {
+      setSyncStatus('⟳ Syncing…','var(--grey-400)');
+      const remote = await remoteGet();
+      if (remote !== null) { cacheSet(remote); populateCards(remote,y,m); setSyncStatus('✓ Synced','var(--teal)'); }
+      else { setSyncStatus('⚠ Offline — showing cached data','#b45309'); }
+      setTimeout(()=>setSyncStatus('',''), 3000);
+    } else {
+      setSyncStatus('⚠ GitHub not configured — data is device-only','#b45309');
+    }
+  }
+
+  async function saveMetrics() {
+    const y = parseInt(document.getElementById('metrics-year').value);
+    const m = parseInt(document.getElementById('metrics-month').value);
+    const k = monthKey(y,m);
+    const data = cacheGet();
+    if (!data[k]) data[k] = {};
+    METRICS.forEach(function(metric){
+      const inp = document.getElementById('mi-'+metric.id);
+      if (inp) data[k][metric.id] = inp.value.trim();
+    });
+
+    const btn = document.getElementById('metrics-save-btn');
+    if (btn) { btn.disabled=true; btn.textContent='Saving…'; }
+    setSyncStatus('','');
+
+    try {
+      const result = await setData(data);
+      populateCards(data,y,m);
+      if (result.ok) {
+        setSyncStatus('✓ Saved to GitHub — visible on all devices','var(--teal)');
+      } else {
+        setSyncStatus('💾 Saved locally only — add GitHub token to sync','#b45309');
+      }
+    } catch(err) {
+      setSyncStatus('✗ GitHub save failed: '+err.message+' — saved locally','#dc2626');
+    }
+    setTimeout(()=>setSyncStatus('',''), 4000);
+    if (btn) { btn.disabled=false; btn.textContent='Save figures'; }
   }
 
   function exportData() {
-    const data=storageGet();
-    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(blob);
-    a.download='kmc-metrics-'+new Date().toISOString().slice(0,10)+'.json';
+    const data = cacheGet();
+    const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'kmc-metrics-'+new Date().toISOString().slice(0,10)+'.json';
     a.click();
   }
 
-  function importData(e) {
-    const file=e.target.files[0]; if(!file) return;
-    const reader=new FileReader();
-    reader.onload=function(ev){
-      try{
-        const imported=JSON.parse(ev.target.result);
-        // Merge: imported values take precedence
-        const existing=storageGet();
-        const merged=Object.assign({},existing,imported);
-        storageSet(merged);
-        renderMetrics();
-        alert('✓ Data imported successfully ('+Object.keys(imported).length+' months).');
-      } catch(err){alert('Could not read file — please ensure it is a valid KMC metrics JSON file.');}
+  async function importData(e) {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async function(ev) {
+      try {
+        const imported = JSON.parse(ev.target.result);
+        const existing = cacheGet();
+        const merged   = Object.assign({}, existing, imported);
+        if (btn) { btn.disabled=true; btn.textContent='Importing…'; }
+        try {
+          await setData(merged);
+          await renderMetrics();
+          alert('✓ '+Object.keys(imported).length+' months imported and saved to GitHub.');
+        } catch(err) {
+          cacheSet(merged);
+          await renderMetrics();
+          alert('✓ Imported locally. GitHub sync failed: '+err.message);
+        }
+      } catch(err) { alert('Could not read file — please use a valid KMC metrics JSON file.'); }
     };
     reader.readAsText(file);
-    e.target.value='';
+    e.target.value = '';
   }
 
   function buildMetricsSection() {
@@ -4013,23 +4129,36 @@ document.getElementById('search').addEventListener('input', function() {
     for(let y=cy-3;y<=cy+1;y++) yearOpts+=`<option value="${y}"${y===cy?' selected':''}>${y}</option>`;
     const monthOpts=MONTHS_LONG.map((mn,i)=>`<option value="${i+1}"${(i+1)===cm?' selected':''}>${mn}</option>`).join('');
 
-    let html=`
+    let html = '';
+
+    if (!configured) {
+      html += `<div class="warn-box" style="margin-bottom:20px;font-size:0.82rem;line-height:1.75">
+        <strong>⚙️ GitHub sync not yet configured</strong><br>
+        Data currently saves to this browser only. To sync across all devices, add your GitHub Personal Access Token:<br><br>
+        <strong>Step 1</strong> — Go to <a href="https://github.com/settings/tokens?type=beta" target="_blank">github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens</a><br>
+        <strong>Step 2</strong> — Click <em>Generate new token</em>. Set expiry (1 year). Under <em>Repository access</em> select <em>Only select repositories</em> → choose <strong>kinsealy-intranet</strong>.<br>
+        <strong>Step 3</strong> — Under <em>Permissions</em> → <em>Repository permissions</em> → <em>Contents</em> → set to <strong>Read and write</strong>. Generate token and copy it.<br>
+        <strong>Step 4</strong> — Open <code>index.html</code> in VS Code (or Claude Code), find the line <code>const GH_TOKEN = 'YOUR_GITHUB_PAT'</code> and paste your token in place of <code>YOUR_GITHUB_PAT</code>. Save, commit, push — done.
+      </div>`;
+    }
+
+    html += `
       <div class="metrics-controls">
         <label for="metrics-month">Month</label>
         <select id="metrics-month" onchange="window.kmc_renderMetrics()">${monthOpts}</select>
         <label for="metrics-year">Year</label>
         <select id="metrics-year" onchange="window.kmc_renderMetrics()">${yearOpts}</select>
-        <span id="metrics-saved-msg" class="metrics-saved-msg">✓ Saved</span>
-        <button class="metrics-save-btn" onclick="window.kmc_saveMetrics()">Save figures</button>
+        <span id="metrics-sync-status" style="font-size:0.78rem;font-weight:600;display:none"></span>
+        <button id="metrics-save-btn" class="metrics-save-btn" onclick="window.kmc_saveMetrics()">Save figures</button>
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
         <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy)">
           Figures for: <strong id="metrics-period-label"></strong>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="metrics-save-btn" style="background:var(--teal);padding:7px 14px;font-size:0.78rem" onclick="window.kmc_exportData()">⬇ Export data</button>
+          <button class="metrics-save-btn" style="background:var(--teal);padding:7px 14px;font-size:0.78rem" onclick="window.kmc_exportData()">⬇ Export JSON</button>
           <label class="metrics-save-btn" style="background:#475569;padding:7px 14px;font-size:0.78rem;cursor:pointer;margin:0">
-            ⬆ Import data
+            ⬆ Import JSON
             <input type="file" accept=".json" style="display:none" onchange="window.kmc_importData(event)"/>
           </label>
         </div>
@@ -4093,11 +4222,11 @@ document.getElementById('search').addEventListener('input', function() {
     });
     html+='</div>';
 
-    html+=`<div class="info-box" style="font-size:0.8rem;line-height:1.7;margin-top:12px">
-      <strong>💾 Data storage:</strong> Figures are saved in this browser on this device.
-      Use the same browser each month to build up history — the charts and comparisons will populate automatically.
-      Use <strong>Export data</strong> monthly as a backup, and <strong>Import data</strong> to restore on a new device.
-      Previous month and same-month-last-year figures are pulled automatically from saved entries.
+    html += `<div class="info-box" style="font-size:0.8rem;line-height:1.7;margin-top:12px">
+      <strong>☁️ Data sync:</strong> Once the GitHub token is configured, figures are saved directly to the GitHub repo
+      and are instantly accessible from <em>any device</em> on the Netlify URL — PM enters, partners read, no copying needed.
+      A local browser cache means the last-seen data loads instantly while the sync happens in the background.
+      Use <strong>Export JSON</strong> as an additional backup.
     </div>`;
 
     container.innerHTML=html;
