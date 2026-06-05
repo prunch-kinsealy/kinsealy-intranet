@@ -99,6 +99,11 @@
     .success-icon svg{width:36px;height:36px;stroke:var(--teal);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
     .success-screen h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--navy);margin-bottom:10px}
     .success-screen p{font-size:0.9rem;color:var(--text-muted);font-weight:300;line-height:1.7}
+    /* Standalone info sub-section (outside form) */
+    .subsection-panel{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px}
+    .subsection-panel-header{background:var(--teal);padding:12px 20px;display:flex;align-items:center;gap:10px}
+    .subsection-panel-header span{font-size:0.82rem;font-weight:700;color:white;text-transform:uppercase;letter-spacing:0.08em}
+    .subsection-panel-body{padding:6px 0}
     @media(max-width:580px){
       .field-row{grid-template-columns:1fr}
       .header{padding:20px}.container{padding:32px 16px 60px}.form-title{font-size:1.5rem}
@@ -140,6 +145,43 @@
         <h3>Fasting Required — Please Read Before Your Appointment</h3>
         <p>You must <strong>fast from midnight the night before your appointment</strong>. This means no food or drink except plain water from midnight onwards. Fasting is needed for accurate blood results (glucose, cholesterol, triglycerides).</p>
         <p><strong>Medications:</strong> Continue all regular medications as normal with a small sip of water.</p>
+      </div>
+    </div>
+
+    <!-- ══ WHAT TO EXPECT ON THE DAY — standalone sub-section ══ -->
+    <div class="subsection-panel">
+      <div class="subsection-panel-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>What to Expect on the Day</span>
+      </div>
+      <div class="subsection-panel-body">
+        <div class="day-panel" style="border:none;border-radius:0;margin:0">
+          <div class="day-panel-header" style="background:var(--navy)">🏥 Your CDM / PP Appointment</div>
+          <div class="day-step">
+            <div class="day-step-num">1</div>
+            <div class="day-step-text"><strong>Arrive fasting</strong> — no food or drink (except water) from midnight the night before. Continue all regular medications as normal.</div>
+          </div>
+          <div class="day-step">
+            <div class="day-step-num">2</div>
+            <div class="day-step-text"><strong>Check in at reception</strong> — let staff know you are here for your CDM or Prevention Programme review.</div>
+          </div>
+          <div class="day-step">
+            <div class="day-step-num">3</div>
+            <div class="day-step-text"><strong>Nurse / Phlebotomist</strong> — will take blood samples, check your blood pressure, weight, and height, and fit a 24-hour blood pressure monitor (ABPM) if required. This may take 20–30 minutes.</div>
+          </div>
+          <div class="day-step">
+            <div class="day-step-num">4</div>
+            <div class="day-step-text"><strong>Doctor review</strong> — your GP will review your results and renew your chronic disease prescription. If follow-up is needed, they will contact you.</div>
+          </div>
+          <div class="day-step">
+            <div class="day-step-num">5</div>
+            <div class="day-step-text"><strong>Your script</strong> — a 6-month prescription (CDM) or 12-month prescription (PP) will be issued. A note is sent to your pharmacy to remind you to book your next review when the script is running out.</div>
+          </div>
+          <div class="day-step">
+            <div class="day-step-num">6</div>
+            <div class="day-step-text"><strong>Bring with you</strong> — medication list or tablets, and your ABPM monitor if you already have one fitted from a previous visit.</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -918,38 +960,58 @@
         </div>
       </div>
 
-      <!-- ══ SECTION 7: What Happens on the Day ══ -->
+      <!-- ══ SECTION 7: CDM / PP Finding ══ -->
       <div class="section-header">
         <div class="section-number">7</div>
-        <div class="section-header-text"><h2>What to Expect on the Day</h2><p>Your appointment at a glance</p></div>
+        <div class="section-header-text"><h2>CDM / PP Finding</h2><p>Recent results from your last visit — if known</p></div>
       </div>
 
-      <div class="day-panel">
-        <div class="day-panel-header">🏥 Your CDM / PP Appointment</div>
-        <div class="day-step">
-          <div class="day-step-num">1</div>
-          <div class="day-step-text"><strong>Arrive fasting</strong> — no food or drink (except water) from midnight the night before. Continue all regular medications as normal.</div>
+      <div class="info-box">
+        If you were given any results at your last CDM or Prevention Programme visit, please enter them below. This helps your nurse and doctor prepare for your review. <strong>Leave any fields blank if you don't know or weren't given that result</strong> — all fields are optional.
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label for="finding-bp">Last Blood Pressure Reading <span class="optional">(optional)</span></label>
+          <input type="text" id="finding-bp" name="finding-bp" placeholder="e.g. 138/84 mmHg"/>
+          <div class="field-hint">As recorded at your last CDM/PP visit or home reading.</div>
         </div>
-        <div class="day-step">
-          <div class="day-step-num">2</div>
-          <div class="day-step-text"><strong>Check in at reception</strong> — let staff know you are here for your CDM or Prevention Programme review.</div>
+        <div class="field-group">
+          <label for="finding-hba1c">Last HbA1c (Blood Sugar) <span class="optional">(optional)</span></label>
+          <input type="text" id="finding-hba1c" name="finding-hba1c" placeholder="e.g. 58 mmol/mol or 7.4%"/>
         </div>
-        <div class="day-step">
-          <div class="day-step-num">3</div>
-          <div class="day-step-text"><strong>Nurse / Phlebotomist</strong> — will take blood samples, check your blood pressure, weight, and height, and fit a 24-hour blood pressure monitor (ABPM) if required. This may take 20–30 minutes.</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label for="finding-cholesterol">Last Total Cholesterol <span class="optional">(optional)</span></label>
+          <input type="text" id="finding-cholesterol" name="finding-cholesterol" placeholder="e.g. 4.8 mmol/L"/>
         </div>
-        <div class="day-step">
-          <div class="day-step-num">4</div>
-          <div class="day-step-text"><strong>Doctor review</strong> — your GP will review your results and renew your chronic disease prescription. If follow-up is needed, they will contact you.</div>
+        <div class="field-group">
+          <label for="finding-egfr">Last eGFR (Kidney Function) <span class="optional">(optional)</span></label>
+          <input type="text" id="finding-egfr" name="finding-egfr" placeholder="e.g. 72 mL/min/1.73m²"/>
         </div>
-        <div class="day-step">
-          <div class="day-step-num">5</div>
-          <div class="day-step-text"><strong>Your script</strong> — a 6-month prescription (CDM) or 12-month prescription (PP) will be issued. A note is sent to your pharmacy to remind you to book your next review when the script is running out.</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label for="finding-weight">Weight at Last Visit <span class="optional">(optional)</span></label>
+          <input type="text" id="finding-weight" name="finding-weight" placeholder="e.g. 82 kg"/>
         </div>
-        <div class="day-step">
-          <div class="day-step-num">6</div>
-          <div class="day-step-text"><strong>Bring with you</strong> — medication list or tablets, and your ABPM monitor if you already have one fitted from a previous visit.</div>
+        <div class="field-group">
+          <label for="finding-bmi">BMI at Last Visit <span class="optional">(optional)</span></label>
+          <input type="text" id="finding-bmi" name="finding-bmi" placeholder="e.g. 27.4"/>
         </div>
+      </div>
+
+      <div class="field-group">
+        <label for="finding-date">Date of Last CDM / PP Visit <span class="optional">(optional)</span></label>
+        <input type="text" id="finding-date" name="finding-date" placeholder="e.g. January 2025 or 15/01/2025" style="max-width:300px"/>
+      </div>
+
+      <div class="field-group">
+        <label for="finding-other">Any other results or findings noted at your last visit <span class="optional">(optional)</span></label>
+        <textarea id="finding-other" name="finding-other" placeholder="e.g. ACR 3.2 mg/mmol, referred to diabetic retinopathy screening, INR 2.4 — or write 'None'"></textarea>
       </div>
 
       <!-- ══ SECTION 8: Data Consent & Confirmation ══ -->
@@ -1226,6 +1288,18 @@
       s6 += eRow('Device Responsibility Confirmed', (abpmConf && abpmConf.checked) ? 'Yes' : 'No');
     }
     h += eSection('6. ABPM — 24-Hour Blood Pressure Monitor', '#475569', s6);
+
+    // ── 7. CDM / PP Finding ───────────────────────────────────
+    let s7 = '';
+    s7 += eRow('Last Blood Pressure',       getVal('finding-bp'));
+    s7 += eRow('Last HbA1c',               getVal('finding-hba1c'));
+    s7 += eRow('Last Total Cholesterol',   getVal('finding-cholesterol'));
+    s7 += eRow('Last eGFR',               getVal('finding-egfr'));
+    s7 += eRow('Weight at Last Visit',     getVal('finding-weight'));
+    s7 += eRow('BMI at Last Visit',        getVal('finding-bmi'));
+    s7 += eRow('Date of Last CDM/PP Visit',getVal('finding-date'));
+    s7 += eRow('Other Findings',           getVal('finding-other'));
+    if (s7) h += eSection('7. CDM / PP Finding (Previous Results)', '#0f766e', s7);
 
     // Footer
     h += '<div style="background:#f1f5f9;border-radius:0 0 8px 8px;padding:14px 20px;text-align:center;font-size:11px;color:#94a3b8;font-family:Arial,sans-serif">'
