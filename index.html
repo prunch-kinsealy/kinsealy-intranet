@@ -683,42 +683,28 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
         <a href="#" onclick="goToSOP('care-pathways','sop-abpm');return false;">💪 ABPM — ProMed Tubeless</a>
       </div>
 
-      <!-- ── Step 7: PM Claiming — standalone sub-section ── -->
-      <div class="section-label">🟣 Step 7 — Practice Manager: CDM / PP Submission &amp; Claiming</div>
-      <div style="background:var(--col-pm-pale);border-left:3px solid var(--col-pm);border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:16px;font-size:0.83rem;line-height:1.7">
-        <strong style="color:var(--col-pm);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.06em">Practice Manager — Weekly</strong>
-        <ul style="margin-top:8px;padding-left:18px;color:var(--text)">
-          <li>Log in to the PCRS portal and confirm CDM/PP submission for all completed reviews</li>
-          <li>Confirm STC (ECG) and STC (ABPM) have been submitted where applicable</li>
-          <li>Document in each patient's Socrates chart: <em>"CDM/PP submitted [date]"</em></li>
-          <li>Review failed or rejected submissions every 1–2 weeks — resubmit or correct as needed</li>
-          <li>Send bulk text reminders to patients overdue for CDM/PP review every 2 months</li>
-        </ul>
-        <div style="background:white;border:1px solid #ddd6fe;border-radius:8px;padding:12px 14px;margin-top:12px">
-          <div style="font-weight:600;font-size:0.8rem;margin-bottom:8px;color:var(--col-pm)">📱 Bulk Text Reminder Tracker</div>
-          <div id="cdm-reminder-status"></div>
-          <div style="margin-top:10px">
-            <div style="font-weight:600;font-size:0.8rem;margin-bottom:6px">✉️ Bulk Text Template <span style="font-weight:400;color:var(--grey-400);font-size:0.72rem">(replace [FORM LINK] with your Netlify URL)</span></div>
-            <div id="cdm-sms-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.6;color:var(--text)">Hi, your CDM review is due at Kinsealy MC. Please complete the form before booking: [FORM LINK] No form = no appointment.</div>
-            <button class="cdm-reminder-btn" style="margin-top:8px" onclick="(function(){var t=document.getElementById('cdm-sms-template');navigator.clipboard.writeText(t.innerText).then(function(){var b=event.target;b.textContent='Copied!';setTimeout(function(){b.textContent='Copy text'},1800)})})()">Copy text</button>
-          </div>
-        </div>
-      </div>
+    </div>
+  </div>
 
-      <!-- ── CDM / PP Finding — new sub-section ── -->
-      <div class="section-label">🔍 CDM / PP Finding — Identifying New Patients on Socrates</div>
-      <div style="font-size:0.83rem;color:var(--grey-700);line-height:1.6;margin-bottom:10px">
-        Use the following steps to identify patients who should be on the CDM or Prevention Programme but are not yet enrolled. Run this search at least <strong>monthly</strong> or when onboarding new patients.
-      </div>
-      <div class="journey" style="margin-bottom:16px">
+  <!-- ── SOP: CDM / PP Submission & Claiming (PM) ── -->
+  <div class="sop-card" id="sop-cdm-claiming" data-updated="2026-06-05" data-section-name="CDM" data-sop-name="CDM / PP Submission &amp; Claiming">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🟣</span><h3>CDM / PP Submission &amp; Claiming — Practice Manager</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta">
+      <span>👤 Practice Manager</span><span>🔄 Last updated: 05/06/2026</span><span>📅 Weekly task</span>
+    </div>
+    <div class="sop-body">
+      <div class="journey">
 
         <div class="journey-step">
           <div class="step-dot dot-pm" style="font-size:0.65rem">1</div>
           <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">Socrates — Patient Search</div>
-            <div class="step-title">Open the Patient Search / Register Query</div>
+            <div class="step-role step-role-pm">Practice Manager — Weekly</div>
+            <div class="step-title">PCRS Portal — Confirm CDM / PP Submission</div>
             <div class="step-detail">
-              In Socrates, go to <strong>Reports → Disease Register</strong> (or your practice's equivalent query tool). Select the relevant CDM condition(s): Diabetes, Hypertension, COPD, Asthma, CVD, CKD, AF, Heart Failure, Stroke/TIA.
+              Log in to the <strong>PCRS portal</strong> and confirm CDM/PP submission for all completed reviews from the previous week. Ensure every patient seen for a CDM or PP review has been successfully claimed.
             </div>
           </div>
         </div>
@@ -726,14 +712,97 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
         <div class="journey-step">
           <div class="step-dot dot-pm" style="font-size:0.65rem">2</div>
           <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">Filter — Not Enrolled / Overdue</div>
+            <div class="step-role step-role-pm">Practice Manager</div>
+            <div class="step-title">Confirm STCs — ECG &amp; ABPM</div>
+            <div class="step-detail">
+              Check that the <strong>STC (ECG)</strong> and <strong>STC (ABPM)</strong> have been submitted for all applicable patients. These are separate claims from the CDM/PP submission and must be confirmed individually.
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-pm" style="font-size:0.65rem">3</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">Practice Manager</div>
+            <div class="step-title">Document in Socrates</div>
+            <div class="step-detail">
+              In each patient's Socrates chart, document: <em>"CDM/PP submitted [date]"</em> — this confirms the claim has been made and makes it easy to audit.
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-pm" style="font-size:0.65rem">4</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">Practice Manager — Every 1–2 Weeks</div>
+            <div class="step-title">Review Failed or Rejected Submissions</div>
+            <div class="step-detail">
+              Check the PCRS portal for any failed or rejected submissions. Identify the reason, correct the claim, and resubmit. Do not allow a backlog of rejections to accumulate.
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-pm" style="font-size:0.65rem">5</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">Practice Manager — Every 2 Months</div>
+            <div class="step-title">Bulk Text Reminders to Overdue Patients</div>
+            <div class="step-detail">
+              Send a bulk text reminder to all CDM/PP patients who are overdue for their review. Use the template below. Track the date sent using the reminder tracker.
+              <div style="background:white;border:1px solid #ddd6fe;border-radius:8px;padding:12px 14px;margin-top:12px">
+                <div style="font-weight:600;font-size:0.8rem;margin-bottom:8px;color:var(--col-pm)">📱 Bulk Text Reminder Tracker</div>
+                <div id="cdm-reminder-status"></div>
+                <div style="margin-top:10px">
+                  <div style="font-weight:600;font-size:0.8rem;margin-bottom:6px">✉️ Bulk Text Template <span style="font-weight:400;color:var(--grey-400);font-size:0.72rem">(replace [FORM LINK] with your Netlify URL)</span></div>
+                  <div id="cdm-sms-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.6;color:var(--text)">Hi, your CDM review is due at Kinsealy MC. Please complete the form before booking: [FORM LINK] No form = no appointment.</div>
+                  <button class="cdm-reminder-btn" style="margin-top:8px" onclick="(function(){var t=document.getElementById('cdm-sms-template');navigator.clipboard.writeText(t.innerText).then(function(){var b=event.target;b.textContent='Copied!';setTimeout(function(){b.textContent='Copy text'},1800)})})()">Copy text</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SOP: CDM / PP Finding — Identifying New Patients on Socrates ── -->
+  <div class="sop-card" id="sop-cdm-finding" data-updated="2026-06-05" data-section-name="CDM" data-sop-name="CDM / PP Finding — New Patients on Socrates">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🔍</span><h3>CDM / PP Finding — Identifying New Patients on Socrates</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta">
+      <span>👤 All Staff</span><span>🔄 Last updated: 05/06/2026</span><span>📅 Monthly / at new patient registration</span>
+    </div>
+    <div class="sop-body">
+      <div class="info-box" style="margin-bottom:16px">
+        Use the steps below to identify patients who should be on the CDM or Prevention Programme but are not yet enrolled. Run this search at least <strong>monthly</strong> and whenever a new patient is registered with a CDM-qualifying condition.
+      </div>
+      <div class="journey">
+
+        <div class="journey-step">
+          <div class="step-dot dot-pm" style="font-size:0.65rem">1</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">Socrates — Disease Register</div>
+            <div class="step-title">Open the Disease Register / Patient Query</div>
+            <div class="step-detail">
+              In Socrates, go to <strong>Reports → Disease Register</strong>. Select the relevant CDM condition(s) to query: Diabetes (Type 1 / Type 2), Hypertension, COPD, Asthma, Cardiovascular Disease, CKD, Atrial Fibrillation, Heart Failure, Stroke / TIA.
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-pm" style="font-size:0.65rem">2</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">Filter — Not Enrolled or Overdue</div>
             <div class="step-title">Filter for Unenrolled or Lapsed Patients</div>
             <div class="step-detail">
               Apply filters to show patients who:
               <ul>
-                <li>Have a relevant coded diagnosis but are <strong>not enrolled on the CDM/PP programme</strong></li>
-                <li>Have not had a CDM review in the last <strong>12 months</strong> (CDM) or <strong>24 months</strong> (PP)</li>
-                <li>Were recently registered and flagged for CDM at the new patient screen (Step 3 of the New Patient SOP)</li>
+                <li>Have a relevant coded diagnosis but are <strong>not currently enrolled on a CDM or PP programme</strong></li>
+                <li>Have not had a CDM review in the last <strong>12 months</strong> (CDM patients) or <strong>24 months</strong> (PP patients)</li>
+                <li>Were recently registered and flagged for CDM enrolment at the new patient screen (Step 3 — AI Medication Screen)</li>
               </ul>
             </div>
           </div>
@@ -747,8 +816,8 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
             <div class="step-detail">
               For each identified patient, open their chart and:
               <ul>
-                <li>Go to the <strong>CDM tab</strong> in Socrates → add the relevant condition(s) to their disease register</li>
-                <li>Select the correct programme: <strong>CDM</strong> (diabetes, COPD, asthma, CVD, CKD, AF, HF, stroke) or <strong>Prevention Programme (PP)</strong> (cardiovascular risk, pre-diabetes, lifestyle risk factors)</li>
+                <li>Go to the <strong>CDM tab</strong> in Socrates → add the relevant condition(s) to the disease register</li>
+                <li>Select the correct programme: <strong>CDM</strong> (diabetes, COPD, asthma, CVD, CKD, AF, heart failure, stroke/TIA) or <strong>Prevention Programme (PP)</strong> (cardiovascular risk, pre-diabetes, lifestyle risk factors)</li>
                 <li>Set the enrolment date and initial review due date</li>
                 <li>Document in chart notes: <em>"Enrolled on CDM/PP — [condition] — review due [date]"</em></li>
               </ul>
@@ -765,18 +834,17 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
               Once enrolled, contact the patient to arrange their first CDM/PP review:
               <ul>
                 <li>Text or email the relevant pre-appointment form via Socrates: <a href="cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> or <a href="prevention-form.html" target="_blank">Prevention Programme Form ↗</a></li>
-                <li>Do <strong>not</strong> book an appointment until the form has been completed</li>
-                <li>Add a Socrates reminder task: <em>"CDM/PP form sent — awaiting return"</em></li>
+                <li>Do <strong>not</strong> book an appointment until the completed form has been returned</li>
+                <li>Add a Socrates reminder task: <em>"CDM/PP form sent [date] — awaiting return"</em></li>
               </ul>
             </div>
           </div>
         </div>
 
       </div>
-      <div class="warn-box" style="font-size:0.81rem;margin-bottom:8px">
-        ⚠️ <strong>Tip:</strong> When reviewing prescriptions or letters from hospital specialists, always check whether the patient has an undiagnosed or newly diagnosed CDM-qualifying condition. If so, enrol them immediately and flag to the PM.
+      <div class="warn-box" style="font-size:0.81rem;margin-top:4px">
+        ⚠️ <strong>Tip — opportunistic finding:</strong> When reviewing hospital letters, discharge summaries, or specialist correspondence, always check for a newly diagnosed CDM-qualifying condition. If found, enrol the patient immediately and flag to the PM for claiming.
       </div>
-
     </div>
   </div>
 
