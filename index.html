@@ -265,6 +265,43 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .cdm-reminder-widget .reminder-overdue{color:#991b1b;font-weight:600}
 .cdm-reminder-btn{background:var(--teal);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:0.78rem;cursor:pointer;margin-top:8px;font-weight:600;font-family:'DM Sans',sans-serif}
 .cdm-reminder-btn:hover{background:var(--navy)}
+
+/* ── Metrics ── */
+.metrics-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:14px 18px}
+.metrics-controls label{font-size:0.78rem;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em}
+.metrics-controls select{border:1px solid var(--grey-200);border-radius:6px;padding:6px 10px;font-size:0.84rem;font-family:'DM Sans',sans-serif;background:var(--grey-100);color:var(--text);cursor:pointer;outline:none}
+.metrics-controls select:focus{border-color:var(--teal)}
+.metrics-save-btn{background:var(--navy);color:#fff;border:none;border-radius:6px;padding:8px 18px;font-size:0.82rem;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background 0.15s;margin-left:auto}
+.metrics-save-btn:hover{background:var(--teal)}
+.metrics-saved-msg{font-size:0.78rem;color:var(--teal);font-weight:600;display:none}
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:720px){.metrics-grid{grid-template-columns:1fr}}
+.metric-card{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);overflow:hidden}
+.metric-card-header{padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--grey-200)}
+.metric-card-header .mc-icon{font-size:1.15rem}
+.metric-card-header h3{font-size:0.88rem;font-weight:600;color:var(--navy)}
+.metric-card-header .mc-badge{margin-left:auto;font-size:0.68rem;font-weight:600;padding:3px 8px;border-radius:10px;background:var(--teal-pale);color:var(--teal);text-transform:uppercase;letter-spacing:0.06em}
+.metric-rows{padding:0}
+.metric-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1px solid #f3f4f6}
+.metric-row:last-child{border-bottom:none}
+.metric-col{padding:10px 14px;border-right:1px solid #f3f4f6}
+.metric-col:last-child{border-right:none}
+.metric-col-label{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--grey-400);margin-bottom:4px}
+.metric-col-label.current{color:var(--navy)}
+.metric-input{width:100%;border:1px solid var(--grey-200);border-radius:5px;padding:5px 8px;font-size:0.88rem;font-family:'DM Sans',sans-serif;color:var(--text);background:#f9fafb;outline:none;transition:border-color 0.15s}
+.metric-input:focus{border-color:var(--teal);background:#fff}
+.metric-input.currency{font-size:0.84rem}
+.metric-val{font-size:1rem;font-weight:600;color:var(--navy)}
+.metric-val.empty{color:var(--grey-400);font-weight:400;font-size:0.82rem}
+.trend{display:inline-flex;align-items:center;gap:3px;font-size:0.75rem;font-weight:600;margin-top:3px}
+.trend-up{color:#16a34a}
+.trend-down{color:#dc2626}
+.trend-flat{color:var(--grey-400)}
+.trend-na{color:var(--grey-400);font-weight:400;font-size:0.72rem}
+.metric-row-header{background:#f8fafc;padding:7px 14px;font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid #f0f4f6}
+.metrics-col-headers{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--navy);border-radius:0}
+.metrics-col-headers div{padding:8px 14px;font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.75)}
+.metrics-col-headers div:first-child{color:#fff}
 </style>
 </head>
 <body>
@@ -301,6 +338,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <div class="nav-group-label">Operations</div>
     <a href="#" class="nav-link" data-section="front-of-house"><span class="nav-icon">🏥</span> Front of House</a>
     <a href="#" class="nav-link" data-section="practice-management" id="pm-nav-link"><span class="nav-icon">📋</span> Practice Management <span class="future-lock" id="pm-lock-badge">🔒</span><span class="pm-unlocked-badge" id="pm-unlocked-badge">✓ Unlocked</span></a>
+    <a href="#" class="nav-link" data-section="metrics"><span class="nav-icon">📊</span> Metrics</a>
     <a href="#" class="nav-link" data-section="text-templates"><span class="nav-icon">💬</span> Text Templates</a>
     <a href="#" class="nav-link" data-section="useful-forms"><span class="nav-icon">📄</span> Useful Forms</a>
     <div class="nav-group-label">Practice</div>
@@ -3369,6 +3407,20 @@ Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyT
 </div>
 
 <!-- MAINTENANCE -->
+<!-- ════════════════════════════════════════════════════ -->
+<!-- METRICS -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="metrics">
+  <div class="page-header">
+    <h2>Practice Metrics</h2>
+    <p>Monthly figures for STCs, private income, and CDM claims — with automatic comparison to previous month and same month last year.</p>
+  </div>
+  <div id="metrics-content">
+    <!-- Built dynamically by kmc_buildMetrics() on first visit -->
+    <div style="color:var(--grey-400);font-size:0.85rem;padding:20px 0">Loading metrics…</div>
+  </div>
+</div>
+
 <div class="section" id="maintenance">
   <div class="page-header"><h2>Maintenance</h2><p>Alarm, BLS, equipment, premises and monthly metrics.</p></div>
 
@@ -3757,6 +3809,210 @@ document.getElementById('search').addEventListener('keydown', function(e) {
 document.getElementById('search').addEventListener('input', function() {
   if (!this.value.trim()) switchSection(lastSection);
 });
+
+// ── Metrics ──────────────────────────────────────────────────────────────────
+(function() {
+  const STORE_KEY = 'kmc_metrics_v1';
+  const METRICS = [
+    { id:'stc_abpm',  label:'STC — ABPM',          icon:'💪', badge:'STC',     type:'number', unit:'',  group:'stcs' },
+    { id:'stc_ecg',   label:'STC — ECG',            icon:'🫀', badge:'STC',     type:'number', unit:'',  group:'stcs' },
+    { id:'priv_income',label:'Private Income',       icon:'💰', badge:'Finance', type:'currency',unit:'€', group:'finance' },
+    { id:'cdm_claims', label:'CDM Claims Submitted', icon:'🔁', badge:'CDM',    type:'number', unit:'',  group:'cdm' },
+  ];
+
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function storageGet() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch(e) { return {}; }
+  }
+  function storageSet(data) {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch(e) {}
+  }
+  function monthKey(y,m) { return y+'-'+(m<10?'0':'')+m; } // e.g. "2026-05"
+  function prevMonth(y,m) { return m===1 ? [y-1,12] : [y,m-1]; }
+  function sameMonthLastYear(y,m) { return [y-1,m]; }
+
+  function getValue(data, y, m, id) {
+    const k = monthKey(y,m);
+    return (data[k] && data[k][id] !== undefined && data[k][id] !== '') ? data[k][id] : null;
+  }
+
+  function formatVal(v, type) {
+    if (v === null || v === '') return null;
+    const n = parseFloat(v);
+    if (isNaN(n)) return null;
+    if (type === 'currency') return '€' + n.toLocaleString('en-IE', {minimumFractionDigits:2, maximumFractionDigits:2});
+    return Math.round(n).toLocaleString('en-IE');
+  }
+
+  function trendHTML(current, compare, type) {
+    if (current === null || compare === null) return '<span class="trend trend-na">no data</span>';
+    const c = parseFloat(current), p = parseFloat(compare);
+    if (isNaN(c) || isNaN(p)) return '';
+    const diff = c - p;
+    const pct = p !== 0 ? Math.round(Math.abs(diff/p)*100) : null;
+    const diffFmt = type === 'currency'
+      ? (diff >= 0 ? '+€' : '-€') + Math.abs(diff).toLocaleString('en-IE', {minimumFractionDigits:2,maximumFractionDigits:2})
+      : (diff >= 0 ? '+' : '') + Math.round(diff).toLocaleString('en-IE');
+    if (diff > 0) return `<span class="trend trend-up">▲ ${diffFmt}${pct !== null ? ' ('+pct+'%)' : ''}</span>`;
+    if (diff < 0) return `<span class="trend trend-down">▼ ${diffFmt}${pct !== null ? ' ('+pct+'%)' : ''}</span>`;
+    return `<span class="trend trend-flat">→ No change</span>`;
+  }
+
+  function renderMetrics() {
+    const yearSel  = document.getElementById('metrics-year');
+    const monthSel = document.getElementById('metrics-month');
+    if (!yearSel || !monthSel) return;
+    const y = parseInt(yearSel.value);
+    const m = parseInt(monthSel.value);
+    const [py, pm] = prevMonth(y, m);
+    const [lpy, lpm] = sameMonthLastYear(y, m);
+    const data = storageGet();
+
+    METRICS.forEach(function(metric) {
+      const curVal  = getValue(data, y,   m,   metric.id);
+      const prevVal = getValue(data, py,  pm,  metric.id);
+      const lyVal   = getValue(data, lpy, lpm, metric.id);
+
+      // Current month input
+      const inp = document.getElementById('mi-'+metric.id);
+      if (inp && inp !== document.activeElement) {
+        inp.value = curVal !== null ? curVal : '';
+      }
+
+      // Previous month display
+      const prevDisp = document.getElementById('mv-prev-'+metric.id);
+      const prevTrend = document.getElementById('mt-prev-'+metric.id);
+      if (prevDisp) {
+        const fv = formatVal(prevVal, metric.type);
+        prevDisp.innerHTML = fv !== null
+          ? '<span class="metric-val">'+fv+'</span>'
+          : '<span class="metric-val empty">—</span>';
+      }
+      if (prevTrend) prevTrend.innerHTML = trendHTML(curVal, prevVal, metric.type);
+
+      // Same month last year display
+      const lyDisp  = document.getElementById('mv-ly-'+metric.id);
+      const lyTrend = document.getElementById('mt-ly-'+metric.id);
+      if (lyDisp) {
+        const fv = formatVal(lyVal, metric.type);
+        lyDisp.innerHTML = fv !== null
+          ? '<span class="metric-val">'+fv+'</span>'
+          : '<span class="metric-val empty">—</span>';
+      }
+      if (lyTrend) lyTrend.innerHTML = trendHTML(curVal, lyVal, metric.type);
+    });
+  }
+
+  function saveMetrics() {
+    const y = parseInt(document.getElementById('metrics-year').value);
+    const m = parseInt(document.getElementById('metrics-month').value);
+    const k = monthKey(y,m);
+    const data = storageGet();
+    if (!data[k]) data[k] = {};
+    METRICS.forEach(function(metric) {
+      const inp = document.getElementById('mi-'+metric.id);
+      if (inp) data[k][metric.id] = inp.value.trim();
+    });
+    storageSet(data);
+    renderMetrics();
+    const msg = document.getElementById('metrics-saved-msg');
+    if (msg) { msg.style.display='inline'; setTimeout(function(){ msg.style.display='none'; }, 2500); }
+  }
+
+  function buildMetricsSection() {
+    const container = document.getElementById('metrics-content');
+    if (!container) return;
+
+    const now = new Date();
+    const cy = now.getFullYear();
+    const cm = now.getMonth()+1;
+
+    // Year options: 3 years back to next year
+    let yearOpts = '';
+    for (let y = cy-2; y <= cy+1; y++) yearOpts += `<option value="${y}"${y===cy?' selected':''}>${y}</option>`;
+    let monthOpts = MONTHS.map((mn,i)=>`<option value="${i+1}"${(i+1)===cm?' selected':''}>${mn}</option>`).join('');
+
+    let html = `
+      <div class="metrics-controls">
+        <label for="metrics-month">Month</label>
+        <select id="metrics-month" onchange="window.kmc_renderMetrics()">${monthOpts}</select>
+        <label for="metrics-year">Year</label>
+        <select id="metrics-year" onchange="window.kmc_renderMetrics()">${yearOpts}</select>
+        <span id="metrics-saved-msg" class="metrics-saved-msg">✓ Saved</span>
+        <button class="metrics-save-btn" onclick="window.kmc_saveMetrics()">Save figures</button>
+      </div>`;
+
+    // Build cards
+    METRICS.forEach(function(metric) {
+      const [py, pm] = prevMonth(cy, cm);
+      html += `
+      <div class="metric-card" style="margin-bottom:16px">
+        <div class="metric-card-header">
+          <span class="mc-icon">${metric.icon}</span>
+          <h3>${metric.label}</h3>
+          <span class="mc-badge">${metric.badge}</span>
+        </div>
+        <div class="metrics-col-headers">
+          <div>This Month</div>
+          <div>Previous Month</div>
+          <div>Same Month Last Year</div>
+        </div>
+        <div class="metric-rows">
+          <div class="metric-row">
+            <div class="metric-col">
+              <div class="metric-col-label current">Enter figure</div>
+              <input class="metric-input${metric.type==='currency'?' currency':''}"
+                     id="mi-${metric.id}"
+                     type="number" min="0" step="${metric.type==='currency'?'0.01':'1'}"
+                     placeholder="${metric.type==='currency'?'0.00':'0'}"
+                     onchange="window.kmc_renderMetrics()"
+                     onkeydown="if(event.key==='Enter')window.kmc_saveMetrics()"/>
+            </div>
+            <div class="metric-col">
+              <div class="metric-col-label">Previous month</div>
+              <div id="mv-prev-${metric.id}"><span class="metric-val empty">—</span></div>
+              <div id="mt-prev-${metric.id}"></div>
+            </div>
+            <div class="metric-col">
+              <div class="metric-col-label">Same month last year</div>
+              <div id="mv-ly-${metric.id}"><span class="metric-val empty">—</span></div>
+              <div id="mt-ly-${metric.id}"></div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    });
+
+    html += `
+      <div class="info-box" style="font-size:0.81rem;line-height:1.7;margin-top:8px">
+        <strong>How to use:</strong> Select the month and year at the top, enter the figures for that month, then click <strong>Save figures</strong>.
+        Trend arrows and comparisons update automatically. Data is stored in this browser — use the same device each month to retain history.
+        Previous month and same-month-last-year figures are pulled automatically from previously saved entries.
+      </div>`;
+
+    container.innerHTML = html;
+    renderMetrics();
+  }
+
+  // Expose globally for inline handlers and section switch
+  window.kmc_renderMetrics = renderMetrics;
+  window.kmc_saveMetrics   = saveMetrics;
+  window.kmc_buildMetrics  = buildMetricsSection;
+
+  // Build when section becomes visible
+  const origSwitch = window.switchSection;
+  window.switchSection = function(id) {
+    origSwitch(id);
+    if (id === 'metrics') {
+      if (!document.getElementById('metrics-year')) {
+        buildMetricsSection();
+      } else {
+        renderMetrics();
+      }
+    }
+  };
+})();
 </script>
 
 
