@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cert Email Generator — Kinsealy Medical Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1a2d4a;--navy-light:#243c61;--teal:#2a8a7e;--teal-light:#3aa897;--teal-pale:#e8f5f3;
+  --gold:#c9a84c;--cream:#f8f6f1;--white:#ffffff;--grey-100:#f4f4f4;--grey-200:#e8e8e8;
+  --grey-400:#9ca3af;--grey-700:#374151;--text:#1f2937;--radius:10px;
+  --col-sec:#0369a1;--col-sec-pale:#e0f2fe;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;padding:0}
+
+/* TOP BAR */
+.topbar{background:var(--navy);color:#fff;padding:14px 32px;display:flex;align-items:center;gap:16px}
+.topbar a{color:rgba(255,255,255,0.55);text-decoration:none;font-size:0.8rem;transition:color 0.15s}
+.topbar a:hover{color:#fff}
+.topbar .sep{color:rgba(255,255,255,0.25)}
+.topbar h1{font-family:'DM Serif Display',serif;font-size:1.05rem;color:#fff}
+.topbar .badge{background:var(--teal);color:#fff;font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-left:8px}
+
+/* LAYOUT */
+.page{max-width:860px;margin:0 auto;padding:32px 24px 64px}
+
+/* SECTION HEADINGS */
+.section-title{font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;margin-top:28px}
+
+/* CARD */
+.card{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:22px 24px;margin-bottom:16px}
+.card h2{font-size:1rem;font-weight:600;color:var(--navy);margin-bottom:16px}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px}
+.form-grid.cols-1{grid-template-columns:1fr}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:0.78rem;font-weight:500;color:var(--grey-700)}
+.field input,.field select,.field textarea{border:1px solid var(--grey-200);border-radius:7px;padding:9px 11px;font-family:inherit;font-size:0.85rem;color:var(--text);background:var(--white);transition:border-color 0.15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal)}
+.field textarea{resize:vertical;min-height:60px}
+.field .hint{font-size:0.71rem;color:var(--grey-400)}
+
+/* PATIENT TYPE TOGGLE */
+.type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.type-btn{border:2px solid var(--grey-200);border-radius:8px;padding:10px 8px;text-align:center;cursor:pointer;transition:all 0.15s;background:var(--white)}
+.type-btn .type-label{font-size:0.78rem;font-weight:600;color:var(--grey-700);display:block;margin-bottom:2px}
+.type-btn .type-sub{font-size:0.65rem;color:var(--grey-400)}
+.type-btn.selected{border-color:var(--teal);background:var(--teal-pale)}
+.type-btn.selected .type-label{color:var(--teal)}
+.type-btn.chargeable.selected{border-color:#b91c1c;background:#fee2e2}
+.type-btn.chargeable.selected .type-label{color:#b91c1c}
+
+/* STRIPE FIELD */
+.stripe-row{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 16px;margin-top:12px;display:none}
+.stripe-row.visible{display:block}
+.stripe-row .stripe-label{font-size:0.75rem;font-weight:600;color:#15803d;margin-bottom:8px}
+.stripe-row input{width:100%;border:1px solid #bbf7d0;border-radius:6px;padding:8px 10px;font-size:0.82rem;font-family:monospace;background:#fff}
+.stripe-row input:focus{outline:none;border-color:#15803d}
+
+/* GENERATE BUTTON */
+.btn-generate{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:12px 28px;font-family:inherit;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.15s;margin-top:16px}
+.btn-generate:hover{background:var(--teal-light)}
+
+/* OUTPUT PANELS */
+.output-section{margin-top:28px}
+.email-panel{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.email-panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--grey-200)}
+.email-panel-header .ep-title{font-size:0.82rem;font-weight:600;color:var(--navy)}
+.email-panel-header .ep-badge{font-size:0.65rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;padding:3px 9px;border-radius:20px}
+.ep-badge.step1{background:#fee2e2;color:#b91c1c}
+.ep-badge.step2{background:var(--teal-pale);color:var(--teal)}
+.ep-badge.single{background:#f0fdf4;color:#15803d}
+.email-panel-body{padding:18px}
+.email-meta{margin-bottom:14px}
+.email-meta-row{display:flex;gap:8px;align-items:baseline;margin-bottom:4px;font-size:0.8rem}
+.email-meta-row strong{color:var(--grey-700);min-width:60px;flex-shrink:0}
+.email-meta-row span{color:var(--text)}
+.email-subject{font-size:0.82rem;font-weight:600;background:var(--grey-100);border-radius:6px;padding:6px 10px;margin-bottom:14px;color:var(--navy)}
+.email-body{font-size:0.82rem;line-height:1.75;color:var(--text);white-space:pre-wrap;background:var(--grey-100);border-radius:6px;padding:14px 16px}
+.copy-row{display:flex;gap:8px;margin-top:12px}
+.btn-copy{background:var(--navy);color:#fff;border:none;border-radius:7px;padding:8px 18px;font-family:inherit;font-size:0.78rem;font-weight:600;cursor:pointer;transition:background 0.15s}
+.btn-copy:hover{background:var(--navy-light)}
+.btn-copy.copied{background:#15803d}
+.btn-mailto{background:var(--white);color:var(--navy);border:1.5px solid var(--grey-200);border-radius:7px;padding:8px 18px;font-family:inherit;font-size:0.78rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.15s}
+.btn-mailto:hover{border-color:var(--navy);background:var(--grey-100)}
+
+/* STEP INDICATOR */
+.steps-row{display:flex;gap:0;margin-bottom:20px}
+.step-item{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.step-item:not(:last-child)::after{content:'';position:absolute;top:16px;left:50%;width:100%;height:2px;background:var(--grey-200);z-index:0}
+.step-circle{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;position:relative;z-index:1}
+.step-circle.pay{background:#fee2e2;color:#b91c1c;border:2px solid #fca5a5}
+.step-circle.send{background:var(--teal-pale);color:var(--teal);border:2px solid #99d4cc}
+.step-circle.free{background:#f0fdf4;color:#15803d;border:2px solid #bbf7d0}
+.step-label{font-size:0.68rem;font-weight:500;color:var(--grey-700);margin-top:6px;text-align:center}
+
+/* NOTICE */
+.notice{border-radius:8px;padding:12px 14px;font-size:0.78rem;line-height:1.6;margin-bottom:16px}
+.notice.charge{background:#fff7ed;border:1px solid #fed7aa;color:#92400e}
+.notice.free{background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d}
+
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html">← Staff Hub</a>
+  <span class="sep">/</span>
+  <h1>Cert Email Generator</h1>
+  <span class="badge">Secretary Tool</span>
+</div>
+
+<div class="page">
+
+  <div class="card">
+    <h2>Patient &amp; Certificate Details</h2>
+
+    <div class="section-title">Patient Type</div>
+    <div class="type-grid" id="typeGrid">
+      <div class="type-btn chargeable selected" data-type="gms" onclick="selectType(this,'gms')">
+        <span class="type-label">GMS / DVC</span>
+        <span class="type-sub">Chargeable</span>
+      </div>
+      <div class="type-btn chargeable" data-type="private" onclick="selectType(this,'private')">
+        <span class="type-label">Private</span>
+        <span class="type-sub">Chargeable</span>
+      </div>
+      <div class="type-btn" data-type="anpost" onclick="selectType(this,'anpost')">
+        <span class="type-label">An Post</span>
+        <span class="type-sub">No charge</span>
+      </div>
+      <div class="type-btn" data-type="pregnant" onclick="selectType(this,'pregnant')">
+        <span class="type-label">Pregnant / Maternity</span>
+        <span class="type-sub">No charge</span>
+      </div>
+    </div>
+
+    <div class="stripe-row visible" id="stripeRow">
+      <div class="stripe-label">💳 Stripe Payment Link</div>
+      <input type="url" id="stripeLink" placeholder="https://buy.stripe.com/your-payment-link" value="">
+      <div style="font-size:0.7rem;color:#15803d;margin-top:6px">Paste your Stripe payment link above. Create fixed-amount links in your <a href="https://dashboard.stripe.com/payment-links" target="_blank" style="color:#15803d">Stripe dashboard</a>.</div>
+    </div>
+
+    <div class="section-title" style="margin-top:20px">Patient Details</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Patient First Name</label>
+        <input type="text" id="patientFirst" placeholder="e.g. Sarah">
+      </div>
+      <div class="field">
+        <label>Patient Email</label>
+        <input type="email" id="patientEmail" placeholder="patient@email.com">
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:20px">Certificate Details</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Certificate Type</label>
+        <select id="certType">
+          <option value="sick">Sick Note / Illness Certificate</option>
+          <option value="sw">Social Welfare Certificate</option>
+          <option value="anpost">An Post Certificate</option>
+          <option value="maternity">Maternity Certificate</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Certificate Amount (€)</label>
+        <input type="number" id="certFee" placeholder="e.g. 20" min="0">
+        <div class="hint">Leave blank if fee not yet confirmed</div>
+      </div>
+      <div class="field">
+        <label>Date From</label>
+        <input type="date" id="dateFrom">
+      </div>
+      <div class="field">
+        <label>Date To</label>
+        <input type="date" id="dateTo">
+      </div>
+    </div>
+
+    <div class="form-grid cols-1" style="margin-top:12px">
+      <div class="field" id="swCodeField">
+        <label>Social Welfare Code / Condition (optional)</label>
+        <input type="text" id="swCode" placeholder="e.g. Back/joint pain, Cough/cold/chest infection, Post-surgery">
+        <div class="hint">Include only if relevant — helps patient when completing SW forms</div>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generate()">Generate Emails</button>
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="output-section hidden" id="outputSection">
+
+    <!-- CHARGEABLE FLOW -->
+    <div id="chargeableFlow">
+      <div class="notice charge">
+        <strong>Chargeable cert — 2-step process:</strong> Send the payment request email first. Once you see the payment confirmed in Stripe, send the cert delivery email with the cert attached.
+      </div>
+      <div class="steps-row">
+        <div class="step-item">
+          <div class="step-circle pay">1</div>
+          <div class="step-label">Send payment<br>request email</div>
+        </div>
+        <div class="step-item">
+          <div class="step-circle pay">⏳</div>
+          <div class="step-label">Confirm payment<br>in Stripe dashboard</div>
+        </div>
+        <div class="step-item">
+          <div class="step-circle send">2</div>
+          <div class="step-label">Send cert<br>delivery email</div>
+        </div>
+      </div>
+
+      <!-- STEP 1: PAYMENT REQUEST -->
+      <div class="email-panel">
+        <div class="email-panel-header">
+          <span class="ep-title">Step 1 — Payment Request Email</span>
+          <span class="ep-badge step1">Send First</span>
+        </div>
+        <div class="email-panel-body">
+          <div class="email-meta">
+            <div class="email-meta-row"><strong>To:</strong><span id="p1To"></span></div>
+          </div>
+          <div class="email-subject" id="p1Subject"></div>
+          <div class="email-body" id="p1Body"></div>
+          <div class="copy-row">
+            <button class="btn-copy" onclick="copyText('p1Body', this)">Copy Email Text</button>
+            <a class="btn-mailto" id="p1Mailto" href="#">Open in Mail App</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: CERT DELIVERY (CHARGEABLE) -->
+      <div class="email-panel">
+        <div class="email-panel-header">
+          <span class="ep-title">Step 2 — Cert Delivery Email (send after payment confirmed)</span>
+          <span class="ep-badge step2">Send After Payment</span>
+        </div>
+        <div class="email-panel-body">
+          <div class="email-meta">
+            <div class="email-meta-row"><strong>To:</strong><span id="p2To"></span></div>
+            <div class="email-meta-row"><strong>Note:</strong><span style="color:#b91c1c">Attach the cert PDF before sending</span></div>
+          </div>
+          <div class="email-subject" id="p2Subject"></div>
+          <div class="email-body" id="p2Body"></div>
+          <div class="copy-row">
+            <button class="btn-copy" onclick="copyText('p2Body', this)">Copy Email Text</button>
+            <a class="btn-mailto" id="p2Mailto" href="#">Open in Mail App</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FREE FLOW -->
+    <div id="freeFlow" class="hidden">
+      <div class="notice free">
+        <strong>No charge applies.</strong> Send the cert delivery email with the cert PDF attached.
+      </div>
+      <div class="steps-row">
+        <div class="step-item">
+          <div class="step-circle free">✓</div>
+          <div class="step-label">Send cert email<br>with PDF attached</div>
+        </div>
+      </div>
+
+      <div class="email-panel">
+        <div class="email-panel-header">
+          <span class="ep-title">Cert Delivery Email</span>
+          <span class="ep-badge single">Single Step</span>
+        </div>
+        <div class="email-panel-body">
+          <div class="email-meta">
+            <div class="email-meta-row"><strong>To:</strong><span id="p3To"></span></div>
+            <div class="email-meta-row"><strong>Note:</strong><span style="color:#15803d">Attach the cert PDF before sending</span></div>
+          </div>
+          <div class="email-subject" id="p3Subject"></div>
+          <div class="email-body" id="p3Body"></div>
+          <div class="copy-row">
+            <button class="btn-copy" onclick="copyText('p3Body', this)">Copy Email Text</button>
+            <a class="btn-mailto" id="p3Mailto" href="#">Open in Mail App</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let currentType = 'gms';
+
+function selectType(el, type) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  currentType = type;
+  const chargeable = type === 'gms' || type === 'private';
+  document.getElementById('stripeRow').classList.toggle('visible', chargeable);
+}
+
+function fmtDate(val) {
+  if (!val) return '';
+  const [y,m,d] = val.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function certLabel(type) {
+  const map = {sick:'Illness Certificate',sw:'Social Welfare Certificate',anpost:'An Post Certificate',maternity:'Maternity Certificate',other:'Certificate'};
+  return map[type] || 'Certificate';
+}
+
+function generate() {
+  const first = document.getElementById('patientFirst').value.trim() || 'there';
+  const email = document.getElementById('patientEmail').value.trim();
+  const certType = document.getElementById('certType').value;
+  const certFee = document.getElementById('certFee').value.trim();
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
+  const swCode = document.getElementById('swCode').value.trim();
+  const stripeLink = document.getElementById('stripeLink').value.trim();
+
+  const label = certLabel(certType);
+  const feeStr = certFee ? `€${certFee}` : 'the applicable fee';
+  const dateRange = (dateFrom && dateTo)
+    ? `${fmtDate(dateFrom)} to ${fmtDate(dateTo)}`
+    : dateFrom ? `from ${fmtDate(dateFrom)}` : '';
+
+  const chargeable = currentType === 'gms' || currentType === 'private';
+  const swNote = (certType === 'sick' || certType === 'sw')
+    ? `\nIf you have been unwell for 3 or more days, you may be entitled to Illness Benefit from the Department of Social Protection. You can apply online at www.mywelfare.ie or collect an IB1 form from the front desk. Your doctor has completed the MED1 section — you just need to complete the patient section of the IB1.\n`
+    : '';
+  const swCodeNote = swCode ? `\nThe condition recorded on your certificate is: ${swCode}.\n` : '';
+
+  const sig = `\nKind regards,\nKinsealy Medical Centre Reception\nTel: 01 XXX XXXX`;
+
+  // --- CHARGEABLE: STEP 1 ---
+  const sub1 = `Your ${label} — Payment Required`;
+  const body1 =
+`Dear ${first},
+
+Your ${label}${dateRange ? ` (${dateRange})` : ''} has been completed by your GP and is ready to send to you.
+
+As a ${currentType === 'gms' ? 'GMS/DVC' : 'private'} patient, a charge of ${feeStr} applies for this certificate.
+
+To receive your certificate, please make payment using the secure link below:
+
+${stripeLink || '[PASTE YOUR STRIPE PAYMENT LINK HERE]'}
+
+Once your payment is confirmed, we will email your certificate to you straight away. You do not need to call us or come into the practice.
+
+If you have any questions, please don't hesitate to get in touch.
+${sig}`;
+
+  // --- CHARGEABLE: STEP 2 ---
+  const sub2 = `Your ${label} — Kinsealy Medical Centre`;
+  const body2 =
+`Dear ${first},
+
+Thank you for your payment. Please find your ${label}${dateRange ? ` (${dateRange})` : ''} attached to this email.
+${swCodeNote}${swNote}
+Please keep this email for your records. If you have any difficulty opening the attachment, please contact us and we will be happy to help.
+${sig}`;
+
+  // --- FREE ---
+  const sub3 = `Your ${label} — Kinsealy Medical Centre`;
+  const body3 =
+`Dear ${first},
+
+Please find your ${label}${dateRange ? ` (${dateRange})` : ''} attached to this email.
+${swCodeNote}${swNote}
+Please keep this email for your records. If you have any difficulty opening the attachment, please contact us and we will be happy to help.
+${sig}`;
+
+  // Populate chargeable
+  document.getElementById('p1To').textContent = email || '—';
+  document.getElementById('p1Subject').textContent = sub1;
+  document.getElementById('p1Body').textContent = body1;
+  document.getElementById('p1Mailto').href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(sub1)}&body=${encodeURIComponent(body1)}`;
+
+  document.getElementById('p2To').textContent = email || '—';
+  document.getElementById('p2Subject').textContent = sub2;
+  document.getElementById('p2Body').textContent = body2;
+  document.getElementById('p2Mailto').href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(sub2)}&body=${encodeURIComponent(body2)}`;
+
+  // Populate free
+  document.getElementById('p3To').textContent = email || '—';
+  document.getElementById('p3Subject').textContent = sub3;
+  document.getElementById('p3Body').textContent = body3;
+  document.getElementById('p3Mailto').href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(sub3)}&body=${encodeURIComponent(body3)}`;
+
+  // Show correct flow
+  document.getElementById('outputSection').classList.remove('hidden');
+  document.getElementById('chargeableFlow').style.display = chargeable ? '' : 'none';
+  document.getElementById('freeFlow').classList.toggle('hidden', chargeable);
+
+  // Scroll to output
+  document.getElementById('outputSection').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function copyText(id, btn) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Email Text'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>

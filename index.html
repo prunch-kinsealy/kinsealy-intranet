@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<script>if(!sessionStorage.getItem('kmc-auth')){sessionStorage.setItem('kmc-redirect',location.href);location.replace('login.html')}</script>
+<script></script>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -361,7 +361,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <div class="topbar-right">
       <input type="text" id="search" placeholder="Search hub…" autocomplete="off">
       <button id="search-btn" title="Search">🔍</button>
-      <div class="avatar" title="Dr O&#39;Reilly">FO</div>
+      <div class="avatar" id="user-avatar" title="">FO</div>
     </div>
   </div>
 
@@ -1959,8 +1959,13 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 <!-- ════════════════════════════════════════════════════ -->
 <div class="section" id="practice-management">
   <div class="page-header">
-    <h2>Practice Management <span class="future-lock">🔒 Password protection — planned</span></h2>
+    <h2>Practice Management</h2>
     <p>Operations, HR, finance, PCRS, and compliance. Restricted to PM and Partners.</p>
+  </div>
+
+  <div class="section-label">Admin</div>
+  <div style="margin-bottom:20px">
+    <a href="staff-logins.html" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 18px;text-decoration:none;color:#1a2d4a;font-size:0.88rem;font-weight:500;transition:border-color 0.15s" onmouseover="this.style.borderColor='#2a8a7e'" onmouseout="this.style.borderColor='#e8e8e8'">🔑 Staff Logins &amp; Usernames</a>
   </div>
 
   <div class="section-label">Panel Management</div>
@@ -2609,7 +2614,12 @@ Keep the response concise and structured for a non-clinical administrator.</div>
           <div class="step-content step-content-sec">
             <div class="step-role step-role-sec">Secretary — Requests</div>
             <div class="step-title">Accepted via Pippo or Website Only</div>
-            <div class="step-detail">❌ Phone requests not accepted (except elderly/vulnerable). Confirm name/DOB/address. Match to active repeat list. Click 'Generic' for all items. Flag: items not on repeat, early refills, inconsistencies → escalate to GP.</div>
+            <div class="step-detail">
+              ❌ Phone requests not accepted (except elderly/vulnerable). Confirm name/DOB/address. Match to active repeat list. Flag: items not on repeat, early refills, inconsistencies → escalate to GP.<br><br>
+              <strong>Via Pippo:</strong> Request received directly through Pippo. Process as normal — patient is <strong>automatically notified</strong> once the script is completed.<br><br>
+              <strong>Via Website:</strong> Request submitted through the practice website. Process as normal — once the script is completed, <strong>secretary must inform the patient</strong> that their script has been sent.<br><br>
+              ⚕️ <strong>GMS / DVC — CDM or PP Due:</strong> Before processing, check whether the patient has a GMS or DVC Chronic Disease Management (CDM) or Practice Plan (PP) appointment due. If so, advise the patient and ideally book them in. Their script will be issued following their CDM/PP appointment. If the patient needs a 1-month supply to cover in the meantime, please inform the doctor.
+            </div>
           </div>
         </div>
         <div class="journey-step">
@@ -2653,6 +2663,12 @@ Keep the response concise and structured for a non-clinical administrator.</div>
     </div>
     <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
     <div class="sop-body">
+      <div style="margin-bottom:14px">
+        <a href="cert-email.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;text-decoration:none;padding:9px 18px;border-radius:8px;font-size:0.82rem;font-weight:600;transition:background 0.15s" onmouseover="this.style.background='#3aa897'" onmouseout="this.style.background='#2a8a7e'">
+          📧 Open Cert Email Generator
+        </a>
+        <span style="font-size:0.75rem;color:var(--grey-400);margin-left:10px">Generate patient emails &amp; payment requests</span>
+      </div>
       <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:10px">
         <strong>Charges:</strong> Private (no consult) = see fees. GMS/DVC (during consult or by email) = charge. An Post = no charge. Pregnant = no charge.<br>
         Extension &gt;1 extra day = charge. Request forwarded to GP on duty.<br><br>
@@ -3583,10 +3599,24 @@ const titles = {
   'search-results':'Search Results'
 };
 
+// USER AVATAR
+(function(){
+  const initials = sessionStorage.getItem('kmc-initials') || 'ST';
+  const display = sessionStorage.getItem('kmc-display') || 'Staff';
+  const av = document.getElementById('user-avatar');
+  if(av){ av.textContent = initials; av.title = display; }
+})();
+
 // NAVIGATION
 const navLinks = document.querySelectorAll('.nav-link');
 const sections = document.querySelectorAll('.section');
-let pmUnlocked = false;
+let pmUnlocked = sessionStorage.getItem('kmc-role') === 'admin';
+if(pmUnlocked){
+  document.getElementById('pm-lock-badge').style.display='none';
+  document.getElementById('pm-unlocked-badge').style.display='inline';
+  document.getElementById('metrics-lock-badge').style.display='none';
+  document.getElementById('metrics-unlocked-badge').style.display='inline';
+}
 
 function switchSection(target) {
   // Check PM lock
