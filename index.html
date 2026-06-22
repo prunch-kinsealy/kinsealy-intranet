@@ -4800,6 +4800,30 @@ async function markWelcomed() {
   updateStatusBtn();
 }
 
+// ── BROWSER NOTIFICATIONS ─────────────────────────────────────
+async function requestNotificationPermission() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') {
+    await Notification.requestPermission();
+  }
+}
+
+function sendBuddyNotification(name, destination, returnDate) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const dest = destination ? ` in ${destination}` : '';
+  const until = formatDate(returnDate);
+  const notifKey = `kmc_notif_buddy_${name}_${returnDate}`;
+  if (sessionStorage.getItem(notifKey)) return; // already notified this session
+  sessionStorage.setItem(notifKey, '1');
+  const n = new Notification('🤝 Buddy Reminder — Kinsealy Medical Centre', {
+    body: `You are covering for ${name}${dest} until ${until}.\nResponsibilities: OOH reports, e-referrals, blood results.`,
+    icon: 'https://cdn-icons-png.flaticon.com/512/3774/3774278.png',
+    tag: notifKey,
+    requireInteraction: true
+  });
+  n.onclick = () => { window.focus(); n.close(); };
+}
+
 // ── BUDDY ALERT ───────────────────────────────────────────────
 async function loadBuddyAlerts() {
   const container = document.getElementById('buddy-alert-container');
@@ -4826,9 +4850,14 @@ async function loadBuddyAlerts() {
       </div>
     </div>`;
   }).join('');
+  // Fire desktop notifications
+  alerts.forEach(([u, s]) => {
+    sendBuddyNotification(STAFF_NAMES[u] || u, s.destination, s.returnDate);
+  });
 }
 
 // ── INIT ─────────────────────────────────────────────────────
+requestNotificationPermission();
 loadAwayWidget();
 updateStatusBtn();
 checkWelcomeBack();
