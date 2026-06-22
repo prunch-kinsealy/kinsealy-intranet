@@ -4652,6 +4652,7 @@ function getTargetUser() {
 }
 
 function saveAwayStatus() {
+  console.log('saveAwayStatus called, targetUser:', getTargetUser());
   const targetUser = getTargetUser();
   if (!targetUser) return;
   const status = document.getElementById('away-status-type').value;
