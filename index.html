@@ -257,13 +257,41 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .away-card-dest{font-size:0.78rem;color:var(--grey-700);margin-bottom:5px}
 .away-card-dates{font-size:0.7rem;color:var(--grey-400);margin-bottom:6px}
 .away-card-buddy{display:inline-flex;align-items:center;gap:4px;font-size:0.68rem;font-weight:600;padding:2px 8px;border-radius:8px;background:var(--teal-pale);color:var(--teal)}
-/* BUDDY ALERT */
-.buddy-alert{background:linear-gradient(135deg,#1a2d4a,#243c61);color:#fff;border-radius:var(--radius);padding:14px 18px;margin-bottom:14px;display:flex;align-items:flex-start;gap:14px;animation:fadeIn 0.3s ease}
-.buddy-alert-icon{font-size:1.4rem;flex-shrink:0;margin-top:1px}
-.buddy-alert h4{font-size:0.9rem;font-weight:600;margin-bottom:3px}
-.buddy-alert p{font-size:0.78rem;opacity:0.82;line-height:1.5}
-.buddy-alert-link{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:0.75rem;font-weight:600;color:var(--teal-light);text-decoration:none;background:rgba(42,138,126,0.2);padding:4px 10px;border-radius:6px;border:1px solid rgba(42,138,126,0.4);cursor:pointer}
-.buddy-alert-link:hover{background:rgba(42,138,126,0.35)}
+.away-card-countdown{font-size:0.68rem;font-weight:600;padding:2px 9px;border-radius:8px;background:#dbeafe;color:#1e40af}
+.away-card-countdown.back-today{background:#dcfce7;color:#166534}
+.leaving-soon-tag{font-size:0.68rem;font-weight:600;padding:2px 9px;border-radius:8px;background:#fef3c7;color:#92400e}
+/* BUDDY ALERT — prominent */
+@keyframes pulse-border{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0.4)}50%{box-shadow:0 0 0 6px rgba(201,168,76,0)}}
+.buddy-alert{background:linear-gradient(135deg,#1a2d4a 0%,#243c61 100%);color:#fff;border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;display:flex;align-items:flex-start;gap:16px;animation:fadeIn 0.3s ease;border:2px solid var(--gold);animation:pulse-border 2s ease-in-out 3}
+.buddy-alert-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.buddy-alert-body{flex:1}
+.buddy-alert h4{font-size:1rem;font-weight:700;margin-bottom:4px;letter-spacing:0.01em}
+.buddy-alert p{font-size:0.81rem;opacity:0.88;line-height:1.6}
+.buddy-alert-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.buddy-alert-link{display:inline-flex;align-items:center;gap:5px;font-size:0.76rem;font-weight:600;color:#fff;background:rgba(42,138,126,0.35);padding:6px 12px;border-radius:7px;border:1px solid rgba(42,138,126,0.6);cursor:pointer;transition:background 0.15s}
+.buddy-alert-link:hover{background:rgba(42,138,126,0.55)}
+.buddy-alert-tag{display:inline-block;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:4px;margin-bottom:8px}
+/* AWAY NOTICES (bon voyage / welcome back) */
+.away-notice-card{border-radius:var(--radius);padding:16px 18px;margin-bottom:12px;position:relative;overflow:hidden}
+.away-notice-card.bon-voyage{background:linear-gradient(135deg,#0f4c75,#1a2d4a);color:#fff}
+.away-notice-card.welcome-back{background:linear-gradient(135deg,#0f766e,#065f46);color:#fff}
+.away-notice-card.leaving-soon{background:linear-gradient(135deg,#92400e,#78350f);color:#fff}
+.away-notice-header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.away-notice-emoji{font-size:1.8rem;line-height:1}
+.away-notice-title{font-size:0.95rem;font-weight:700}
+.away-notice-sub{font-size:0.78rem;opacity:0.82;line-height:1.5;margin-bottom:10px}
+.away-notice-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.away-pill{font-size:0.68rem;font-weight:600;padding:3px 9px;border-radius:10px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.2)}
+.away-pill.countdown{background:rgba(201,168,76,0.3);border-color:rgba(201,168,76,0.5);color:#fde68a}
+.away-messages{margin-top:10px;border-top:1px solid rgba(255,255,255,0.15);padding-top:10px}
+.away-message-item{font-size:0.76rem;opacity:0.9;margin-bottom:4px;line-height:1.4}
+.away-message-item strong{opacity:1}
+.away-message-form{display:flex;gap:8px;margin-top:8px}
+.away-message-form input{flex:1;padding:7px 10px;border-radius:7px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.12);color:#fff;font-family:'DM Sans',sans-serif;font-size:0.8rem;outline:none}
+.away-message-form input::placeholder{color:rgba(255,255,255,0.5)}
+.away-message-form input:focus{border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.18)}
+.away-message-form button{padding:7px 14px;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;transition:background 0.15s;white-space:nowrap}
+.away-message-form button:hover{background:rgba(255,255,255,0.32)}
 /* MODALS */
 .modal-overlay{position:fixed;inset:0;background:rgba(15,25,50,0.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(2px)}
 .modal-card{background:#fff;border-radius:16px;padding:32px;width:100%;max-width:460px;box-shadow:0 24px 80px rgba(0,0,0,0.25);position:relative;max-height:90vh;overflow-y:auto}
@@ -451,6 +479,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <div class="home-main">
 
       <div id="buddy-alert-container"></div>
+      <div id="away-notices-container"></div>
 
       <div class="notice-strip">
         <span class="badge">Pinned</span>
@@ -3728,7 +3757,8 @@ Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyT
       </div>
       <div class="welcome-question-box" id="welcome-question-box" style="display:none"></div>
     </div>
-    <button class="modal-btn" onclick="markWelcomed()" style="margin-top:4px">Great to be back! 👋</button>
+    <div id="welcome-team-messages" style="display:none;text-align:left"></div>
+    <button class="modal-btn" onclick="markWelcomed()" style="margin-top:16px">Great to be back! 👋</button>
     <p style="margin-top:10px;font-size:0.72rem;color:var(--grey-400);cursor:pointer" onclick="markWelcomed()">Skip</p>
   </div>
 </div>
@@ -4549,6 +4579,20 @@ function formatDate(iso) {
   return d.toLocaleDateString('en-IE', { day:'numeric', month:'short' });
 }
 
+function _daysFrom(dateStr, pivot) {
+  const d = new Date(dateStr + 'T12:00:00');
+  return Math.round((d - pivot) / 86400000);
+}
+
+function _countdownPill(s, today) {
+  if (!s.returnDate) return '';
+  const daysLeft = _daysFrom(s.returnDate, today);
+  if (daysLeft < 0) return '';
+  if (daysLeft === 0) return '<span class="away-card-countdown back-today">Back today!</span>';
+  if (daysLeft === 1) return '<span class="away-card-countdown">Back tomorrow</span>';
+  return `<span class="away-card-countdown">Back in ${daysLeft} days</span>`;
+}
+
 async function loadAwayWidget() {
   const data = await getAwayData();
   const body = document.getElementById('away-widget-body');
@@ -4571,6 +4615,9 @@ async function loadAwayWidget() {
     const cardCls = s.status || 'other';
     const emoji = STATUS_EMOJIS[s.status] || '📋';
     const label = STATUS_LABELS[s.status] || 'Away';
+    const countdown = _countdownPill(s, today);
+    const daysUntilDep = s.departureDate ? _daysFrom(s.departureDate, today) : 99;
+    const leavingSoon = daysUntilDep >= 0 && daysUntilDep <= 2 ? '<span class="leaving-soon-tag">🚀 Leaving soon</span>' : '';
     return `<div class="away-card ${cardCls}">
       <div class="away-card-top">
         <span class="away-card-name">${name}</span>
@@ -4579,6 +4626,7 @@ async function loadAwayWidget() {
       ${dest ? `<div class="away-card-dest">📍 ${dest}</div>` : ''}
       <div class="away-card-dates">📅 ${formatDate(s.departureDate)} – back ${formatDate(s.returnDate)}</div>
       ${buddy && DOCTORS.has(username) ? `<span class="away-card-buddy">🤝 Buddy: ${buddy}</span>` : ''}
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${countdown}${leavingSoon}</div>
     </div>`;
   }).join('');
 }
@@ -4684,6 +4732,7 @@ function saveAwayStatus() {
   closeAwayModal();
   loadAwayWidget();
   updateStatusBtn();
+  loadAwayNotices();
 
   // Sync to GitHub in background — non-blocking
   saveAwayData(data).catch(() => {});
@@ -4734,6 +4783,18 @@ async function checkWelcomeBack() {
   } else {
     destPill.style.display = 'none';
     document.getElementById('welcome-emoji').textContent = '🎉';
+  }
+
+  // Show team messages
+  const msgs = s.messages || [];
+  const msgBox = document.getElementById('welcome-team-messages');
+  if (msgBox) {
+    if (msgs.length) {
+      msgBox.innerHTML = `<div style="margin:12px 0 0;border-top:1px solid rgba(255,255,255,0.15);padding-top:10px"><div style="font-size:0.73rem;font-weight:600;opacity:0.7;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Messages from the team 💬</div>${msgs.map(m=>`<div style="font-size:0.82rem;opacity:0.9;margin-bottom:5px;line-height:1.4"><strong>${STAFF_NAMES[m.from]||m.from}:</strong> ${_escHtml(m.text)}</div>`).join('')}</div>`;
+      msgBox.style.display = 'block';
+    } else {
+      msgBox.style.display = 'none';
+    }
   }
 
   document.getElementById('welcome-modal-overlay').style.display = 'flex';
@@ -4798,6 +4859,7 @@ async function markWelcomed() {
   document.getElementById('welcome-modal-overlay').style.display = 'none';
   loadAwayWidget();
   updateStatusBtn();
+  loadAwayNotices();
 }
 
 // ── BROWSER NOTIFICATIONS ─────────────────────────────────────
@@ -4840,20 +4902,112 @@ async function loadBuddyAlerts() {
   if (alerts.length === 0) { container.innerHTML = ''; return; }
   container.innerHTML = alerts.map(([u, s]) => {
     const name = STAFF_NAMES[u] || u;
+    const firstName = name.replace(/^Dr\s+/,'').split(' ')[0];
     const until = formatDate(s.returnDate);
+    const daysLeft = _daysFrom(s.returnDate, today);
+    const countdownTxt = daysLeft === 0 ? 'Back today!' : daysLeft === 1 ? 'Back tomorrow' : `Back in ${daysLeft} days`;
     return `<div class="buddy-alert">
-      <span class="buddy-alert-icon">🤝</span>
-      <div>
+      <div class="buddy-alert-icon">🤝</div>
+      <div class="buddy-alert-body">
+        <div class="buddy-alert-tag">Active Coverage</div>
         <h4>You are covering for ${name}</h4>
-        <p>Away${s.destination ? ' in ' + s.destination : ''} — back ${until}. You are responsible for OOH reports, e-referrals and incoming blood results.</p>
-        <span class="buddy-alert-link" onclick="goToSOP('doctor-stuff','')">📋 Read Buddy SOP →</span>
+        <p>Away${s.destination ? ' in <strong>' + s.destination + '</strong>' : ''} — back <strong>${until}</strong>. You are responsible for OOH reports, e-referrals and incoming blood results while ${firstName} is away.</p>
+        <div class="buddy-alert-actions">
+          <span class="buddy-alert-link" onclick="goToSOP('doctor-stuff','')">📋 Buddy SOP</span>
+          <span class="buddy-alert-link" style="background:rgba(201,168,76,0.2);border-color:rgba(201,168,76,0.4)">⏱ ${countdownTxt}</span>
+        </div>
       </div>
     </div>`;
   }).join('');
-  // Fire desktop notifications
   alerts.forEach(([u, s]) => {
     sendBuddyNotification(STAFF_NAMES[u] || u, s.destination, s.returnDate);
   });
+}
+
+// ── AWAY NOTICES (bon voyage / welcome back cards) ─────────────
+async function loadAwayNotices() {
+  const container = document.getElementById('away-notices-container');
+  if (!container) return;
+  const data = await getAwayData();
+  const today = new Date(); today.setHours(0,0,0,0);
+  const currentUser = sessionStorage.getItem('kmc-user');
+  const cards = [];
+
+  Object.entries(data).forEach(([username, s]) => {
+    if (!s || !s.returnDate) return;
+    const returnDay = new Date(s.returnDate + 'T12:00:00');
+    const depDay = s.departureDate ? new Date(s.departureDate + 'T12:00:00') : null;
+    const name = STAFF_NAMES[username] || username;
+    const firstName = name.replace(/^Dr\s+/,'').split(' ')[0];
+    const daysUntilDep = depDay ? _daysFrom(s.departureDate, today) : 99;
+    const daysUntilReturn = _daysFrom(s.returnDate, today);
+    const daysSinceReturn = -daysUntilReturn;
+
+    // Leaving soon (0–2 days before departure)
+    if (daysUntilDep >= 0 && daysUntilDep <= 2 && returnDay >= today) {
+      const destTxt = s.destination ? ` to ${s.destination}` : '';
+      const label = daysUntilDep === 0 ? 'Leaving today' : daysUntilDep === 1 ? 'Leaving tomorrow' : 'Leaving in 2 days';
+      const msgs = (s.messages || []);
+      const msgsHtml = msgs.length ? `<div class="away-messages">${msgs.map(m => `<div class="away-message-item"><strong>${STAFF_NAMES[m.from]||m.from}:</strong> ${_escHtml(m.text)}</div>`).join('')}</div>` : '';
+      const formHtml = username !== currentUser ? `<div class="away-message-form"><input type="text" id="msg-input-${username}" placeholder="Leave a message for ${firstName}… 👋" maxlength="140" onkeydown="if(event.key==='Enter')saveMessage('${username}')"><button onclick="saveMessage('${username}')">Send</button></div>` : '';
+      cards.push(`<div class="away-notice-card leaving-soon">
+        <div class="away-notice-header"><span class="away-notice-emoji">🚀</span><div><div class="away-notice-title">${label}! Bon voyage, ${firstName}!</div></div></div>
+        <div class="away-notice-sub">${name} heads off${destTxt} on ${formatDate(s.departureDate)} and returns ${formatDate(s.returnDate)}.</div>
+        <div class="away-notice-pills"><span class="away-pill">${STATUS_EMOJIS[s.status]||'📋'} ${STATUS_LABELS[s.status]||'Away'}</span><span class="away-pill countdown">${label}</span></div>
+        ${msgsHtml}${formHtml}
+      </div>`);
+    }
+    // Currently away / bon voyage (departure in the past, still away)
+    else if (depDay && depDay <= today && returnDay >= today) {
+      const destTxt = s.destination ? ` in ${s.destination}` : '';
+      const countdownTxt = daysUntilReturn === 0 ? 'Back today!' : daysUntilReturn === 1 ? 'Back tomorrow' : `Back in ${daysUntilReturn} days`;
+      const msgs = (s.messages || []);
+      const msgsHtml = msgs.length ? `<div class="away-messages">${msgs.map(m => `<div class="away-message-item"><strong>${STAFF_NAMES[m.from]||m.from}:</strong> ${_escHtml(m.text)}</div>`).join('')}</div>` : '';
+      const formHtml = username !== currentUser ? `<div class="away-message-form"><input type="text" id="msg-input-${username}" placeholder="Leave a welcome-back message for ${firstName}… 💬" maxlength="140" onkeydown="if(event.key==='Enter')saveMessage('${username}')"><button onclick="saveMessage('${username}')">Send</button></div>` : '';
+      cards.push(`<div class="away-notice-card bon-voyage">
+        <div class="away-notice-header"><span class="away-notice-emoji">${s.destination ? '✈️' : '🏖️'}</span><div><div class="away-notice-title">Bon voyage, ${firstName}!</div></div></div>
+        <div class="away-notice-sub">${name} is currently away${destTxt}. Back on ${formatDate(s.returnDate)}.</div>
+        <div class="away-notice-pills"><span class="away-pill">${STATUS_EMOJIS[s.status]||'📋'} ${STATUS_LABELS[s.status]||'Away'}</span><span class="away-pill countdown">⏱ ${countdownTxt}</span></div>
+        ${msgsHtml}${formHtml}
+      </div>`);
+    }
+    // Welcome back (returned in the last 3 days, not yet cleared)
+    else if (daysSinceReturn >= 0 && daysSinceReturn <= 3 && !s.welcomedBack) {
+      const destTxt = s.destination ? ` from ${s.destination}` : '';
+      const msgs = (s.messages || []);
+      const msgsHtml = msgs.length ? `<div class="away-messages"><div style="font-size:0.73rem;font-weight:600;opacity:0.7;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.08em">Messages from the team 💬</div>${msgs.map(m => `<div class="away-message-item"><strong>${STAFF_NAMES[m.from]||m.from}:</strong> ${_escHtml(m.text)}</div>`).join('')}</div>` : '';
+      cards.push(`<div class="away-notice-card welcome-back">
+        <div class="away-notice-header"><span class="away-notice-emoji">🎉</span><div><div class="away-notice-title">Welcome back, ${firstName}!</div></div></div>
+        <div class="away-notice-sub">${name} is back${destTxt}. Great to have them back! ${daysSinceReturn === 0 ? 'Back today.' : daysSinceReturn === 1 ? 'Returned yesterday.' : `Returned ${daysSinceReturn} days ago.`}</div>
+        ${msgsHtml}
+      </div>`);
+    }
+  });
+
+  container.innerHTML = cards.join('');
+}
+
+function _escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function saveMessage(username) {
+  const input = document.getElementById('msg-input-' + username);
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  const from = sessionStorage.getItem('kmc-user');
+  if (!from) return;
+  input.disabled = true;
+  const data = await getAwayData();
+  if (!data[username]) return;
+  if (!data[username].messages) data[username].messages = [];
+  data[username].messages.push({ from, text, timestamp: new Date().toISOString() });
+  _awayCacheSet(data);
+  saveAwayData(data).catch(() => {});
+  input.value = '';
+  input.disabled = false;
+  loadAwayNotices();
 }
 
 // ── INIT ─────────────────────────────────────────────────────
@@ -4862,6 +5016,7 @@ loadAwayWidget();
 updateStatusBtn();
 checkWelcomeBack();
 loadBuddyAlerts();
+loadAwayNotices();
 </script>
 
 
