@@ -228,6 +228,64 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .notice-editor-btn{display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;font-weight:600;padding:6px 12px;background:var(--navy);color:#fff;border-radius:6px;text-decoration:none;transition:background 0.15s;margin-bottom:16px}
 .notice-editor-btn:hover{background:var(--teal)}
 
+/* ── AWAY STATUS SYSTEM ── */
+.status-btn{display:inline-flex;align-items:center;gap:6px;font-size:0.74rem;font-weight:600;padding:5px 12px;border:1.5px solid var(--grey-200);border-radius:20px;background:#fff;color:var(--grey-700);cursor:pointer;transition:all 0.15s;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.status-btn:hover{border-color:var(--teal);color:var(--teal)}
+.status-btn.is-away{border-color:#f59e0b;background:#fffbeb;color:#92400e}
+.away-empty{font-size:0.78rem;color:var(--grey-400);padding:8px 0;text-align:center}
+.away-card{background:#fff;border:1px solid var(--grey-200);border-radius:10px;padding:11px 13px;margin-bottom:8px;position:relative;overflow:hidden;transition:box-shadow 0.15s}
+.away-card:hover{box-shadow:0 2px 10px rgba(0,0,0,0.07)}
+.away-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px}
+.away-card.holiday::before{background:#f59e0b}
+.away-card.training::before{background:#3b82f6}
+.away-card.sick::before{background:#ef4444}
+.away-card.wfh::before{background:#10b981}
+.away-card.other::before{background:var(--grey-400)}
+.away-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px}
+.away-card-name{font-size:0.83rem;font-weight:600;color:var(--navy)}
+.away-card-badge{font-size:0.62rem;font-weight:700;padding:2px 7px;border-radius:10px;text-transform:uppercase;letter-spacing:0.05em}
+.badge-holiday{background:#fef3c7;color:#92400e}
+.badge-training{background:#dbeafe;color:#1e40af}
+.badge-sick{background:#fee2e2;color:#991b1b}
+.badge-wfh{background:#d1fae5;color:#065f46}
+.badge-other{background:var(--grey-100);color:var(--grey-700)}
+.away-card-dest{font-size:0.78rem;color:var(--grey-700);margin-bottom:5px}
+.away-card-dates{font-size:0.7rem;color:var(--grey-400);margin-bottom:6px}
+.away-card-buddy{display:inline-flex;align-items:center;gap:4px;font-size:0.68rem;font-weight:600;padding:2px 8px;border-radius:8px;background:var(--teal-pale);color:var(--teal)}
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,25,50,0.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(2px)}
+.modal-card{background:#fff;border-radius:16px;padding:32px;width:100%;max-width:460px;box-shadow:0 24px 80px rgba(0,0,0,0.25);position:relative;max-height:90vh;overflow-y:auto}
+.modal-card h3{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy);margin-bottom:4px}
+.modal-sub{font-size:0.78rem;color:var(--grey-400);margin-bottom:22px}
+.modal-close{position:absolute;top:14px;right:14px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--grey-400);line-height:1;padding:6px;border-radius:6px}
+.modal-close:hover{background:var(--grey-100);color:var(--text)}
+.modal-field{margin-bottom:14px}
+.modal-field label{display:block;font-size:0.72rem;font-weight:600;color:var(--grey-700);margin-bottom:5px;letter-spacing:0.03em;text-transform:uppercase}
+.modal-field input,.modal-field select{width:100%;padding:10px 12px;border:1.5px solid var(--grey-200);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.86rem;color:var(--text);outline:none;transition:border 0.15s;background:#fff}
+.modal-field input:focus,.modal-field select:focus{border-color:var(--teal)}
+.modal-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-btn-row{display:flex;flex-direction:column;gap:7px;margin-top:20px}
+.modal-btn{width:100%;padding:11px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;transition:background 0.15s}
+.modal-btn:hover{background:var(--teal)}
+.modal-btn.secondary{background:var(--grey-100);color:var(--grey-700)}
+.modal-btn.secondary:hover{background:var(--grey-200)}
+.modal-btn.danger{background:#fee2e2;color:#b91c1c}
+.modal-btn.danger:hover{background:#fecaca}
+.modal-divider{border:none;border-top:1px solid var(--grey-200);margin:18px 0}
+.modal-api-row{display:flex;gap:8px;align-items:center}
+.modal-api-row input{flex:1}
+.modal-api-row button{padding:10px 14px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif}
+/* WELCOME BACK MODAL */
+.welcome-card{background:#fff;border-radius:20px;padding:36px 32px;width:100%;max-width:440px;box-shadow:0 24px 80px rgba(0,0,0,0.3);text-align:center;position:relative}
+.welcome-emoji{font-size:3rem;margin-bottom:10px;display:block;animation:bounce 0.6s ease}
+@keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.welcome-card h2{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--navy);margin-bottom:6px}
+.welcome-dest-pill{display:inline-block;font-size:0.75rem;font-weight:600;padding:4px 12px;border-radius:20px;background:var(--teal-pale);color:var(--teal);margin-bottom:14px}
+.welcome-question-box{font-size:0.88rem;color:var(--grey-700);line-height:1.65;margin:0 0 22px;background:var(--cream);border-radius:10px;padding:14px 16px;border-left:3px solid var(--teal);text-align:left}
+.welcome-loading{color:var(--grey-400);font-size:0.82rem;font-style:italic;margin:14px 0 22px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px}
+.spinner{width:16px;height:16px;border:2px solid var(--grey-200);border-top-color:var(--teal);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 /* ── MOBILE RESPONSIVE ── */
 @media(max-width:768px){
   #hamburger{display:flex}
@@ -361,6 +419,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <div class="topbar-right">
       <input type="text" id="search" placeholder="Search hub…" autocomplete="off">
       <button id="search-btn" title="Search">🔍</button>
+      <button class="status-btn" id="status-btn" onclick="openAwayModal()">🟢 Available</button>
       <div class="avatar" id="user-avatar" title="">FO</div>
     </div>
   </div>
@@ -438,6 +497,15 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     </div>
 
     <div class="home-sidebar">
+      <div class="widget" id="away-widget">
+        <div class="widget-header" style="display:flex;align-items:center;justify-content:space-between">
+          <h3>✈️ Who's Away</h3>
+          <button onclick="openAwayModal()" style="font-size:0.7rem;font-weight:600;padding:4px 10px;background:var(--teal);color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif">+ Set Status</button>
+        </div>
+        <div class="widget-body" id="away-widget-body">
+          <div class="away-empty">Everyone is in today 🎉</div>
+        </div>
+      </div>
       <div class="widget">
         <div class="widget-header"><h3>Staff Colour Key</h3></div>
         <div class="widget-body">
@@ -3548,6 +3616,108 @@ Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyT
   </div><!-- /content -->
 </div><!-- /main -->
 
+<!-- ══ AWAY STATUS MODAL ══ -->
+<div id="away-modal-overlay" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeAwayModal()">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeAwayModal()">✕</button>
+    <h3 id="away-modal-title">Set Your Status</h3>
+    <p class="modal-sub" id="away-modal-sub">Let the team know you're away and who your buddy is.</p>
+
+    <div id="away-form">
+      <div class="modal-field">
+        <label>Status</label>
+        <select id="away-status-type" onchange="awayStatusTypeChange()">
+          <option value="holiday">🏖️ Holiday</option>
+          <option value="training">📚 Training / Conference</option>
+          <option value="sick">🤒 Sick Leave</option>
+          <option value="wfh">🏠 Working From Home</option>
+          <option value="other">📋 Other Absence</option>
+        </select>
+      </div>
+      <div class="modal-field" id="away-dest-field">
+        <label>Destination <span style="font-weight:400;text-transform:none;color:var(--grey-400)">(optional but fun!)</span></label>
+        <input type="text" id="away-destination" placeholder="e.g. Portugal, Tenerife, Cork…">
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>Away From</label>
+          <input type="date" id="away-from">
+        </div>
+        <div class="modal-field">
+          <label>Back On</label>
+          <input type="date" id="away-until">
+        </div>
+      </div>
+      <div class="modal-field">
+        <label>Buddy / Cover</label>
+        <select id="away-buddy">
+          <option value="">— None assigned —</option>
+          <option value="fran">Dr Fran O'Reilly</option>
+          <option value="joanne">Dr Joanne Dundon</option>
+          <option value="maria">Maria Harding</option>
+          <option value="ciara">Dr Ciara Dunleavy</option>
+          <option value="ruth">Dr Ruth Devlin</option>
+          <option value="laura">Laura McGrath</option>
+          <option value="susan">Susan O'Leary</option>
+          <option value="michaela">Michaela Duffy-Meade</option>
+          <option value="holly">Holly McCamley</option>
+          <option value="edel">Edel Grimes</option>
+          <option value="amy">Amy Burke</option>
+        </select>
+      </div>
+      <div class="modal-btn-row">
+        <button class="modal-btn" onclick="saveAwayStatus()">Save Status</button>
+        <button class="modal-btn danger" id="clear-status-btn" onclick="clearAwayStatus()" style="display:none">Clear My Away Status</button>
+        <button class="modal-btn secondary" onclick="closeAwayModal()">Cancel</button>
+      </div>
+    </div>
+
+    <div id="away-admin-section" style="display:none">
+      <hr class="modal-divider">
+      <div class="modal-field">
+        <label>Admin: Set Status For</label>
+        <select id="away-for-user">
+          <option value="fran">Dr Fran O'Reilly</option>
+          <option value="joanne">Dr Joanne Dundon</option>
+          <option value="maria">Maria Harding</option>
+          <option value="ciara">Dr Ciara Dunleavy</option>
+          <option value="ruth">Dr Ruth Devlin</option>
+          <option value="laura">Laura McGrath</option>
+          <option value="susan">Susan O'Leary</option>
+          <option value="michaela">Michaela Duffy-Meade</option>
+          <option value="holly">Holly McCamley</option>
+          <option value="edel">Edel Grimes</option>
+          <option value="amy">Amy Burke</option>
+        </select>
+      </div>
+      <hr class="modal-divider">
+      <p style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--grey-400);margin-bottom:8px">Claude API Key (for welcome-back questions)</p>
+      <div class="modal-api-row">
+        <input type="password" id="api-key-input" placeholder="sk-ant-…" style="font-size:0.82rem">
+        <button onclick="saveApiKey()">Save Key</button>
+      </div>
+      <p id="api-key-status" style="font-size:0.7rem;color:var(--grey-400);margin-top:6px"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WELCOME BACK MODAL ══ -->
+<div id="welcome-modal-overlay" class="modal-overlay" style="display:none">
+  <div class="welcome-card">
+    <span class="welcome-emoji" id="welcome-emoji">🎉</span>
+    <h2 id="welcome-name">Welcome back!</h2>
+    <div class="welcome-dest-pill" id="welcome-dest-pill" style="display:none"></div>
+    <div id="welcome-question-area">
+      <div class="welcome-loading" id="welcome-loading">
+        <div class="spinner"></div> Generating a question about your trip…
+      </div>
+      <div class="welcome-question-box" id="welcome-question-box" style="display:none"></div>
+    </div>
+    <button class="modal-btn" onclick="markWelcomed()" style="margin-top:4px">Great to be back! 👋</button>
+    <p style="margin-top:10px;font-size:0.72rem;color:var(--grey-400);cursor:pointer" onclick="markWelcomed()">Skip</p>
+  </div>
+</div>
+
 <script>
 // RECENT UPDATES (last 7 days, clickable)
 function buildRecentUpdates() {
@@ -3846,18 +4016,21 @@ document.getElementById('search').addEventListener('input', function() {
   if (!this.value.trim()) switchSection(lastSection);
 });
 
+// ── Shared GitHub config ──────────────────────────────────────────────────────
+// One token, one repo — used by both Metrics and Away Status.
+// ─────────────────────────────────────────────────────────────────────────────
+window.__KMC_GH = {
+  token:  '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',
+  repo:   'prunch-kinsealy/kinsealy-intranet',
+  branch: 'main'
+};
+
 // ── Metrics ──────────────────────────────────────────────────────────────────
 (function() {
-  // ─────────────────────────────────────────────────────────────────────────
-  // GITHUB CONFIG — paste your Personal Access Token below after creating it
-  // Steps: github.com → Settings → Developer settings → Personal access tokens
-  //        → Fine-grained tokens → New token → Repository: kinsealy-intranet
-  //        → Permissions: Contents = Read and write → Generate token → copy it
-  // ─────────────────────────────────────────────────────────────────────────
-  const GH_TOKEN  = 'YOUR_GITHUB_PAT';   // ← replace this with your token
-  const GH_REPO   = 'prunch-kinsealy/kinsealy-intranet';
+  const GH_TOKEN  = window.__KMC_GH.token;
+  const GH_REPO   = window.__KMC_GH.repo;
   const GH_FILE   = 'metrics-data.json';
-  const GH_BRANCH = 'main';
+  const GH_BRANCH = window.__KMC_GH.branch;
   const API_URL   = 'https://api.github.com/repos/'+GH_REPO+'/contents/'+GH_FILE;
   const RAW_URL   = 'https://raw.githubusercontent.com/'+GH_REPO+'/'+GH_BRANCH+'/'+GH_FILE;
   const STORE_KEY = 'kmc_metrics_v1';   // localStorage cache key
@@ -3870,7 +4043,7 @@ document.getElementById('search').addEventListener('input', function() {
   const MONTHS      = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const _charts     = {};
-  const configured  = GH_TOKEN !== 'YOUR_GITHUB_PAT' && GH_TOKEN.trim() !== '';
+  const configured  = GH_TOKEN !== 'YOUR_GITHUB_PAT' && GH_TOKEN !== '' && GH_TOKEN.trim() !== '';
 
   // ── localStorage cache (instant reads, fallback when offline) ──────────────
   function cacheGet()  { try { return JSON.parse(localStorage.getItem(STORE_KEY))||{}; } catch(e) { return {}; } }
@@ -4281,6 +4454,318 @@ document.getElementById('search').addEventListener('input', function() {
     }
   };
 })();
+
+// ══════════════════════════════════════════════════════════════
+// AWAY STATUS SYSTEM — GitHub-synced, works on all devices
+// ══════════════════════════════════════════════════════════════
+const AWAY_CACHE_KEY = 'kmc_away_v1';
+const AWAY_GH_FILE   = 'away-status.json';
+const STAFF_NAMES = {
+  fran:'Dr Fran O\'Reilly', joanne:'Dr Joanne Dundon', maria:'Maria Harding',
+  ciara:'Dr Ciara Dunleavy', ruth:'Dr Ruth Devlin', laura:'Laura McGrath',
+  susan:'Susan O\'Leary', michaela:'Michaela Duffy-Meade', holly:'Holly McCamley',
+  edel:'Edel Grimes', amy:'Amy Burke'
+};
+const STATUS_LABELS = { holiday:'Holiday', training:'Training', sick:'Sick Leave', wfh:'WFH', other:'Away' };
+const STATUS_EMOJIS = { holiday:'✈️', training:'📚', sick:'🤒', wfh:'🏠', other:'📋' };
+
+function _awayConfigured() {
+  const t = window.__KMC_GH && window.__KMC_GH.token;
+  return t && t !== 'YOUR_GITHUB_PAT';
+}
+function _awayApiUrl() {
+  return 'https://api.github.com/repos/'+window.__KMC_GH.repo+'/contents/'+AWAY_GH_FILE;
+}
+function _awayRawUrl() {
+  return 'https://raw.githubusercontent.com/'+window.__KMC_GH.repo+'/'+window.__KMC_GH.branch+'/'+AWAY_GH_FILE;
+}
+function _awayCacheGet() { try { return JSON.parse(localStorage.getItem(AWAY_CACHE_KEY)||'{}'); } catch(e) { return {}; } }
+function _awayCacheSet(d) { try { localStorage.setItem(AWAY_CACHE_KEY,JSON.stringify(d)); } catch(e) {} }
+
+async function getAwayData() {
+  if (_awayConfigured()) {
+    try {
+      const r = await fetch(_awayRawUrl()+'?t='+Date.now(), {cache:'no-store'});
+      if (r.ok) { const d = await r.json(); _awayCacheSet(d); return d; }
+    } catch(e) {}
+  }
+  return _awayCacheGet();
+}
+
+function _b64away(str) { return btoa(unescape(encodeURIComponent(str))); }
+
+async function saveAwayData(data) {
+  _awayCacheSet(data);
+  if (!_awayConfigured()) return;
+  const token = window.__KMC_GH.token;
+  const apiUrl = _awayApiUrl();
+  // get current SHA
+  let sha = null;
+  try {
+    const info = await fetch(apiUrl+'?t='+Date.now(), {
+      headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'},
+      cache:'no-store'
+    });
+    if (info.ok) { const j = await info.json(); sha = j.sha; }
+  } catch(e) {}
+  // write file
+  const body = { message:'Update away status '+new Date().toISOString().slice(0,10),
+    content: _b64away(JSON.stringify(data,null,2)), branch: window.__KMC_GH.branch };
+  if (sha) body.sha = sha;
+  await fetch(apiUrl, {
+    method:'PUT',
+    headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json','Accept':'application/vnd.github+json'},
+    body: JSON.stringify(body)
+  });
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T12:00:00');
+  return d.toLocaleDateString('en-IE', { day:'numeric', month:'short' });
+}
+
+async function loadAwayWidget() {
+  const data = await getAwayData();
+  const body = document.getElementById('away-widget-body');
+  if (!body) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const active = Object.entries(data).filter(([u, s]) => {
+    if (!s || !s.returnDate) return false;
+    const ret = new Date(s.returnDate + 'T12:00:00');
+    return ret >= today;
+  });
+  if (active.length === 0) {
+    body.innerHTML = '<div class="away-empty">Everyone is in today 🎉</div>';
+    return;
+  }
+  body.innerHTML = active.map(([username, s]) => {
+    const name = STAFF_NAMES[username] || username;
+    const buddy = s.buddy ? STAFF_NAMES[s.buddy] || s.buddy : null;
+    const dest = s.destination ? `${s.destination}` : '';
+    const badgeCls = 'badge-' + (s.status || 'other');
+    const cardCls = s.status || 'other';
+    const emoji = STATUS_EMOJIS[s.status] || '📋';
+    const label = STATUS_LABELS[s.status] || 'Away';
+    return `<div class="away-card ${cardCls}">
+      <div class="away-card-top">
+        <span class="away-card-name">${name}</span>
+        <span class="away-card-badge ${badgeCls}">${emoji} ${label}</span>
+      </div>
+      ${dest ? `<div class="away-card-dest">📍 ${dest}</div>` : ''}
+      <div class="away-card-dates">📅 ${formatDate(s.departureDate)} – back ${formatDate(s.returnDate)}</div>
+      ${buddy ? `<span class="away-card-buddy">🤝 Buddy: ${buddy}</span>` : ''}
+    </div>`;
+  }).join('');
+}
+
+async function updateStatusBtn() {
+  const btn = document.getElementById('status-btn');
+  if (!btn) return;
+  const username = sessionStorage.getItem('kmc-user');
+  if (!username) return;
+  const data = await getAwayData();
+  const s = data[username];
+  const today = new Date(); today.setHours(0,0,0,0);
+  if (s && s.returnDate && new Date(s.returnDate + 'T12:00:00') >= today) {
+    const emoji = STATUS_EMOJIS[s.status] || '📋';
+    const label = STATUS_LABELS[s.status] || 'Away';
+    btn.textContent = `${emoji} ${label}`;
+    btn.classList.add('is-away');
+  } else {
+    btn.textContent = '🟢 Available';
+    btn.classList.remove('is-away');
+  }
+}
+
+async function openAwayModal() {
+  const username = sessionStorage.getItem('kmc-user');
+  const role = sessionStorage.getItem('kmc-role');
+  const data = await getAwayData();
+  const s = data[username] || {};
+
+  // Pre-fill form with existing data
+  document.getElementById('away-status-type').value = s.status || 'holiday';
+  document.getElementById('away-destination').value = s.destination || '';
+  document.getElementById('away-from').value = s.departureDate || '';
+  document.getElementById('away-until').value = s.returnDate || '';
+  document.getElementById('away-buddy').value = s.buddy || '';
+  awayStatusTypeChange();
+
+  // Show clear button if already away
+  const today = new Date(); today.setHours(0,0,0,0);
+  const isCurrentlyAway = s.returnDate && new Date(s.returnDate + 'T12:00:00') >= today;
+  document.getElementById('clear-status-btn').style.display = isCurrentlyAway ? 'block' : 'none';
+
+  // Admin extras
+  const adminSec = document.getElementById('away-admin-section');
+  if (role === 'admin') {
+    adminSec.style.display = 'block';
+    document.getElementById('away-for-user').value = username;
+    const key = localStorage.getItem('kinsealy_api_key') || '';
+    document.getElementById('api-key-input').placeholder = key ? 'Key saved ✓ — paste new key to update' : 'sk-ant-…';
+    document.getElementById('api-key-status').textContent = key ? '✓ Claude API key is set' : 'No API key set yet';
+  } else {
+    adminSec.style.display = 'none';
+  }
+
+  document.getElementById('away-modal-overlay').style.display = 'flex';
+}
+
+function closeAwayModal() {
+  document.getElementById('away-modal-overlay').style.display = 'none';
+}
+
+function awayStatusTypeChange() {
+  const type = document.getElementById('away-status-type').value;
+  const destField = document.getElementById('away-dest-field');
+  destField.style.display = (type === 'holiday' || type === 'other') ? 'block' : 'none';
+}
+
+function getTargetUser() {
+  const role = sessionStorage.getItem('kmc-role');
+  const loggedIn = sessionStorage.getItem('kmc-user');
+  if (role === 'admin') {
+    const sel = document.getElementById('away-for-user');
+    return sel ? (sel.value || loggedIn) : loggedIn;
+  }
+  return loggedIn;
+}
+
+async function saveAwayStatus() {
+  const btn = event && event.target;
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+  const targetUser = getTargetUser();
+  if (!targetUser) return;
+  const status = document.getElementById('away-status-type').value;
+  const destination = document.getElementById('away-destination').value.trim();
+  const departureDate = document.getElementById('away-from').value;
+  const returnDate = document.getElementById('away-until').value;
+  const buddy = document.getElementById('away-buddy').value;
+  if (!departureDate || !returnDate) { alert('Please set departure and return dates.'); if(btn){btn.disabled=false;btn.textContent='Save Status';} return; }
+  const data = await getAwayData();
+  data[targetUser] = { status, destination, departureDate, returnDate, buddy, welcomedBack: false };
+  await saveAwayData(data);
+  closeAwayModal();
+  loadAwayWidget();
+  updateStatusBtn();
+}
+
+async function clearAwayStatus() {
+  const targetUser = getTargetUser();
+  if (!targetUser) return;
+  const data = await getAwayData();
+  delete data[targetUser];
+  await saveAwayData(data);
+  closeAwayModal();
+  loadAwayWidget();
+  updateStatusBtn();
+}
+
+function saveApiKey() {
+  const key = document.getElementById('api-key-input').value.trim();
+  if (!key) return;
+  localStorage.setItem('kinsealy_api_key', key);
+  document.getElementById('api-key-status').textContent = '✓ API key saved';
+  document.getElementById('api-key-input').value = '';
+  document.getElementById('api-key-input').placeholder = 'Key saved ✓ — paste new key to update';
+}
+
+// ── WELCOME BACK ──────────────────────────────────────────────
+async function checkWelcomeBack() {
+  const username = sessionStorage.getItem('kmc-user');
+  if (!username) return;
+  const data = await getAwayData();
+  const s = data[username];
+  if (!s || !s.returnDate || s.welcomedBack) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const returnDay = new Date(s.returnDate + 'T12:00:00');
+  if (returnDay > today) return; // not back yet
+
+  // Show the welcome modal
+  const display = sessionStorage.getItem('kmc-display') || 'there';
+  const firstName = display.replace(/^Dr\s+/, '').split(' ')[0];
+  document.getElementById('welcome-name').textContent = `Welcome back, ${firstName}! 🎉`;
+
+  const dest = s.destination;
+  const destPill = document.getElementById('welcome-dest-pill');
+  if (dest) {
+    destPill.textContent = `✈️ Back from ${dest}`;
+    destPill.style.display = 'inline-block';
+    document.getElementById('welcome-emoji').textContent = '🌍';
+  } else {
+    destPill.style.display = 'none';
+    document.getElementById('welcome-emoji').textContent = '🎉';
+  }
+
+  document.getElementById('welcome-modal-overlay').style.display = 'flex';
+
+  // Generate question
+  const apiKey = localStorage.getItem('kinsealy_api_key');
+  if (apiKey && dest) {
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 120,
+          messages: [{
+            role: 'user',
+            content: `A colleague just returned from a holiday in ${dest}. Write one warm, specific, curious question to welcome them back — something that shows genuine interest in their trip (food, culture, a famous landmark, weather, hidden gem, etc.). Keep it to one sentence. No preamble, just the question.`
+          }]
+        })
+      });
+      if (resp.ok) {
+        const json = await resp.json();
+        const question = json.content?.[0]?.text?.trim() || '';
+        if (question) {
+          document.getElementById('welcome-loading').style.display = 'none';
+          document.getElementById('welcome-question-box').textContent = question;
+          document.getElementById('welcome-question-box').style.display = 'block';
+          return;
+        }
+      }
+    } catch(e) { /* fall through to fallback */ }
+  }
+
+  // Fallback questions if no API key or no destination
+  const fallbacks = dest
+    ? [`Did you manage to get some proper rest in ${dest}?`,
+       `What was the highlight of your time in ${dest}?`,
+       `Hope ${dest} was everything you needed — how was it?`]
+    : [`Hope you had a proper rest — how are you feeling?`,
+       `Great to have you back — hope you're feeling refreshed!`,
+       `Welcome back — was it everything you needed?`];
+  const q = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+  document.getElementById('welcome-loading').style.display = 'none';
+  document.getElementById('welcome-question-box').textContent = q;
+  document.getElementById('welcome-question-box').style.display = 'block';
+}
+
+async function markWelcomed() {
+  const username = sessionStorage.getItem('kmc-user');
+  if (username) {
+    const data = await getAwayData();
+    if (data[username]) {
+      data[username].welcomedBack = true;
+      await saveAwayData(data);
+    }
+  }
+  document.getElementById('welcome-modal-overlay').style.display = 'none';
+  loadAwayWidget();
+  updateStatusBtn();
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+loadAwayWidget();
+updateStatusBtn();
+checkWelcomeBack();
 </script>
 
 

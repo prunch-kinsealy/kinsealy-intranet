@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Logins — Kinsealy Medical Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:#f8f6f1;color:#1f2937;padding:40px 24px;min-height:100vh}
+  .container{max-width:740px;margin:0 auto}
+  .header{margin-bottom:28px}
+  .header h1{font-family:'DM Serif Display',serif;font-size:1.8rem;color:#1a2d4a;margin-bottom:4px}
+  .header p{font-size:0.85rem;color:#9ca3af}
+  .card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;overflow:hidden;margin-bottom:24px}
+  .card-header{background:#1a2d4a;color:#fff;padding:14px 20px;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between}
+  .sync-status{font-size:0.7rem;font-weight:500;letter-spacing:0;opacity:0.7}
+  table{width:100%;border-collapse:collapse}
+  th{background:#f4f4f4;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#6b7280;padding:10px 16px;text-align:left;border-bottom:1px solid #e8e8e8}
+  td{padding:10px 16px;font-size:0.87rem;border-bottom:1px solid #f3f4f6;vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  .badge{display:inline-block;font-size:0.7rem;font-weight:600;padding:3px 9px;border-radius:20px}
+  .badge-admin{background:#dcfce7;color:#166534}
+  .badge-staff{background:#e0f2fe;color:#0369a1}
+  .back{display:inline-flex;align-items:center;gap:6px;font-size:0.82rem;color:#2a8a7e;text-decoration:none;margin-bottom:24px;font-weight:500}
+  .back:hover{text-decoration:underline}
+  .restricted{display:none;text-align:center;padding:80px 24px;color:#b91c1c;font-size:0.95rem}
+  .restricted h2{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:8px;color:#1a2d4a}
+  .note{font-size:0.78rem;color:#9ca3af;margin-top:4px;line-height:1.6}
+
+  /* Password cell */
+  .pwd-cell{display:flex;align-items:center;gap:8px;min-width:180px}
+  .pwd-display{font-family:monospace;font-size:0.88rem;background:#e8f5f3;color:#1a2d4a;padding:3px 10px;border-radius:5px;border:1px solid #c4e0db;letter-spacing:0.04em;min-width:90px}
+  .btn-icon{background:none;border:1px solid #e8e8e8;border-radius:6px;padding:4px 8px;cursor:pointer;font-size:0.78rem;color:#6b7280;font-family:'DM Sans',sans-serif;transition:all 0.15s;white-space:nowrap}
+  .btn-icon:hover{border-color:#2a8a7e;color:#2a8a7e}
+
+  /* Inline reset form */
+  .reset-row{display:none;background:#f8fffe;border-top:1px solid #e8f5f3}
+  .reset-row td{padding:12px 16px}
+  .reset-form{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .reset-form label{font-size:0.75rem;font-weight:600;color:#374151;white-space:nowrap}
+  .reset-form input{padding:8px 12px;border:1.5px solid #e8e8e8;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.87rem;color:#1f2937;outline:none;width:180px;transition:border 0.15s}
+  .reset-form input:focus{border-color:#2a8a7e}
+  .btn-save{padding:8px 16px;background:#1a2d4a;color:#fff;border:none;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:background 0.15s;white-space:nowrap}
+  .btn-save:hover{background:#2a8a7e}
+  .btn-save:disabled{opacity:0.5;cursor:not-allowed}
+  .btn-cancel{padding:8px 12px;background:#f3f4f6;color:#6b7280;border:none;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer}
+  .btn-cancel:hover{background:#e5e7eb}
+  .save-msg{font-size:0.75rem;color:#2a8a7e;font-weight:600}
+
+  /* Toast */
+  #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a2d4a;color:#fff;padding:11px 20px;border-radius:10px;font-size:0.83rem;font-weight:500;opacity:0;transition:all 0.3s;pointer-events:none;z-index:999}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div id="restricted" class="restricted">
+  <h2>Access Denied</h2>
+  <p>This page is restricted to admin users only.</p>
+  <p style="margin-top:12px"><a href="index.html" style="color:#2a8a7e">← Return to Staff Hub</a></p>
+</div>
+
+<div class="container" id="main-content" style="display:none">
+  <a href="index.html" class="back">← Back to Staff Hub</a>
+  <div class="header">
+    <h1>Staff Logins</h1>
+    <p>Manage staff usernames, passwords, and access levels. Admin only — keep this page confidential.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      All Staff Accounts
+      <span class="sync-status" id="sync-status">Loading passwords…</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Password</th>
+          <th>Access</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="staff-tbody"></tbody>
+    </table>
+  </div>
+
+  <p class="note">
+    <strong>Admin</strong> — sees everything including Metrics and Practice Management.<br>
+    <strong>Standard</strong> — all sections except Metrics and Practice Management.<br>
+    Password changes sync to GitHub instantly and take effect on all devices at next login.
+  </p>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── GitHub config (keep in sync with index.html & login.html) ─
+const GH_TOKEN    = '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';
+const GH_REPO     = 'prunch-kinsealy/kinsealy-intranet';
+const GH_BRANCH   = 'main';
+const GH_PWD_FILE = 'passwords.json';
+const PWD_CACHE_KEY = 'kmc_pwd_cache';
+const GH_API_URL  = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_PWD_FILE;
+const GH_RAW_URL  = 'https://raw.githubusercontent.com/' + GH_REPO + '/' + GH_BRANCH + '/' + GH_PWD_FILE;
+
+const configured = GH_TOKEN !== 'YOUR_GITHUB_PAT' && GH_TOKEN.trim() !== '';
+
+const STAFF = [
+  {username:'fran',     name:"Dr Fran O'Reilly",      badge:'admin'},
+  {username:'joanne',   name:'Dr Joanne Dundon',       badge:'admin'},
+  {username:'maria',    name:'Maria Harding',          badge:'admin'},
+  {username:'ciara',    name:'Dr Ciara Dunleavy',      badge:'staff'},
+  {username:'ruth',     name:'Dr Ruth Devlin',         badge:'staff'},
+  {username:'laura',    name:'Laura McGrath',          badge:'staff'},
+  {username:'susan',    name:"Susan O'Leary",          badge:'staff'},
+  {username:'michaela', name:'Michaela Duffy-Meade',   badge:'staff'},
+  {username:'holly',    name:'Holly McCamley',         badge:'staff'},
+  {username:'edel',     name:'Edel Grimes',            badge:'staff'},
+  {username:'amy',      name:'Amy Burke',              badge:'staff'},
+];
+
+const DEFAULT_PWDS = {
+  fran:'Kinsealy1!',joanne:'Kinsealy1!',maria:'Kinsealy1!',ciara:'Kinsealy1!',
+  ruth:'Kinsealy1!',laura:'Kinsealy1!',susan:'Kinsealy1!',michaela:'Kinsealy1!',
+  holly:'Kinsealy1!',edel:'Kinsealy1!',amy:'Kinsealy1!'
+};
+
+let passwords = {};
+
+function cacheGet() { try { return JSON.parse(localStorage.getItem(PWD_CACHE_KEY)); } catch(e) { return null; } }
+function cacheSet(d) { try { localStorage.setItem(PWD_CACHE_KEY, JSON.stringify(d)); } catch(e) {} }
+
+function b64(str) { return btoa(unescape(encodeURIComponent(str))); }
+
+async function fetchPasswords() {
+  const cached = cacheGet();
+  if (cached) { passwords = cached; renderTable(); }
+
+  if (!configured) {
+    passwords = cacheGet() || { ...DEFAULT_PWDS };
+    document.getElementById('sync-status').textContent = 'GitHub not configured — showing defaults';
+    renderTable();
+    return;
+  }
+
+  try {
+    const r = await fetch(GH_RAW_URL + '?t=' + Date.now(), { cache: 'no-store' });
+    if (r.ok) {
+      const fresh = await r.json();
+      passwords = fresh;
+      cacheSet(fresh);
+      document.getElementById('sync-status').textContent = '✓ Synced from GitHub';
+    } else {
+      document.getElementById('sync-status').textContent = 'GitHub error — showing cached';
+    }
+  } catch(e) {
+    document.getElementById('sync-status').textContent = 'Offline — showing cached';
+  }
+  renderTable();
+}
+
+async function savePasswords() {
+  cacheSet(passwords);
+  if (!configured) return;
+
+  // Get current SHA
+  let sha = null;
+  try {
+    const info = await fetch(GH_API_URL + '?t=' + Date.now(), {
+      headers: { 'Authorization': 'Bearer ' + GH_TOKEN, 'Accept': 'application/vnd.github+json' },
+      cache: 'no-store'
+    });
+    if (info.ok) { const j = await info.json(); sha = j.sha; }
+  } catch(e) {}
+
+  const body = {
+    message: 'Update staff passwords ' + new Date().toISOString().slice(0, 10),
+    content: b64(JSON.stringify(passwords, null, 2)),
+    branch: GH_BRANCH
+  };
+  if (sha) body.sha = sha;
+
+  const r = await fetch(GH_API_URL, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'Bearer ' + GH_TOKEN,
+      'Content-Type': 'application/json',
+      'Accept': 'application/vnd.github+json'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error('GitHub write failed');
+}
+
+function renderTable() {
+  const tbody = document.getElementById('staff-tbody');
+  tbody.innerHTML = STAFF.map(s => {
+    const pwd = passwords[s.username] || DEFAULT_PWDS[s.username] || '—';
+    const badgeCls = s.badge === 'admin' ? 'badge-admin' : 'badge-staff';
+    const badgeLbl = s.badge === 'admin' ? 'Admin' : 'Standard';
+    return `
+      <tr id="row-${s.username}">
+        <td>${s.name}</td>
+        <td><code>${s.username}</code></td>
+        <td>
+          <div class="pwd-cell">
+            <span class="pwd-display" id="pwd-${s.username}">••••••••••</span>
+            <button class="btn-icon" onclick="toggleReveal('${s.username}')">👁 Show</button>
+          </div>
+        </td>
+        <td><span class="badge ${badgeCls}">${badgeLbl}</span></td>
+        <td><button class="btn-icon" onclick="openReset('${s.username}')">🔑 Reset</button></td>
+      </tr>
+      <tr class="reset-row" id="reset-${s.username}">
+        <td colspan="5">
+          <div class="reset-form">
+            <label>New password for ${s.name.split(' ').pop()}:</label>
+            <input type="text" id="new-pwd-${s.username}" placeholder="Enter new password"
+              onkeydown="if(event.key==='Enter')doReset('${s.username}')">
+            <button class="btn-save" id="save-${s.username}" onclick="doReset('${s.username}')">Save</button>
+            <button class="btn-cancel" onclick="closeReset('${s.username}')">Cancel</button>
+            <span class="save-msg" id="msg-${s.username}"></span>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+const revealed = {};
+function toggleReveal(username) {
+  const span = document.getElementById('pwd-' + username);
+  const btn = span.nextElementSibling;
+  if (revealed[username]) {
+    span.textContent = '••••••••••';
+    btn.textContent = '👁 Show';
+    revealed[username] = false;
+  } else {
+    span.textContent = passwords[username] || DEFAULT_PWDS[username] || '—';
+    btn.textContent = '🙈 Hide';
+    revealed[username] = true;
+  }
+}
+
+function openReset(username) {
+  // Close any other open reset rows
+  STAFF.forEach(s => {
+    if (s.username !== username) closeReset(s.username);
+  });
+  const row = document.getElementById('reset-' + username);
+  row.style.display = 'table-row';
+  const input = document.getElementById('new-pwd-' + username);
+  input.value = '';
+  document.getElementById('msg-' + username).textContent = '';
+  setTimeout(() => input.focus(), 50);
+}
+
+function closeReset(username) {
+  document.getElementById('reset-' + username).style.display = 'none';
+}
+
+async function doReset(username) {
+  const input = document.getElementById('new-pwd-' + username);
+  const newPwd = input.value.trim();
+  if (!newPwd) { input.focus(); return; }
+
+  const saveBtn = document.getElementById('save-' + username);
+  const msg = document.getElementById('msg-' + username);
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving…';
+  msg.textContent = '';
+
+  passwords[username] = newPwd;
+
+  try {
+    await savePasswords();
+    // Update the displayed password if it was revealed
+    if (revealed[username]) {
+      document.getElementById('pwd-' + username).textContent = newPwd;
+    }
+    closeReset(username);
+    showToast('✓ Password updated for ' + STAFF.find(s => s.username === username).name);
+    document.getElementById('sync-status').textContent = '✓ Saved to GitHub';
+  } catch(e) {
+    msg.textContent = configured ? '⚠ GitHub save failed — saved locally only' : '✓ Saved locally';
+    msg.style.color = configured ? '#b91c1c' : '#2a8a7e';
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Save';
+  }
+}
+
+function showToast(message) {
+  const t = document.getElementById('toast');
+  t.textContent = message;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Init
+if (sessionStorage.getItem('kmc-role') === 'admin') {
+  document.getElementById('main-content').style.display = 'block';
+  fetchPasswords();
+} else {
+  document.getElementById('restricted').style.display = 'block';
+}
+</script>
+</body>
+</html>

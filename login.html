@@ -13,12 +13,17 @@
   .logo h1{font-family:'DM Serif Display',serif;font-size:1.3rem;color:#1a2d4a;line-height:1.3}
   .logo span{display:block;font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#2a8a7e;margin-top:4px}
   .logo-divider{width:40px;height:3px;background:#2a8a7e;border-radius:2px;margin:16px auto 0}
+  .field{margin-bottom:16px}
   label{display:block;font-size:0.78rem;font-weight:600;color:#374151;margin-bottom:6px;letter-spacing:0.03em}
-  input[type=password]{width:100%;padding:11px 14px;border:1.5px solid #e8e8e8;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:#1f2937;outline:none;transition:border 0.15s}
-  input[type=password]:focus{border-color:#2a8a7e}
-  button{width:100%;margin-top:20px;padding:12px;background:#1a2d4a;color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.15s;letter-spacing:0.02em}
-  button:hover{background:#2a8a7e}
-  .error{margin-top:14px;font-size:0.78rem;color:#b91c1c;text-align:center;display:none}
+  input[type=text],input[type=password]{width:100%;padding:11px 14px;border:1.5px solid #e8e8e8;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:#1f2937;outline:none;transition:border 0.15s}
+  input[type=text]:focus,input[type=password]:focus{border-color:#2a8a7e}
+  .pwd-wrap{position:relative}
+  .pwd-wrap input{padding-right:44px}
+  .show-pwd{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;font-size:1rem;padding:4px;line-height:1}
+  .show-pwd:hover{color:#374151}
+  button.sign-in{width:100%;margin-top:8px;padding:12px;background:#1a2d4a;color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.15s;letter-spacing:0.02em}
+  button.sign-in:hover{background:#2a8a7e}
+  .error{margin-top:14px;font-size:0.78rem;color:#b91c1c;text-align:center;display:none;background:#fee2e2;padding:9px 14px;border-radius:7px}
   .footer{margin-top:28px;text-align:center;font-size:0.68rem;color:#9ca3af}
 </style>
 </head>
@@ -29,34 +34,109 @@
     <span>Staff Hub</span>
     <div class="logo-divider"></div>
   </div>
-  <label for="pwd">Password</label>
-  <input type="password" id="pwd" placeholder="Enter staff password" autofocus onkeydown="if(event.key==='Enter')login()">
-  <button onclick="login()">Sign In</button>
-  <div class="error" id="err">Incorrect password. Please try again.</div>
+  <div class="field">
+    <label for="usr">Username</label>
+    <input type="text" id="usr" placeholder="Enter your username" autocomplete="username" autofocus
+      onkeydown="if(event.key==='Enter')document.getElementById('pwd').focus()">
+  </div>
+  <div class="field">
+    <label for="pwd">Password</label>
+    <div class="pwd-wrap">
+      <input type="password" id="pwd" placeholder="Enter your password" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')login()">
+      <button class="show-pwd" type="button" onclick="togglePwd()" title="Show/hide password">👁</button>
+    </div>
+  </div>
+  <button class="sign-in" onclick="login()">Sign In</button>
+  <div class="error" id="err">Incorrect username or password. Please try again.</div>
   <div class="footer">For access issues contact the Practice Manager</div>
 </div>
 <script>
-async function login() {
-  const pwd = document.getElementById('pwd').value;
-  const err = document.getElementById('err');
-  err.style.display = 'none';
-  if (!pwd) return;
-  const hash = await sha256(pwd);
-  if (hash === 'ddaa0cda9c03244f5110a632676fbf28ffc71be3063438928064a55972c3f205') {
-    sessionStorage.setItem('kmc-auth', '1');
-    const dest = sessionStorage.getItem('kmc-redirect') || 'index.html';
-    sessionStorage.removeItem('kmc-redirect');
-    window.location.href = dest;
-  } else {
-    err.style.display = 'block';
-    document.getElementById('pwd').value = '';
-    document.getElementById('pwd').focus();
+// ── GitHub config (keep in sync with index.html) ──────────────
+const GH_TOKEN  = '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';
+const GH_REPO   = 'prunch-kinsealy/kinsealy-intranet';
+const GH_BRANCH = 'main';
+const GH_PWD_FILE = 'passwords.json';
+const PWD_CACHE_KEY = 'kmc_pwd_cache';
+
+// ── Staff directory (names/roles — passwords come from GitHub) ─
+const USERS = {
+  'fran':     {display:"Dr O'Reilly",          initials:'FO', role:'admin'},
+  'joanne':   {display:'Dr Dundon',            initials:'JD', role:'admin'},
+  'maria':    {display:'Maria Harding',        initials:'MH', role:'admin'},
+  'ciara':    {display:'Dr Dunleavy',          initials:'CD', role:'staff'},
+  'ruth':     {display:'Dr Devlin',            initials:'RD', role:'staff'},
+  'laura':    {display:'Laura McGrath',        initials:'LM', role:'staff'},
+  'susan':    {display:"Susan O'Leary",        initials:'SO', role:'staff'},
+  'michaela': {display:'Michaela Duffy-Meade', initials:'MD', role:'staff'},
+  'holly':    {display:'Holly McCamley',       initials:'HM', role:'staff'},
+  'edel':     {display:'Edel Grimes',          initials:'EG', role:'staff'},
+  'amy':      {display:'Amy Burke',            initials:'AB', role:'staff'},
+};
+
+// ── Default passwords (fallback if GitHub not reachable) ───────
+const DEFAULT_PWDS = {
+  'fran':'Kinsealy1!','joanne':'Kinsealy1!','maria':'Kinsealy1!',
+  'ciara':'Kinsealy1!','ruth':'Kinsealy1!','laura':'Kinsealy1!',
+  'susan':'Kinsealy1!','michaela':'Kinsealy1!','holly':'Kinsealy1!',
+  'edel':'Kinsealy1!','amy':'Kinsealy1!'
+};
+
+let passwords = null; // loaded on page init
+
+function pwdCacheGet() { try { return JSON.parse(localStorage.getItem(PWD_CACHE_KEY)); } catch(e) { return null; } }
+function pwdCacheSet(d) { try { localStorage.setItem(PWD_CACHE_KEY, JSON.stringify(d)); } catch(e) {} }
+
+async function loadPasswords() {
+  // Use cache instantly so login works without waiting
+  const cached = pwdCacheGet();
+  if (cached) passwords = cached;
+  else passwords = { ...DEFAULT_PWDS };
+
+  // Refresh from GitHub in background
+  if (GH_TOKEN && GH_TOKEN !== 'YOUR_GITHUB_PAT') {
+    try {
+      const raw = 'https://raw.githubusercontent.com/' + GH_REPO + '/' + GH_BRANCH + '/' + GH_PWD_FILE;
+      const r = await fetch(raw + '?t=' + Date.now(), { cache: 'no-store' });
+      if (r.ok) {
+        const fresh = await r.json();
+        passwords = fresh;
+        pwdCacheSet(fresh);
+      }
+    } catch(e) {}
   }
 }
-async function sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+
+function login() {
+  const username = document.getElementById('usr').value.trim().toLowerCase();
+  const password = document.getElementById('pwd').value;
+  const err = document.getElementById('err');
+  err.style.display = 'none';
+  if (!username || !password) return;
+
+  const user = USERS[username];
+  const expectedPwd = passwords ? passwords[username] : DEFAULT_PWDS[username];
+  if (!user || !expectedPwd || password !== expectedPwd) {
+    err.style.display = 'block';
+    return;
+  }
+
+  sessionStorage.setItem('kmc-auth', '1');
+  sessionStorage.setItem('kmc-user', username);
+  sessionStorage.setItem('kmc-display', user.display);
+  sessionStorage.setItem('kmc-initials', user.initials);
+  sessionStorage.setItem('kmc-role', user.role);
+  const dest = sessionStorage.getItem('kmc-redirect') || 'index.html';
+  sessionStorage.removeItem('kmc-redirect');
+  window.location.href = dest;
 }
+
+function togglePwd() {
+  const input = document.getElementById('pwd');
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+loadPasswords();
 </script>
 </body>
 </html>
