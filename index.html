@@ -4643,29 +4643,27 @@ function getTargetUser() {
   return loggedIn;
 }
 
-async function saveAwayStatus() {
-  const btn = document.querySelector('#away-form .modal-btn');
-  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
-  const resetBtn = () => { if (btn) { btn.disabled = false; btn.textContent = 'Save Status'; } };
-  try {
-    const targetUser = getTargetUser();
-    if (!targetUser) { resetBtn(); return; }
-    const status = document.getElementById('away-status-type').value;
-    const destination = document.getElementById('away-destination').value.trim();
-    const departureDate = document.getElementById('away-from').value;
-    const returnDate = document.getElementById('away-until').value;
-    const buddy = document.getElementById('away-buddy').value;
-    if (!departureDate || !returnDate) { alert('Please set departure and return dates.'); resetBtn(); return; }
-    const data = await getAwayData();
-    data[targetUser] = { status, destination, departureDate, returnDate, buddy, welcomedBack: false };
-    await saveAwayData(data);
-    closeAwayModal();
-    loadAwayWidget();
-    updateStatusBtn();
-  } catch(e) {
-    resetBtn();
-    alert('Could not save — please try again.');
-  }
+function saveAwayStatus() {
+  const targetUser = getTargetUser();
+  if (!targetUser) return;
+  const status = document.getElementById('away-status-type').value;
+  const destination = document.getElementById('away-destination').value.trim();
+  const departureDate = document.getElementById('away-from').value;
+  const returnDate = document.getElementById('away-until').value;
+  const buddy = document.getElementById('away-buddy').value;
+  if (!departureDate || !returnDate) { alert('Please set departure and return dates.'); return; }
+
+  // Save to cache instantly so UI updates immediately
+  const data = _awayCacheGet();
+  data[targetUser] = { status, destination, departureDate, returnDate, buddy, welcomedBack: false };
+  _awayCacheSet(data);
+
+  closeAwayModal();
+  loadAwayWidget();
+  updateStatusBtn();
+
+  // Sync to GitHub in background — non-blocking
+  saveAwayData(data).catch(() => {});
 }
 
 async function clearAwayStatus() {
