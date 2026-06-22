@@ -467,6 +467,9 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <a href="#" class="nav-link" data-section="ai-at-kinsealy"><span class="nav-icon">🤖</span> AI at Kinsealy</a>
     <a href="#" class="nav-link" data-section="social-media"><span class="nav-icon">📱</span> Social Media</a>
     <a href="#" class="nav-link" data-section="maintenance"><span class="nav-icon">🔧</span> Maintenance</a>
+    <div class="nav-group-label admin-only" id="nav-admin-label" style="display:none">Admin</div>
+    <a href="staff-logins.html" class="nav-link admin-only" id="nav-admin-logins" style="display:none"><span class="nav-icon">🔑</span> Staff Logins</a>
+    <a href="feedback.html" class="nav-link admin-only" id="nav-admin-feedback" style="display:none"><span class="nav-icon">💬</span> Staff Feedback</a>
   </nav>
   <div class="sidebar-footer">Kinsealy Group Practice © 2026</div>
 </aside>
@@ -3850,6 +3853,9 @@ const titles = {
 const navLinks = document.querySelectorAll('.nav-link');
 const sections = document.querySelectorAll('.section');
 let pmUnlocked = sessionStorage.getItem('kmc-role') === 'admin';
+if (pmUnlocked) {
+  document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+}
 if(pmUnlocked){
   document.getElementById('pm-lock-badge').style.display='none';
   document.getElementById('pm-unlocked-badge').style.display='inline';
