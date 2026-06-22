@@ -1,5 +1,10 @@
 ﻿<!DOCTYPE html>
-<script></script>
+<script>
+if(!sessionStorage.getItem('kmc-auth')){
+  sessionStorage.setItem('kmc-redirect',location.href);
+  location.replace('login.html');
+}
+</script>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -4652,9 +4657,8 @@ function getTargetUser() {
 }
 
 function saveAwayStatus() {
-  console.log('saveAwayStatus called, targetUser:', getTargetUser());
   const targetUser = getTargetUser();
-  if (!targetUser) return;
+  if (!targetUser) { alert('You need to be logged in to set your status. Please log in via login.html.'); return; }
   const status = document.getElementById('away-status-type').value;
   const destination = document.getElementById('away-destination').value.trim();
   const departureDate = document.getElementById('away-from').value;
