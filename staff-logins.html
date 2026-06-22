@@ -147,9 +147,13 @@ async function fetchPasswords() {
   }
 
   try {
-    const r = await fetch(GH_RAW_URL + '?t=' + Date.now(), { cache: 'no-store' });
+    const r = await fetch(GH_API_URL + '?t=' + Date.now(), {
+      headers: { 'Authorization': 'Bearer ' + GH_TOKEN, 'Accept': 'application/vnd.github+json' },
+      cache: 'no-store'
+    });
     if (r.ok) {
-      const fresh = await r.json();
+      const j = await r.json();
+      const fresh = JSON.parse(atob(j.content.replace(/\n/g, '')));
       passwords = fresh;
       cacheSet(fresh);
       document.getElementById('sync-status').textContent = '✓ Synced from GitHub';

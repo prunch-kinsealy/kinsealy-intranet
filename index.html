@@ -4486,8 +4486,16 @@ function _awayCacheSet(d) { try { localStorage.setItem(AWAY_CACHE_KEY,JSON.strin
 async function getAwayData() {
   if (_awayConfigured()) {
     try {
-      const r = await fetch(_awayRawUrl()+'?t='+Date.now(), {cache:'no-store'});
-      if (r.ok) { const d = await r.json(); _awayCacheSet(d); return d; }
+      const r = await fetch(_awayApiUrl()+'?t='+Date.now(), {
+        headers:{'Authorization':'Bearer '+window.__KMC_GH.token,'Accept':'application/vnd.github+json'},
+        cache:'no-store'
+      });
+      if (r.ok) {
+        const j = await r.json();
+        const d = JSON.parse(atob(j.content.replace(/\n/g,'')));
+        _awayCacheSet(d);
+        return d;
+      }
     } catch(e) {}
   }
   return _awayCacheGet();

@@ -96,10 +96,14 @@ async function loadPasswords() {
   // Refresh from GitHub in background
   if (GH_TOKEN && GH_TOKEN !== 'YOUR_GITHUB_PAT') {
     try {
-      const raw = 'https://raw.githubusercontent.com/' + GH_REPO + '/' + GH_BRANCH + '/' + GH_PWD_FILE;
-      const r = await fetch(raw + '?t=' + Date.now(), { cache: 'no-store' });
+      const apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_PWD_FILE;
+      const r = await fetch(apiUrl + '?t=' + Date.now(), {
+        headers: { 'Authorization': 'Bearer ' + GH_TOKEN, 'Accept': 'application/vnd.github+json' },
+        cache: 'no-store'
+      });
       if (r.ok) {
-        const fresh = await r.json();
+        const j = await r.json();
+        const fresh = JSON.parse(atob(j.content.replace(/\n/g, '')));
         passwords = fresh;
         pwdCacheSet(fresh);
       }
