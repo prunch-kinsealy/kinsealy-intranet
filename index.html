@@ -4611,6 +4611,10 @@ async function openAwayModal() {
     adminSec.style.display = 'none';
   }
 
+  // Reset save button in case it was left disabled from a previous attempt
+  const saveBtn = document.querySelector('#away-form .modal-btn');
+  if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Status'; }
+
   document.getElementById('away-modal-overlay').style.display = 'flex';
 }
 
