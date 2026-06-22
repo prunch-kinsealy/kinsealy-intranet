@@ -3635,7 +3635,7 @@ Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyT
         </select>
       </div>
       <div class="modal-field" id="away-dest-field">
-        <label>Destination <span style="font-weight:400;text-transform:none;color:var(--grey-400)">(optional but fun!)</span></label>
+        <label>Destination <span style="font-weight:400;text-transform:none;color:var(--grey-400)">(Optional)</span></label>
         <input type="text" id="away-destination" placeholder="e.g. Portugal, Tenerife, Cork…">
       </div>
       <div class="modal-row">
@@ -3676,7 +3676,7 @@ Best Wishes, Dr [X], Kinsealy Medical Centre<button class="cpbtn" onclick="copyT
       <hr class="modal-divider">
       <div class="modal-field">
         <label>Admin: Set Status For</label>
-        <select id="away-for-user">
+        <select id="away-for-user" onchange="updateBuddyVisibility(this.value)">
           <option value="fran">Dr Fran O'Reilly</option>
           <option value="joanne">Dr Joanne Dundon</option>
           <option value="maria">Maria Harding</option>
@@ -4466,6 +4466,7 @@ const STAFF_NAMES = {
   susan:'Susan O\'Leary', michaela:'Michaela Duffy-Meade', holly:'Holly McCamley',
   edel:'Edel Grimes', amy:'Amy Burke'
 };
+const DOCTORS = new Set(['fran','joanne','ciara','ruth']);
 const STATUS_LABELS = { holiday:'Holiday', training:'Training', sick:'Sick Leave', wfh:'WFH', other:'Away' };
 const STATUS_EMOJIS = { holiday:'✈️', training:'📚', sick:'🤒', wfh:'🏠', other:'📋' };
 
@@ -4554,7 +4555,7 @@ async function loadAwayWidget() {
       </div>
       ${dest ? `<div class="away-card-dest">📍 ${dest}</div>` : ''}
       <div class="away-card-dates">📅 ${formatDate(s.departureDate)} – back ${formatDate(s.returnDate)}</div>
-      ${buddy ? `<span class="away-card-buddy">🤝 Buddy: ${buddy}</span>` : ''}
+      ${buddy && DOCTORS.has(username) ? `<span class="away-card-buddy">🤝 Buddy: ${buddy}</span>` : ''}
     </div>`;
   }).join('');
 }
@@ -4591,6 +4592,7 @@ async function openAwayModal() {
   document.getElementById('away-until').value = s.returnDate || '';
   document.getElementById('away-buddy').value = s.buddy || '';
   awayStatusTypeChange();
+  updateBuddyVisibility(username);
 
   // Show clear button if already away
   const today = new Date(); today.setHours(0,0,0,0);
@@ -4616,6 +4618,11 @@ function closeAwayModal() {
   document.getElementById('away-modal-overlay').style.display = 'none';
 }
 
+function updateBuddyVisibility(username) {
+  const field = document.getElementById('away-buddy').closest('.modal-field');
+  if (field) field.style.display = DOCTORS.has(username) ? 'block' : 'none';
+}
+
 function awayStatusTypeChange() {
   const type = document.getElementById('away-status-type').value;
   const destField = document.getElementById('away-dest-field');
@@ -4633,22 +4640,28 @@ function getTargetUser() {
 }
 
 async function saveAwayStatus() {
-  const btn = event && event.target;
+  const btn = document.querySelector('#away-form .modal-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
-  const targetUser = getTargetUser();
-  if (!targetUser) return;
-  const status = document.getElementById('away-status-type').value;
-  const destination = document.getElementById('away-destination').value.trim();
-  const departureDate = document.getElementById('away-from').value;
-  const returnDate = document.getElementById('away-until').value;
-  const buddy = document.getElementById('away-buddy').value;
-  if (!departureDate || !returnDate) { alert('Please set departure and return dates.'); if(btn){btn.disabled=false;btn.textContent='Save Status';} return; }
-  const data = await getAwayData();
-  data[targetUser] = { status, destination, departureDate, returnDate, buddy, welcomedBack: false };
-  await saveAwayData(data);
-  closeAwayModal();
-  loadAwayWidget();
-  updateStatusBtn();
+  const resetBtn = () => { if (btn) { btn.disabled = false; btn.textContent = 'Save Status'; } };
+  try {
+    const targetUser = getTargetUser();
+    if (!targetUser) { resetBtn(); return; }
+    const status = document.getElementById('away-status-type').value;
+    const destination = document.getElementById('away-destination').value.trim();
+    const departureDate = document.getElementById('away-from').value;
+    const returnDate = document.getElementById('away-until').value;
+    const buddy = document.getElementById('away-buddy').value;
+    if (!departureDate || !returnDate) { alert('Please set departure and return dates.'); resetBtn(); return; }
+    const data = await getAwayData();
+    data[targetUser] = { status, destination, departureDate, returnDate, buddy, welcomedBack: false };
+    await saveAwayData(data);
+    closeAwayModal();
+    loadAwayWidget();
+    updateStatusBtn();
+  } catch(e) {
+    resetBtn();
+    alert('Could not save — please try again.');
+  }
 }
 
 async function clearAwayStatus() {
