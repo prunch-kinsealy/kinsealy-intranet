@@ -271,6 +271,28 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .buddy-alert-link{display:inline-flex;align-items:center;gap:5px;font-size:0.76rem;font-weight:600;color:#fff;background:rgba(42,138,126,0.35);padding:6px 12px;border-radius:7px;border:1px solid rgba(42,138,126,0.6);cursor:pointer;transition:background 0.15s}
 .buddy-alert-link:hover{background:rgba(42,138,126,0.55)}
 .buddy-alert-tag{display:inline-block;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:4px;margin-bottom:8px}
+/* WHO'S IN TODAY */
+.whos-in-widget{background:#fff;border:1px solid var(--grey-200);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px}
+.whos-in-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.whos-in-title{font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--navy)}
+.whos-in-time{font-size:0.72rem;color:var(--grey-400)}
+.whos-in-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:700px){.whos-in-grid{grid-template-columns:repeat(2,1fr)}}
+.whos-in-group{background:var(--grey-100);border-radius:8px;padding:12px 14px}
+.whos-in-group-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
+.whos-in-group.doctors .whos-in-group-label{color:var(--col-doc)}
+.whos-in-group.nurses .whos-in-group-label{color:var(--col-nurse)}
+.whos-in-group.pm .whos-in-group-label{color:var(--col-pm)}
+.whos-in-group.secretaries .whos-in-group-label{color:var(--col-sec)}
+.whos-in-person{display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:0.78rem;color:var(--text)}
+.whos-in-person:last-child{margin-bottom:0}
+.whos-in-person.absent{opacity:0.38;text-decoration:line-through}
+.whos-in-avatar{width:22px;height:22px;border-radius:50%;font-size:0.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
+.whos-in-group.doctors .whos-in-avatar{background:var(--col-doc)}
+.whos-in-group.nurses .whos-in-avatar{background:var(--col-nurse)}
+.whos-in-group.pm .whos-in-avatar{background:var(--col-pm)}
+.whos-in-group.secretaries .whos-in-avatar{background:var(--col-sec)}
+.whos-in-weekend{text-align:center;padding:14px;font-size:0.82rem;color:var(--grey-400)}
 /* AWAY NOTICES (bon voyage / welcome back) */
 .away-notice-card{border-radius:var(--radius);padding:16px 18px;margin-bottom:12px;position:relative;overflow:hidden}
 .away-notice-card.bon-voyage{background:linear-gradient(135deg,#0f4c75,#1a2d4a);color:#fff}
@@ -507,6 +529,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 
       <div id="buddy-alert-container"></div>
       <div id="away-notices-container"></div>
+      <div id="whos-in-container"></div>
 
       <div class="notice-strip">
         <span class="badge">Pinned</span>
@@ -4024,6 +4047,81 @@ function loadAnnouncements() {
   } catch(e) { container.innerHTML = ''; }
 }
 
+// WHO'S IN TODAY
+const WHOS_IN_STAFF = {
+  doctors:     ['Dr. Fran O\'Reilly','Dr. Joanne Dundon','Dr. Ciara Dunleavy','Dr. Ruth Devlin'],
+  nurses:      ['Laura McGrath'],
+  pm:          ['Maria Harding'],
+  secretaries: ['Susan O\'Leary','Michaela Duffy-Meade','Holly McCamley','Edel Grimes','Amy Burke']
+};
+const WHOS_IN_LABELS = { doctors:'Doctors', nurses:'Nursing', pm:'Practice Manager', secretaries:'Secretaries' };
+const WHOS_IN_KEYS   = Object.keys(WHOS_IN_STAFF);
+
+function initials(name){ return name.replace(/^Dr\.\s*/,'').split(' ').filter((_,i,a)=>i===0||i===a.length-1).map(w=>w[0]).join('').toUpperCase(); }
+
+async function loadWhosIn() {
+  const container = document.getElementById('whos-in-container');
+  if (!container) return;
+  const now  = new Date();
+  const day  = now.getDay(); // 0=Sun,6=Sat
+  const hour = now.getHours();
+
+  if (day === 0 || day === 6) {
+    container.innerHTML = `<div class="whos-in-widget"><div class="whos-in-header"><span class="whos-in-title">👥 Who's In Today</span></div><div class="whos-in-weekend">The practice is closed today. See you Monday! 🌿</div></div>`;
+    return;
+  }
+
+  // Get away data to cross-reference
+  const awayData = await getAwayData().catch(() => ({}));
+  const awayUsernames = new Set(
+    Object.entries(awayData)
+      .filter(([,s]) => {
+        if (!s || !s.departureDate || !s.returnDate) return false;
+        const dep = new Date(s.departureDate);
+        const ret = new Date(s.returnDate);
+        const today = new Date(); today.setHours(0,0,0,0);
+        return dep <= today && ret >= today;
+      })
+      .map(([k]) => k)
+  );
+
+  // Map display names → username keys for away lookup
+  const NAME_TO_USER = {
+    'Dr. Fran O\'Reilly':'fran','Dr. Joanne Dundon':'joanne',
+    'Dr. Ciara Dunleavy':'ciara','Dr. Ruth Devlin':'ruth',
+    'Laura McGrath':'laura','Maria Harding':'maria',
+    'Susan O\'Leary':'susan','Michaela Duffy-Meade':'michaela',
+    'Holly McCamley':'holly','Edel Grimes':'edel','Amy Burke':'amy'
+  };
+
+  const isOpen = hour >= 9 && hour < 17;
+  const statusLabel = isOpen ? 'Open now · 8:30am – 5:00pm' : (hour < 9 ? 'Opens at 8:30am' : 'Closed for today');
+
+  const groupsHtml = WHOS_IN_KEYS.map(role => {
+    const people = WHOS_IN_STAFF[role].map(name => {
+      const absent = awayUsernames.has(NAME_TO_USER[name]);
+      const ini    = initials(name);
+      return `<div class="whos-in-person${absent?' absent':''}">
+        <div class="whos-in-avatar">${ini}</div>
+        <span>${name}${absent ? ' <span style="font-size:0.68rem;color:var(--grey-400)">(away)</span>' : ''}</span>
+      </div>`;
+    }).join('');
+    return `<div class="whos-in-group ${role}">
+      <div class="whos-in-group-label">${WHOS_IN_LABELS[role]}</div>
+      ${people}
+    </div>`;
+  }).join('');
+
+  container.innerHTML = `<div class="whos-in-widget">
+    <div class="whos-in-header">
+      <span class="whos-in-title">👥 Who's In Today</span>
+      <span class="whos-in-time">${statusLabel}</span>
+    </div>
+    <div class="whos-in-grid">${groupsHtml}</div>
+  </div>`;
+}
+
+loadWhosIn();
 loadAnnouncements();
 buildRecentUpdates();
 initCDMReminder();
