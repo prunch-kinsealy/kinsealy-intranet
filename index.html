@@ -271,6 +271,15 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .buddy-alert-link{display:inline-flex;align-items:center;gap:5px;font-size:0.76rem;font-weight:600;color:#fff;background:rgba(42,138,126,0.35);padding:6px 12px;border-radius:7px;border:1px solid rgba(42,138,126,0.6);cursor:pointer;transition:background 0.15s}
 .buddy-alert-link:hover{background:rgba(42,138,126,0.55)}
 .buddy-alert-tag{display:inline-block;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:4px;margin-bottom:8px}
+/* DOCTOR BUDDY SYSTEM ALERT */
+.buddy-system-banner{background:linear-gradient(135deg,#7c2d12,#9a3412);border-radius:var(--radius);padding:18px 20px;margin-bottom:12px;border-left:5px solid #f97316;color:#fff;position:relative;overflow:hidden}
+.buddy-system-banner::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,0.05);border-radius:50%}
+.buddy-system-tag{display:inline-flex;align-items:center;gap:5px;background:#f97316;color:#fff;font-size:0.62rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:10px}
+.buddy-system-title{font-size:1rem;font-weight:700;margin-bottom:4px}
+.buddy-system-sub{font-size:0.82rem;color:rgba(255,255,255,0.8);line-height:1.55;margin-bottom:12px}
+.buddy-system-note{background:rgba(0,0,0,0.25);border-radius:6px;padding:10px 14px;font-size:0.78rem;color:rgba(255,255,255,0.9);line-height:1.55}
+.buddy-system-doctors{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.buddy-doctor-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:6px;padding:6px 12px;font-size:0.8rem;font-weight:600}
 /* WHO'S IN TODAY */
 .whos-in-widget{background:#fff;border:1px solid var(--grey-200);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px}
 .whos-in-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
@@ -4049,7 +4058,7 @@ function loadAnnouncements() {
 
 // WHO'S IN TODAY
 const WHOS_IN_STAFF = {
-  doctors:     ['Dr. Fran O\'Reilly','Dr. Joanne Dundon','Dr. Ciara Dunleavy','Dr. Ruth Devlin'],
+  doctors:     ['Dr. Fran O\'Reilly','Dr. Joanne Dundon','Dr. Ciara Dunleavy','Dr. Ruth Devlin','Dr. Eimear Dunne'],
   nurses:      ['Laura McGrath'],
   pm:          ['Maria Harding'],
   secretaries: ['Susan O\'Leary','Michaela Duffy-Meade','Holly McCamley','Edel Grimes','Amy Burke']
@@ -4088,7 +4097,7 @@ async function loadWhosIn() {
   // Map display names → username keys for away lookup
   const NAME_TO_USER = {
     'Dr. Fran O\'Reilly':'fran','Dr. Joanne Dundon':'joanne',
-    'Dr. Ciara Dunleavy':'ciara','Dr. Ruth Devlin':'ruth',
+    'Dr. Ciara Dunleavy':'ciara','Dr. Ruth Devlin':'ruth','Dr. Eimear Dunne':'eimear',
     'Laura McGrath':'laura','Maria Harding':'maria',
     'Susan O\'Leary':'susan','Michaela Duffy-Meade':'michaela',
     'Holly McCamley':'holly','Edel Grimes':'edel','Amy Burke':'amy'
@@ -5054,6 +5063,8 @@ async function loadBuddyAlerts() {
 }
 
 // ── AWAY NOTICES (bon voyage / welcome back cards) ─────────────
+const DOCTOR_USERNAMES = new Set(['fran','joanne','ciara','ruth','eimear']);
+
 async function loadAwayNotices() {
   const container = document.getElementById('away-notices-container');
   if (!container) return;
@@ -5062,12 +5073,43 @@ async function loadAwayNotices() {
   const currentUser = sessionStorage.getItem('kmc-user');
   const cards = [];
 
+  // ── Buddy system banner: collect doctors away for 5+ days ──
+  const buddyDoctors = [];
+  Object.entries(data).forEach(([username, s]) => {
+    if (!s || !s.returnDate || !s.departureDate) return;
+    if (!DOCTOR_USERNAMES.has(username)) return;
+    const depDay    = new Date(s.departureDate + 'T12:00:00');
+    const returnDay = new Date(s.returnDate    + 'T12:00:00');
+    if (depDay > today || returnDay < today) return; // not currently away
+    const tripDays = Math.round((returnDay - depDay) / 86400000);
+    if (tripDays >= 5) buddyDoctors.push({ username, s });
+  });
+
+  if (buddyDoctors.length > 0) {
+    const doctorChips = buddyDoctors.map(({ username, s }) => {
+      const name = STAFF_NAMES[username] || username;
+      const ret  = formatDate(s.returnDate);
+      const daysLeft = _daysFrom(s.returnDate, today);
+      const countdown = daysLeft === 0 ? 'Back today' : daysLeft === 1 ? 'Back tomorrow' : `Back in ${daysLeft} days`;
+      return `<div class="buddy-doctor-chip">🩺 ${name} <span style="opacity:.65;font-weight:400;font-size:0.72rem">· ${countdown} (${ret})</span></div>`;
+    }).join('');
+    const plural = buddyDoctors.length > 1 ? 'doctors are' : 'doctor is';
+    cards.push(`<div class="buddy-system-banner">
+      <div class="buddy-system-tag">🔔 Buddy System Active</div>
+      <div class="buddy-system-title">${buddyDoctors.length > 1 ? buddyDoctors.length + ' doctors are' : 'A doctor is'} away this week — buddy cover is in place</div>
+      <div class="buddy-system-sub">Patient lists, tasks, and urgent queries should be distributed across the doctors on duty. Check with Maria if you are unsure of cover arrangements.</div>
+      <div class="buddy-system-doctors">${doctorChips}</div>
+      <div class="buddy-system-note">📋 <strong>Reminder:</strong> Tasks, bloods, scripts and any urgent patient queries for the absent ${plural.split(' ')[0] === '2' ? 'doctors' : 'doctor'} should be redirected to the duty doctor for the day. Out-of-hours cover via D-Doc as normal.</div>
+    </div>`);
+  }
+
+  // ── Individual away cards ──
   Object.entries(data).forEach(([username, s]) => {
     if (!s || !s.returnDate) return;
     const returnDay = new Date(s.returnDate + 'T12:00:00');
     const depDay = s.departureDate ? new Date(s.departureDate + 'T12:00:00') : null;
     const name = STAFF_NAMES[username] || username;
-    const firstName = name.replace(/^Dr\s+/,'').split(' ')[0];
+    const firstName = name.replace(/^Dr\.?\s+/,'').split(' ')[0];
     const daysUntilDep = depDay ? _daysFrom(s.departureDate, today) : 99;
     const daysUntilReturn = _daysFrom(s.returnDate, today);
     const daysSinceReturn = -daysUntilReturn;
@@ -5086,7 +5128,7 @@ async function loadAwayNotices() {
         ${msgsHtml}${formHtml}
       </div>`);
     }
-    // Currently away / bon voyage (departure in the past, still away)
+    // Currently away (departure in past, still away)
     else if (depDay && depDay <= today && returnDay >= today) {
       const destTxt = s.destination ? ` in ${s.destination}` : '';
       const countdownTxt = daysUntilReturn === 0 ? 'Back today!' : daysUntilReturn === 1 ? 'Back tomorrow' : `Back in ${daysUntilReturn} days`;
@@ -5100,7 +5142,7 @@ async function loadAwayNotices() {
         ${msgsHtml}${formHtml}
       </div>`);
     }
-    // Welcome back (returned in the last 3 days, not yet cleared)
+    // Welcome back (returned in last 3 days, not yet cleared)
     else if (daysSinceReturn >= 0 && daysSinceReturn <= 3 && !s.welcomedBack) {
       const destTxt = s.destination ? ` from ${s.destination}` : '';
       const msgs = (s.messages || []);

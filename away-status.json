@@ -1,1 +1,20 @@
-{}
+{
+  "ruth": {
+    "displayName": "Dr. Ruth Devlin",
+    "role": "doctor",
+    "departureDate": "2026-06-22",
+    "returnDate": "2026-06-28",
+    "destination": "",
+    "messages": [],
+    "welcomedBack": false
+  },
+  "eimear": {
+    "displayName": "Dr. Eimear Dunne",
+    "role": "doctor",
+    "departureDate": "2026-06-22",
+    "returnDate": "2026-06-28",
+    "destination": "",
+    "messages": [],
+    "welcomedBack": false
+  }
+}
