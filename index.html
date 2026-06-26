@@ -509,6 +509,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <a href="recorder.html" class="nav-link admin-only" style="display:none"><span class="nav-icon">🎥</span> Step Recorder</a>
     <div class="nav-group-label" style="margin-top:8px">Help</div>
     <a href="onboarding.html" class="nav-link"><span class="nav-icon">🎓</span> Staff Training Guide</a>
+    <a href="#" class="nav-link" onclick="doLogout()" style="margin-top:4px;color:rgba(255,255,255,0.5)"><span class="nav-icon">🚪</span> Log Out</a>
   </nav>
   <div class="sidebar-footer">Kinsealy Group Practice © 2026</div>
 </aside>
@@ -3969,6 +3970,10 @@ function closePmLock() {
 }
 
 // MOBILE SIDEBAR
+function doLogout() {
+  sessionStorage.clear();
+  location.replace('login.html');
+}
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('overlay').classList.toggle('show');
