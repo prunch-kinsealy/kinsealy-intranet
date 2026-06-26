@@ -16,90 +16,112 @@ if(!sessionStorage.getItem('kmc-auth')){
   --navy:#1a2d4a;--navy-light:#243c61;--teal:#2a8a7e;--teal-light:#3aa897;--teal-pale:#e8f5f3;
   --gold:#c9a84c;--cream:#f8f6f1;--white:#fff;--grey-100:#f4f4f4;--grey-200:#e8e8e8;
   --grey-400:#9ca3af;--grey-700:#374151;--text:#1f2937;--radius:12px;
+  --red:#dc2626;--amber:#d97706;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text)}
 
-/* ── LAYOUT ── */
 .ob-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-
-/* ── CARD ── */
 .ob-card{background:#fff;border-radius:20px;width:100%;max-width:680px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.35)}
 
-/* ── HEADER BAR ── */
-.ob-header{background:var(--navy);padding:22px 32px;display:flex;align-items:center;gap:14px}
-.ob-logo{height:36px;filter:brightness(0) invert(1);opacity:.9}
-.ob-header-title{color:rgba(255,255,255,0.6);font-size:0.8rem;font-weight:500}
+/* ── HEADER ── */
+.ob-header{background:var(--navy);padding:18px 28px;display:flex;align-items:center;justify-content:space-between}
+.ob-header-left{display:flex;align-items:center;gap:12px}
+.ob-logo{height:32px;filter:brightness(0) invert(1);opacity:.9}
+.ob-header-title{color:rgba(255,255,255,0.55);font-size:0.75rem;font-weight:500}
+.ob-version{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:0.65rem;padding:3px 8px;border-radius:20px;font-weight:600;letter-spacing:0.05em}
+
+/* ── BETA BADGE ── */
+.beta-badge{display:inline-flex;align-items:center;gap:5px;background:#fef3c7;border:1px solid #f59e0b;color:#92400e;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.06em}
+.beta-dot{width:6px;height:6px;border-radius:50%;background:#f59e0b;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
 /* ── PROGRESS ── */
 .ob-progress-wrap{height:4px;background:var(--grey-200)}
 .ob-progress-fill{height:4px;background:var(--teal);transition:width .4s ease}
 
 /* ── BODY ── */
-.ob-body{padding:40px 40px 32px}
-@media(max-width:540px){.ob-body{padding:28px 22px 24px}}
+.ob-body{padding:36px 40px 28px}
+@media(max-width:540px){.ob-body{padding:24px 20px 20px}}
 
-/* ── STEP ICON ── */
-.ob-step-icon{font-size:3rem;margin-bottom:16px;line-height:1}
-
-/* ── TYPOGRAPHY ── */
-.ob-step-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--teal);margin-bottom:8px}
-.ob-title{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--navy);line-height:1.2;margin-bottom:14px}
-.ob-desc{font-size:0.9rem;color:var(--grey-700);line-height:1.75;margin-bottom:20px}
+.ob-step-icon{font-size:2.6rem;margin-bottom:14px;line-height:1}
+.ob-step-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--teal);margin-bottom:7px}
+.ob-title{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--navy);line-height:1.2;margin-bottom:12px}
+.ob-desc{font-size:0.88rem;color:var(--grey-700);line-height:1.75;margin-bottom:18px}
 .ob-desc strong{color:var(--navy)}
 .ob-desc ul{margin:10px 0 0 18px}
-.ob-desc ul li{margin-bottom:6px}
+.ob-desc ul li{margin-bottom:5px}
 
 /* ── ROLE GRID ── */
-.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}
+.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
 @media(max-width:480px){.role-grid{grid-template-columns:1fr 1fr}}
-.role-btn{border:2px solid var(--grey-200);border-radius:10px;padding:16px 10px;text-align:center;cursor:pointer;background:#fff;transition:all .15s;font-family:'DM Sans',sans-serif}
+.role-btn{border:2px solid var(--grey-200);border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;background:#fff;transition:all .15s;font-family:'DM Sans',sans-serif}
 .role-btn:hover{border-color:var(--teal);background:var(--teal-pale)}
 .role-btn.selected{border-color:var(--teal);background:var(--teal);color:#fff}
-.role-btn .role-icon{font-size:1.8rem;display:block;margin-bottom:6px}
-.role-btn .role-label{font-size:0.78rem;font-weight:600}
+.role-btn .role-icon{font-size:1.7rem;display:block;margin-bottom:5px}
+.role-btn .role-label{font-size:0.76rem;font-weight:600}
 
-/* ── HIGHLIGHT BOXES ── */
-.ob-highlight{display:flex;gap:14px;background:var(--teal-pale);border:1px solid var(--teal);border-radius:10px;padding:14px 16px;margin-bottom:16px;align-items:flex-start}
-.ob-highlight-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px}
-.ob-highlight-text{font-size:0.83rem;color:var(--navy);line-height:1.65}
-.ob-highlight-text strong{display:block;margin-bottom:3px;font-size:0.85rem}
+/* ── CALLOUT BOXES ── */
+.ob-highlight{display:flex;gap:12px;background:var(--teal-pale);border:1px solid var(--teal);border-radius:10px;padding:12px 14px;margin-bottom:14px;align-items:flex-start}
+.ob-highlight-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px}
+.ob-highlight-text{font-size:0.82rem;color:var(--navy);line-height:1.6}
+.ob-highlight-text strong{display:block;margin-bottom:2px;font-size:0.84rem}
 
-.ob-tip{display:flex;gap:12px;background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:0.82rem;color:#92400e;line-height:1.6;align-items:flex-start}
-.ob-tip-icon{flex-shrink:0;font-size:1.1rem}
+.ob-tip{display:flex;gap:10px;background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:11px 13px;margin-bottom:14px;font-size:0.81rem;color:#92400e;line-height:1.6;align-items:flex-start}
 
-/* ── LINK BUTTON ── */
-.ob-link-btn{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;font-size:0.82rem;font-weight:600;padding:9px 16px;border-radius:8px;text-decoration:none;margin-bottom:6px;margin-right:6px;transition:background .15s}
+/* ── FEEDBACK CALLOUT (special) ── */
+.ob-feedback-cta{background:linear-gradient(135deg,#1a2d4a,#1a3a5c);border-radius:12px;padding:20px;color:#fff;margin-bottom:14px}
+.ob-feedback-cta h4{font-family:'DM Serif Display',serif;font-size:1.15rem;margin-bottom:8px}
+.ob-feedback-cta p{font-size:0.82rem;color:rgba(255,255,255,0.75);line-height:1.65}
+.ob-feedback-cta .feedback-btn{display:inline-flex;align-items:center;gap:7px;background:var(--gold);color:var(--navy);font-size:0.8rem;font-weight:700;padding:8px 16px;border-radius:8px;margin-top:14px;text-decoration:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+/* ── LINK BUTTONS ── */
+.ob-link-btn{display:inline-flex;align-items:center;gap:7px;background:var(--navy);color:#fff;font-size:0.81rem;font-weight:600;padding:8px 15px;border-radius:8px;text-decoration:none;margin-bottom:6px;margin-right:6px;transition:background .15s}
 .ob-link-btn:hover{background:var(--teal)}
-.ob-link-btn.secondary{background:var(--grey-100);color:var(--navy)}
-.ob-link-btn.secondary:hover{background:var(--grey-200)}
 
-/* ── FOOTER / NAV ── */
-.ob-footer{padding:20px 40px 28px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--grey-200)}
-@media(max-width:540px){.ob-footer{padding:16px 22px 22px}}
-.ob-step-count{font-size:0.75rem;color:var(--grey-400)}
-.ob-nav{display:flex;gap:10px}
-.ob-btn{padding:10px 22px;border-radius:8px;font-size:0.88rem;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s}
+/* ── FOOTER ── */
+.ob-footer{padding:18px 40px 24px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--grey-200)}
+@media(max-width:540px){.ob-footer{padding:14px 20px 20px}}
+.ob-step-count{font-size:0.73rem;color:var(--grey-400)}
+.ob-nav{display:flex;gap:8px}
+.ob-btn{padding:10px 22px;border-radius:8px;font-size:0.86rem;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s}
 .ob-btn-ghost{background:var(--grey-100);color:var(--grey-700)}
 .ob-btn-ghost:hover{background:var(--grey-200)}
 .ob-btn-primary{background:var(--teal);color:#fff}
 .ob-btn-primary:hover{background:var(--teal-light)}
 .ob-btn-primary:disabled{opacity:.4;cursor:not-allowed}
 .ob-btn-finish{background:var(--gold);color:var(--navy)}
-.ob-btn-finish:hover{background:#d4a84c}
+.ob-btn-finish:hover{filter:brightness(1.05)}
 
-/* ── WELCOME / FINISH SCREENS ── */
-.ob-welcome-hero{background:linear-gradient(135deg,var(--navy),#1a3a5c);border-radius:16px;padding:32px;text-align:center;margin-bottom:24px;color:#fff}
-.ob-welcome-hero h1{font-family:'DM Serif Display',serif;font-size:2rem;margin-bottom:8px}
-.ob-welcome-hero p{color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.6}
-.ob-welcome-name{color:var(--gold);font-family:'DM Serif Display',serif}
+/* ── WELCOME HERO ── */
+.ob-welcome-hero{background:linear-gradient(135deg,var(--navy),#1a3a5c);border-radius:14px;padding:28px;text-align:center;margin-bottom:20px;color:#fff}
+.ob-welcome-hero h1{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:6px}
+.ob-welcome-hero p{color:rgba(255,255,255,0.7);font-size:0.87rem;line-height:1.6;margin-top:8px}
+.ob-welcome-name{color:var(--gold)}
 
-.ob-finish-icon{font-size:4rem;text-align:center;margin-bottom:16px}
-.ob-finish-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+/* ── LEGAL SCREEN ── */
+.ob-legal-box{background:var(--grey-100);border:1px solid var(--grey-200);border-radius:10px;padding:18px 20px;max-height:240px;overflow-y:auto;margin-bottom:16px;font-size:0.8rem;color:var(--grey-700);line-height:1.75}
+.ob-legal-box h4{font-size:0.85rem;font-weight:700;color:var(--navy);margin-bottom:10px}
+.ob-legal-box ol{margin-left:18px}
+.ob-legal-box ol li{margin-bottom:7px}
+.ob-legal-accept{display:flex;gap:12px;align-items:flex-start;background:#fff;border:2px solid var(--grey-200);border-radius:10px;padding:14px;margin-bottom:16px;cursor:pointer;transition:border-color .15s}
+.ob-legal-accept:hover{border-color:var(--teal)}
+.ob-legal-accept.checked{border-color:var(--teal);background:var(--teal-pale)}
+.ob-legal-accept input[type=checkbox]{width:18px;height:18px;flex-shrink:0;margin-top:1px;accent-color:var(--teal);cursor:pointer}
+.ob-legal-accept label{font-size:0.83rem;color:var(--grey-700);cursor:pointer;line-height:1.55}
+.ob-legal-accept label strong{color:var(--navy)}
+.ob-sig-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+@media(max-width:480px){.ob-sig-row{grid-template-columns:1fr}}
+.ob-sig-field label{display:block;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--grey-400);margin-bottom:4px}
+.ob-sig-field input{width:100%;border:1px solid var(--grey-200);border-radius:8px;padding:9px 11px;font-size:0.84rem;font-family:'DM Sans',sans-serif;color:var(--navy);background:#f9f9f9}
+.ob-sig-field input[readonly]{color:var(--grey-400)}
+
+/* ── FINISH SCREEN ── */
+.ob-finish-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
 @media(max-width:480px){.ob-finish-grid{grid-template-columns:1fr}}
-.ob-finish-link{display:flex;align-items:center;gap:10px;background:var(--grey-100);border:1px solid var(--grey-200);border-radius:10px;padding:12px 14px;text-decoration:none;color:var(--navy);font-size:0.82rem;font-weight:600;transition:border-color .15s}
+.ob-finish-link{display:flex;align-items:center;gap:10px;background:var(--grey-100);border:1px solid var(--grey-200);border-radius:10px;padding:11px 13px;text-decoration:none;color:var(--navy);font-size:0.81rem;font-weight:600;transition:border-color .15s}
 .ob-finish-link:hover{border-color:var(--teal);background:var(--teal-pale)}
-.ob-finish-link-icon{font-size:1.4rem;flex-shrink:0}
+.ob-finish-link-icon{font-size:1.3rem;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -107,14 +129,15 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--navy);co
 <div class="ob-wrap">
   <div class="ob-card">
     <div class="ob-header">
-      <img src="images/logo.png" alt="Kinsealy Medical Centre" class="ob-logo">
-      <span class="ob-header-title">Staff Hub — Getting Started</span>
+      <div class="ob-header-left">
+        <img src="images/logo.png" alt="Kinsealy Medical Centre" class="ob-logo">
+        <span class="ob-header-title">Staff Hub — Getting Started</span>
+      </div>
+      <span class="ob-version">v1.0 · June 2026</span>
     </div>
     <div class="ob-progress-wrap"><div class="ob-progress-fill" id="ob-progress" style="width:0%"></div></div>
 
-    <div id="ob-screens">
-      <!-- Injected by JS -->
-    </div>
+    <div id="ob-screens"></div>
 
     <div class="ob-footer" id="ob-footer">
       <span class="ob-step-count" id="ob-step-count"></span>
@@ -125,57 +148,52 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--navy);co
     </div>
   </div>
 
-  <p style="color:rgba(255,255,255,0.3);font-size:0.72rem;margin-top:16px;text-align:center">
-    You can revisit this tour anytime from the Staff Hub sidebar.
+  <p style="color:rgba(255,255,255,0.3);font-size:0.7rem;margin-top:14px;text-align:center">
+    This tour is available anytime via <strong style="color:rgba(255,255,255,0.45)">Staff Training Guide</strong> in the sidebar.
   </p>
 </div>
 
 <script>
-const display  = sessionStorage.getItem('kmc-display') || 'there';
+const display  = sessionStorage.getItem('kmc-display') || '';
 const username = sessionStorage.getItem('kmc-user') || '';
-const role     = sessionStorage.getItem('kmc-role') || '';
-const firstName = display.replace(/^Dr\.?\s+/,'').split(' ')[0];
+
+// First-name lookup — display names are "Dr O'Reilly" format (surname only)
+const FIRST_NAMES = {
+  fran:'Fran', joanne:'Joanne', ciara:'Ciara', ruth:'Ruth', eimear:'Eimear',
+  laura:'Laura', maria:'Maria', susan:'Susan', michaela:'Michaela',
+  holly:'Holly', edel:'Edel', amy:'Amy'
+};
+const firstName = FIRST_NAMES[username] || display.split(' ').slice(-1)[0] || 'there';
+const fullName  = display || firstName;
+
+const TODAY = new Date().toLocaleDateString('en-IE',{day:'numeric',month:'long',year:'numeric'});
 
 // ── ROLE DEFINITIONS ──────────────────────────────────────────
 const ROLES = {
-  doctor: {
-    label: 'Doctor',
-    icon: '🩺',
-    color: '#b91c1c',
-  },
-  nurse: {
-    label: 'Nurse',
-    icon: '💉',
-    color: '#0f766e',
-  },
-  phlebotomist: {
-    label: 'Phlebotomist',
-    icon: '🩸',
-    color: '#b45309',
-  },
-  secretary: {
-    label: 'Secretary',
-    icon: '📋',
-    color: '#0369a1',
-  },
-  pm: {
-    label: 'Practice Manager',
-    icon: '⚙️',
-    color: '#7c3aed',
-  }
+  doctor:       { label:'Doctor',           icon:'🩺' },
+  nurse:        { label:'Nurse',            icon:'💉' },
+  phlebotomist: { label:'Phlebotomist',     icon:'🩸' },
+  secretary:    { label:'Secretary',        icon:'📋' },
+  pm:           { label:'Practice Manager', icon:'⚙️' }
 };
 
-// ── STEPS PER ROLE ────────────────────────────────────────────
+// ── STEP BUILDER ──────────────────────────────────────────────
 function getSteps(roleKey) {
   const hub = 'index.html';
+
+  const betaBanner = `<div style="margin-bottom:16px">
+    <span class="beta-badge"><span class="beta-dot"></span> BETA</span>
+    <span style="font-size:0.78rem;color:var(--grey-400);margin-left:8px">This hub is not final — it's actively being built.</span>
+  </div>`;
+
   const common_feedback = {
     icon: '💬',
-    label: 'Giving Feedback',
-    title: 'Your feedback shapes this hub',
-    desc: `<p>The hub is in beta — meaning it's a work in progress. You'll notice a <strong>💬 Beta Feedback</strong> button at the bottom-right of every page.</p>
-           <p style="margin-top:10px">If something is unclear, missing, or could work better — click it and tell us. You can flag a specific SOP, a section, or just leave a general note. It goes straight to Fran and Maria.</p>
-           <p style="margin-top:10px">You can be anonymous or add your name. Nothing is too small.</p>`,
-    highlight: { icon: '💬', title: 'Where to find it', text: 'The feedback button floats at the bottom-right corner of every page. Click it anytime — it takes 30 seconds.' },
+    label: 'Your Feedback Matters',
+    title: 'Help us build this — seriously.',
+    desc: `<p>The hub is a <strong>living document</strong>. We plan to update it constantly — adding new SOPs, refining existing ones, adding video walkthroughs, and improving layouts based on how you actually use it.</p>
+           <p style="margin-top:10px">Nothing in here is set in stone. If a step is wrong, a protocol is missing, or something is unclear — we need to know. Every piece of feedback goes directly to Fran and Maria and will be acted on.</p>
+           <p style="margin-top:10px">This is your hub. The more you put into it, the more useful it becomes for everyone.</p>`,
+    feedbackCta: true,
     link: null
   };
 
@@ -184,9 +202,9 @@ function getSteps(roleKey) {
       icon: '👋',
       label: 'Welcome',
       title: `Welcome to the hub, ${firstName}.`,
-      desc: `<p>This is the <strong>Kinsealy Staff Hub</strong> — your living reference throughout the working day. It replaces the old Google Docs folder.</p>
-             <p style="margin-top:10px">Everything you need is here: patient communication templates, clinical pathways, CDM workflows, and device guides. The idea is simple — <strong>keep it open on your screen</strong> while you work. You don't need to memorise it.</p>
-             <p style="margin-top:10px">This tour will walk you through the parts most relevant to you as a doctor. It takes about 3 minutes.</p>`,
+      desc: `${betaBanner}<p>This is the <strong>Kinsealy Staff Hub</strong> — your living reference throughout the working day. It replaces the old Google Docs folder and brings everything into one place.</p>
+             <p style="margin-top:10px">Patient communication templates, clinical pathways, CDM workflows, and device guides are all here. The idea is simple: <strong>keep it open on your screen</strong> while you work. You don't need to memorise it.</p>
+             <p style="margin-top:10px">This is a first look — the hub will grow and improve based on your feedback. This tour takes about 3 minutes.</p>`,
       link: null
     },
     {
@@ -201,24 +219,24 @@ function getSteps(roleKey) {
                <li><strong>Announcements</strong> — pinned notices from management</li>
              </ul>`,
       highlight: { icon: '🔔', title: 'Buddy System', text: 'When a doctor is away for a full week, a prominent alert appears reminding staff to redirect that doctor\'s tasks and queries to the duty doctor.' },
-      link: { label: '🏠 Open Noticeboard', href: hub + '#home' }
+      link: { label: '🏠 Open Noticeboard', href: hub }
     },
     {
       icon: '💬',
       label: 'Text Templates',
       title: 'Patient texts — ready to copy',
       desc: `<p>The <strong>Text Templates</strong> section has pre-written patient messages for the most common results — bloods, BP, cholesterol, diabetes, scans and more.</p>
-             <p style="margin-top:10px">Each template is already signed with <strong>your name</strong>. Just click <strong>Copy</strong>, paste into Socrates, and adjust the bracketed values like <code>[patient name]</code> or <code>[medication]</code>.</p>
+             <p style="margin-top:10px">Each template is already signed with <strong>your name</strong>. Click <strong>Copy</strong>, paste into Socrates, and adjust the bracketed values like <code>[patient name]</code> or <code>[medication]</code>.</p>
              <p style="margin-top:10px">No more typing the same message from scratch.</p>`,
-      highlight: { icon: '✍️', title: 'Personalised to you', text: 'The sign-off reads "Dr O\'Reilly" (or your own surname) automatically — whoever is logged in, the template adjusts.' },
+      highlight: { icon: '✍️', title: 'Personalised to you', text: 'The sign-off updates automatically — whoever is logged in, the template shows their name.' },
       link: { label: '💬 Open Text Templates', href: hub + '#text-templates', section: 'text-templates' }
     },
     {
       icon: '🔁',
       label: 'CDM',
       title: 'The CDM & PP workflow',
-      desc: `<p>The <strong>CDM section</strong> walks through the full chronic disease management cycle, step by step.</p>
-             <p style="margin-top:10px">As the doctor, your step is <strong>Step 6 — Remote Consultation & Script</strong>. You'll be tasked in Socrates (orange task) once bloods, ABPM, and AliveCor are ready.</p>
+      desc: `<p>The <strong>CDM section</strong> walks through the full chronic disease management cycle step by step. As the doctor, your step is <strong>Step 6 — Remote Consultation & Script</strong>.</p>
+             <p style="margin-top:10px">You'll be tasked in Socrates (orange task) once bloods, ABPM, and AliveCor are ready:</p>
              <ul style="margin-top:10px">
                <li>Review remotely — bloods, ABPM, AliveCor/ECG, chart notes</li>
                <li>Issue 6/12 (CDM) or 12/12 (PP) script</li>
@@ -230,12 +248,12 @@ function getSteps(roleKey) {
       icon: '🏥',
       label: 'Patient Journeys',
       title: 'Device guides and clinical pathways',
-      desc: `<p>The <strong>Patient Journeys</strong> section covers clinical device workflows and care pathways. Relevant to you:</p>
+      desc: `<p>The <strong>Patient Journeys</strong> section covers device workflows and care pathways. Relevant to you:</p>
              <ul>
                <li><strong>ABPM</strong> — 24hr BP monitor: interpretation targets, non-dipping, white coat vs masked hypertension</li>
                <li><strong>AliveCor / KardiaMobile</strong> — rhythm screening workflow</li>
                <li><strong>ECG (ProMed)</strong> — 12-lead reporting</li>
-               <li><strong>Roaccutane</strong> — consent, double appt, monitoring</li>
+               <li><strong>Roaccutane</strong> — consent, double appointment, monitoring</li>
                <li><strong>Clinical Pathways</strong> — HTN, T2DM, and more</li>
              </ul>`,
       link: { label: '🏥 Open Patient Journeys', href: hub + '#care-pathways', section: 'care-pathways' }
@@ -257,9 +275,9 @@ function getSteps(roleKey) {
       icon: '👋',
       label: 'Welcome',
       title: `Welcome to the hub, ${firstName}.`,
-      desc: `<p>This is the <strong>Kinsealy Staff Hub</strong> — your living reference throughout the day. It replaces the old Google Docs protocols folder.</p>
-             <p style="margin-top:10px">As a nurse, your key sections are <strong>Patient Journeys</strong> (device workflows), <strong>CDM</strong> (your nursing pathway), and <strong>Useful Forms</strong> (consent forms and pre-appointment forms).</p>
-             <p style="margin-top:10px">Keep it open on your screen. You don't need to memorise it — that's the point.</p>`,
+      desc: `${betaBanner}<p>This is the <strong>Kinsealy Staff Hub</strong> — your living reference throughout the day. It replaces the old Google Docs protocols folder and brings everything into one place.</p>
+             <p style="margin-top:10px">Your key sections are <strong>Patient Journeys</strong> (device workflows), <strong>CDM</strong> (your nursing pathway), and <strong>Useful Forms</strong>. Keep it open on your screen — you don't need to memorise it.</p>
+             <p style="margin-top:10px">This is a first look. The hub will grow constantly based on your feedback. This tour takes about 3 minutes.</p>`,
       link: null
     },
     {
@@ -272,7 +290,7 @@ function getSteps(roleKey) {
                <li><strong>Away notices</strong> — bon voyage and welcome-back cards for colleagues</li>
                <li><strong>Announcements</strong> — pinned updates from management</li>
              </ul>`,
-      link: { label: '🏠 Open Noticeboard', href: hub + '#home' }
+      link: { label: '🏠 Open Noticeboard', href: hub }
     },
     {
       icon: '🏥',
@@ -328,16 +346,16 @@ function getSteps(roleKey) {
       icon: '👋',
       label: 'Welcome',
       title: `Welcome to the hub, ${firstName}.`,
-      desc: `<p>This is the <strong>Kinsealy Staff Hub</strong> — your quick reference for procedures and protocols. As a phlebotomist, your key areas are blood test SOPs, results handling, and knowing when to escalate.</p>
-             <p style="margin-top:10px">Keep it open on your screen throughout the day.</p>`,
+      desc: `${betaBanner}<p>This is the <strong>Kinsealy Staff Hub</strong> — your quick reference for procedures and protocols. As a phlebotomist, your key areas are blood test SOPs, results handling, and knowing when to escalate.</p>
+             <p style="margin-top:10px">Keep it open on your screen throughout the day. This is a first look — it will grow based on your feedback. This tour takes about 2 minutes.</p>`,
       link: null
     },
     {
       icon: '🏠',
       label: 'The Noticeboard',
       title: 'Start here each morning',
-      desc: `<p>The <strong>Home & Noticeboard</strong> gives you a daily snapshot — who's in, any announcements, and team updates. Check it when you arrive.</p>`,
-      link: { label: '🏠 Open Noticeboard', href: hub + '#home' }
+      desc: `<p>The <strong>Home & Noticeboard</strong> gives you a daily snapshot — who's in, any announcements, and team updates. Check it when you arrive each morning.</p>`,
+      link: { label: '🏠 Open Noticeboard', href: hub }
     },
     {
       icon: '🩸',
@@ -363,8 +381,8 @@ function getSteps(roleKey) {
       icon: '👋',
       label: 'Welcome',
       title: `Welcome to the hub, ${firstName}.`,
-      desc: `<p>This is the <strong>Kinsealy Staff Hub</strong> — your daily reference. As a secretary, you'll use it for CDM booking protocols, patient communication templates, new patient workflows, and front-of-house procedures.</p>
-             <p style="margin-top:10px">Keep it open on your screen throughout the day. You don't need to memorise it.</p>`,
+      desc: `${betaBanner}<p>This is the <strong>Kinsealy Staff Hub</strong> — your daily reference. As a secretary, you'll use it for CDM booking protocols, patient communication templates, new patient workflows, and front-of-house procedures.</p>
+             <p style="margin-top:10px">Keep it open on your screen. This is a first look — the hub will grow based on your feedback. This tour takes about 3 minutes.</p>`,
       link: null
     },
     {
@@ -379,7 +397,7 @@ function getSteps(roleKey) {
                <li><strong>Pinned announcements</strong> — from Maria or Fran</li>
              </ul>`,
       highlight: { icon: '🔔', title: 'Buddy System', text: 'When a doctor is away for a full week, tasks and urgent queries for that doctor should be redirected to the duty doctor for the day.' },
-      link: { label: '🏠 Open Noticeboard', href: hub + '#home' }
+      link: { label: '🏠 Open Noticeboard', href: hub }
     },
     {
       icon: '🔁',
@@ -411,7 +429,7 @@ function getSteps(roleKey) {
       label: 'Text Templates',
       title: 'Patient texts — ready to copy',
       desc: `<p>The <strong>Text Templates</strong> section has pre-written patient messages for results, referrals, appointments, and more. Just click <strong>Copy</strong> and paste into Socrates.</p>
-             <p style="margin-top:10px">Templates signed by a specific doctor will automatically show that doctor's name if they're logged in. If you're sending on a doctor's behalf, replace <code>Dr [Name]</code> with the correct name.</p>`,
+             <p style="margin-top:10px">Templates signed by a specific doctor will automatically show that doctor's name when they're logged in.</p>`,
       link: { label: '💬 Open Text Templates', href: hub + '#text-templates', section: 'text-templates' }
     },
     {
@@ -435,22 +453,22 @@ function getSteps(roleKey) {
       icon: '👋',
       label: 'Welcome',
       title: `Welcome to the hub, ${firstName}.`,
-      desc: `<p>This is the <strong>Kinsealy Staff Hub</strong>. As Practice Manager you have access to <strong>all sections</strong>, including admin-only tools — Staff Logins, Staff Feedback, and the Practice Management section.</p>
-             <p style="margin-top:10px">This tour gives you an overview of the full system and your specific admin capabilities.</p>`,
+      desc: `${betaBanner}<p>This is the <strong>Kinsealy Staff Hub</strong>. As Practice Manager you have access to <strong>all sections</strong>, including admin-only tools — Staff Logins, Staff Feedback, and the Practice Management section.</p>
+             <p style="margin-top:10px">This is a first look — the hub will grow and improve constantly. This tour gives you a full overview of the system and your admin capabilities.</p>`,
       link: null
     },
     {
       icon: '🏠',
       label: 'The Noticeboard',
       title: 'Daily dashboard for the whole team',
-      desc: `<p>The <strong>Home & Noticeboard</strong> is what your team sees every morning. You can manage it from here:</p>
+      desc: `<p>The <strong>Home & Noticeboard</strong> is what your team sees every morning. You manage it from here:</p>
              <ul>
                <li><strong>Who's In Today</strong> — auto-generated from staff list and away status</li>
                <li><strong>Buddy System</strong> — fires automatically when a doctor is away for a full week</li>
-               <li><strong>Announcements</strong> — add pinned notices for the whole team (use the notice editor)</li>
-               <li><strong>Away status</strong> — you can mark any staff member as away via the Away Status section</li>
+               <li><strong>Announcements</strong> — add pinned notices for the whole team</li>
+               <li><strong>Away status</strong> — mark any staff member as away from the Away Status section</li>
              </ul>`,
-      link: { label: '🏠 Open Noticeboard', href: hub + '#home' }
+      link: { label: '🏠 Open Noticeboard', href: hub }
     },
     {
       icon: '📋',
@@ -481,9 +499,9 @@ function getSteps(roleKey) {
       desc: `<p>In the sidebar under <strong>Admin</strong>, you have two tools only you and Fran can see:</p>
              <ul>
                <li><strong>🔑 Staff Logins</strong> — view and reset staff passwords. All staff start with <code>Kinsealy1!</code></li>
-               <li><strong>💬 Staff Feedback</strong> — review all feedback submitted via the Beta Feedback button. Each item links directly to the relevant SOP so you can review and update it. Mark items resolved or delete them.</li>
+               <li><strong>💬 Staff Feedback</strong> — review all feedback submitted by staff. Each item links directly to the relevant SOP. Mark items resolved to keep the list clean.</li>
              </ul>`,
-      highlight: { icon: '💬', title: 'Feedback admin', text: 'Click any feedback item to go directly to the relevant SOP. Use the "Resolve" button to mark it done, keeping the list clean.' },
+      highlight: { icon: '💬', title: 'Reviewing feedback', text: 'Click any feedback item to go directly to the relevant SOP. Staff feedback is your primary signal for what to update — aim to action it within a week.' },
       link: { label: '💬 Open Staff Feedback', href: 'feedback.html' }
     },
     {
@@ -491,7 +509,7 @@ function getSteps(roleKey) {
       label: 'Step Recorder',
       title: 'Record procedure walkthroughs',
       desc: `<p>The <strong>Step Recorder</strong> lets you record your screen and voice to create video guides for SOPs — like a Loom recording, built into the hub.</p>
-             <p style="margin-top:10px">Use it to record walkthroughs of ProMed software, Socrates workflows, or any procedure your team needs to see rather than read. Videos are saved automatically and can be linked directly into the relevant SOP.</p>`,
+             <p style="margin-top:10px">Use it to record walkthroughs of ProMed, Socrates workflows, or any procedure your team needs to see rather than read. Videos are saved automatically and can be linked into the relevant SOP.</p>`,
       link: { label: '🎥 Open Step Recorder', href: 'recorder.html' }
     },
     common_feedback
@@ -505,28 +523,99 @@ function getSteps(roleKey) {
 let currentRole = null;
 let steps = [];
 let stepIndex = 0;
+let phase = 'legal'; // legal → role → steps
 
-// ── SCREENS ──────────────────────────────────────────────────
-function renderRolePicker() {
+// ── LEGAL SCREEN ─────────────────────────────────────────────
+function renderLegal() {
+  phase = 'legal';
   document.getElementById('ob-progress').style.width = '0%';
-  document.getElementById('ob-step-count').textContent = '';
+  document.getElementById('ob-step-count').textContent = 'Step 1 of 3 — Confidentiality Agreement';
   document.getElementById('ob-back').style.display = 'none';
-  document.getElementById('ob-next').textContent = 'Next →';
-  document.getElementById('ob-next').className = 'ob-btn ob-btn-primary';
-  document.getElementById('ob-next').onclick = () => {
+  const nextBtn = document.getElementById('ob-next');
+  nextBtn.textContent = 'I agree — continue →';
+  nextBtn.className = 'ob-btn ob-btn-primary';
+  nextBtn.disabled = true;
+  nextBtn.onclick = () => { renderRolePicker(); };
+
+  document.getElementById('ob-screens').innerHTML = `
+    <div class="ob-body">
+      <div class="ob-step-icon">📜</div>
+      <div class="ob-step-label">Before you begin</div>
+      <h2 class="ob-title">Confidentiality & Acceptable Use</h2>
+
+      <div class="ob-legal-box">
+        <h4>Kinsealy Medical Centre — Staff Hub Confidentiality Agreement</h4>
+        <p style="margin-bottom:12px">The Kinsealy Staff Hub (the "Hub") is the <strong>exclusive commercial and intellectual property of Kinsealy Medical Centre</strong>. It contains proprietary clinical workflows, standard operating procedures, internal protocols, and administrative systems developed by the practice. A significant investment of time and resources has gone into its creation.</p>
+        <p style="margin-bottom:10px">By proceeding, you agree to the following terms:</p>
+        <ol>
+          <li><strong>Authorised use only.</strong> The Hub is to be accessed and used solely by authorised Kinsealy Medical Centre staff, for legitimate practice-related work during the course of your employment.</li>
+          <li><strong>No sharing or distribution.</strong> You must not share, copy, reproduce, distribute, screenshot, or transmit any content from the Hub — in whole or in part — to any person, organisation, or platform outside the practice, in any format whatsoever.</li>
+          <li><strong>No use in other employment.</strong> You must not use the Hub's content, workflows, or templates in any other employment, business, or personal capacity.</li>
+          <li><strong>Confidentiality on departure.</strong> Your access ceases immediately upon leaving the employment of Kinsealy Medical Centre. The obligation to keep Hub content confidential continues indefinitely after your employment ends.</li>
+          <li><strong>No unauthorised modification.</strong> You must not alter, delete, or damage any Hub content unless expressly authorised to do so by the Practice Manager or Principal GP.</li>
+          <li><strong>Breach of these terms</strong> may result in disciplinary action up to and including dismissal, and may expose you to legal liability for misappropriation of confidential commercial information.</li>
+        </ol>
+        <p style="margin-top:12px;font-size:0.76rem;color:var(--grey-400)">If you have any questions about these terms, speak to Maria Harding (Practice Manager) before proceeding.</p>
+      </div>
+
+      <div class="ob-legal-accept" id="legal-accept-box" onclick="toggleAccept()">
+        <input type="checkbox" id="legal-checkbox" onclick="event.stopPropagation();toggleAccept()">
+        <label for="legal-checkbox"><strong>I have read and understood the above.</strong> I agree to use the Kinsealy Staff Hub responsibly, solely for practice-related work, and in accordance with these confidentiality terms.</label>
+      </div>
+
+      <div class="ob-sig-row">
+        <div class="ob-sig-field">
+          <label>Name</label>
+          <input type="text" id="sig-name" value="${fullName}" readonly>
+        </div>
+        <div class="ob-sig-field">
+          <label>Date</label>
+          <input type="text" id="sig-date" value="${TODAY}" readonly>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function toggleAccept() {
+  const cb = document.getElementById('legal-checkbox');
+  const box = document.getElementById('legal-accept-box');
+  cb.checked = !cb.checked;
+  box.classList.toggle('checked', cb.checked);
+  document.getElementById('ob-next').disabled = !cb.checked;
+}
+
+// ── ROLE PICKER ───────────────────────────────────────────────
+function renderRolePicker() {
+  phase = 'role';
+  document.getElementById('ob-progress').style.width = '33%';
+  document.getElementById('ob-step-count').textContent = 'Step 2 of 3 — Your Role';
+  document.getElementById('ob-back').style.display = 'inline-flex';
+  document.getElementById('ob-back').onclick = renderLegal;
+  const nextBtn = document.getElementById('ob-next');
+  nextBtn.textContent = 'Start tour →';
+  nextBtn.className = 'ob-btn ob-btn-primary';
+  nextBtn.disabled = false;
+  nextBtn.onclick = () => {
     if (!currentRole) { alert('Please select your role to continue.'); return; }
     steps = getSteps(currentRole);
     stepIndex = 0;
+    phase = 'steps';
     renderStep();
   };
 
   document.getElementById('ob-screens').innerHTML = `
     <div class="ob-body">
       <div class="ob-welcome-hero">
-        <div style="font-size:2.5rem;margin-bottom:12px">👋</div>
+        <div style="font-size:2.2rem;margin-bottom:10px">👋</div>
         <h1>Welcome, <span class="ob-welcome-name">${firstName}.</span></h1>
-        <p>Let's get you up to speed with the Kinsealy Staff Hub.<br>First — what's your role?</p>
+        <p>Let's get you up to speed with the Kinsealy Staff Hub.</p>
+        <p style="margin-top:8px;font-size:0.78rem;background:rgba(255,255,255,0.08);border-radius:8px;padding:8px 12px;display:inline-block">
+          <span class="beta-badge"><span class="beta-dot"></span> BETA</span>
+          <span style="margin-left:8px;color:rgba(255,255,255,0.6)">This is a first look — not the final product. We wanted to give you a flavour of where we're headed.</span>
+        </p>
       </div>
+      <p style="font-size:0.85rem;color:var(--grey-700);margin-bottom:14px;font-weight:500">Select your role to get a personalised tour:</p>
       <div class="role-grid">
         ${Object.entries(ROLES).map(([key, r]) => `
           <button class="role-btn" id="role-${key}" onclick="selectRole('${key}')">
@@ -537,6 +626,9 @@ function renderRolePicker() {
       </div>
     </div>
   `;
+  if (currentRole) {
+    setTimeout(() => document.getElementById('role-' + currentRole)?.classList.add('selected'), 10);
+  }
 }
 
 function selectRole(key) {
@@ -545,19 +637,26 @@ function selectRole(key) {
   document.getElementById('role-' + key).classList.add('selected');
 }
 
+// ── STEP RENDERER ─────────────────────────────────────────────
 function renderStep() {
   const step = steps[stepIndex];
   const total = steps.length;
-  const pct = Math.round((stepIndex + 1) / total * 100);
+  const pct = 66 + Math.round((stepIndex + 1) / total * 34);
 
   document.getElementById('ob-progress').style.width = pct + '%';
   document.getElementById('ob-step-count').textContent = `Step ${stepIndex + 1} of ${total}`;
-  document.getElementById('ob-back').style.display = stepIndex > 0 ? 'inline-flex' : 'none';
+
+  const backBtn = document.getElementById('ob-back');
+  backBtn.style.display = 'inline-flex';
+  backBtn.onclick = () => {
+    if (stepIndex === 0) { renderRolePicker(); } else { obNav(-1); }
+  };
 
   const isLast = stepIndex === total - 1;
   const nextBtn = document.getElementById('ob-next');
-  nextBtn.textContent = isLast ? 'Finish tour ✓' : 'Next →';
+  nextBtn.textContent = isLast ? 'Finish ✓' : 'Next →';
   nextBtn.className = isLast ? 'ob-btn ob-btn-finish' : 'ob-btn ob-btn-primary';
+  nextBtn.disabled = false;
   nextBtn.onclick = isLast ? finishTour : () => obNav(1);
 
   const highlightHtml = step.highlight ? `
@@ -567,10 +666,17 @@ function renderStep() {
     </div>` : '';
 
   const tipHtml = step.tip ? `
-    <div class="ob-tip"><span class="ob-tip-icon">💡</span><span>${step.tip.text}</span></div>` : '';
+    <div class="ob-tip"><span style="flex-shrink:0;font-size:1.1rem">💡</span><span>${step.tip.text}</span></div>` : '';
+
+  const feedbackCtaHtml = step.feedbackCta ? `
+    <div class="ob-feedback-cta">
+      <h4>💬 The Beta Feedback button</h4>
+      <p>It's in the <strong>bottom-right corner of every page</strong>. Click it anytime something is wrong, missing, or could be better. It takes 30 seconds. You can be anonymous.</p>
+      <p style="margin-top:8px">This is a <strong>living document</strong> — we're committed to updating it constantly. Your feedback is the engine that makes that happen. Nothing is too small to flag.</p>
+    </div>` : '';
 
   const linkHtml = step.link ? `
-    <a class="ob-link-btn" href="${step.link.href}"${step.link.section ? ` onclick="sessionStorage.setItem('kmc-pending-section','${step.link.section}')"` : ''} target="${step.link.href.startsWith('index') ? '_blank' : '_blank'}">
+    <a class="ob-link-btn" href="${step.link.href}"${step.link.section ? ` onclick="sessionStorage.setItem('kmc-pending-section','${step.link.section}')"` : ''} target="_blank">
       ${step.link.label} ↗
     </a>` : '';
 
@@ -582,11 +688,13 @@ function renderStep() {
       <div class="ob-desc">${step.desc}</div>
       ${highlightHtml}
       ${tipHtml}
+      ${feedbackCtaHtml}
       ${linkHtml}
     </div>
   `;
 }
 
+// ── FINISH SCREEN ─────────────────────────────────────────────
 function finishTour() {
   localStorage.setItem('kmc-onboarded-' + username, '1');
   document.getElementById('ob-progress').style.width = '100%';
@@ -594,22 +702,35 @@ function finishTour() {
   document.getElementById('ob-back').style.display = 'none';
   document.getElementById('ob-next').style.display = 'none';
 
-  const roleInfo = ROLES[currentRole] || { icon: '👋', label: 'Staff' };
-
   document.getElementById('ob-screens').innerHTML = `
     <div class="ob-body">
-      <div class="ob-finish-icon">🎉</div>
-      <h2 class="ob-title" style="text-align:center;margin-bottom:8px">You're all set!</h2>
-      <p class="ob-desc" style="text-align:center;margin-bottom:24px">The hub is yours. Dive in whenever you're ready — here are the sections most relevant to you.</p>
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:3.5rem;margin-bottom:12px">🎉</div>
+        <h2 class="ob-title" style="text-align:center;margin-bottom:6px">You're all set, ${firstName}!</h2>
+        <p class="ob-desc" style="text-align:center;margin-bottom:0">The hub is yours. Jump in whenever you're ready.</p>
+      </div>
+
+      <div class="ob-feedback-cta" style="margin-bottom:18px">
+        <h4>💬 One last thing — your feedback is essential.</h4>
+        <p>The hub you just saw is a <strong>first draft</strong>. We're committed to making it better, constantly. The only way that happens is if you tell us what's wrong, what's missing, and what's working.</p>
+        <p style="margin-top:8px">The <strong>💬 Beta Feedback</strong> button is in the bottom-right corner of every page. It takes 30 seconds. Nothing is too small. Please use it.</p>
+      </div>
+
       <div class="ob-finish-grid">
         <a class="ob-finish-link" href="index.html"><span class="ob-finish-link-icon">🏠</span><span>Home & Noticeboard</span></a>
-        <a class="ob-finish-link" href="index.html#text-templates" onclick="sessionStorage.setItem('kmc-pending-section','text-templates')"><span class="ob-finish-link-icon">💬</span><span>Text Templates</span></a>
-        <a class="ob-finish-link" href="index.html#care-pathways" onclick="sessionStorage.setItem('kmc-pending-section','care-pathways')"><span class="ob-finish-link-icon">🏥</span><span>Patient Journeys</span></a>
-        <a class="ob-finish-link" href="index.html#cdm" onclick="sessionStorage.setItem('kmc-pending-section','cdm')"><span class="ob-finish-link-icon">🔁</span><span>CDM</span></a>
+        <a class="ob-finish-link" href="index.html" onclick="sessionStorage.setItem('kmc-pending-section','text-templates')"><span class="ob-finish-link-icon">💬</span><span>Text Templates</span></a>
+        <a class="ob-finish-link" href="index.html" onclick="sessionStorage.setItem('kmc-pending-section','care-pathways')"><span class="ob-finish-link-icon">🏥</span><span>Patient Journeys</span></a>
+        <a class="ob-finish-link" href="index.html" onclick="sessionStorage.setItem('kmc-pending-section','cdm')"><span class="ob-finish-link-icon">🔁</span><span>CDM</span></a>
       </div>
-      <div style="text-align:center;margin-top:8px">
-        <a href="index.html" class="ob-btn ob-btn-primary" style="display:inline-block;text-decoration:none;padding:12px 32px;border-radius:8px;font-size:0.95rem">Go to the Staff Hub →</a>
+
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px">
+        <a href="index.html" style="display:inline-block;background:var(--teal);color:#fff;text-decoration:none;padding:11px 28px;border-radius:8px;font-size:0.9rem;font-weight:600">Go to the Staff Hub →</a>
+        <button onclick="currentRole=null;stepIndex=0;renderLegal()" style="background:var(--grey-100);color:var(--grey-700);border:none;padding:11px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">↩ Redo tour for another role</button>
       </div>
+
+      <p style="text-align:center;font-size:0.7rem;color:var(--grey-400);margin-top:16px">
+        This tour is always available from <strong>Staff Training Guide</strong> in the sidebar.
+      </p>
     </div>
   `;
 }
@@ -620,7 +741,7 @@ function obNav(dir) {
 }
 
 // ── INIT ─────────────────────────────────────────────────────
-renderRolePicker();
+renderLegal();
 </script>
 </body>
 </html>
