@@ -1087,6 +1087,49 @@
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
   }
 
+  function buildBookingGuidance() {
+    const isDiabetic = document.getElementById('cc-t2dm').checked;
+    const abpmVal    = document.getElementById('abpm-consent').value;
+
+    let html = '<div style="background:#1e3a5f;padding:18px 22px;margin-bottom:0">'
+      + '<div style="font-family:Arial,sans-serif;font-size:14px;font-weight:700;color:#fbbf24;margin-bottom:12px;letter-spacing:0.04em">📅 BOOKING GUIDANCE — ACTION REQUIRED</div>';
+
+    if (isDiabetic) {
+      html += '<div style="background:#fff7ed;border:2px solid #f97316;border-radius:6px;padding:12px 16px;margin-bottom:10px;font-family:Arial,sans-serif">'
+        + '<div style="font-size:13px;font-weight:700;color:#9a3412;margin-bottom:6px">🩸 DIABETIC PATIENT — 30-Minute Appointment Required</div>'
+        + '<div style="font-size:13px;color:#7c2d12;line-height:1.7">'
+        + '<strong>Must be booked with a Doctor or Nurse</strong> — foot examination required.<br>'
+        + 'Doctor slots are 12.5 min — open 2–3 consecutive slots to make 30 min.<br>'
+        + 'Remind patient to bring a <strong>urine sample (small clean container)</strong> for ACR on the day.</div></div>';
+    }
+
+    if (abpmVal === 'yes') {
+      html += '<div style="background:#f0fdf4;border:1.5px solid #22c55e;border-radius:6px;padding:12px 16px;margin-bottom:10px;font-family:Arial,sans-serif">'
+        + '<div style="font-size:13px;font-weight:700;color:#166534;margin-bottom:6px">✅ Patient has consented to ABPM</div>'
+        + '<div style="font-size:13px;color:#14532d;line-height:1.7">'
+        + 'Check <strong>CDM tab in Socrates</strong> — are bloods due?<br>'
+        + '&nbsp;&nbsp;• Yes → <strong>Book 30 minutes</strong><br>'
+        + '&nbsp;&nbsp;• No &nbsp;→ <strong>Book 20 minutes</strong></div></div>';
+    } else if (abpmVal === 'discuss') {
+      html += '<div style="background:#fefce8;border:1.5px solid #eab308;border-radius:6px;padding:12px 16px;margin-bottom:10px;font-family:Arial,sans-serif">'
+        + '<div style="font-size:13px;font-weight:700;color:#713f12;margin-bottom:6px">⚠️ Patient wants to discuss ABPM at appointment</div>'
+        + '<div style="font-size:13px;color:#713f12;line-height:1.7">'
+        + 'Check <strong>CDM tab in Socrates</strong> — are bloods due?<br>'
+        + '&nbsp;&nbsp;• Yes → <strong>Book 30 minutes</strong><br>'
+        + '&nbsp;&nbsp;• No &nbsp;→ <strong>Book 20 minutes</strong></div></div>';
+    } else if (abpmVal === 'no') {
+      html += '<div style="background:#fef2f2;border:1.5px solid #ef4444;border-radius:6px;padding:12px 16px;margin-bottom:10px;font-family:Arial,sans-serif">'
+        + '<div style="font-size:13px;font-weight:700;color:#991b1b;margin-bottom:6px">❌ Patient has declined ABPM</div>'
+        + '<div style="font-size:13px;color:#7f1d1d;line-height:1.7">'
+        + 'Check <strong>CDM tab in Socrates</strong> — are bloods due?<br>'
+        + '&nbsp;&nbsp;• Yes → <strong>Book 20 minutes</strong><br>'
+        + '&nbsp;&nbsp;• No &nbsp;→ <strong>Book 10–12.5 minutes</strong></div></div>';
+    }
+
+    html += '</div>';
+    return html;
+  }
+
   function buildEmailHtml(formEl, formTitle) {
     const rows = [];
     formEl.querySelectorAll('input[name], select[name], textarea[name]').forEach(el => {
@@ -1113,7 +1156,8 @@
       + '<div style="background:#1a2e44;padding:20px 24px;border-radius:8px 8px 0 0">'
       + '<h2 style="color:white;font-size:18px;margin:0">Kinsealy Medical Centre</h2>'
       + '<p style="color:rgba(255,255,255,0.65);font-size:12px;margin:4px 0 0;text-transform:uppercase;letter-spacing:0.08em">' + formTitle + '</p>'
-      + '</div><table style="width:100%;border-collapse:collapse;background:white;border:1px solid #d0dde6;border-top:none">';
+      + '</div>' + buildBookingGuidance()
+      + '<table style="width:100%;border-collapse:collapse;background:white;border:1px solid #d0dde6;border-top:none">';
     rows.forEach(function([label, value], i) {
       const bg = i % 2 === 0 ? '#ffffff' : '#f8fafc';
       html += '<tr>'
