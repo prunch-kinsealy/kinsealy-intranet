@@ -303,6 +303,71 @@
       </div>
 
       <div class="field-group">
+        <label for="smoking-status">Smoking status <span class="required">*</span></label>
+        <select id="smoking-status" name="smoking-status" onchange="onSmokingChange()">
+          <option value="" disabled selected>Select</option>
+          <option value="never">Never smoked</option>
+          <option value="ex">Ex-smoker</option>
+          <option value="current">Currently smoking</option>
+        </select>
+        <div class="subfield" id="smoking-detail-wrap">
+          <div class="field-group" style="margin-bottom:12px">
+            <label for="smoking-per-day">Approximately how many cigarettes per day?</label>
+            <select id="smoking-per-day" name="smoking-per-day">
+              <option value="" disabled selected>Select</option>
+              <option>1–5 per day</option>
+              <option>6–10 per day</option>
+              <option>11–20 per day</option>
+              <option>More than 20 per day</option>
+              <option>I use a vape / e-cigarette instead</option>
+              <option>Roll-ups — difficult to say exactly</option>
+            </select>
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label for="smoking-cessation">Would you like support to stop smoking?</label>
+            <select id="smoking-cessation" name="smoking-cessation">
+              <option value="" disabled selected>Select</option>
+              <option>Yes — please discuss at my appointment</option>
+              <option>I am already using a cessation programme or NRT</option>
+              <option>Not at this time</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="alcohol-intake">Do you drink alcohol? <span class="required">*</span></label>
+        <select id="alcohol-intake" name="alcohol-intake" onchange="onAlcoholChange()">
+          <option value="" disabled selected>Select</option>
+          <option value="no">No — I don't drink</option>
+          <option value="yes">Yes</option>
+        </select>
+        <div class="subfield" id="alcohol-detail-wrap">
+          <div class="field-group" style="margin-bottom:12px">
+            <label for="alcohol-units">Approximate weekly intake (units)</label>
+            <select id="alcohol-units" name="alcohol-units">
+              <option value="" disabled selected>Select</option>
+              <option>1–7 units per week (low risk)</option>
+              <option>8–14 units per week (moderate)</option>
+              <option>15–21 units per week (high)</option>
+              <option>22 or more units per week</option>
+              <option>Varies a lot — difficult to say</option>
+            </select>
+            <div class="field-hint">1 unit = half a pint of beer, a small (100ml) glass of wine, or a single (25ml) spirit measure.</div>
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <label for="alcohol-change">Has your alcohol intake changed recently?</label>
+            <select id="alcohol-change" name="alcohol-change">
+              <option value="" disabled selected>Select</option>
+              <option>No — about the same as before</option>
+              <option>Yes — I am drinking more than before</option>
+              <option>Yes — I am drinking less than before</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
         <label for="medication-issues">Any issues with your medications? <span class="required">*</span></label>
         <textarea id="medication-issues" name="medication-issues" placeholder="e.g. side effects, difficulty affording medication, running out early, or write 'No issues'"></textarea>
       </div>
@@ -522,6 +587,14 @@
     document.getElementById('fg-abpm-consent').classList.remove('has-error');
   }
 
+  function onSmokingChange() {
+    const val = document.getElementById('smoking-status').value;
+    toggleSubfield('smoking-detail-wrap', val === 'current');
+  }
+  function onAlcoholChange() {
+    const val = document.getElementById('alcohol-intake').value;
+    toggleSubfield('alcohol-detail-wrap', val === 'yes');
+  }
   function toggleSubfield(id, show) {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('visible', show);
