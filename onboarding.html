@@ -186,6 +186,17 @@ function getSteps(roleKey) {
     <span style="font-size:0.78rem;color:var(--grey-400);margin-left:8px">This hub is not final — it's actively being built.</span>
   </div>`;
 
+  const common_search = {
+    icon: '🔍',
+    label: 'Search',
+    title: 'Find anything in seconds',
+    desc: `<p>The <strong>search bar</strong> sits at the top of every page in the hub. Type any keyword — a procedure name, a drug, a patient scenario, anything — and it will pull up every matching SOP, template, or section instantly.</p>
+           <p style="margin-top:10px">It's the fastest way to navigate the hub once you know what you're looking for.</p>`,
+    highlight: { icon: '🔍', title: 'Where to find it', text: 'Top of the screen, right side of the dark top bar — the text box that says "Search hub…" with a 🔍 button beside it.' },
+    searchMockup: true,
+    link: { label: '🔍 Try the search', href: 'index.html' }
+  };
+
   const common_feedback = {
     icon: '💬',
     label: 'Your Feedback Matters',
@@ -221,6 +232,7 @@ function getSteps(roleKey) {
       highlight: { icon: '🔔', title: 'Buddy System', text: 'When a doctor is away for a full week, a prominent alert appears reminding staff to redirect that doctor\'s tasks and queries to the duty doctor.' },
       link: { label: '🏠 Open Noticeboard', href: hub }
     },
+    common_search,
     {
       icon: '💬',
       label: 'Text Templates',
@@ -292,6 +304,7 @@ function getSteps(roleKey) {
              </ul>`,
       link: { label: '🏠 Open Noticeboard', href: hub }
     },
+    common_search,
     {
       icon: '🏥',
       label: 'Patient Journeys',
@@ -357,6 +370,7 @@ function getSteps(roleKey) {
       desc: `<p>The <strong>Home & Noticeboard</strong> gives you a daily snapshot — who's in, any announcements, and team updates. Check it when you arrive each morning.</p>`,
       link: { label: '🏠 Open Noticeboard', href: hub }
     },
+    common_search,
     {
       icon: '🩸',
       label: 'Blood Tests',
@@ -399,6 +413,7 @@ function getSteps(roleKey) {
       highlight: { icon: '🔔', title: 'Buddy System', text: 'When a doctor is away for a full week, tasks and urgent queries for that doctor should be redirected to the duty doctor for the day.' },
       link: { label: '🏠 Open Noticeboard', href: hub }
     },
+    common_search,
     {
       icon: '🔁',
       label: 'CDM',
@@ -470,6 +485,7 @@ function getSteps(roleKey) {
              </ul>`,
       link: { label: '🏠 Open Noticeboard', href: hub }
     },
+    common_search,
     {
       icon: '📋',
       label: 'Practice Management',
@@ -696,8 +712,19 @@ function renderStep() {
   const feedbackCtaHtml = step.feedbackCta ? `
     <div class="ob-feedback-cta">
       <h4>💬 The Beta Feedback button</h4>
-      <p>It's in the <strong>bottom-right corner of every page</strong>. Click it anytime something is wrong, missing, or could be better. It takes 30 seconds. You can be anonymous.</p>
+      <p>It's in the <strong>bottom-right corner of every page</strong>. Click it anytime something is wrong, missing, or could be better. It takes 30 seconds.</p>
       <p style="margin-top:8px">This is a <strong>living document</strong> — we're committed to updating it constantly. Your feedback is the engine that makes that happen. Nothing is too small to flag.</p>
+    </div>` : '';
+
+  const searchMockupHtml = step.searchMockup ? `
+    <div style="background:#1a2d4a;border-radius:10px;padding:14px 16px;margin-bottom:14px">
+      <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-bottom:10px">Top bar — what you'll see:</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:7px 12px;font-size:0.8rem;color:rgba(255,255,255,0.4);font-family:'DM Sans',sans-serif">Search hub…</div>
+        <div style="background:#2a8a7e;color:#fff;border-radius:6px;padding:7px 10px;font-size:0.9rem;flex-shrink:0">🔍</div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#fff;flex-shrink:0">${sessionStorage.getItem('kmc-initials')||'KM'}</div>
+      </div>
+      <div style="margin-top:8px;font-size:0.72rem;color:rgba(255,255,255,0.4)">↑ Type anything here — procedure name, medication, task — and hit 🔍</div>
     </div>` : '';
 
   const linkHtml = step.link ? `
@@ -712,6 +739,7 @@ function renderStep() {
       <h2 class="ob-title">${step.title}</h2>
       <div class="ob-desc">${step.desc}</div>
       ${highlightHtml}
+      ${searchMockupHtml}
       ${tipHtml}
       ${feedbackCtaHtml}
       ${linkHtml}
