@@ -5269,7 +5269,7 @@ function openFeedbackModal() {
   document.getElementById('fb-section').value = '';
   document.getElementById('fb-sop-field').style.display = 'none';
   document.getElementById('fb-message').value = '';
-  document.getElementById('fb-name').value = '';
+  document.getElementById('fb-name').value = sessionStorage.getItem('kmc-display') || '';
   document.getElementById('fb-submit-btn').disabled = false;
   document.getElementById('fb-submit-btn').textContent = 'Submit Feedback';
   document.getElementById('feedback-modal-overlay').style.display = 'flex';
@@ -5306,7 +5306,8 @@ async function submitFeedback() {
   const sopId = document.getElementById('fb-sop').value || '';
   const sopName = sopId ? (document.getElementById('fb-sop').options[document.getElementById('fb-sop').selectedIndex]?.text || '') : '';
   const nameVal = document.getElementById('fb-name').value.trim();
-  const from = nameVal || 'anonymous';
+  if (!nameVal) { document.getElementById('fb-name').focus(); return; }
+  const from = nameVal;
   const btn = document.getElementById('fb-submit-btn');
   btn.disabled = true; btn.textContent = 'Sending…';
 
@@ -5373,7 +5374,7 @@ async function submitFeedback() {
     <div id="fb-form-area">
       <span class="beta-tag">🧪 Beta</span>
       <h3>Share Your Feedback</h3>
-      <p class="fb-sub">Help us improve the Staff Hub. All feedback goes straight to Fran and Maria. You can stay anonymous if you prefer.</p>
+      <p class="fb-sub">Help us improve the Staff Hub. All feedback goes straight to Fran and Maria.</p>
       <div class="fb-field">
         <label>What's your feedback about?</label>
         <select id="fb-section" onchange="fbSectionChange()">
@@ -5402,8 +5403,8 @@ async function submitFeedback() {
         <textarea id="fb-message" placeholder="What's unclear, missing, or could be improved? Any ideas welcome…" maxlength="1000"></textarea>
       </div>
       <div class="fb-field">
-        <label>Your name <span style="font-weight:400;text-transform:none;opacity:0.6">(optional — leave blank to stay anonymous)</span></label>
-        <input type="text" id="fb-name" placeholder="e.g. Dr Devlin">
+        <label>Your name <span style="color:#b91c1c;font-weight:700">*</span></label>
+        <input type="text" id="fb-name" placeholder="e.g. Dr Devlin" required>
       </div>
       <div class="fb-actions">
         <button class="fb-cancel" onclick="closeFeedbackModal()">Cancel</button>
