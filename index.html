@@ -3527,6 +3527,14 @@ Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick
 
   <script>
   function toggleTpl(h){h.nextElementSibling.classList.toggle('open')}
+  // Replace {{DOCTOR}} in all template bodies with logged-in doctor surname
+  (function(){
+    const display = sessionStorage.getItem('kmc-display') || '';
+    const surname = display.startsWith('Dr') ? display.split(' ').pop() : '[Name]';
+    document.querySelectorAll('.tpl-body').forEach(el => {
+      el.innerHTML = el.innerHTML.replace(/\{\{DOCTOR\}\}/g, surname);
+    });
+  })();
   function copyTpl(btn){
     const b=btn.parentElement;
     const t=b.innerText.replace('Copy','').replace('\u2713 Copied','').trim();
