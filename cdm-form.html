@@ -1056,6 +1056,11 @@
         </div>
       </div>
 
+      <div id="diabetes-urine-reminder" style="display:none;background:#e0f2fe;border:1.5px solid #38bdf8;border-radius:10px;padding:16px 20px;margin-bottom:20px;display:none">
+        <div style="font-size:0.88rem;font-weight:700;color:#0c4a6e;margin-bottom:4px">🧪 Reminder — Please Bring a Urine Sample</div>
+        <div style="font-size:0.84rem;color:#0c4a6e;font-weight:300;line-height:1.65">As you have diabetes, please bring a <strong>small urine sample in a clean container</strong> to your appointment. This is used to check your kidney health (ACR). The best time to collect it is first thing on the morning of your appointment.</div>
+      </div>
+
       <button type="submit" class="submit-btn" id="submitBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         Submit Health Update
@@ -1142,6 +1147,8 @@
       });
     }
     document.getElementById('fg-condition').classList.remove('has-error');
+    const diabetic = document.getElementById('cc-t2dm').checked;
+    document.getElementById('diabetes-urine-reminder').style.display = diabetic ? 'block' : 'none';
   }
 
   // ── ABPM show/hide ────────────────────────────────────────────
