@@ -715,9 +715,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
         <div class="flow-arrow">↓</div>
         <div class="flow-node flow-node-all">📋 No Form = No Appointment<br><small>Text / email form via Socrates</small></div>
         <div class="flow-arrow">↓</div>
-        <div class="flow-node flow-node-sec">🔵 Form Received → Secretary Books<br><small>Phone call or email to confirm appointment</small></div>
-        <div class="flow-arrow">↓</div>
-        <div class="flow-node flow-node-sec">🔵 Secretary Pre-Appointment Setup<br><small>Upload to CDM section · STC (ECG) · STC (ABPM) · PM tray</small></div>
+        <div class="flow-node flow-node-sec">🔵 Secretary — Form Received<br><small>Upload to chart · STCs · Ring to book</small></div>
         <div class="flow-arrow">↓</div>
         <div style="font-size:0.7rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px">Select Pathway</div>
         <div class="flow-branch-row">
@@ -771,37 +769,36 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
           <div class="step-dot dot-sec">MS</div>
           <div class="step-content step-content-sec">
             <div class="step-role step-role-sec">Step 2 — Secretary</div>
-            <div class="step-title">Form Received → Book Appointment</div>
+            <div class="step-title">Form Received → Setup &amp; Book</div>
             <div class="step-detail">
-              Once the completed CDM form is received:
-              <ul>
-                <li>Complete <strong>STC for ECG</strong> — required for all CDM/PP patients</li>
-                <li>Complete <strong>STC for ABPM</strong> — if the patient selected consent on the form</li>
-                <li><strong>Scan both STCs immediately to the patient's chart</strong> — do not leave until end of day</li>
-                <li><strong>Ring the patient</strong> to book their appointment — phone call only, do not email</li>
-                <li><strong>Diabetic patients must be booked with a Nurse or Doctor</strong> — foot examination is required</li>
-                <li><strong>Diabetic patients:</strong> remind them to bring a urine sample (small clean container) for ACR on the day</li>
-                <li><strong>PP patients:</strong> remind them to bring a urine sample (small clean container) for ACR on the day</li>
-                <li>All other CDM patients: Phlebotomist, Nurse, or Doctor as available</li>
-                <li>Encourage afternoon appointments where possible — unless the patient is on an ACE inhibitor (ending in 'pril') or ARB (ending in 'sartan'), in which case avoid afternoons. If unsure whether a medication qualifies, ask AI to confirm</li>
-              </ul>
-            </div>
-          </div>
-        </div>
 
-        <div class="journey-step">
-          <div class="step-dot dot-sec">MS</div>
-          <div class="step-content step-content-sec">
-            <div class="step-role step-role-sec">Step 3 — Secretary</div>
-            <div class="step-title">Pre-Appointment Setup</div>
-            <div class="step-detail">
-              Once appointment is booked:
-              <ul>
-                <li>Upload all form information into the <strong>CDM section in Socrates</strong></li>
-                <li>Complete <strong>STC (ECG)</strong> and <strong>STC (ABPM)</strong> — if applicable. Date = date of attendance</li>
-                <li>Leave completed STC forms in the <strong>PM's tray</strong></li>
-                <li>Document</li>
+              <div style="font-size:0.78rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">a) Upload to Chart</div>
+              <ul style="margin-bottom:16px">
+                <li>Upload all form information into the <strong>CDM section of the patient's chart in Socrates</strong></li>
+                <li>Take note of whether <strong>bloods are required</strong> for this submission — this will affect appointment length</li>
               </ul>
+
+              <div style="font-size:0.78rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">b) STCs</div>
+              <ul style="margin-bottom:16px">
+                <li>Complete <strong>STC for ECG</strong> — required for all CDM/PP patients</li>
+                <li>Complete <strong>STC for ABPM</strong> — only if the patient selected consent on the form</li>
+                <li><strong>Scan both STCs immediately to the patient's chart</strong> — do not leave until end of day</li>
+              </ul>
+
+              <div style="font-size:0.78rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">c) Book Appointment — Phone Call Only</div>
+              <ul>
+                <li><strong>Diabetic patients must be booked with a Nurse or Doctor</strong> — foot examination is required. Remind them to bring a urine sample (small clean container) for ACR on the day</li>
+                <li><strong>PP patients:</strong> remind them to bring a urine sample (small clean container) for ACR on the day</li>
+                <li><strong>Appointment length:</strong>
+                  <ul style="margin-top:6px">
+                    <li>Diabetic patients, OR any patient requiring bloods <em>and</em> ABPM → <strong>30 minutes</strong></li>
+                    <li>All other CDM/PP patients → <strong>20–25 minutes</strong></li>
+                  </ul>
+                </li>
+                <li><strong>Afternoon slots are fine</strong> — unless the patient is on an ACE inhibitor (ending in 'pril') or ARB (ending in 'sartan'), in which case avoid afternoons. If unsure whether a medication qualifies, ask AI to confirm</li>
+                <li><strong>Use your initiative with scheduling</strong> — if slots look like they won't be filled on a given day, be flexible. You can book patients into non-consecutive slots and cancel a later slot if needed to buy back time. A partially filled CDM day is better than a wasted one</li>
+              </ul>
+
             </div>
           </div>
         </div>
@@ -809,7 +806,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
         <div class="journey-step">
           <div class="step-dot dot-all">ALL</div>
           <div class="step-content step-content-all">
-            <div class="step-role step-role-all">Step 4 — On the Day</div>
+            <div class="step-role step-role-all">Step 3 — On the Day</div>
             <div class="step-title">Clinical Visit (by Pathway)</div>
             <div class="step-detail">
               <div class="warn-box" style="margin-bottom:14px;font-size:0.8rem">
@@ -864,7 +861,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
         <div class="journey-step">
           <div class="step-dot dot-nurse">NS</div>
           <div class="step-content step-content-nurse">
-            <div class="step-role step-role-nurse">Step 5 — Nurse / Phlebotomist</div>
+            <div class="step-role step-role-nurse">Step 4 — Nurse / Phlebotomist</div>
             <div class="step-title">End of Consult — Task Doctor</div>
             <div class="step-detail">
               At the end of the visit, task the doctor on duty:
@@ -881,7 +878,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
         <div class="journey-step">
           <div class="step-dot dot-doc">DR</div>
           <div class="step-content step-content-doc">
-            <div class="step-role step-role-doc">Step 6 — Doctor</div>
+            <div class="step-role step-role-doc">Step 5 — Doctor</div>
             <div class="step-title">Remote Consultation &amp; Script</div>
             <div class="step-detail">
               Doctor reviews remotely — bloods, ABPM, AliveCor/ECG, chart notes:
@@ -898,7 +895,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
         <div class="journey-step">
           <div class="step-dot dot-pm">PM</div>
           <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">Step 7 — Practice Manager</div>
+            <div class="step-role step-role-pm">Step 6 — Practice Manager</div>
             <div class="step-title">End-of-Week Review &amp; PCRS Submission</div>
             <div class="step-detail">
               At the end of each week the Practice Manager reviews all CDM/PP activity:
