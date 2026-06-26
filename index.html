@@ -3938,6 +3938,7 @@ let lastSection = 'home';
 
 navLinks.forEach(link => {
   link.addEventListener('click', e => {
+    if (!link.dataset.section) return; // let real hrefs navigate normally
     e.preventDefault();
     lastSection = link.dataset.section;
     document.getElementById('search').value = '';
