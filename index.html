@@ -124,6 +124,15 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .step-detail li{margin-bottom:3px}
 .step-detail a{color:var(--teal);text-decoration:none}
 .step-detail a:hover{text-decoration:underline}
+.journey-step.step-collapsed .step-detail{display:none}
+.journey-step.step-collapsed{opacity:0.65}
+.journey-step.step-collapsed:hover{opacity:0.8}
+.step-show-toggle{display:none;margin-top:6px;font-size:0.72rem;color:var(--teal);cursor:pointer;background:none;border:1px solid var(--teal);border-radius:10px;padding:2px 10px;font-family:'DM Sans',sans-serif;font-weight:500;transition:background 0.15s}
+.step-show-toggle:hover{background:var(--teal-pale)}
+.journey-step.step-collapsed .step-show-toggle{display:inline-flex;align-items:center;gap:4px}
+.step-hide-toggle{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:0.72rem;color:var(--grey-400);cursor:pointer;background:none;border:1px solid var(--grey-200);border-radius:10px;padding:2px 10px;font-family:'DM Sans',sans-serif;font-weight:500;transition:all 0.15s}
+.step-hide-toggle:hover{border-color:var(--grey-400);color:var(--grey-700)}
+.journey-step.step-collapsed .step-hide-toggle{display:none}
 
 /* NOTICE BOARD */
 .notice-strip{background:var(--navy);color:#fff;border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;display:flex;gap:14px;align-items:flex-start}
@@ -5382,6 +5391,47 @@ async function submitFeedback() {
     alert('Sorry, could not save your feedback right now. Please try again shortly.');
   }
 }
+
+// ── Role-based SOP collapsing ──────────────────────────────────
+(function initRoleCollapse() {
+  const jobRoleRaw = sessionStorage.getItem('kmc-job-role');
+  if (!jobRoleRaw) return;
+
+  const myRoles = jobRoleRaw.split(',');
+
+  document.querySelectorAll('.journey-step').forEach(step => {
+    const content = step.querySelector('.step-content');
+    if (!content) return;
+
+    const roleClass = Array.from(content.classList).find(c => c.startsWith('step-content-'));
+    if (!roleClass) return;
+    const stepRole = roleClass.replace('step-content-', '');
+
+    // "all" steps always stay open, no toggle needed
+    if (stepRole === 'all') return;
+
+    const isMyRole = myRoles.includes(stepRole);
+    const detail = content.querySelector('.step-detail');
+    const title = content.querySelector('.step-title');
+    if (!detail || !title) return;
+
+    // Inject show/hide toggles after the title
+    const showBtn = document.createElement('button');
+    showBtn.className = 'step-show-toggle';
+    showBtn.innerHTML = '▼ Show';
+    title.after(showBtn);
+
+    const hideBtn = document.createElement('button');
+    hideBtn.className = 'step-hide-toggle';
+    hideBtn.innerHTML = '▲ Hide';
+    detail.after(hideBtn);
+
+    if (!isMyRole) step.classList.add('step-collapsed');
+
+    showBtn.addEventListener('click', () => step.classList.remove('step-collapsed'));
+    hideBtn.addEventListener('click', () => step.classList.add('step-collapsed'));
+  });
+})();
 </script>
 
 <!-- FEEDBACK FAB -->

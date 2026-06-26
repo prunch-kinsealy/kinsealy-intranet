@@ -61,18 +61,18 @@ const PWD_CACHE_KEY = 'kmc_pwd_cache';
 
 // ── Staff directory (names/roles — passwords come from GitHub) ─
 const USERS = {
-  'fran':     {display:"Dr O'Reilly",          initials:'FO', role:'admin'},
-  'joanne':   {display:'Dr Dundon',            initials:'JD', role:'admin'},
-  'maria':    {display:'Maria Harding',        initials:'MH', role:'admin'},
-  'ciara':    {display:'Dr Dunleavy',          initials:'CD', role:'staff'},
-  'ruth':     {display:'Dr Devlin',            initials:'RD', role:'staff'},
-  'eimear':   {display:'Dr Dunne',             initials:'ED', role:'staff'},
-  'laura':    {display:'Laura McGrath',        initials:'LM', role:'staff'},
-  'susan':    {display:"Susan O'Leary",        initials:'SO', role:'staff'},
-  'michaela': {display:'Michaela Duffy-Meade', initials:'MD', role:'staff'},
-  'holly':    {display:'Holly McCamley',       initials:'HM', role:'staff'},
-  'edel':     {display:'Edel Grimes',          initials:'EG', role:'staff'},
-  'amy':      {display:'Amy Burke',            initials:'AB', role:'staff'},
+  'fran':     {display:"Dr O'Reilly",          initials:'FO', role:'admin', jobRole:'doc'},
+  'joanne':   {display:'Dr Dundon',            initials:'JD', role:'admin', jobRole:'doc'},
+  'maria':    {display:'Maria Harding',        initials:'MH', role:'admin', jobRole:'pm'},
+  'ciara':    {display:'Dr Dunleavy',          initials:'CD', role:'staff', jobRole:'doc'},
+  'ruth':     {display:'Dr Devlin',            initials:'RD', role:'staff', jobRole:'doc'},
+  'eimear':   {display:'Dr Dunne',             initials:'ED', role:'staff', jobRole:'doc'},
+  'laura':    {display:'Laura McGrath',        initials:'LM', role:'staff', jobRole:'nurse'},
+  'susan':    {display:"Susan O'Leary",        initials:'SO', role:'staff', jobRole:'sec'},
+  'michaela': {display:'Michaela Duffy-Meade', initials:'MD', role:'staff', jobRole:'sec,phle'},
+  'holly':    {display:'Holly McCamley',       initials:'HM', role:'staff', jobRole:'sec'},
+  'edel':     {display:'Edel Grimes',          initials:'EG', role:'staff', jobRole:'sec'},
+  'amy':      {display:'Amy Burke',            initials:'AB', role:'staff', jobRole:'sec,phle'},
 };
 
 // ── Default passwords (fallback if GitHub not reachable) ───────
@@ -131,6 +131,7 @@ function login() {
   sessionStorage.setItem('kmc-display', user.display);
   sessionStorage.setItem('kmc-initials', user.initials);
   sessionStorage.setItem('kmc-role', user.role);
+  sessionStorage.setItem('kmc-job-role', user.jobRole || 'staff');
   const dest = sessionStorage.getItem('kmc-redirect') || 'index.html';
   sessionStorage.removeItem('kmc-redirect');
   window.location.href = dest;
