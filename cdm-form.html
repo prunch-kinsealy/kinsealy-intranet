@@ -165,11 +165,6 @@
           <input type="date" id="dob" name="dob"/>
           <div class="field-error">Required.</div>
         </div>
-        <div class="field-group" id="fg-pps">
-          <label for="pps">PPS Number <span class="required">*</span></label>
-          <input type="text" id="pps" name="pps" placeholder="e.g. 1234567A"/>
-          <div class="field-error">Required.</div>
-        </div>
       </div>
 
       <div class="field-row">
@@ -801,6 +796,28 @@
         </div>
       </div>
 
+      <div class="field-group">
+        <label for="medication-issues">Any issues with your medications? <span class="required">*</span></label>
+        <textarea id="medication-issues" name="medication-issues" placeholder="e.g. side effects, difficulty affording medication, running out early, or write 'No issues'"></textarea>
+      </div>
+
+      <div class="field-group">
+        <label for="health-wellbeing">Health and Well-being — How would you describe this? <span class="required">*</span></label>
+        <select id="health-wellbeing" name="health-wellbeing">
+          <option value="" disabled selected>Select</option>
+          <option>Excellent — I feel very well</option>
+          <option>Good — generally feeling well</option>
+          <option>Fair — some days are difficult</option>
+          <option>Poor — I am struggling with my health or wellbeing</option>
+          <option>Very poor — my health or wellbeing is significantly affecting my daily life</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label for="health-goals">My Health Goals <span class="optional">(optional)</span></label>
+        <textarea id="health-goals" name="health-goals" placeholder="e.g. lose weight, reduce blood pressure, stop smoking, exercise more, feel less anxious — anything you would like to work towards with your doctor or nurse"></textarea>
+      </div>
+
       <!-- ══ SECTION 4: Physical Measurements (Optional) ══ -->
       <div class="section-header">
         <div class="section-number">4</div>
@@ -1056,7 +1073,7 @@
     let valid = true;
 
     // Required text fields
-    ['patient-name','dob','pps','phone'].forEach(f => {
+    ['patient-name','dob','phone'].forEach(f => {
       const el = document.getElementById(f);
       const empty = !el || !el.value.trim();
       setError(f, empty);
@@ -1148,7 +1165,7 @@
   });
 
   // Clear errors on input
-  ['patient-name','dob','pps','phone','email'].forEach(f => {
+  ['patient-name','dob','phone','email'].forEach(f => {
     const el = document.getElementById(f);
     if (el) el.addEventListener('input', () => setError(f, false));
   });
