@@ -520,10 +520,31 @@ function getSteps(roleKey) {
 }
 
 // ── STATE ─────────────────────────────────────────────────────
-let currentRole = null;
+let currentRoles = new Set();
 let steps = [];
 let stepIndex = 0;
 let phase = 'legal'; // legal → role → steps
+
+function buildCombinedSteps(roleKeys) {
+  const common_feedback_key = 'feedback';
+  let combined = [];
+  const seenTitles = new Set();
+  let feedbackStep = null;
+
+  roleKeys.forEach(key => {
+    const roleSteps = getSteps(key);
+    roleSteps.forEach(s => {
+      if (s.feedbackCta) { feedbackStep = s; return; } // collect once
+      if (!seenTitles.has(s.title)) {
+        seenTitles.add(s.title);
+        combined.push(s);
+      }
+    });
+  });
+
+  if (feedbackStep) combined.push(feedbackStep);
+  return combined;
+}
 
 // ── LEGAL SCREEN ─────────────────────────────────────────────
 function renderLegal() {
@@ -597,8 +618,8 @@ function renderRolePicker() {
   nextBtn.className = 'ob-btn ob-btn-primary';
   nextBtn.disabled = false;
   nextBtn.onclick = () => {
-    if (!currentRole) { alert('Please select your role to continue.'); return; }
-    steps = getSteps(currentRole);
+    if (currentRoles.size === 0) { alert('Please select at least one role to continue.'); return; }
+    steps = buildCombinedSteps([...currentRoles]);
     stepIndex = 0;
     phase = 'steps';
     renderStep();
@@ -615,7 +636,7 @@ function renderRolePicker() {
           <span style="margin-left:8px;color:rgba(255,255,255,0.6)">This is a first look — not the final product. We wanted to give you a flavour of where we're headed.</span>
         </p>
       </div>
-      <p style="font-size:0.85rem;color:var(--grey-700);margin-bottom:14px;font-weight:500">Select your role to get a personalised tour:</p>
+      <p style="font-size:0.85rem;color:var(--grey-700);margin-bottom:14px;font-weight:500">Select your role(s) — pick all that apply:</p>
       <div class="role-grid">
         ${Object.entries(ROLES).map(([key, r]) => `
           <button class="role-btn" id="role-${key}" onclick="selectRole('${key}')">
@@ -626,15 +647,19 @@ function renderRolePicker() {
       </div>
     </div>
   `;
-  if (currentRole) {
-    setTimeout(() => document.getElementById('role-' + currentRole)?.classList.add('selected'), 10);
+  if (currentRoles.size > 0) {
+    setTimeout(() => currentRoles.forEach(k => document.getElementById('role-' + k)?.classList.add('selected')), 10);
   }
 }
 
 function selectRole(key) {
-  currentRole = key;
-  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
-  document.getElementById('role-' + key).classList.add('selected');
+  if (currentRoles.has(key)) {
+    currentRoles.delete(key);
+    document.getElementById('role-' + key).classList.remove('selected');
+  } else {
+    currentRoles.add(key);
+    document.getElementById('role-' + key).classList.add('selected');
+  }
 }
 
 // ── STEP RENDERER ─────────────────────────────────────────────
