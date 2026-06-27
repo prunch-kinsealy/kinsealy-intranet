@@ -134,6 +134,39 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .step-hide-toggle:hover{border-color:var(--grey-400);color:var(--grey-700)}
 .journey-step.step-collapsed .step-hide-toggle{display:none}
 
+/* CDM INBOX */
+.cdm-filter-btn{font-size:0.75rem;padding:5px 14px;border:1.5px solid var(--grey-200);border-radius:20px;background:#fff;color:var(--grey-700);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all 0.15s}
+.cdm-filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.cdm-card{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;transition:opacity 0.2s}
+.cdm-card.status-booked{opacity:0.55}
+.cdm-card-header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--grey-200);background:var(--grey-100)}
+.cdm-card-name{font-size:0.92rem;font-weight:700;color:var(--navy);flex:1}
+.cdm-card-date{font-size:0.7rem;color:var(--grey-400)}
+.cdm-badge-new{font-size:0.62rem;font-weight:700;padding:2px 8px;border-radius:8px;background:#fef3c7;color:#92400e;text-transform:uppercase;letter-spacing:0.06em}
+.cdm-badge-booked{font-size:0.62rem;font-weight:700;padding:2px 8px;border-radius:8px;background:#dcfce7;color:#166534;text-transform:uppercase;letter-spacing:0.06em}
+.cdm-card-body{padding:14px 16px}
+.cdm-booking-guidance{border-radius:8px;padding:12px 14px;margin-bottom:12px;font-size:0.8rem;line-height:1.6}
+.cdm-bg-diabetic{background:#fff7ed;border-left:3px solid #f97316}
+.cdm-bg-abpm-yes{background:#f0fdf4;border-left:3px solid #22c55e}
+.cdm-bg-abpm-discuss{background:#fefce8;border-left:3px solid #eab308}
+.cdm-bg-abpm-no{background:#fef2f2;border-left:3px solid #ef4444}
+.cdm-guidance-title{font-weight:700;margin-bottom:4px}
+.cdm-detail-row{display:flex;gap:6px;font-size:0.78rem;margin-bottom:4px}
+.cdm-detail-label{font-weight:600;color:var(--navy);min-width:60px;flex-shrink:0}
+.cdm-detail-val{color:var(--grey-700)}
+.cdm-conditions{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.cdm-condition-tag{font-size:0.68rem;font-weight:600;padding:2px 8px;border-radius:8px;background:var(--teal-pale);color:var(--teal)}
+.cdm-card-footer{display:flex;gap:8px;align-items:center;padding:10px 16px;border-top:1px solid var(--grey-200);background:var(--grey-100)}
+.cdm-fields-toggle{font-size:0.73rem;color:var(--teal);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;padding:0;text-decoration:underline}
+.cdm-fields-body{display:none;padding:12px 16px 0;font-size:0.78rem;color:var(--grey-700);line-height:1.7;border-top:1px solid var(--grey-200)}
+.cdm-fields-body dt{font-weight:600;color:var(--navy);font-size:0.74rem;margin-top:8px}
+.cdm-fields-body dd{margin-left:0;margin-bottom:2px}
+.cdm-action-btn{font-size:0.75rem;font-weight:600;padding:5px 14px;border-radius:6px;cursor:pointer;border:1.5px solid;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.cdm-action-book{background:var(--navy);color:#fff;border-color:var(--navy)}
+.cdm-action-book:hover{background:var(--teal);border-color:var(--teal)}
+.cdm-action-unbook{background:#fff;color:var(--grey-400);border-color:var(--grey-200)}
+.cdm-action-unbook:hover{color:var(--grey-700);border-color:var(--grey-400)}
+
 /* NOTICE BOARD */
 .notice-strip{background:var(--navy);color:#fff;border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;display:flex;gap:14px;align-items:flex-start}
 .notice-strip .badge{background:var(--gold);color:var(--navy);font-size:0.62rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:4px;flex-shrink:0;margin-top:2px}
@@ -499,6 +532,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <a href="#" class="nav-link active" data-section="home"><span class="nav-icon">🏠</span> Home &amp; Noticeboard</a>
     <div class="nav-group-label">Clinical</div>
     <a href="#" class="nav-link" data-section="cdm"><span class="nav-icon">🔁</span> CDM</a>
+    <a href="#" class="nav-link" data-section="cdm-inbox" id="nav-cdm-inbox"><span class="nav-icon">📥</span> CDM Inbox <span id="cdm-inbox-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
     <a href="#" class="nav-link" data-section="care-pathways"><span class="nav-icon">🩺</span> Patient Journeys</a>
     <a href="#" class="nav-link" data-section="clinical-pathways"><span class="nav-icon">🧬</span> Clinical Pathways</a>
     <a href="#" class="nav-link" data-section="doctor-stuff"><span class="nav-icon">👨‍⚕️</span> Doctor Protocols</a>
@@ -713,7 +747,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
       <div class="warn-box" style="margin-bottom:18px">
         <strong>📋 No Form = No Appointment</strong><br><br>
         Do <strong>NOT</strong> book a CDM or PP appointment until the patient has <strong>fully completed</strong> the relevant pre-appointment form.<br><br>
-        <strong>CDM patients:</strong> <a href="https://kinsealymedicalcentre.ie/cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> — send via text or email from Socrates.<br>
+        <strong>CDM patients:</strong> <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> — send via text or email from Socrates.<br>
         <strong>Prevention Programme patients:</strong> <a href="prevention-form.html" target="_blank">Prevention Programme Pre-Appointment Form ↗</a> — send via text or email from Socrates.<br><br>
         <strong>Elderly / poor IT literacy:</strong> Gently push back first — advise the patient that a <strong>family member or next of kin can email the practice</strong> on their behalf and we will send the form directly for completion and return. Use your judgment: for patients who genuinely cannot use IT and have no one to assist, a printed copy of the form is available in the <strong>folder behind the front door</strong>. Note: having a physical copy available may itself encourage patients to complete the form online in future.
       </div>
@@ -764,7 +798,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
             <div class="step-detail">
               Every staff member — doctors, nurses, and phlebotomists — should be <strong>CDM aware</strong>. Anyone identifying a patient due for CDM should act:
               <ul>
-                <li>Text or email the patient the correct form via Socrates — <a href="https://kinsealymedicalcentre.ie/cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> for CDM patients, <a href="prevention-form.html" target="_blank">Prevention Programme Form ↗</a> for PP patients</li>
+                <li>Text or email the patient the correct form via Socrates — <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> for CDM patients, <a href="prevention-form.html" target="_blank">Prevention Programme Form ↗</a> for PP patients</li>
                 <li><strong>No form, no appointment</strong> — do not book until form is fully completed and received</li>
                 <li><strong>Do not send the patient to the front desk</strong> — if a doctor, nurse, or phlebotomist identifies a patient who needs assistance, help them directly. The efficiency of this system is built around electronic capture of data. Patients routinely book flights and holidays online — completing a health form is no different</li>
                 <li>If the patient cannot complete the form themselves: advise them that a <strong>family member or next of kin can email the practice</strong> and we will send the form directly for completion and return</li>
@@ -1076,7 +1110,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
             <div class="step-detail">
               Once enrolled, contact the patient to arrange their first CDM/PP review:
               <ul>
-                <li>Text or email the relevant pre-appointment form via Socrates: <a href="https://kinsealymedicalcentre.ie/cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> or <a href="prevention-form.html" target="_blank">Prevention Programme Form ↗</a></li>
+                <li>Text or email the relevant pre-appointment form via Socrates: <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> or <a href="prevention-form.html" target="_blank">Prevention Programme Form ↗</a></li>
                 <li>Do <strong>not</strong> book an appointment until the completed form has been returned</li>
                 <li>Add a Socrates reminder task: <em>"CDM/PP form sent [date] — awaiting return"</em></li>
               </ul>
@@ -1091,6 +1125,27 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     </div>
   </div>
 
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- CDM INBOX -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="cdm-inbox">
+  <div class="page-header">
+    <h2>CDM Inbox</h2>
+    <p>Patient pre-appointment forms submitted via the website. Book each patient then mark as booked.</p>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+    <button class="cdm-filter-btn active" data-filter="all" onclick="setCdmFilter('all',this)">All</button>
+    <button class="cdm-filter-btn" data-filter="new" onclick="setCdmFilter('new',this)">New</button>
+    <button class="cdm-filter-btn" data-filter="booked" onclick="setCdmFilter('booked',this)">Booked</button>
+    <button onclick="loadCdmInbox(true)" style="margin-left:auto;font-size:0.75rem;padding:5px 12px;background:none;border:1px solid var(--grey-200);border-radius:6px;cursor:pointer;color:var(--grey-400);font-family:'DM Sans',sans-serif" title="Refresh">&#8635; Refresh</button>
+  </div>
+
+  <div id="cdm-inbox-loading" style="text-align:center;padding:40px;color:var(--grey-400);font-size:0.85rem">Loading submissions...</div>
+  <div id="cdm-inbox-empty" style="display:none;text-align:center;padding:40px;color:var(--grey-400);font-size:0.85rem">No submissions found.</div>
+  <div id="cdm-inbox-list"></div>
 </div>
 
 <!-- ════════════════════════════════════════════════════ -->
@@ -1468,7 +1523,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
               <ul>
                 <li>ABPM is booked as part of a CDM visit, or separately on doctor request</li>
                 <li>Morning appointment preferred — patient wears device for 24 hours and returns it the following morning</li>
-                <li>Confirm patient has completed the <a href="https://kinsealymedicalcentre.ie/cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> and consented to ABPM before appointment</li>
+                <li>Confirm patient has completed the <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> and consented to ABPM before appointment</li>
                 <li>Advise patient: wear a loose-fitting short-sleeved top on the day; avoid tight-fitting sleeves</li>
               </ul>
             </div>
@@ -2478,7 +2533,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
         Before confirming any booking, check whether a structured pathway exists. If it does, follow it — do not book into a standard slot.
       </div>
       <div class="step-detail" style="font-size:0.82rem;line-height:1.6;margin-bottom:14px">
-        <a href="#" onclick="goToSOP('cdm','sop-cdm');return false;"><strong>🔁 CDM / Chronic Disease</strong></a> — form required before booking: <a href="https://kinsealymedicalcentre.ie/cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> / <a href="prevention-form.html" target="_blank">Prevention Programme Form ↗</a><br>
+        <a href="#" onclick="goToSOP('cdm','sop-cdm');return false;"><strong>🔁 CDM / Chronic Disease</strong></a> — form required before booking: <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form.html" target="_blank">CDM Pre-Appointment Form ↗</a> / <a href="prevention-form.html" target="_blank">Prevention Programme Form ↗</a><br>
         <a href="#" onclick="goToSOP('care-pathways','sop-contraception');return false;"><strong>💊 Contraception</strong></a> — age rules, booking codes, consent form<br>
         <a href="#" onclick="goToSOP('care-pathways','sop-antenatal');return false;"><strong>🤰 Antenatal</strong></a> — urine sample reminder, Combined Care form<br>
         <a href="#" onclick="goToSOP('care-pathways','sop-baby-vaccines');return false;"><strong>💉 Baby Vaccines</strong></a> — consent form, age rules<br>
@@ -3054,7 +3109,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
     <div class="form-card"><div class="form-icon">💊</div><div><h4>Prolia Injection</h4><p>Pre-injection consent (bloods + dental check required)</p><a href="#">Open form ↗</a></div></div>
     <div class="form-card"><div class="form-icon">🚭</div><div><h4>PMA Consent Form</h4><p>Patient consent for insurance medical reports</p><a href="#">Open form ↗</a></div></div>
     <div class="form-card"><div class="form-icon">📄</div><div><h4>Roaccutane Consent</h4><p>Live on Netlify</p><a href="roaccutane-consent.html" target="_blank">Open form ↗</a></div></div>
-    <div class="form-card"><div class="form-icon">📄</div><div><h4>CDM Pre-Appointment Form</h4><p>For chronic disease patients</p><a href="https://kinsealymedicalcentre.ie/cdm-form.html" target="_blank">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">📄</div><div><h4>CDM Pre-Appointment Form</h4><p>For chronic disease patients</p><a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form.html" target="_blank">Open form ↗</a></div></div>
     <div class="form-card"><div class="form-icon">🛡️</div><div><h4>Prevention Programme Form</h4><p>For PP patients</p><a href="prevention-form.html" target="_blank">Open form ↗</a></div></div>
   </div>
 
@@ -5428,6 +5483,197 @@ async function submitFeedback() {
 
     showBtn.addEventListener('click', () => step.classList.remove('step-collapsed'));
     hideBtn.addEventListener('click', () => step.classList.add('step-collapsed'));
+  });
+})();
+
+// ── CDM Inbox ─────────────────────────────────────────────────
+(function() {
+  const REPO    = 'prunch-kinsealy/kinsealy-intranet';
+  const FILE    = 'cdm-submissions.json';
+  const API_URL = 'https://api.github.com/repos/' + REPO + '/contents/' + FILE;
+
+  let allSubmissions = [];
+  let currentFilter  = 'all';
+  let currentSha     = null;
+
+  function ghHeaders() {
+    return {
+      'Authorization': 'Bearer ' + window.__KMC_GH.token,
+      'Accept': 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    };
+  }
+
+  function fmtDate(iso) {
+    try {
+      return new Date(iso).toLocaleString('en-IE',{
+        day:'2-digit', month:'2-digit', year:'numeric',
+        hour:'2-digit', minute:'2-digit', timeZone:'Europe/Dublin'
+      });
+    } catch(e) { return iso; }
+  }
+
+  function bookingGuidanceHtml(sub) {
+    const isDiabetic = sub.conditions && sub.conditions.includes('Type 2 Diabetes');
+    const abpm       = sub.abpmConsent || '';
+    let html = '';
+
+    if (isDiabetic) {
+      html += '<div class="cdm-booking-guidance cdm-bg-diabetic">'
+        + '<div class="cdm-guidance-title" style="color:#9a3412">DIABETIC — 30-min appt required</div>'
+        + '<div style="color:#7c2d12">Book with <strong>Doctor or Nurse</strong> (foot exam required). Doctor slots are 12.5 min — open 2–3 consecutive. Remind patient to bring a urine sample.</div>'
+        + '</div>';
+    }
+
+    if (abpm === 'yes') {
+      html += '<div class="cdm-booking-guidance cdm-bg-abpm-yes">'
+        + '<div class="cdm-guidance-title" style="color:#166534">ABPM consented</div>'
+        + '<div style="color:#14532d">Check CDM tab in Socrates — bloods due? &nbsp;<strong>Yes → 30 min &nbsp; No → 20 min</strong></div>'
+        + '</div>';
+    } else if (abpm === 'discuss') {
+      html += '<div class="cdm-booking-guidance cdm-bg-abpm-discuss">'
+        + '<div class="cdm-guidance-title" style="color:#713f12">ABPM — wants to discuss</div>'
+        + '<div style="color:#713f12">Check CDM tab in Socrates — bloods due? &nbsp;<strong>Yes → 30 min &nbsp; No → 20 min</strong></div>'
+        + '</div>';
+    } else if (abpm === 'no') {
+      html += '<div class="cdm-booking-guidance cdm-bg-abpm-no">'
+        + '<div class="cdm-guidance-title" style="color:#991b1b">ABPM declined</div>'
+        + '<div style="color:#7f1d1d">Check CDM tab in Socrates — bloods due? &nbsp;<strong>Yes → 20 min &nbsp; No → 10–12.5 min</strong></div>'
+        + '</div>';
+    }
+
+    return html || '<div class="cdm-booking-guidance" style="background:var(--grey-100);border-left:3px solid var(--grey-200)"><span style="color:var(--grey-400);font-size:0.78rem">No ABPM or diabetes data — check Socrates for bloods to determine slot length.</span></div>';
+  }
+
+  function renderCard(sub) {
+    const isBooked = sub.status === 'booked';
+    const dob = sub.dob ? new Date(sub.dob).toLocaleDateString('en-IE') : sub.dob || '—';
+
+    // Build fields list from sub.fields
+    let fieldsHtml = '';
+    if (sub.fields && Object.keys(sub.fields).length) {
+      fieldsHtml = '<dl>';
+      for (const [k, v] of Object.entries(sub.fields)) {
+        const val = Array.isArray(v) ? v.join(', ') : v;
+        if (val) fieldsHtml += '<dt>' + k + '</dt><dd>' + val + '</dd>';
+      }
+      fieldsHtml += '</dl>';
+    }
+
+    const conditions = (sub.conditions || []).map(c =>
+      '<span class="cdm-condition-tag">' + c + '</span>'
+    ).join('');
+
+    return '<div class="cdm-card status-' + sub.status + '" id="cdm-card-' + sub.id + '">'
+      + '<div class="cdm-card-header">'
+        + '<div class="cdm-card-name">' + (sub.name || 'Unknown') + '</div>'
+        + '<div class="cdm-card-date">' + fmtDate(sub.submitted) + '</div>'
+        + '<span class="' + (isBooked ? 'cdm-badge-booked' : 'cdm-badge-new') + '">' + (isBooked ? 'Booked' : 'New') + '</span>'
+      + '</div>'
+      + '<div class="cdm-card-body">'
+        + bookingGuidanceHtml(sub)
+        + '<div class="cdm-conditions">' + (conditions || '<span style="font-size:0.75rem;color:var(--grey-400)">No conditions listed</span>') + '</div>'
+        + '<div class="cdm-detail-row"><span class="cdm-detail-label">DOB</span><span class="cdm-detail-val">' + dob + '</span></div>'
+        + '<div class="cdm-detail-row"><span class="cdm-detail-label">Phone</span><span class="cdm-detail-val"><a href="tel:' + (sub.phone||'') + '" style="color:var(--teal)">' + (sub.phone||'—') + '</a></span></div>'
+        + '<div class="cdm-detail-row"><span class="cdm-detail-label">Email</span><span class="cdm-detail-val"><a href="mailto:' + (sub.email||'') + '" style="color:var(--teal)">' + (sub.email||'—') + '</a></span></div>'
+      + '</div>'
+      + (fieldsHtml ? '<div class="cdm-fields-body" id="cdm-fields-' + sub.id + '">' + fieldsHtml + '</div>' : '')
+      + '<div class="cdm-card-footer">'
+        + (fieldsHtml ? '<button class="cdm-fields-toggle" onclick="toggleCdmFields(' + sub.id + ',this)">Show full form</button>' : '<span></span>')
+        + '<div style="margin-left:auto;display:flex;gap:8px">'
+          + (isBooked
+            ? '<button class="cdm-action-btn cdm-action-unbook" onclick="setCdmStatus(' + sub.id + ',\'new\')">Mark as New</button>'
+            : '<button class="cdm-action-btn cdm-action-book" onclick="setCdmStatus(' + sub.id + ',\'booked\')">Mark as Booked</button>')
+        + '</div>'
+      + '</div>'
+      + '</div>';
+  }
+
+  function renderInbox() {
+    const list  = document.getElementById('cdm-inbox-list');
+    const empty = document.getElementById('cdm-inbox-empty');
+    const filtered = currentFilter === 'all'
+      ? allSubmissions
+      : allSubmissions.filter(s => s.status === currentFilter);
+
+    // Badge count of new
+    const newCount = allSubmissions.filter(s => s.status === 'new').length;
+    const badge = document.getElementById('cdm-inbox-badge');
+    if (badge) {
+      badge.textContent = newCount;
+      badge.style.display = newCount > 0 ? 'inline' : 'none';
+    }
+
+    if (filtered.length === 0) {
+      list.innerHTML = '';
+      empty.style.display = 'block';
+    } else {
+      empty.style.display = 'none';
+      list.innerHTML = filtered.map(renderCard).join('');
+    }
+  }
+
+  window.loadCdmInbox = async function(force) {
+    document.getElementById('cdm-inbox-loading').style.display = 'block';
+    document.getElementById('cdm-inbox-list').innerHTML = '';
+    document.getElementById('cdm-inbox-empty').style.display = 'none';
+    try {
+      const r = await fetch(API_URL + '?t=' + Date.now(), { headers: ghHeaders() });
+      if (!r.ok) throw new Error('fetch failed');
+      const j = await r.json();
+      currentSha = j.sha;
+      allSubmissions = JSON.parse(atob(j.content.replace(/\n/g,'')));
+    } catch(e) {
+      allSubmissions = [];
+    }
+    document.getElementById('cdm-inbox-loading').style.display = 'none';
+    renderInbox();
+  };
+
+  window.setCdmFilter = function(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.cdm-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderInbox();
+  };
+
+  window.toggleCdmFields = function(id, btn) {
+    const el = document.getElementById('cdm-fields-' + id);
+    if (!el) return;
+    const open = el.style.display === 'block';
+    el.style.display = open ? 'none' : 'block';
+    btn.textContent  = open ? 'Show full form' : 'Hide full form';
+  };
+
+  window.setCdmStatus = async function(id, status) {
+    const idx = allSubmissions.findIndex(s => s.id === id);
+    if (idx === -1) return;
+    allSubmissions[idx].status = status;
+
+    try {
+      const body = {
+        message: 'CDM inbox - mark ' + status + ' (' + (allSubmissions[idx].name||'patient') + ')',
+        content: btoa(unescape(encodeURIComponent(JSON.stringify(allSubmissions, null, 2)))),
+        sha: currentSha,
+        branch: 'main'
+      };
+      const r = await fetch(API_URL, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+      if (r.ok) {
+        const j = await r.json();
+        currentSha = j.content ? j.content.sha : currentSha;
+        if (j.content && j.content.sha) {
+          // re-fetch sha from the file object
+        }
+      }
+    } catch(e) { console.warn('status save failed', e); }
+
+    renderInbox();
+  };
+
+  // Load when inbox section is opened
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('[data-section="cdm-inbox"]');
+    if (link && allSubmissions.length === 0) loadCdmInbox();
   });
 })();
 </script>
