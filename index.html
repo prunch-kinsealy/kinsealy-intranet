@@ -4302,17 +4302,27 @@ document.getElementById('search').addEventListener('input', function() {
 });
 
 // ── Shared GitHub config ──────────────────────────────────────────────────────
-// One token, one repo — used by both Metrics and Away Status.
+// Token is fetched at runtime from a Netlify Function — never stored in code.
 // ─────────────────────────────────────────────────────────────────────────────
 window.__KMC_GH = {
-  token:  ''+atob('Z2hwX1VlU1ExQjd1VEJKaG9yRmtFRGlSbWdlazZFd011eTRJdlpRVw==')+'',
+  token:  '',
   repo:   'prunch-kinsealy/kinsealy-intranet',
   branch: 'main'
 };
 
+(async function() {
+  try {
+    const r = await fetch('/.netlify/functions/gh-token');
+    if (r.ok) {
+      const j = await r.json();
+      window.__KMC_GH.token = j.token || '';
+    }
+  } catch(e) { console.warn('Could not load GH token', e); }
+})();
+
 // ── Metrics ──────────────────────────────────────────────────────────────────
 (function() {
-  const GH_TOKEN  = window.__KMC_GH.token;
+  function GH_TOKEN() { return window.__KMC_GH.token; }
   const GH_REPO   = window.__KMC_GH.repo;
   const GH_FILE   = 'metrics-data.json';
   const GH_BRANCH = window.__KMC_GH.branch;
@@ -4328,7 +4338,7 @@ window.__KMC_GH = {
   const MONTHS      = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const _charts     = {};
-  const configured  = GH_TOKEN !== 'YOUR_GITHUB_PAT' && GH_TOKEN !== '' && GH_TOKEN.trim() !== '';
+  function configured() { const t = GH_TOKEN(); return t && t !== 'YOUR_GITHUB_PAT' && t.trim() !== ''; }
 
   // ── localStorage cache (instant reads, fallback when offline) ──────────────
   function cacheGet()  { try { return JSON.parse(localStorage.getItem(STORE_KEY))||{}; } catch(e) { return {}; } }
@@ -4349,7 +4359,7 @@ window.__KMC_GH = {
   async function remoteSet(data) {
     // 1. Get current SHA (required for update)
     const infoResp = await fetch(API_URL+'?t='+Date.now(), {
-      headers:{ 'Authorization':'Bearer '+GH_TOKEN, 'Accept':'application/vnd.github+json' },
+      headers:{ 'Authorization':'Bearer '+GH_TOKEN(), 'Accept':'application/vnd.github+json' },
       cache:'no-store'
     });
     let sha = null;
@@ -4366,7 +4376,7 @@ window.__KMC_GH = {
     const putResp = await fetch(API_URL, {
       method:'PUT',
       headers:{
-        'Authorization':'Bearer '+GH_TOKEN,
+        'Authorization':'Bearer '+GH_TOKEN(),
         'Content-Type':'application/json',
         'Accept':'application/vnd.github+json'
       },
@@ -4380,7 +4390,7 @@ window.__KMC_GH = {
 
   // ── Combined get: remote first, fall back to cache ─────────────────────────
   async function getData() {
-    if (configured) {
+    if (configured()) {
       const remote = await remoteGet();
       if (remote !== null) { cacheSet(remote); return remote; }
     }
@@ -4390,7 +4400,7 @@ window.__KMC_GH = {
   // ── Combined set: always update cache; remote if configured ───────────────
   async function setData(data) {
     cacheSet(data);
-    if (!configured) return { ok:false, reason:'not-configured' };
+    if (!configured()) return { ok:false, reason:'not-configured' };
     await remoteSet(data);
     return { ok:true };
   }
@@ -4534,7 +4544,7 @@ window.__KMC_GH = {
     const y = parseInt(yearSel.value), m = parseInt(monthSel.value);
     // Show cached data immediately while fetching
     populateCards(cacheGet(), y, m);
-    if (configured) {
+    if (configured()) {
       setSyncStatus('⟳ Syncing…','var(--grey-400)');
       const remote = await remoteGet();
       if (remote !== null) { cacheSet(remote); populateCards(remote,y,m); setSyncStatus('✓ Synced','var(--teal)'); }
@@ -4619,7 +4629,7 @@ window.__KMC_GH = {
 
     let html = '';
 
-    if (!configured) {
+    if (!configured()) {
       html += `<div class="warn-box" style="margin-bottom:20px;font-size:0.82rem;line-height:1.75">
         <strong>⚙️ GitHub sync not yet configured</strong><br>
         Data currently saves to this browser only. To sync across all devices, add your GitHub Personal Access Token:<br><br>
