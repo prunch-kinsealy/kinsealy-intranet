@@ -4301,32 +4301,36 @@ document.getElementById('search').addEventListener('input', function() {
 });
 
 // ── Shared GitHub config ──────────────────────────────────────────────────────
-// Token is fetched at runtime from a Netlify Function — never stored in code.
+// All reads/writes go through the /.netlify/functions/gh-proxy server-side
+// function. No GitHub token is ever sent to the browser.
 // ─────────────────────────────────────────────────────────────────────────────
 window.__KMC_GH = {
-  token:  '',
   repo:   'prunch-kinsealy/kinsealy-intranet',
   branch: 'main'
 };
 
-(async function() {
-  try {
-    const r = await fetch('/.netlify/functions/gh-token');
-    if (r.ok) {
-      const j = await r.json();
-      window.__KMC_GH.token = j.token || '';
-    }
-  } catch(e) { console.warn('Could not load GH token', e); }
-})();
+async function kmcProxyGet(file) {
+  const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(file) + '&t=' + Date.now(), { cache: 'no-store' });
+  if (!r.ok) throw new Error('proxy read failed (' + r.status + ')');
+  return r.json(); // { sha, json }
+}
+
+async function kmcProxySet(file, content, message) {
+  const r = await fetch('/.netlify/functions/gh-proxy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ file, content, message })
+  });
+  if (!r.ok) {
+    const err = await r.json().catch(() => ({}));
+    throw new Error(err.error || 'proxy write failed (' + r.status + ')');
+  }
+  return r.json(); // { ok, sha }
+}
 
 // ── Metrics ──────────────────────────────────────────────────────────────────
 (function() {
-  function GH_TOKEN() { return window.__KMC_GH.token; }
-  const GH_REPO   = window.__KMC_GH.repo;
   const GH_FILE   = 'metrics-data.json';
-  const GH_BRANCH = window.__KMC_GH.branch;
-  const API_URL   = 'https://api.github.com/repos/'+GH_REPO+'/contents/'+GH_FILE;
-  const RAW_URL   = 'https://raw.githubusercontent.com/'+GH_REPO+'/'+GH_BRANCH+'/'+GH_FILE;
   const STORE_KEY = 'kmc_metrics_v1';   // localStorage cache key
   const METRICS = [
     { id:'stc_abpm',   label:'STC — ABPM',          icon:'💪', badge:'STC',     type:'number',   color:'#2a8a7e' },
@@ -4337,54 +4341,23 @@ window.__KMC_GH = {
   const MONTHS      = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const _charts     = {};
-  function configured() { const t = GH_TOKEN(); return t && t !== 'YOUR_GITHUB_PAT' && t.trim() !== ''; }
+  function configured() { return true; }
 
   // ── localStorage cache (instant reads, fallback when offline) ──────────────
   function cacheGet()  { try { return JSON.parse(localStorage.getItem(STORE_KEY))||{}; } catch(e) { return {}; } }
   function cacheSet(d) { try { localStorage.setItem(STORE_KEY,JSON.stringify(d)); }     catch(e) {} }
 
-  // ── GitHub API read (all devices) ─────────────────────────────────────────
+  // ── Proxy read (all devices) ────────────────────────────────────────────
   async function remoteGet() {
     try {
-      const r = await fetch(RAW_URL+'?t='+Date.now(), {cache:'no-store'});
-      if (!r.ok) return null;
-      return await r.json();
+      const r = await kmcProxyGet(GH_FILE);
+      return r.json;
     } catch(e) { return null; }
   }
 
-  // ── GitHub API write ──────────────────────────────────────────────────────
-  function b64(str) { return btoa(unescape(encodeURIComponent(str))); }
-
+  // ── Proxy write ──────────────────────────────────────────────────────────
   async function remoteSet(data) {
-    // 1. Get current SHA (required for update)
-    const infoResp = await fetch(API_URL+'?t='+Date.now(), {
-      headers:{ 'Authorization':'Bearer '+GH_TOKEN(), 'Accept':'application/vnd.github+json' },
-      cache:'no-store'
-    });
-    let sha = null;
-    if (infoResp.ok) { const info = await infoResp.json(); sha = info.sha; }
-
-    // 2. PUT new content
-    const body = {
-      message:'Update metrics data '+new Date().toISOString().slice(0,10),
-      content: b64(JSON.stringify(data, null, 2)),
-      branch:  GH_BRANCH
-    };
-    if (sha) body.sha = sha;
-
-    const putResp = await fetch(API_URL, {
-      method:'PUT',
-      headers:{
-        'Authorization':'Bearer '+GH_TOKEN(),
-        'Content-Type':'application/json',
-        'Accept':'application/vnd.github+json'
-      },
-      body: JSON.stringify(body)
-    });
-    if (!putResp.ok) {
-      const err = await putResp.json().catch(()=>({}));
-      throw new Error(err.message||'GitHub API error '+putResp.status);
-    }
+    await kmcProxySet(GH_FILE, data, 'Update metrics data ' + new Date().toISOString().slice(0,10));
   }
 
   // ── Combined get: remote first, fall back to cache ─────────────────────────
@@ -4628,17 +4601,6 @@ window.__KMC_GH = {
 
     let html = '';
 
-    if (!configured()) {
-      html += `<div class="warn-box" style="margin-bottom:20px;font-size:0.82rem;line-height:1.75">
-        <strong>⚙️ GitHub sync not yet configured</strong><br>
-        Data currently saves to this browser only. To sync across all devices, add your GitHub Personal Access Token:<br><br>
-        <strong>Step 1</strong> — Go to <a href="https://github.com/settings/tokens?type=beta" target="_blank">github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens</a><br>
-        <strong>Step 2</strong> — Click <em>Generate new token</em>. Set expiry (1 year). Under <em>Repository access</em> select <em>Only select repositories</em> → choose <strong>kinsealy-intranet</strong>.<br>
-        <strong>Step 3</strong> — Under <em>Permissions</em> → <em>Repository permissions</em> → <em>Contents</em> → set to <strong>Read and write</strong>. Generate token and copy it.<br>
-        <strong>Step 4</strong> — Open <code>index.html</code> in VS Code (or Claude Code), find the line <code>const GH_TOKEN = 'YOUR_GITHUB_PAT'</code> and paste your token in place of <code>YOUR_GITHUB_PAT</code>. Save, commit, push — done.
-      </div>`;
-    }
-
     html += `
       <div class="metrics-controls">
         <label for="metrics-month">Month</label>
@@ -4764,62 +4726,23 @@ const DOCTORS = new Set(['fran','joanne','ciara','ruth','eimear']);
 const STATUS_LABELS = { holiday:'Holiday', training:'Training', sick:'Sick Leave', wfh:'WFH', other:'Away' };
 const STATUS_EMOJIS = { holiday:'✈️', training:'📚', sick:'🤒', wfh:'🏠', other:'📋' };
 
-function _awayConfigured() {
-  const t = window.__KMC_GH && window.__KMC_GH.token;
-  return t && t !== 'YOUR_GITHUB_PAT';
-}
-function _awayApiUrl() {
-  return 'https://api.github.com/repos/'+window.__KMC_GH.repo+'/contents/'+AWAY_GH_FILE;
-}
-function _awayRawUrl() {
-  return 'https://raw.githubusercontent.com/'+window.__KMC_GH.repo+'/'+window.__KMC_GH.branch+'/'+AWAY_GH_FILE;
-}
 function _awayCacheGet() { try { return JSON.parse(localStorage.getItem(AWAY_CACHE_KEY)||'{}'); } catch(e) { return {}; } }
 function _awayCacheSet(d) { try { localStorage.setItem(AWAY_CACHE_KEY,JSON.stringify(d)); } catch(e) {} }
 
 async function getAwayData() {
-  if (_awayConfigured()) {
-    try {
-      const r = await fetch(_awayApiUrl()+'?t='+Date.now(), {
-        headers:{'Authorization':'Bearer '+window.__KMC_GH.token,'Accept':'application/vnd.github+json'},
-        cache:'no-store'
-      });
-      if (r.ok) {
-        const j = await r.json();
-        const d = JSON.parse(atob(j.content.replace(/\n/g,'')));
-        _awayCacheSet(d);
-        return d;
-      }
-    } catch(e) {}
-  }
+  try {
+    const r = await kmcProxyGet(AWAY_GH_FILE);
+    _awayCacheSet(r.json);
+    return r.json;
+  } catch(e) {}
   return _awayCacheGet();
 }
 
-function _b64away(str) { return btoa(unescape(encodeURIComponent(str))); }
-
 async function saveAwayData(data) {
   _awayCacheSet(data);
-  if (!_awayConfigured()) return;
-  const token = window.__KMC_GH.token;
-  const apiUrl = _awayApiUrl();
-  // get current SHA
-  let sha = null;
   try {
-    const info = await fetch(apiUrl+'?t='+Date.now(), {
-      headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'},
-      cache:'no-store'
-    });
-    if (info.ok) { const j = await info.json(); sha = j.sha; }
+    await kmcProxySet(AWAY_GH_FILE, data, 'Update away status ' + new Date().toISOString().slice(0,10));
   } catch(e) {}
-  // write file
-  const body = { message:'Update away status '+new Date().toISOString().slice(0,10),
-    content: _b64away(JSON.stringify(data,null,2)), branch: window.__KMC_GH.branch };
-  if (sha) body.sha = sha;
-  await fetch(apiUrl, {
-    method:'PUT',
-    headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json','Accept':'application/vnd.github+json'},
-    body: JSON.stringify(body)
-  });
 }
 
 function formatDate(iso) {
@@ -5325,7 +5248,6 @@ loadAwayNotices();
 // ── FEEDBACK ─────────────────────────────────────────────────
 const FB_GH_FILE = 'feedback.json';
 const FB_CACHE_KEY = 'kmc_feedback_v1';
-const FB_API_URL = () => 'https://api.github.com/repos/' + window.__KMC_GH.repo + '/contents/' + FB_GH_FILE;
 
 const FB_SECTIONS = {
   '': 'General (whole Hub)',
@@ -5416,35 +5338,13 @@ async function submitFeedback() {
   // Load existing, append, save
   let existing = [];
   try {
-    const r = await fetch(FB_API_URL() + '?t=' + Date.now(), {
-      headers: { 'Authorization': 'Bearer ' + window.__KMC_GH.token, 'Accept': 'application/vnd.github+json' },
-      cache: 'no-store'
-    });
-    if (r.ok) {
-      const j = await r.json();
-      existing = JSON.parse(atob(j.content.replace(/\n/g, '')));
-      window._fbSha = j.sha;
-    }
+    const r = await kmcProxyGet(FB_GH_FILE);
+    existing = r.json;
   } catch(e) {}
   existing.push(entry);
 
   try {
-    const body = {
-      message: 'Staff feedback ' + new Date().toISOString().slice(0,10),
-      content: btoa(unescape(encodeURIComponent(JSON.stringify(existing, null, 2)))),
-      branch: window.__KMC_GH.branch
-    };
-    if (window._fbSha) body.sha = window._fbSha;
-    const wr = await fetch(FB_API_URL(), {
-      method: 'PUT',
-      headers: {
-        'Authorization': 'Bearer ' + window.__KMC_GH.token,
-        'Content-Type': 'application/json',
-        'Accept': 'application/vnd.github+json'
-      },
-      body: JSON.stringify(body)
-    });
-    if (!wr.ok) throw new Error('write failed');
+    await kmcProxySet(FB_GH_FILE, existing, 'Staff feedback ' + new Date().toISOString().slice(0,10));
     document.getElementById('fb-form-area').style.display = 'none';
     document.getElementById('fb-success-area').style.display = 'block';
   } catch(e) {
@@ -5497,21 +5397,10 @@ async function submitFeedback() {
 
 // ── CDM Inbox ─────────────────────────────────────────────────
 (function() {
-  const REPO    = 'prunch-kinsealy/kinsealy-intranet';
-  const FILE    = 'cdm-submissions.json';
-  const API_URL = 'https://api.github.com/repos/' + REPO + '/contents/' + FILE;
+  const FILE = 'cdm-submissions.json';
 
   let allSubmissions = [];
   let currentFilter  = 'all';
-  let currentSha     = null;
-
-  function ghHeaders() {
-    return {
-      'Authorization': 'Bearer ' + window.__KMC_GH.token,
-      'Accept': 'application/vnd.github+json',
-      'Content-Type': 'application/json'
-    };
-  }
 
   function fmtDate(iso) {
     try {
@@ -5627,11 +5516,8 @@ async function submitFeedback() {
     document.getElementById('cdm-inbox-list').innerHTML = '';
     document.getElementById('cdm-inbox-empty').style.display = 'none';
     try {
-      const r = await fetch(API_URL + '?t=' + Date.now(), { headers: ghHeaders() });
-      if (!r.ok) throw new Error('fetch failed');
-      const j = await r.json();
-      currentSha = j.sha;
-      allSubmissions = JSON.parse(atob(j.content.replace(/\n/g,'')));
+      const r = await kmcProxyGet(FILE);
+      allSubmissions = r.json;
     } catch(e) {
       allSubmissions = [];
     }
@@ -5660,20 +5546,7 @@ async function submitFeedback() {
     allSubmissions[idx].status = status;
 
     try {
-      const body = {
-        message: 'CDM inbox - mark ' + status + ' (' + (allSubmissions[idx].name||'patient') + ')',
-        content: btoa(unescape(encodeURIComponent(JSON.stringify(allSubmissions, null, 2)))),
-        sha: currentSha,
-        branch: 'main'
-      };
-      const r = await fetch(API_URL, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
-      if (r.ok) {
-        const j = await r.json();
-        currentSha = j.content ? j.content.sha : currentSha;
-        if (j.content && j.content.sha) {
-          // re-fetch sha from the file object
-        }
-      }
+      await kmcProxySet(FILE, allSubmissions, 'CDM inbox - mark ' + status + ' (' + (allSubmissions[idx].name||'patient') + ')');
     } catch(e) { console.warn('status save failed', e); }
 
     renderInbox();

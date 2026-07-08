@@ -92,15 +92,10 @@
 <div id="toast"></div>
 
 <script>
-const GH_TOKEN  = ''+atob('Z2hwXzRUOUk5M1E2V25abktTQndtcURwWXRvQ29rYURiSzFyVldBQQ==')+'';
-const GH_REPO   = 'prunch-kinsealy/kinsealy-intranet';
-const GH_BRANCH = 'main';
 const GH_FB_FILE = 'feedback.json';
-const GH_API_URL = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_FB_FILE;
 
 let allFeedback = [];
 let currentFilter = 'all';
-let currentSha = null;
 
 function formatDate(iso) {
   const d = new Date(iso);
@@ -111,14 +106,10 @@ function formatDate(iso) {
 async function loadFeedback() {
   document.getElementById('sync-status').textContent = 'Loading…';
   try {
-    const r = await fetch(GH_API_URL + '?t=' + Date.now(), {
-      headers: { 'Authorization': 'Bearer ' + GH_TOKEN, 'Accept': 'application/vnd.github+json' },
-      cache: 'no-store'
-    });
+    const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(GH_FB_FILE) + '&t=' + Date.now(), { cache: 'no-store' });
     if (r.ok) {
       const j = await r.json();
-      currentSha = j.sha;
-      allFeedback = JSON.parse(atob(j.content.replace(/\n/g, '')));
+      allFeedback = j.json;
       // newest first
       allFeedback.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
       document.getElementById('sync-status').textContent = '✓ Synced — ' + allFeedback.length + ' item' + (allFeedback.length !== 1 ? 's' : '');
@@ -132,33 +123,16 @@ async function loadFeedback() {
 }
 
 async function saveFeedback() {
-  // Refresh SHA first to avoid conflicts
-  try {
-    const ri = await fetch(GH_API_URL + '?t=' + Date.now(), {
-      headers: { 'Authorization': 'Bearer ' + GH_TOKEN, 'Accept': 'application/vnd.github+json' },
-      cache: 'no-store'
-    });
-    if (ri.ok) { const ji = await ri.json(); currentSha = ji.sha; }
-  } catch(e) {}
-
-  const body = {
-    message: 'Update feedback ' + new Date().toISOString().slice(0,10),
-    content: btoa(unescape(encodeURIComponent(JSON.stringify(allFeedback, null, 2)))),
-    branch: GH_BRANCH
-  };
-  if (currentSha) body.sha = currentSha;
-  const r = await fetch(GH_API_URL, {
-    method: 'PUT',
-    headers: {
-      'Authorization': 'Bearer ' + GH_TOKEN,
-      'Content-Type': 'application/json',
-      'Accept': 'application/vnd.github+json'
-    },
-    body: JSON.stringify(body)
+  const r = await fetch('/.netlify/functions/gh-proxy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      file: GH_FB_FILE,
+      content: allFeedback,
+      message: 'Update feedback ' + new Date().toISOString().slice(0,10)
+    })
   });
   if (!r.ok) throw new Error('save failed');
-  const j = await r.json();
-  currentSha = j.content.sha;
 }
 
 function setFilter(f, btn) {
