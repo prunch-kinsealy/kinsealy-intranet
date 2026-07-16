@@ -187,6 +187,18 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .pass-box{background:#f0fdf4;border:1px solid #86efac;border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;font-size:0.82rem}
 .pass-box strong{color:#166534;display:block;margin-bottom:4px}
 .pass-box code{font-family:monospace;font-size:0.82rem;background:#dcfce7;padding:2px 6px;border-radius:4px;color:#166534}
+.bloods-table-wrap{overflow-x:auto;margin-bottom:18px;border:1px solid var(--grey-200);border-radius:var(--radius)}
+.bloods-table{width:100%;border-collapse:collapse;font-size:0.74rem;min-width:800px}
+.bloods-table th,.bloods-table td{border:1px solid var(--grey-200);padding:7px 8px;text-align:center;white-space:nowrap}
+.bloods-table thead th{background:var(--navy);color:#fff;font-weight:600;font-size:0.66rem;text-transform:uppercase;letter-spacing:0.03em}
+.bloods-table tbody th{text-align:left;background:var(--teal-pale);color:var(--navy);font-weight:600;font-size:0.72rem;position:sticky;left:0}
+.bloods-table tbody tr:nth-child(even){background:#fafbfb}
+.bloods-table td.tick{color:var(--teal);font-weight:700;font-size:0.85rem}
+.bloods-table td.tick-cond{color:#b45309;font-weight:700;font-size:0.85rem}
+.bloods-table-title{font-size:0.78rem;font-weight:700;color:var(--navy);margin:18px 0 8px;letter-spacing:0.02em}
+.bloods-table-title:first-child{margin-top:0}
+.bloods-legend{display:flex;flex-wrap:wrap;gap:16px;font-size:0.75rem;color:var(--grey-700);margin-bottom:16px}
+.bloods-legend span{display:inline-flex;align-items:center;gap:5px}
 
 /* PASSWORD FUTURE NOTE */
 .future-lock{display:inline-flex;align-items:center;gap:5px;font-size:0.68rem;padding:3px 8px;border-radius:4px;background:#fef3c7;color:#92400e;font-weight:600;margin-left:8px}
@@ -489,7 +501,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
   <nav>
     <a href="#" class="nav-link active" data-section="home"><span class="nav-icon">🏠</span> Home &amp; Noticeboard</a>
     <div class="nav-group-label">Clinical</div>
-    <a href="#" class="nav-link" data-section="cdm"><span class="nav-icon">🔁</span> CDM</a>
+    <a href="#" class="nav-link" data-section="cdm" id="cdm-nav-link"><span class="nav-icon">🔁</span> CDM <span class="future-lock" id="cdm-lock-badge">🔒</span><span class="pm-unlocked-badge" id="cdm-unlocked-badge" style="display:none">✓ Unlocked</span></a>
     <a href="#" class="nav-link" data-section="care-pathways"><span class="nav-icon">🩺</span> Patient Journeys</a>
     <a href="#" class="nav-link" data-section="clinical-pathways"><span class="nav-icon">🧬</span> Clinical Pathways</a>
     <a href="#" class="nav-link" data-section="doctor-stuff"><span class="nav-icon">👨‍⚕️</span> Doctor Protocols</a>
@@ -821,7 +833,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
                     <li>Update Diagnoses — register chronic conditions</li>
                     <li><a href="#" onclick="goToSOP('care-pathways','sop-alivecor');return false;">AliveCor ↗</a> — if not NSR, arrange full <a href="#" onclick="goToSOP('care-pathways','sop-ecg');return false;">ECG ↗</a></li>
                     <li>Place <a href="#" onclick="goToSOP('care-pathways','sop-abpm');return false;">ABPM ↗</a> (24hr)</li>
-                    <li>Bloods as per CDM note template</li>
+                    <li>Bloods — <strong>only what's covered</strong>, see <a href="#" onclick="goToSOP('cdm','sop-cdm-bloods');return false;">CDM/PP Bloods — What's Covered ↗</a></li>
                     <li>Populate Socrates CDM tab</li>
                     <li>Task doctor (orange): <em>"CDM review and 6/12 script"</em> — ABPM + bloods under same doctor name</li>
                   </ul>
@@ -917,6 +929,112 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
         <a href="#" onclick="goToSOP('care-pathways','sop-alivecor');return false;">📱 AliveCor — KardiaMobile</a> &nbsp;·&nbsp;
         <a href="#" onclick="goToSOP('care-pathways','sop-ecg');return false;">🫀 ECG — ProMed 12-Lead</a> &nbsp;·&nbsp;
         <a href="#" onclick="goToSOP('care-pathways','sop-abpm');return false;">💪 ABPM — ProMed Tubeless</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SOP: CDM / PP Bloods — What's Covered ── -->
+  <div class="sop-card" id="sop-cdm-bloods" data-updated="2026-07-16" data-section-name="CDM" data-sop-name="CDM / PP Bloods — What's Covered">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left">
+        <span>🩸</span>
+        <h3>CDM / PP Bloods — What's Covered (HSE Investigations Matrix)</h3>
+      </div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta">
+      <span>👤 Created by: Dr F. O'Reilly</span>
+      <span>🔄 Last updated: 16/07/2026</span>
+      <span>📌 v1.0</span>
+    </div>
+    <div class="sop-body">
+
+      <div class="info-box" style="margin-bottom:14px">
+        <strong>Only order the bloods listed below</strong> for the patient's condition(s) and visit type — this is the official HSE Investigations Matrix, transcribed from the printed reference sheet kept at the practice. It replaces guesswork against the Socrates "CDM Note" template.
+      </div>
+      <div class="warn-box" style="margin-bottom:18px">
+        <strong>💷 Patient wants bloods outside this list?</strong><br>
+        These are not covered under the CDM/PP scheme. Either (a) offer them privately at the practice's standard blood charge, or (b) refer them to the hospital for the full panel. Do not add extra tests to the scheme-funded sample "just in case."
+      </div>
+
+      <div class="bloods-legend">
+        <span><strong style="color:var(--teal)">✓</strong> Required</span>
+        <span><strong style="color:#b45309">IF</strong> If clinically indicated</span>
+        <span><strong>*</strong> If ever tested, does not need repeating</span>
+      </div>
+
+      <div class="bloods-table-title">Treatment Programme — Annual Review</div>
+      <div class="bloods-table-wrap">
+        <table class="bloods-table">
+          <thead><tr><th>Condition</th><th>FBC</th><th title="Creatinine">Creat.</th><th>Lipid</th><th>HbA1c</th><th>ACR</th><th>NTproBNP</th><th title="Fasting Glucose">FPG</th><th>eGFR</th><th title="Thyroid Function Test">TFT</th><th title="Liver Function Test">LFT</th></tr></thead>
+          <tbody>
+            <tr><th>Type 2 Diabetes</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick-cond">IF</td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
+            <tr><th>Asthma</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><th>COPD</th><td></td><td></td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><th>Heart Failure</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
+            <tr><th>Atrial Fibrillation</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
+            <tr><th>Ischaemic Heart Disease</th><td></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
+            <tr><th>Stroke/TIA</th><td></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bloods-table-title">Treatment Programme — Interim Review</div>
+      <div class="bloods-table-wrap">
+        <table class="bloods-table">
+          <thead><tr><th>Condition</th><th>FBC</th><th title="Creatinine">Creat.</th><th>Lipid</th><th>HbA1c</th><th>ACR</th><th>NTproBNP</th><th title="Fasting Glucose">FPG</th><th>eGFR</th><th title="Thyroid Function Test">TFT</th><th title="Liver Function Test">LFT</th></tr></thead>
+          <tbody>
+            <tr><th>Type 2 Diabetes</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick-cond">IF</td><td class="tick">✓</td><td></td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
+            <tr><th>Asthma</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><th>COPD</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><th>Heart Failure</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><th>Atrial Fibrillation</th><td></td><td class="tick">✓</td><td></td><td></td><td></td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
+            <tr><th>Ischaemic Heart Disease</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><th>Stroke/TIA</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bloods-table-title">Treatment Programme — Registration Visit <span style="font-weight:400;text-transform:none;color:var(--grey-700)">(first visit only)</span></div>
+      <div class="bloods-table-wrap">
+        <table class="bloods-table">
+          <thead><tr><th>Condition</th><th>FBC</th><th title="Creatinine">Creat.</th><th>Lipid</th><th>HbA1c</th><th>ACR</th><th>NTproBNP</th><th title="Fasting Glucose">FPG</th><th>eGFR</th><th title="Thyroid Function Test">TFT</th><th title="Liver Function Test">LFT</th></tr></thead>
+          <tbody>
+            <tr><th>Type 2 Diabetes</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick-cond">IF</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+            <tr><th>Asthma</th><td class="tick-cond">IF</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><th>COPD</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><th>Heart Failure</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td></td><td class="tick">✓</td><td class="tick">✓*</td><td class="tick">✓*</td></tr>
+            <tr><th>Atrial Fibrillation</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td class="tick">✓</td><td></td><td class="tick">✓</td><td class="tick">✓*</td><td class="tick">✓*</td></tr>
+            <tr><th>Ischaemic Heart Disease</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td class="tick">✓</td><td></td><td class="tick">✓</td><td class="tick">✓*</td><td class="tick">✓*</td></tr>
+            <tr><th>Stroke/TIA</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td class="tick">✓</td><td></td><td class="tick">✓</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bloods-table-title">Prevention Programme</div>
+      <div class="bloods-table-wrap">
+        <table class="bloods-table">
+          <thead><tr><th>Visit</th><th>FBC</th><th title="Creatinine">Creat.</th><th>Lipid</th><th>HbA1c</th><th>ACR</th><th>NTproBNP</th><th title="Fasting Glucose">FPG</th><th>eGFR</th><th title="Thyroid Function Test">TFT</th><th title="Liver Function Test">LFT</th></tr></thead>
+          <tbody>
+            <tr><th>Registration — First Visit Only</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick-cond">IF</td><td></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓*</td><td class="tick">✓*</td></tr>
+            <tr><th>Annual Review</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick-cond">IF</td><td></td><td class="tick-cond">IF</td><td class="tick-cond">IF</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bloods-table-title">Opportunistic Case Finding (OCF)</div>
+      <div class="bloods-table-wrap">
+        <table class="bloods-table">
+          <thead><tr><th>Visit</th><th>FBC</th><th title="Creatinine">Creat.</th><th>Lipid</th><th>HbA1c</th><th>ACR</th><th>NTproBNP</th><th title="Fasting Glucose">FPG</th><th>eGFR</th><th title="Thyroid Function Test">TFT</th><th title="Liver Function Test">LFT</th></tr></thead>
+          <tbody>
+            <tr><th>OCF Visit</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick-cond">IF</td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-box" style="margin-top:4px">
+        <strong>Source</strong> — HSE "Recommended Investigations for the HSE Chronic Disease Treatment and Prevention Programmes" printed reference sheet. Additional copies can be printed from <a href="https://www.hse.ie/eng/services/list/2/primarycare/community-healthcare-networks/chronic-disease-management/" target="_blank">hse.ie</a>. If any cell here looks wrong, check the laminated original before relying on this page — flag Dr O'Reilly to correct it.
       </div>
 
     </div>
@@ -2164,6 +2282,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
   <div style="margin-bottom:20px;display:flex;flex-direction:column;gap:10px">
     <a href="staff-logins.html" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 18px;text-decoration:none;color:#1a2d4a;font-size:0.88rem;font-weight:500;transition:border-color 0.15s" onmouseover="this.style.borderColor='#2a8a7e'" onmouseout="this.style.borderColor='#e8e8e8'">🔑 Staff Logins &amp; Usernames</a>
     <a href="feedback.html" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 18px;text-decoration:none;color:#1a2d4a;font-size:0.88rem;font-weight:500;transition:border-color 0.15s" onmouseover="this.style.borderColor='#2a8a7e'" onmouseout="this.style.borderColor='#e8e8e8'" id="feedback-admin-link">💬 Staff Feedback</a>
+    <a href="bank-details.html" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px 18px;text-decoration:none;color:#1a2d4a;font-size:0.88rem;font-weight:500;transition:border-color 0.15s" onmouseover="this.style.borderColor='#2a8a7e'" onmouseout="this.style.borderColor='#e8e8e8'">🔒 Bank Details</a>
   </div>
 
   <div class="section-label">Panel Management</div>
@@ -2457,7 +2576,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
         <strong>GMS patients account for the highest volume of appointment requests and require particular attention at the booking stage.</strong> The reason for the visit must be established before booking. If an alternative pathway — a form, a hospital query, a pharmacy — can resolve the issue without a GP appointment, offer that first.<br><br>
         <strong>CDM check:</strong> Before booking any GMS patient into a routine slot, check whether a CDM review is due. If so, <strong>do not book a standard appointment</strong> — route them through the CDM programme pathway instead. A routine slot must not be used to conduct a CDM review.<br><br>
         <strong>Do not book — redirect instead:</strong><br>
-        🏥 <strong>Hospital results not ordered by us:</strong> Patient contacts the hospital team directly. If they cannot get through, advise them to contact the hospital's <strong>PALS service</strong>. Do not book a GP slot as a workaround.<br>
+        🏥 <strong>Hospital results not ordered by us:</strong> Patient contacts the hospital team directly. If they cannot get through, advise them to contact the hospital's <strong>PALS service</strong>. Do not book a GP slot as a workaround. <em>(If the result was ordered by us and the patient wishes to discuss it, this is different — however please ensure the result is on file before booking and reference it in the appointment notes so the doctor is aware.)</em><br>
         📄 <strong>Form or letter only (no clinical need):</strong> Gather as much information as possible and check whether another pathway can handle it. A charge applies — advise the patient before confirming.<br>
         💊 <strong>Prescription request only (no clinical need):</strong> Redirect to the prescription request process. Do not book a slot.<br>
         🦷 <strong>Dental:</strong> Redirect to their own dentist. If unavailable, the Dental Hospital offers a walk-in service — details on their website. Please note we are not indemnified to treat dental problems.<br>
@@ -3782,7 +3901,7 @@ Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick
           <input type="date" id="away-from">
         </div>
         <div class="modal-field">
-          <label>Back On</label>
+          <label id="away-until-label">Back On</label>
           <input type="date" id="away-until">
         </div>
       </div>
@@ -3805,7 +3924,7 @@ Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick
 
     <div id="away-admin-section" style="display:none">
       <hr class="modal-divider">
-      <details style="cursor:pointer">
+      <details id="away-admin-details" open style="cursor:pointer">
         <summary style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--grey-400);list-style:none;display:flex;align-items:center;gap:6px;user-select:none">
           ⚙️ Admin options
         </summary>
@@ -3929,11 +4048,13 @@ if(pmUnlocked){
   document.getElementById('pm-unlocked-badge').style.display='inline';
   document.getElementById('metrics-lock-badge').style.display='none';
   document.getElementById('metrics-unlocked-badge').style.display='inline';
+  document.getElementById('cdm-lock-badge').style.display='none';
+  document.getElementById('cdm-unlocked-badge').style.display='inline';
 }
 
 function switchSection(target) {
   // Check PM lock
-  if((target === 'practice-management' || target === 'metrics') && !pmUnlocked) {
+  if((target === 'practice-management' || target === 'metrics' || target === 'cdm') && !pmUnlocked) {
     window._pmLockTarget = target;
     document.getElementById('pm-lock').classList.add('show');
     document.getElementById('pm-password').value = '';
@@ -3976,6 +4097,8 @@ function checkPmPassword() {
     document.getElementById('pm-unlocked-badge').style.display = 'inline';
     document.getElementById('metrics-lock-badge').style.display = 'none';
     document.getElementById('metrics-unlocked-badge').style.display = 'inline';
+    document.getElementById('cdm-lock-badge').style.display = 'none';
+    document.getElementById('cdm-unlocked-badge').style.display = 'inline';
     // Go to whichever locked section was requested
     switchSection(window._pmLockTarget || 'practice-management');
     window._pmLockTarget = null;
@@ -4125,10 +4248,11 @@ async function loadWhosIn() {
   const awayUsernames = new Set(
     Object.entries(awayData)
       .filter(([,s]) => {
-        if (!s || !s.departureDate || !s.returnDate) return false;
+        if (!s || !s.departureDate) return false;
         const dep = new Date(s.departureDate);
-        const ret = new Date(s.returnDate);
         const today = new Date(); today.setHours(0,0,0,0);
+        if (!s.returnDate) return dep <= today; // sick with no return date
+        const ret = new Date(s.returnDate);
         return dep <= today && ret >= today;
       })
       .map(([k]) => k)
@@ -4777,7 +4901,8 @@ async function loadAwayWidget() {
   if (!body) return;
   const today = new Date(); today.setHours(0,0,0,0);
   const active = Object.entries(data).filter(([u, s]) => {
-    if (!s || !s.returnDate) return false;
+    if (!s || !s.departureDate) return false;
+    if (!s.returnDate) return true; // sick with no return date — always show until cleared
     const ret = new Date(s.returnDate + 'T12:00:00');
     return ret >= today;
   });
@@ -4802,7 +4927,7 @@ async function loadAwayWidget() {
         <span class="away-card-badge ${badgeCls}">${emoji} ${label}</span>
       </div>
       ${dest ? `<div class="away-card-dest">📍 ${dest}</div>` : ''}
-      <div class="away-card-dates">📅 ${formatDate(s.departureDate)} – back ${formatDate(s.returnDate)}</div>
+      <div class="away-card-dates">📅 ${formatDate(s.departureDate)}${s.returnDate ? ` – back ${formatDate(s.returnDate)}` : ' – return date TBC'}</div>
       ${buddy && DOCTORS.has(username) ? `<span class="away-card-buddy">🤝 Buddy: ${buddy}</span>` : ''}
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${countdown}${leavingSoon}</div>
     </div>`;
@@ -4880,6 +5005,8 @@ function awayStatusTypeChange() {
   const type = document.getElementById('away-status-type').value;
   const destField = document.getElementById('away-dest-field');
   destField.style.display = (type === 'holiday' || type === 'other') ? 'block' : 'none';
+  const untilLabel = document.getElementById('away-until-label');
+  if (untilLabel) untilLabel.innerHTML = type === 'sick' ? 'Back On <span style="font-weight:400;text-transform:none;color:var(--grey-400)">(optional)</span>' : 'Back On';
 }
 
 function getTargetUser() {
@@ -4900,7 +5027,8 @@ function saveAwayStatus() {
   const departureDate = document.getElementById('away-from').value;
   const returnDate = document.getElementById('away-until').value;
   const buddy = document.getElementById('away-buddy').value;
-  if (!departureDate || !returnDate) { alert('Please set departure and return dates.'); return; }
+  if (!departureDate) { alert('Please set the away from date.'); return; }
+  if (!returnDate && status !== 'sick') { alert('Please set the return date.'); return; }
 
   // Save to cache instantly so UI updates immediately
   const data = _awayCacheGet();
@@ -5154,8 +5282,19 @@ async function loadAwayNotices() {
     const daysUntilReturn = _daysFrom(s.returnDate, today);
     const daysSinceReturn = -daysUntilReturn;
 
-    // Leaving soon (0–2 days before departure)
-    if (daysUntilDep >= 0 && daysUntilDep <= 2 && returnDay >= today) {
+    // Sick leave — show a discreet notice, no bon voyage
+    if (s.status === 'sick') {
+      if (depDay && depDay <= today) {
+        const returnTxt = s.returnDate ? `Return date: ${formatDate(s.returnDate)}.` : 'Return date to be confirmed.';
+        cards.push(`<div class="away-notice-card" style="background:linear-gradient(135deg,#7f1d1d,#991b1b)">
+          <div class="away-notice-header"><span class="away-notice-emoji">🤒</span><div><div class="away-notice-title">${name} is on sick leave</div></div></div>
+          <div class="away-notice-sub">${returnTxt} Please redirect their patients and tasks to the duty doctor or cover nurse.</div>
+          <div class="away-notice-pills"><span class="away-pill">🤒 Sick Leave</span></div>
+        </div>`);
+      }
+    }
+    // Leaving soon (0–2 days before departure) — non-sick only
+    else if (daysUntilDep >= 0 && daysUntilDep <= 2 && returnDay >= today) {
       const destTxt = s.destination ? ` to ${s.destination}` : '';
       const label = daysUntilDep === 0 ? 'Leaving today' : daysUntilDep === 1 ? 'Leaving tomorrow' : 'Leaving in 2 days';
       const msgs = (s.messages || []);
@@ -5168,7 +5307,7 @@ async function loadAwayNotices() {
         ${msgsHtml}${formHtml}
       </div>`);
     }
-    // Currently away (departure in past, still away)
+    // Currently away (departure in past, still away) — non-sick only
     else if (depDay && depDay <= today && returnDay >= today) {
       const destTxt = s.destination ? ` in ${s.destination}` : '';
       const countdownTxt = daysUntilReturn === 0 ? 'Back today!' : daysUntilReturn === 1 ? 'Back tomorrow' : `Back in ${daysUntilReturn} days`;

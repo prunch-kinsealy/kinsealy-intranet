@@ -143,6 +143,11 @@
       </div>
     </div>
 
+    <!-- Bloods coverage note -->
+    <div class="info-box">
+      <strong>Which bloods will I have done?</strong> On the day, we carry out the blood tests recommended by the HSE for your condition(s) and appointment type — these are covered under the Chronic Disease Management / Prevention Programme. If your doctor or nurse feels you need additional tests that fall outside this scheme, these can either be arranged privately at our standard charge, or you may be referred to the hospital for the full panel.
+    </div>
+
     <form id="cdmForm" name="cdm-form" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
       <input type="hidden" name="form-name" value="cdm-form"/>
       <input type="hidden" name="bot-field"/>
@@ -884,27 +889,42 @@
         <textarea id="health-goals" name="health-goals" placeholder="e.g. lose weight, reduce blood pressure, stop smoking, exercise more, feel less anxious — anything you would like to work towards with your doctor or nurse"></textarea>
       </div>
 
-      <!-- ══ SECTION 4: Physical Measurements (Optional) ══ -->
+      <!-- ══ SECTION 4: Physical Measurements ══ -->
       <div class="section-header">
         <div class="section-number">4</div>
-        <div class="section-header-text"><h2>Physical Measurements</h2><p>Optional — will be taken at your appointment if not provided</p></div>
+        <div class="section-header-text"><h2>Physical Measurements</h2><p>Weight and height are required before your appointment</p></div>
       </div>
 
       <div class="info-box">
-        If you are able to weigh yourself and measure your waist at home, please complete the fields below. Both are entirely optional — we will take these measurements at your appointment if you prefer.
+        Please weigh and measure yourself before your appointment and enter the values below. <strong>Weight and height are required</strong> so we can calculate your BMI in advance. Waist circumference is optional — we will measure this at your visit.
       </div>
 
-      <div class="field-group">
-        <label for="weight">Weight <span class="optional">(optional)</span></label>
-        <div style="display:flex;gap:10px;align-items:center">
-          <input type="number" id="weight" name="weight" placeholder="e.g. 75" min="20" max="300" step="0.1" style="max-width:160px"/>
-          <span style="font-size:0.88rem;color:var(--text-muted)">kg</span>
+      <div class="field-row">
+        <div class="field-group" id="fg-weight">
+          <label for="weight">Weight <span class="required">*</span></label>
+          <div style="display:flex;gap:10px;align-items:center">
+            <input type="number" id="weight" name="weight" placeholder="e.g. 75" min="20" max="300" step="0.1" style="max-width:160px" oninput="calcBmi()"/>
+            <span style="font-size:0.88rem;color:var(--text-muted)">kg</span>
+          </div>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;font-weight:300">Weigh yourself on several mornings in a row — before eating, light clothing, no shoes — and enter the average.</p>
+          <div class="field-error">Please enter your weight.</div>
         </div>
-        <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;font-weight:300">For the most accurate result, weigh yourself on several mornings in a row — before eating, with light clothing and no shoes — then enter the average of those readings. For example, if your readings were 76.2, 75.8 and 76.0 kg, enter 76.0. If you don't have scales at home, no problem — we'll measure at your appointment.</p>
+        <div class="field-group" id="fg-height">
+          <label for="height">Height <span class="required">*</span></label>
+          <div style="display:flex;gap:10px;align-items:center">
+            <input type="number" id="height" name="height" placeholder="e.g. 170" min="100" max="250" step="1" style="max-width:160px" oninput="calcBmi()"/>
+            <span style="font-size:0.88rem;color:var(--text-muted)">cm</span>
+          </div>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;font-weight:300">Enter your height in centimetres (e.g. 5'7" = 170 cm). Used to calculate your BMI.</p>
+          <div class="field-error">Please enter your height.</div>
+        </div>
       </div>
 
+      <!-- BMI result banner — shown when BMI can be calculated -->
+      <div id="bmi-result-box" style="display:none;border-radius:12px;padding:18px 22px;margin-bottom:6px;border:1.5px solid"></div>
+
       <div class="field-group">
-        <label for="waist">Waist Circumference <span class="optional">(optional)</span></label>
+        <label for="waist">Waist Circumference <span class="optional">(optional — we will measure this at your appointment)</span></label>
         <div style="display:flex;gap:10px;align-items:center">
           <input type="number" id="waist" name="waist-circumference" placeholder="e.g. 88" min="40" max="200" step="0.5" style="max-width:160px"/>
           <span style="font-size:0.88rem;color:var(--text-muted)">cm</span>
@@ -916,7 +936,6 @@
           3. Wrap a tape measure around your bare skin at this point. It should sit flat without pressing in.<br>
           4. Take the reading at the end of a gentle exhale.
         </div>
-        <p style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;font-weight:300">If you are unable to measure or would prefer not to, we will do this at your appointment.</p>
       </div>
 
       <!-- ══ SECTION 5: Medications ══ -->
@@ -1200,6 +1219,14 @@
     e.preventDefault();
     let valid = true;
 
+    // Weight and height required
+    ['weight','height'].forEach(f => {
+      const el = document.getElementById(f);
+      const empty = !el || !el.value.trim();
+      setError(f, empty);
+      if (empty) valid = false;
+    });
+
     // Required text fields
     ['patient-name','dob','phone'].forEach(f => {
       const el = document.getElementById(f);
@@ -1281,8 +1308,44 @@
     }
   });
 
+  // ── BMI calculator ────────────────────────────────────────────
+  function calcBmi() {
+    const w = parseFloat(document.getElementById('weight').value);
+    const h = parseFloat(document.getElementById('height').value);
+    const box = document.getElementById('bmi-result-box');
+    if (!w || !h || h < 100 || w < 20) { box.style.display = 'none'; return; }
+    const bmi = w / ((h / 100) * (h / 100));
+    const bmiRounded = Math.round(bmi * 10) / 10;
+    const over25 = bmi >= 25;
+    box.style.display = 'block';
+    if (over25) {
+      box.style.background = '#fff8ed';
+      box.style.borderColor = '#f6c26b';
+      box.innerHTML = '<div style="display:flex;gap:14px;align-items:flex-start">'
+        + '<div style="font-size:1.4rem;flex-shrink:0;margin-top:2px">⚖️</div>'
+        + '<div>'
+        + '<div style="font-size:0.9rem;font-weight:700;color:#7a4600;margin-bottom:6px">Your estimated BMI is ' + bmiRounded + ' — above the healthy range</div>'
+        + '<div style="font-size:0.83rem;color:#7a4600;line-height:1.7;font-weight:300;margin-bottom:12px">A BMI over 25 is classed as overweight. Your nurse or doctor will discuss this with you at your appointment. In the meantime, the following HSE resources may be helpful:</div>'
+        + '<div style="display:flex;flex-direction:column;gap:8px">'
+        + '<a href="https://www2.hse.ie/living-well/healthy-weight/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#1a2e44;color:white;text-decoration:none;padding:10px 16px;border-radius:8px;font-size:0.83rem;font-weight:600;width:fit-content">'
+        + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+        + 'HSE Healthy Weight Information</a>'
+        + '<a href="https://www.hse.ie/eng/about/who/healthwellbeing/our-priority-programmes/heal/healthy-eating-active-living-programme/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#2a7c8a;color:white;text-decoration:none;padding:10px 16px;border-radius:8px;font-size:0.83rem;font-weight:600;width:fit-content">'
+        + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+        + 'HSE Healthy Living Programme</a>'
+        + '</div></div></div>';
+    } else {
+      box.style.background = '#e8f4f6';
+      box.style.borderColor = 'rgba(42,124,138,0.35)';
+      box.innerHTML = '<div style="display:flex;gap:12px;align-items:center">'
+        + '<div style="font-size:1.2rem">✅</div>'
+        + '<div style="font-size:0.86rem;color:#1a2e44;font-weight:400">Your estimated BMI is <strong>' + bmiRounded + '</strong> — within the healthy range (18.5–24.9).</div>'
+        + '</div>';
+    }
+  }
+
   // Clear errors on input
-  ['patient-name','dob','phone','email'].forEach(f => {
+  ['patient-name','dob','phone','email','weight','height'].forEach(f => {
     const el = document.getElementById(f);
     if (el) el.addEventListener('input', () => setError(f, false));
   });
