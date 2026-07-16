@@ -97,16 +97,9 @@
 <div id="toast"></div>
 
 <script>
-// ── GitHub config (keep in sync with index.html & login.html) ─
-const GH_TOKEN    = ''+atob('Z2hwXzRUOUk5M1E2V25abktTQndtcURwWXRvQ29rYURiSzFyVldBQQ==')+'';
-const GH_REPO     = 'prunch-kinsealy/kinsealy-intranet';
-const GH_BRANCH   = 'main';
+// ── Data file (read/write via server-side proxy — no token in the browser) ─
 const GH_PWD_FILE = 'passwords.json';
 const PWD_CACHE_KEY = 'kmc_pwd_cache';
-const GH_API_URL  = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_PWD_FILE;
-const GH_RAW_URL  = 'https://raw.githubusercontent.com/' + GH_REPO + '/' + GH_BRANCH + '/' + GH_PWD_FILE;
-
-const configured = GH_TOKEN !== 'YOUR_GITHUB_PAT' && GH_TOKEN.trim() !== '';
 
 const STAFF = [
   {username:'fran',     name:"Dr Fran O'Reilly",      badge:'admin'},
@@ -133,29 +126,16 @@ let passwords = {};
 function cacheGet() { try { return JSON.parse(localStorage.getItem(PWD_CACHE_KEY)); } catch(e) { return null; } }
 function cacheSet(d) { try { localStorage.setItem(PWD_CACHE_KEY, JSON.stringify(d)); } catch(e) {} }
 
-function b64(str) { return btoa(unescape(encodeURIComponent(str))); }
-
 async function fetchPasswords() {
   const cached = cacheGet();
   if (cached) { passwords = cached; renderTable(); }
 
-  if (!configured) {
-    passwords = cacheGet() || { ...DEFAULT_PWDS };
-    document.getElementById('sync-status').textContent = 'GitHub not configured — showing defaults';
-    renderTable();
-    return;
-  }
-
   try {
-    const r = await fetch(GH_API_URL + '?t=' + Date.now(), {
-      headers: { 'Authorization': 'Bearer ' + GH_TOKEN, 'Accept': 'application/vnd.github+json' },
-      cache: 'no-store'
-    });
+    const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(GH_PWD_FILE) + '&t=' + Date.now(), { cache: 'no-store' });
     if (r.ok) {
       const j = await r.json();
-      const fresh = JSON.parse(atob(j.content.replace(/\n/g, '')));
-      passwords = fresh;
-      cacheSet(fresh);
+      passwords = j.json;
+      cacheSet(j.json);
       document.getElementById('sync-status').textContent = '✓ Synced from GitHub';
     } else {
       document.getElementById('sync-status').textContent = 'GitHub error — showing cached';
@@ -168,33 +148,14 @@ async function fetchPasswords() {
 
 async function savePasswords() {
   cacheSet(passwords);
-  if (!configured) return;
-
-  // Get current SHA
-  let sha = null;
-  try {
-    const info = await fetch(GH_API_URL + '?t=' + Date.now(), {
-      headers: { 'Authorization': 'Bearer ' + GH_TOKEN, 'Accept': 'application/vnd.github+json' },
-      cache: 'no-store'
-    });
-    if (info.ok) { const j = await info.json(); sha = j.sha; }
-  } catch(e) {}
-
-  const body = {
-    message: 'Update staff passwords ' + new Date().toISOString().slice(0, 10),
-    content: b64(JSON.stringify(passwords, null, 2)),
-    branch: GH_BRANCH
-  };
-  if (sha) body.sha = sha;
-
-  const r = await fetch(GH_API_URL, {
-    method: 'PUT',
-    headers: {
-      'Authorization': 'Bearer ' + GH_TOKEN,
-      'Content-Type': 'application/json',
-      'Accept': 'application/vnd.github+json'
-    },
-    body: JSON.stringify(body)
+  const r = await fetch('/.netlify/functions/gh-proxy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      file: GH_PWD_FILE,
+      content: passwords,
+      message: 'Update staff passwords ' + new Date().toISOString().slice(0, 10)
+    })
   });
   if (!r.ok) throw new Error('GitHub write failed');
 }
@@ -288,8 +249,8 @@ async function doReset(username) {
     showToast('✓ Password updated for ' + STAFF.find(s => s.username === username).name);
     document.getElementById('sync-status').textContent = '✓ Saved to GitHub';
   } catch(e) {
-    msg.textContent = configured ? '⚠ GitHub save failed — saved locally only' : '✓ Saved locally';
-    msg.style.color = configured ? '#b91c1c' : '#2a8a7e';
+    msg.textContent = '⚠ GitHub save failed — saved locally only';
+    msg.style.color = '#b91c1c';
   } finally {
     saveBtn.disabled = false;
     saveBtn.textContent = 'Save';

@@ -52,27 +52,24 @@
   <div class="footer">For access issues contact the Practice Manager</div>
 </div>
 <script>
-// ── GitHub config (keep in sync with index.html) ──────────────
-const GH_TOKEN  = ''+atob('Z2hwXzRUOUk5M1E2V25abktTQndtcURwWXRvQ29rYURiSzFyVldBQQ==')+'';
-const GH_REPO   = 'prunch-kinsealy/kinsealy-intranet';
-const GH_BRANCH = 'main';
+// ── Data file (read via server-side proxy — no token in the browser) ──
 const GH_PWD_FILE = 'passwords.json';
 const PWD_CACHE_KEY = 'kmc_pwd_cache';
 
 // ── Staff directory (names/roles — passwords come from GitHub) ─
 const USERS = {
-  'fran':     {display:"Dr O'Reilly",          initials:'FO', role:'admin'},
-  'joanne':   {display:'Dr Dundon',            initials:'JD', role:'admin'},
-  'maria':    {display:'Maria Harding',        initials:'MH', role:'admin'},
-  'ciara':    {display:'Dr Dunleavy',          initials:'CD', role:'staff'},
-  'ruth':     {display:'Dr Devlin',            initials:'RD', role:'staff'},
-  'eimear':   {display:'Dr Dunne',             initials:'ED', role:'staff'},
-  'laura':    {display:'Laura McGrath',        initials:'LM', role:'staff'},
-  'susan':    {display:"Susan O'Leary",        initials:'SO', role:'staff'},
-  'michaela': {display:'Michaela Duffy-Meade', initials:'MD', role:'staff'},
-  'holly':    {display:'Holly McCamley',       initials:'HM', role:'staff'},
-  'edel':     {display:'Edel Grimes',          initials:'EG', role:'staff'},
-  'amy':      {display:'Amy Burke',            initials:'AB', role:'staff'},
+  'fran':     {display:"Dr O'Reilly",          initials:'FO', role:'admin', jobRole:'doc'},
+  'joanne':   {display:'Dr Dundon',            initials:'JD', role:'admin', jobRole:'doc'},
+  'maria':    {display:'Maria Harding',        initials:'MH', role:'admin', jobRole:'pm'},
+  'ciara':    {display:'Dr Dunleavy',          initials:'CD', role:'staff', jobRole:'doc'},
+  'ruth':     {display:'Dr Devlin',            initials:'RD', role:'staff', jobRole:'doc'},
+  'eimear':   {display:'Dr Dunne',             initials:'ED', role:'staff', jobRole:'doc'},
+  'laura':    {display:'Laura McGrath',        initials:'LM', role:'staff', jobRole:'nurse'},
+  'susan':    {display:"Susan O'Leary",        initials:'SO', role:'staff', jobRole:'sec'},
+  'michaela': {display:'Michaela Duffy-Meade', initials:'MD', role:'staff', jobRole:'sec,phle'},
+  'holly':    {display:'Holly McCamley',       initials:'HM', role:'staff', jobRole:'sec'},
+  'edel':     {display:'Edel Grimes',          initials:'EG', role:'staff', jobRole:'sec'},
+  'amy':      {display:'Amy Burke',            initials:'AB', role:'staff', jobRole:'sec,phle'},
 };
 
 // ── Default passwords (fallback if GitHub not reachable) ───────
@@ -94,22 +91,15 @@ async function loadPasswords() {
   if (cached) passwords = cached;
   else passwords = { ...DEFAULT_PWDS };
 
-  // Refresh from GitHub in background
-  if (GH_TOKEN && GH_TOKEN !== 'YOUR_GITHUB_PAT') {
-    try {
-      const apiUrl = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_PWD_FILE;
-      const r = await fetch(apiUrl + '?t=' + Date.now(), {
-        headers: { 'Authorization': 'Bearer ' + GH_TOKEN, 'Accept': 'application/vnd.github+json' },
-        cache: 'no-store'
-      });
-      if (r.ok) {
-        const j = await r.json();
-        const fresh = JSON.parse(atob(j.content.replace(/\n/g, '')));
-        passwords = fresh;
-        pwdCacheSet(fresh);
-      }
-    } catch(e) {}
-  }
+  // Refresh from GitHub (via server-side proxy) in background
+  try {
+    const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(GH_PWD_FILE) + '&t=' + Date.now(), { cache: 'no-store' });
+    if (r.ok) {
+      const j = await r.json();
+      passwords = j.json;
+      pwdCacheSet(j.json);
+    }
+  } catch(e) {}
 }
 
 function login() {
@@ -131,6 +121,7 @@ function login() {
   sessionStorage.setItem('kmc-display', user.display);
   sessionStorage.setItem('kmc-initials', user.initials);
   sessionStorage.setItem('kmc-role', user.role);
+  sessionStorage.setItem('kmc-job-role', user.jobRole || 'staff');
   const dest = sessionStorage.getItem('kmc-redirect') || 'index.html';
   sessionStorage.removeItem('kmc-redirect');
   window.location.href = dest;
