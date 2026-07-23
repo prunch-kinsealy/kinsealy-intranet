@@ -955,9 +955,47 @@
         <textarea id="current-medications" name="current-medications" placeholder="List any new medications — name, dose, and who prescribed them. Write 'None' if nothing new."></textarea>
       </div>
 
-      <!-- ══ SECTION 6: ABPM Consent ══ -->
+      <!-- ══ SECTION 6: Blood Tests ══ -->
       <div class="section-header">
         <div class="section-number">6</div>
+        <div class="section-header-text"><h2>Blood Tests</h2><p>What's covered under your programme</p></div>
+      </div>
+
+      <div class="info-box">
+        <strong>Good news — your CDM bloods are free of charge.</strong> On the day, we carry out the exact blood tests recommended by the HSE for your condition(s) and appointment type, shown in the reference chart below. These are fully covered under the Chronic Disease Management / Prevention Programme — there's nothing for you to pay.<br><br>
+        If your doctor or nurse feels you need additional tests outside this scheme, we'll always talk it through with you first — you can either have them done privately with us at our standard charge, or we can refer you to the hospital to have the full panel done there instead.
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:6px">
+        <img src="bloods-images/hse-cdm-bloods-coverage.jpg" alt="HSE recommended investigations chart for the Chronic Disease Treatment and Prevention Programmes" style="width:100%;display:block"/>
+      </div>
+      <p style="font-size:0.72rem;color:var(--text-muted);font-weight:300;margin:0 0 18px;text-align:center">
+        Official HSE reference chart · additional copies at <a href="https://www.hse.ie/eng/services/list/2/primarycare/community-healthcare-networks/gp-diagnostics/" target="_blank" style="color:var(--teal)">hse.ie/gp-diagnostics ↗</a>
+      </p>
+
+      <div class="field-group" id="fg-bloods-preference">
+        <label>How would you like to proceed with your bloods? <span class="required">*</span></label>
+        <div class="radio-group">
+          <div class="radio-item">
+            <input type="radio" name="bloods-preference" id="bloods-scheme-only" value="Happy with scheme bloods only" onclick="toggleSubfield('bloods-extra-detail-wrap',false);document.getElementById('fg-bloods-preference').classList.remove('has-error')"/>
+            <label for="bloods-scheme-only">I'm happy to just have the bloods covered under my CDM / Prevention Programme</label>
+          </div>
+          <div class="radio-item">
+            <input type="radio" name="bloods-preference" id="bloods-need-more" value="Would like additional bloods" onclick="toggleSubfield('bloods-extra-detail-wrap',true);document.getElementById('fg-bloods-preference').classList.remove('has-error')"/>
+            <label for="bloods-need-more">I think I need additional blood tests — I'd like to give details</label>
+          </div>
+        </div>
+        <div class="subfield" id="bloods-extra-detail-wrap">
+          <label for="bloods-extra-detail">What additional tests would you like, or why do you think you need them?</label>
+          <textarea id="bloods-extra-detail" name="bloods-extra-detail" placeholder="e.g. thyroid function test — I've been feeling very tired lately"></textarea>
+          <div class="field-hint">Your doctor or nurse will confirm whether these are needed and let you know about the charge, or arrange a hospital referral if you'd prefer that instead.</div>
+        </div>
+        <div class="field-error">Please make a selection.</div>
+      </div>
+
+      <!-- ══ SECTION 7: ABPM Consent ══ -->
+      <div class="section-header">
+        <div class="section-number">7</div>
         <div class="section-header-text"><h2>24-Hour Blood Pressure Monitor (ABPM)</h2><p>Consent and device responsibility</p></div>
       </div>
 
@@ -1021,9 +1059,9 @@
         </div>
       </div>
 
-      <!-- ══ SECTION 7: What Happens on the Day ══ -->
+      <!-- ══ SECTION 8: What Happens on the Day ══ -->
       <div class="section-header">
-        <div class="section-number">7</div>
+        <div class="section-number">8</div>
         <div class="section-header-text"><h2>What to Expect on the Day</h2><p>Your appointment at a glance</p></div>
       </div>
 
@@ -1055,9 +1093,9 @@
         </div>
       </div>
 
-      <!-- ══ SECTION 8: Data Consent & Confirmation ══ -->
+      <!-- ══ SECTION 9: Data Consent & Confirmation ══ -->
       <div class="section-header">
-        <div class="section-number">8</div>
+        <div class="section-number">9</div>
         <div class="section-header-text"><h2>Data Consent &amp; Confirmation</h2><p>Please read and confirm before submitting</p></div>
       </div>
 
@@ -1287,6 +1325,12 @@
     const checkedConds = document.querySelectorAll('input[name="condition"]:checked');
     if (checkedConds.length === 0) {
       document.getElementById('fg-condition').classList.add('has-error');
+      valid = false;
+    }
+
+    // Bloods preference required
+    if (document.querySelectorAll('input[name="bloods-preference"]:checked').length === 0) {
+      document.getElementById('fg-bloods-preference').classList.add('has-error');
       valid = false;
     }
 
