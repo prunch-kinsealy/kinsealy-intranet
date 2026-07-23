@@ -552,6 +552,92 @@
       <p class="form-intro">Please read all sections carefully and complete each field below. Your signed consent will be submitted directly to the practice. If you have any questions, contact us before completing this form.</p>
     </div>
 
+    <!-- Staff Fitting Instructions -->
+    <div style="background:#1a2e44;border-radius:14px;padding:22px 26px;margin-bottom:28px">
+      <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none" onclick="toggleFitting()">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:34px;height:34px;background:rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem">🩺</div>
+          <div>
+            <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:2px">Staff Reference</div>
+            <div style="font-size:0.95rem;font-weight:600;color:white;font-family:'Playfair Display',serif">Wireless ABPM Fitting Instructions</div>
+          </div>
+        </div>
+        <div id="fittingChevron" style="color:rgba(255,255,255,0.5);font-size:1.2rem;transition:transform 0.2s">▾</div>
+      </div>
+
+      <div id="fittingInstructions" style="display:none;margin-top:20px;border-top:1px solid rgba(255,255,255,0.1);padding-top:20px">
+
+        <!-- Pacemaker warning -->
+        <div style="background:#7a1e1e;border:1.5px solid #c0392b;border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start">
+          <div style="font-size:1.3rem;flex-shrink:0">⚠️</div>
+          <div style="font-size:0.85rem;font-weight:600;color:#ffd5d5;line-height:1.6">Patients with a <strong style="color:white">pacemaker</strong> are not suitable for the Wireless ABPM. Do not fit the device.</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+
+          <!-- Software setup -->
+          <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:16px 18px">
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#2a7c8a;margin-bottom:14px">Software Setup</div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+
+              <div style="display:flex;gap:14px;align-items:flex-start">
+                <div style="display:flex;flex-direction:column;gap:8px;flex:1">
+                  <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">1.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Connect the ABPM device to the wire to initialise.</span></div>
+                  <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">2.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">A box will pop up — click <strong style="color:white">"Initialize."</strong></span></div>
+                </div>
+                <img src="abpm-images/image1.png" alt="ABPM device showing Initialize button" style="width:110px;border-radius:6px;flex-shrink:0;border:1px solid rgba(255,255,255,0.1)"/>
+              </div>
+
+              <div style="display:flex;gap:14px;align-items:flex-start">
+                <div style="display:flex;flex-direction:column;gap:8px;flex:1">
+                  <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">3.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Another box will appear — enter patient details (name, DOB, gender, weight, height, cuff size).</span></div>
+                </div>
+                <img src="abpm-images/image2.png" alt="Patient details entry screen" style="width:200px;border-radius:6px;flex-shrink:0;border:1px solid rgba(255,255,255,0.1)"/>
+              </div>
+
+              <div style="display:flex;gap:14px;align-items:flex-start">
+                <div style="display:flex;flex-direction:column;gap:8px;flex:1">
+                  <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">4.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Manually set start times: <strong style="color:white">Day 08:00 / 30 min intervals</strong> — <strong style="color:white">Night 23:00 / 60 min intervals.</strong></span></div>
+                </div>
+                <img src="abpm-images/image3.png" alt="Time interval settings" style="width:200px;border-radius:6px;flex-shrink:0;border:1px solid rgba(255,255,255,0.1)"/>
+              </div>
+
+              <div style="display:flex;gap:14px;align-items:flex-start">
+                <div style="display:flex;flex-direction:column;gap:8px;flex:1">
+                  <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">5.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">At the bottom of the screen, tick the <strong style="color:white">"Compression"</strong> box.</span></div>
+                </div>
+                <img src="abpm-images/image4.png" alt="Compression checkbox" style="width:120px;border-radius:6px;flex-shrink:0;border:1px solid rgba(255,255,255,0.1)"/>
+              </div>
+
+              <div style="display:flex;gap:14px;align-items:flex-start">
+                <div style="display:flex;flex-direction:column;gap:8px;flex:1">
+                  <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">6.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Click <strong style="color:white">"Initialize"</strong> to save the data.</span></div>
+                </div>
+                <img src="abpm-images/image5.png" alt="Initialize button" style="width:200px;border-radius:6px;flex-shrink:0;border:1px solid rgba(255,255,255,0.1)"/>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Physical fitting -->
+          <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:16px 18px">
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#2a7c8a;margin-bottom:14px">Physical Fitting</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">7.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Affix the patient's name label to the device.</span></div>
+              <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">8.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Select the appropriate cuff size — <strong style="color:white">medium or large.</strong></span></div>
+              <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">9.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Place the cuff on the patient's upper arm and secure with the Velcro closure.</span></div>
+              <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">10.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Insert the BPM device reader into the cuff until it <strong style="color:white">clicks</strong> into place.</span></div>
+              <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">11.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Press the power button and run a <strong style="color:white">demo</strong> to confirm device and cuff fit properly.</span></div>
+              <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">12.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Inform the patient of their day and night reading intervals.</span></div>
+              <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">13.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Have the patient <strong style="color:white">sign the ABPM consent form</strong> below.</span></div>
+              <div style="display:flex;gap:10px;align-items:baseline"><span style="color:#2a7c8a;font-weight:700;font-size:0.8rem;min-width:18px">14.</span><span style="font-size:0.83rem;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:300">Advise the patient to return the device the <strong style="color:white">next working day.</strong></span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
     <!-- Info cards -->
     <div class="info-grid">
       <div class="info-card">
@@ -835,6 +921,14 @@
     const el = document.getElementById(f);
     if (el) el.addEventListener('input', () => setError(f, false));
   });
+
+  function toggleFitting() {
+    const panel = document.getElementById('fittingInstructions');
+    const chevron = document.getElementById('fittingChevron');
+    const open = panel.style.display === 'block';
+    panel.style.display = open ? 'none' : 'block';
+    chevron.style.transform = open ? '' : 'rotate(180deg)';
+  }
 </script>
 </body>
 </html>

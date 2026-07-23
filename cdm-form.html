@@ -139,6 +139,7 @@
       <div>
         <h3>Fasting Required — Please Read Before Your Appointment</h3>
         <p>You must <strong>fast from midnight the night before your appointment</strong>. This means no food or drink except plain water from midnight onwards. Fasting is needed for accurate blood results (glucose, cholesterol, triglycerides).</p>
+        <p><strong>Note:</strong> Fasting is only required if you are having bloods taken as part of today's appointment. If no bloods are scheduled, you do not need to fast.</p>
         <p><strong>Medications:</strong> Continue all regular medications as normal with a small sip of water.</p>
       </div>
     </div>
@@ -182,6 +183,7 @@
         <div class="field-group" id="fg-email">
           <label for="email">Email Address <span class="required">*</span></label>
           <input type="email" id="email" name="email" placeholder="your@email.com"/>
+          <div class="field-hint">Essential — this is how we send you your care plan after your appointment, including your results, any changes to your management, and what to do before your next visit.</div>
           <div class="field-error">Please enter a valid email address.</div>
         </div>
       </div>
@@ -194,7 +196,7 @@
 
       <div class="field-group" id="fg-condition">
         <label>Conditions for Today's Appointment <span class="required">*</span></label>
-        <div class="field-hint" style="margin-bottom:10px">Tick all that apply. If you have more than one condition, all relevant question sets will appear below.</div>
+        <div class="field-hint" style="margin-bottom:10px">Tick all that apply. If you have more than one condition, all relevant question sets will appear below. If you're unsure which apply to you, please email the surgery to clarify.</div>
         <div class="check-group">
           <div class="check-item"><input type="checkbox" name="condition" value="Hypertension" id="cc-htn" onchange="onConditionsChange('htn',this.checked)"/><label for="cc-htn">Hypertension (High Blood Pressure)</label></div>
           <div class="check-item"><input type="checkbox" name="condition" value="Type 2 Diabetes" id="cc-t2dm" onchange="onConditionsChange('t2dm',this.checked)"/><label for="cc-t2dm">Type 2 Diabetes</label></div>
@@ -1118,24 +1120,16 @@
         html += '<div style="background:#fff7ed;border:2px solid #f97316;border-radius:6px;padding:12px 16px;margin-bottom:10px;font-family:Arial,sans-serif;">'
           + '<div style="font-size:13px;font-weight:700;color:#9a3412;margin-bottom:6px;">DIABETIC PATIENT - 30-Minute Appointment Required</div>'
           + '<div style="font-size:13px;color:#7c2d12;line-height:1.7;">'
-          + '<strong>Must be booked with a Doctor or Nurse</strong> - foot examination required.<br>'
+          + '<strong>Must be booked with a Doctor or Nurse only</strong> - foot examination required.<br>'
           + 'Doctor slots are 12.5 min - open 2-3 consecutive slots to make 30 min.<br>'
           + 'Remind patient to bring a <strong>urine sample (small clean container)</strong> for ACR on the day.</div></div>';
-      }
-
-      if (abpmVal === 'yes') {
-        html += '<div style="background:#f0fdf4;border:1px solid #22c55e;border-radius:6px;padding:12px 16px;margin-bottom:10px;font-family:Arial,sans-serif;">'
-          + '<div style="font-size:13px;font-weight:700;color:#166534;margin-bottom:6px;">Patient has consented to ABPM</div>'
-          + '<div style="font-size:13px;color:#14532d;line-height:1.7;">'
+      } else if (abpmVal === 'yes' || abpmVal === 'discuss') {
+        const discuss = abpmVal === 'discuss';
+        html += '<div style="background:' + (discuss ? '#fefce8' : '#f0fdf4') + ';border:1px solid ' + (discuss ? '#eab308' : '#22c55e') + ';border-radius:6px;padding:12px 16px;margin-bottom:10px;font-family:Arial,sans-serif;">'
+          + '<div style="font-size:13px;font-weight:700;color:' + (discuss ? '#713f12' : '#166534') + ';margin-bottom:6px;">' + (discuss ? 'Patient wants to discuss ABPM at appointment' : 'Patient has consented to ABPM') + '</div>'
+          + '<div style="font-size:13px;color:' + (discuss ? '#713f12' : '#14532d') + ';line-height:1.7;">'
           + 'Check <strong>CDM tab in Socrates</strong> - are bloods due?<br>'
-          + '&bull; Yes: <strong>Book 30 minutes</strong><br>'
-          + '&bull; No: <strong>Book 20 minutes</strong></div></div>';
-      } else if (abpmVal === 'discuss') {
-        html += '<div style="background:#fefce8;border:1px solid #eab308;border-radius:6px;padding:12px 16px;margin-bottom:10px;font-family:Arial,sans-serif;">'
-          + '<div style="font-size:13px;font-weight:700;color:#713f12;margin-bottom:6px;">Patient wants to discuss ABPM at appointment</div>'
-          + '<div style="font-size:13px;color:#713f12;line-height:1.7;">'
-          + 'Check <strong>CDM tab in Socrates</strong> - are bloods due?<br>'
-          + '&bull; Yes: <strong>Book 30 minutes</strong><br>'
+          + '&bull; Yes: <strong>Book 30 minutes</strong> (Dr / Nurse / Phlebotomist)<br>'
           + '&bull; No: <strong>Book 20 minutes</strong></div></div>';
       } else if (abpmVal === 'no') {
         html += '<div style="background:#fef2f2;border:1px solid #ef4444;border-radius:6px;padding:12px 16px;margin-bottom:10px;font-family:Arial,sans-serif;">'
@@ -1143,7 +1137,7 @@
           + '<div style="font-size:13px;color:#7f1d1d;line-height:1.7;">'
           + 'Check <strong>CDM tab in Socrates</strong> - are bloods due?<br>'
           + '&bull; Yes: <strong>Book 20 minutes</strong><br>'
-          + '&bull; No: <strong>Book 10-12.5 minutes</strong></div></div>';
+          + '&bull; No: <strong>Single appointment</strong></div></div>';
       }
 
       html += '</div>';

@@ -57,12 +57,21 @@ const GH_PWD_FILE = 'passwords.json';
 const PWD_CACHE_KEY = 'kmc_pwd_cache';
 
 // ── Staff directory (names/roles — passwords come from GitHub) ─
+// `editSections` (optional) lists the EDITABLE_SECTIONS keys below this user is
+// authorised to request content changes to. This user has NO direct access to
+// this production repo for that content — their hands-on editing (with Claude
+// Code) happens in a separate, private "sandbox" repo containing only the
+// files for the section(s) they're listed for (see EDITABLE_SECTIONS below and
+// the sandbox repo's own README). Once they're happy with a change there, it
+// must be manually reviewed and ported into this repo by the Practice Manager
+// (or Claude Code acting on the PM's explicit instruction) before it goes live
+// — that manual port is the sign-off gate. Full convention: see CLAUDE.md.
 const USERS = {
   'fran':     {display:"Dr O'Reilly",          initials:'FO', role:'admin', jobRole:'doc'},
   'joanne':   {display:'Dr Dundon',            initials:'JD', role:'admin', jobRole:'doc'},
   'maria':    {display:'Maria Harding',        initials:'MH', role:'admin', jobRole:'pm'},
   'ciara':    {display:'Dr Dunleavy',          initials:'CD', role:'staff', jobRole:'doc'},
-  'ruth':     {display:'Dr Devlin',            initials:'RD', role:'staff', jobRole:'doc'},
+  'ruth':     {display:'Dr Devlin',            initials:'RD', role:'staff', jobRole:'doc', editSections:['roaccutane']},
   'eimear':   {display:'Dr Dunne',             initials:'ED', role:'staff', jobRole:'doc'},
   'laura':    {display:'Laura McGrath',        initials:'LM', role:'staff', jobRole:'nurse'},
   'susan':    {display:"Susan O'Leary",        initials:'SO', role:'staff', jobRole:'sec'},
@@ -70,6 +79,20 @@ const USERS = {
   'holly':    {display:'Holly McCamley',       initials:'HM', role:'staff', jobRole:'sec'},
   'edel':     {display:'Edel Grimes',          initials:'EG', role:'staff', jobRole:'sec'},
   'amy':      {display:'Amy Burke',            initials:'AB', role:'staff', jobRole:'sec,phle'},
+};
+
+// ── Editable content sections registry ──
+// Maps a section key (used in USERS[x].editSections) to the file(s)/anchor(s)
+// it covers in THIS (production) repo, and the sandbox repo that mirrors that
+// content for hands-on editing. To grant a new staff member edit rights to a
+// new area: add a key here, add a matching file to the sandbox repo, and add
+// the key to their `editSections` array above.
+const EDITABLE_SECTIONS = {
+  roaccutane: {
+    label: 'Roaccutane (Isotretinoin)',
+    files: ['roaccutane-consent.html', 'index.html (SOP card id="sop-roaccutane")'],
+    sandboxRepo: 'kinsealy-intranet-sandbox' // private repo — Ruth has Write access here only
+  }
 };
 
 // ── Default passwords (fallback if GitHub not reachable) ───────

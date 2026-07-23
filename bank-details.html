@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bank Details – Kinsealy Medical Centre</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --navy:#1a2e44;--teal:#2a7c8a;--teal-pale:#e8f4f6;
+      --sand:#f7f4f0;--text:#1e2a35;--text-muted:#5a6a7a;--border:#d0dde6;
+      --error:#c0392b;--white:#ffffff;
+    }
+    body{font-family:'DM Sans',sans-serif;background:var(--sand);color:var(--text);min-height:100vh}
+    .header{background:var(--navy);padding:28px 40px;display:flex;align-items:center;gap:20px}
+    .header-logo{width:48px;height:48px;background:var(--teal);border-radius:12px;display:flex;align-items:center;justify-content:center}
+    .header-logo svg{width:28px;height:28px;fill:white}
+    .header-text h1{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;color:white}
+    .header-text p{font-size:0.78rem;color:rgba(255,255,255,0.55);font-weight:300;margin-top:2px;letter-spacing:0.06em;text-transform:uppercase}
+    .container{max-width:700px;margin:0 auto;padding:48px 24px 80px}
+
+    /* Lock screen */
+    .lock-screen{text-align:center;padding:20px 0}
+    .lock-icon{width:80px;height:80px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+    .lock-icon svg{width:36px;height:36px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .lock-screen h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--navy);margin-bottom:8px}
+    .lock-screen p{font-size:0.88rem;color:var(--text-muted);font-weight:300;margin-bottom:28px}
+    .lock-form{max-width:340px;margin:0 auto}
+    .pw-wrap{position:relative}
+    .pw-wrap input{width:100%;padding:14px 46px 14px 18px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--text);background:white;transition:border-color 0.2s,box-shadow 0.2s}
+    .pw-wrap input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(42,124,138,0.12)}
+    .pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);padding:0;display:flex}
+    .unlock-btn{width:100%;margin-top:12px;padding:14px;background:var(--navy);color:white;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .unlock-btn:hover{background:var(--teal)}
+    .setup-link{margin-top:16px;font-size:0.82rem;color:var(--text-muted)}
+    .setup-link a{color:var(--teal);cursor:pointer;text-decoration:underline}
+    .error-msg{background:#fdf2f2;border:1px solid #f5c6cb;border-radius:8px;padding:10px 14px;font-size:0.82rem;color:var(--error);margin-top:10px;display:none}
+
+    /* Vault screen */
+    .vault-screen{display:none}
+    .vault-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+    .vault-topbar h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--navy)}
+    .vault-actions{display:flex;gap:10px}
+    .btn{padding:9px 18px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;border:none}
+    .btn-outline{background:white;color:var(--navy);border:1.5px solid var(--border)}
+    .btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+    .btn-primary{background:var(--navy);color:white}
+    .btn-primary:hover{background:var(--teal)}
+    .btn-danger{background:#fdf2f2;color:var(--error);border:1.5px solid #f5c6cb}
+    .btn-danger:hover{background:#f5c6cb}
+    .btn-sm{padding:6px 12px;font-size:0.75rem}
+
+    /* Account cards */
+    .accounts-list{display:flex;flex-direction:column;gap:16px}
+    .account-card{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+    .account-card-header{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+    .account-card-header h3{font-family:'Playfair Display',serif;font-size:1rem;color:white}
+    .account-card-header .card-actions{display:flex;gap:8px}
+    .card-btn{background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.8);border-radius:6px;padding:5px 10px;font-size:0.75rem;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;gap:5px}
+    .card-btn:hover{background:rgba(255,255,255,0.2)}
+    .card-btn.delete{background:rgba(192,57,43,0.2);color:#ff8a80}
+    .card-btn.delete:hover{background:rgba(192,57,43,0.4)}
+    .account-fields{padding:16px 20px;display:flex;flex-direction:column;gap:0}
+    .field-row-display{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f0f4f6}
+    .field-row-display:last-child{border-bottom:none}
+    .field-label{font-size:0.75rem;font-weight:600;color:var(--text-muted);letter-spacing:0.05em;text-transform:uppercase;min-width:140px}
+    .field-value{font-size:0.9rem;color:var(--text);font-weight:500;font-family:monospace;letter-spacing:0.03em}
+    .copy-btn{background:var(--teal-pale);border:none;color:var(--teal);border-radius:6px;padding:4px 10px;font-size:0.72rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:background 0.15s;flex-shrink:0;margin-left:10px}
+    .copy-btn:hover{background:#c5e8ec}
+    .copy-btn.copied{background:#d4edda;color:#1a7a5e}
+
+    /* Empty state */
+    .empty-state{text-align:center;padding:48px 20px;background:white;border:1px solid var(--border);border-radius:14px}
+    .empty-state p{font-size:0.88rem;color:var(--text-muted);font-weight:300;margin-top:8px}
+
+    /* Modal */
+    .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(26,46,68,0.55);z-index:100;align-items:center;justify-content:center;padding:20px}
+    .modal-backdrop.open{display:flex}
+    .modal{background:white;border-radius:16px;padding:30px 32px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
+    .modal h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--navy);margin-bottom:20px}
+    .field-group{margin-bottom:16px}
+    .field-group label{display:block;font-size:0.8rem;font-weight:600;color:var(--navy);margin-bottom:6px;letter-spacing:0.03em}
+    .field-group input,.field-group textarea,.field-group select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text);background:white;transition:border-color 0.2s}
+    .field-group input:focus,.field-group textarea:focus,.field-group select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(42,124,138,0.12)}
+    .field-group textarea{resize:vertical;min-height:70px}
+    .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}
+    .field-optional{font-size:0.7rem;color:var(--text-muted);font-weight:400;margin-left:4px}
+
+    /* Setup screen */
+    .setup-screen{display:none}
+    .setup-screen h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--navy);margin-bottom:8px}
+    .setup-screen p{font-size:0.88rem;color:var(--text-muted);font-weight:300;margin-bottom:24px;line-height:1.6}
+    .security-notice{background:#fffbf0;border:1.5px solid #f6c26b;border-radius:12px;padding:16px 20px;margin-bottom:24px;font-size:0.83rem;color:#7a4600;line-height:1.65}
+    .security-notice strong{color:#5a3200}
+
+    /* Auto-lock timer */
+    .lock-timer{position:fixed;bottom:20px;right:20px;background:var(--navy);color:rgba(255,255,255,0.6);padding:8px 14px;border-radius:20px;font-size:0.75rem;display:none}
+
+    @media(max-width:560px){
+      .header{padding:20px}.container{padding:28px 16px 60px}
+      .vault-topbar{flex-direction:column;gap:12px;align-items:flex-start}
+      .field-label{min-width:100px}
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-logo">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+  </div>
+  <div class="header-text">
+    <h1>Kinsealy Medical Centre</h1>
+    <p>Staff Intranet</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- LOCK SCREEN -->
+  <div class="lock-screen" id="lockScreen">
+    <div class="lock-icon">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h2>Bank Details</h2>
+    <p>This page is encrypted. Enter your password to unlock.</p>
+    <div class="lock-form">
+      <div class="pw-wrap">
+        <input type="password" id="unlockPassword" placeholder="Enter password" autocomplete="current-password"/>
+        <button type="button" class="pw-toggle" onclick="togglePw('unlockPassword',this)" title="Show/hide password">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="error-msg" id="unlockError">Incorrect password. Please try again.</div>
+      <button class="unlock-btn" onclick="unlock()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+        Unlock
+      </button>
+      <p class="setup-link">No data saved yet? <a onclick="showSetup()">Set up now</a></p>
+    </div>
+  </div>
+
+  <!-- SETUP SCREEN -->
+  <div class="setup-screen" id="setupScreen">
+    <h2>Set Up Encrypted Bank Details</h2>
+    <p>Choose a strong password. Your bank details will be encrypted with AES-256 and stored only in this browser. The password is never saved or sent anywhere — if you forget it, the data cannot be recovered.</p>
+    <div class="security-notice">
+      🔒 <strong>Security note:</strong> Use a password that is not used anywhere else. Share it with authorised staff only — verbally or via a secure method, never by email or message.
+    </div>
+    <div class="field-group">
+      <label for="setupPw1">Choose a Password</label>
+      <div class="pw-wrap">
+        <input type="password" id="setupPw1" placeholder="Choose a strong password" autocomplete="new-password"/>
+        <button type="button" class="pw-toggle" onclick="togglePw('setupPw1',this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label for="setupPw2">Confirm Password</label>
+      <div class="pw-wrap">
+        <input type="password" id="setupPw2" placeholder="Repeat your password" autocomplete="new-password"/>
+        <button type="button" class="pw-toggle" onclick="togglePw('setupPw2',this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="error-msg" id="setupError" style="display:none"></div>
+    <div style="display:flex;gap:10px;margin-top:6px">
+      <button class="btn btn-outline" onclick="showLock()">Cancel</button>
+      <button class="btn btn-primary" onclick="setupVault()" style="flex:1;justify-content:center">Create Encrypted Vault</button>
+    </div>
+  </div>
+
+  <!-- VAULT SCREEN -->
+  <div class="vault-screen" id="vaultScreen">
+    <div class="vault-topbar">
+      <h2>Bank Details</h2>
+      <div class="vault-actions">
+        <button class="btn btn-outline btn-sm" onclick="showChangePassword()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Change Password
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="addAccount()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Account
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="lockVault()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Lock
+        </button>
+      </div>
+    </div>
+    <div class="accounts-list" id="accountsList"></div>
+  </div>
+
+</div>
+
+<!-- Auto-lock timer -->
+<div class="lock-timer" id="lockTimer"></div>
+
+<!-- Add / Edit Account Modal -->
+<div class="modal-backdrop" id="accountModal">
+  <div class="modal">
+    <h3 id="modalTitle">Add Bank Account</h3>
+    <input type="hidden" id="editingIndex" value="-1"/>
+    <div class="field-group">
+      <label for="fieldName">Account Name <span style="color:var(--teal)">*</span></label>
+      <input type="text" id="fieldName" placeholder="e.g. Kinsealy Medical Centre — Main Account"/>
+    </div>
+    <div class="field-group">
+      <label for="fieldBank">Bank Name <span style="color:var(--teal)">*</span></label>
+      <input type="text" id="fieldBank" placeholder="e.g. Bank of Ireland"/>
+    </div>
+    <div class="field-group">
+      <label for="fieldIBAN">IBAN <span class="field-optional">(optional)</span></label>
+      <input type="text" id="fieldIBAN" placeholder="e.g. IE29 AIBK 9311 5212 3456 78" style="font-family:monospace"/>
+    </div>
+    <div class="field-group">
+      <label for="fieldBIC">BIC / SWIFT <span class="field-optional">(optional)</span></label>
+      <input type="text" id="fieldBIC" placeholder="e.g. BOFIIE2D" style="font-family:monospace"/>
+    </div>
+    <div class="field-group">
+      <label for="fieldSortCode">Sort Code <span class="field-optional">(optional)</span></label>
+      <input type="text" id="fieldSortCode" placeholder="e.g. 90-00-17" style="font-family:monospace"/>
+    </div>
+    <div class="field-group">
+      <label for="fieldAccountNo">Account Number <span class="field-optional">(optional)</span></label>
+      <input type="text" id="fieldAccountNo" placeholder="e.g. 12345678" style="font-family:monospace"/>
+    </div>
+    <div class="field-group">
+      <label for="fieldNotes">Notes <span class="field-optional">(optional)</span></label>
+      <textarea id="fieldNotes" placeholder="e.g. Used for payroll payments, contact: Joe Smith"></textarea>
+    </div>
+    <div class="error-msg" id="modalError" style="display:none">Please fill in Account Name and Bank Name.</div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveAccount()">Save Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal-backdrop" id="changePwModal">
+  <div class="modal">
+    <h3>Change Password</h3>
+    <div class="field-group">
+      <label>Current Password</label>
+      <div class="pw-wrap">
+        <input type="password" id="cpCurrent" placeholder="Current password"/>
+        <button type="button" class="pw-toggle" onclick="togglePw('cpCurrent',this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>New Password</label>
+      <div class="pw-wrap">
+        <input type="password" id="cpNew1" placeholder="New password"/>
+        <button type="button" class="pw-toggle" onclick="togglePw('cpNew1',this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Confirm New Password</label>
+      <div class="pw-wrap">
+        <input type="password" id="cpNew2" placeholder="Repeat new password"/>
+        <button type="button" class="pw-toggle" onclick="togglePw('cpNew2',this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="error-msg" id="cpError" style="display:none"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="document.getElementById('changePwModal').classList.remove('open')">Cancel</button>
+      <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'kmc_bank_vault';
+  const LOCK_TIMEOUT = 5 * 60 * 1000; // 5 minutes
+  let currentPassword = null;
+  let lockTimer = null;
+  let lockCountdown = null;
+
+  // ── Crypto helpers ─────────────────────────────────────────────
+  async function deriveKey(password, salt) {
+    const keyMaterial = await crypto.subtle.importKey(
+      'raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']
+    );
+    return crypto.subtle.deriveKey(
+      { name:'PBKDF2', salt, iterations:200000, hash:'SHA-256' },
+      keyMaterial, { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']
+    );
+  }
+
+  async function encryptData(password, plaintext) {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv   = crypto.getRandomValues(new Uint8Array(12));
+    const key  = await deriveKey(password, salt);
+    const enc  = await crypto.subtle.encrypt(
+      { name:'AES-GCM', iv }, key, new TextEncoder().encode(plaintext)
+    );
+    const buf = new Uint8Array(salt.length + iv.length + enc.byteLength);
+    buf.set(salt, 0); buf.set(iv, 16); buf.set(new Uint8Array(enc), 28);
+    return btoa(String.fromCharCode(...buf));
+  }
+
+  async function decryptData(password, ciphertext) {
+    const buf  = Uint8Array.from(atob(ciphertext), c => c.charCodeAt(0));
+    const salt = buf.slice(0, 16);
+    const iv   = buf.slice(16, 28);
+    const data = buf.slice(28);
+    const key  = await deriveKey(password, salt);
+    const dec  = await crypto.subtle.decrypt({ name:'AES-GCM', iv }, key, data);
+    return new TextDecoder().decode(dec);
+  }
+
+  // ── Show/hide screens ─────────────────────────────────────────
+  function showLock()  { document.getElementById('lockScreen').style.display='block'; document.getElementById('vaultScreen').style.display='none'; document.getElementById('setupScreen').style.display='none'; }
+  function showSetup() { document.getElementById('lockScreen').style.display='none'; document.getElementById('setupScreen').style.display='block'; document.getElementById('vaultScreen').style.display='none'; }
+  function showVault() { document.getElementById('lockScreen').style.display='none'; document.getElementById('setupScreen').style.display='none'; document.getElementById('vaultScreen').style.display='block'; }
+
+  function togglePw(id, btn) {
+    const el = document.getElementById(id);
+    el.type = el.type === 'password' ? 'text' : 'password';
+  }
+
+  // ── Setup ──────────────────────────────────────────────────────
+  async function setupVault() {
+    const p1 = document.getElementById('setupPw1').value;
+    const p2 = document.getElementById('setupPw2').value;
+    const err = document.getElementById('setupError');
+    err.style.display = 'none';
+    if (!p1 || p1.length < 6) { err.textContent = 'Password must be at least 6 characters.'; err.style.display='block'; return; }
+    if (p1 !== p2) { err.textContent = 'Passwords do not match.'; err.style.display='block'; return; }
+    const encrypted = await encryptData(p1, JSON.stringify([]));
+    localStorage.setItem(STORAGE_KEY, encrypted);
+    currentPassword = p1;
+    renderVault([]);
+    showVault();
+    startLockTimer();
+  }
+
+  // ── Unlock ─────────────────────────────────────────────────────
+  async function unlock() {
+    const pw  = document.getElementById('unlockPassword').value;
+    const err = document.getElementById('unlockError');
+    const stored = localStorage.getItem(STORAGE_KEY);
+    err.style.display = 'none';
+    if (!stored) { showSetup(); return; }
+    if (!pw) return;
+    try {
+      const plain = await decryptData(pw, stored);
+      const accounts = JSON.parse(plain);
+      currentPassword = pw;
+      renderVault(accounts);
+      showVault();
+      startLockTimer();
+      document.getElementById('unlockPassword').value = '';
+    } catch {
+      err.style.display = 'block';
+    }
+  }
+
+  document.getElementById('unlockPassword').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
+
+  // ── Lock ───────────────────────────────────────────────────────
+  function lockVault() {
+    currentPassword = null;
+    clearTimeout(lockTimer);
+    clearInterval(lockCountdown);
+    document.getElementById('lockTimer').style.display = 'none';
+    showLock();
+  }
+
+  function startLockTimer() {
+    clearTimeout(lockTimer);
+    clearInterval(lockCountdown);
+    let remaining = LOCK_TIMEOUT / 1000;
+    const timerEl = document.getElementById('lockTimer');
+    timerEl.style.display = 'block';
+
+    lockCountdown = setInterval(() => {
+      remaining--;
+      const m = Math.floor(remaining / 60);
+      const s = remaining % 60;
+      timerEl.textContent = `🔒 Auto-locks in ${m}:${String(s).padStart(2,'0')}`;
+      if (remaining <= 0) { clearInterval(lockCountdown); }
+    }, 1000);
+
+    lockTimer = setTimeout(() => {
+      lockVault();
+    }, LOCK_TIMEOUT);
+
+    // Reset on activity
+    ['mousemove','keydown','click','touchstart'].forEach(evt => {
+      document.addEventListener(evt, resetLockTimer, { passive:true });
+    });
+  }
+
+  function resetLockTimer() {
+    if (!currentPassword) return;
+    clearTimeout(lockTimer);
+    clearInterval(lockCountdown);
+    startLockTimer();
+  }
+
+  // ── Render vault ───────────────────────────────────────────────
+  function renderVault(accounts) {
+    const list = document.getElementById('accountsList');
+    if (!accounts.length) {
+      list.innerHTML = `<div class="empty-state">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#b0bec5" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <p>No bank accounts saved yet.<br>Click <strong>Add Account</strong> to get started.</p>
+      </div>`;
+      return;
+    }
+    list.innerHTML = accounts.map((a, i) => `
+      <div class="account-card">
+        <div class="account-card-header">
+          <h3>${esc(a.name)}</h3>
+          <div class="card-actions">
+            <button class="card-btn" onclick="editAccount(${i})">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Edit
+            </button>
+            <button class="card-btn delete" onclick="deleteAccount(${i})">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+              Delete
+            </button>
+          </div>
+        </div>
+        <div class="account-fields">
+          ${fieldRow('Bank', a.bank)}
+          ${a.iban      ? fieldRow('IBAN', a.iban, true) : ''}
+          ${a.bic       ? fieldRow('BIC / SWIFT', a.bic, true) : ''}
+          ${a.sortCode  ? fieldRow('Sort Code', a.sortCode, true) : ''}
+          ${a.accountNo ? fieldRow('Account No.', a.accountNo, true) : ''}
+          ${a.notes     ? fieldRow('Notes', a.notes) : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function fieldRow(label, value, copyable = false) {
+    const id = 'copy_' + Math.random().toString(36).slice(2);
+    return `<div class="field-row-display">
+      <span class="field-label">${label}</span>
+      <div style="display:flex;align-items:center;gap:0;flex:1;justify-content:flex-end">
+        <span class="field-value">${esc(value)}</span>
+        ${copyable ? `<button class="copy-btn" id="${id}" onclick="copyVal('${esc(value)}','${id}')">Copy</button>` : ''}
+      </div>
+    </div>`;
+  }
+
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function copyVal(val, btnId) {
+    navigator.clipboard.writeText(val).then(() => {
+      const btn = document.getElementById(btnId);
+      if (btn) { btn.textContent = 'Copied!'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000); }
+    });
+  }
+
+  // ── Add / Edit account ────────────────────────────────────────
+  function addAccount() {
+    document.getElementById('modalTitle').textContent = 'Add Bank Account';
+    document.getElementById('editingIndex').value = -1;
+    ['fieldName','fieldBank','fieldIBAN','fieldBIC','fieldSortCode','fieldAccountNo','fieldNotes'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('modalError').style.display = 'none';
+    document.getElementById('accountModal').classList.add('open');
+  }
+
+  async function editAccount(i) {
+    const accounts = await getAccounts();
+    const a = accounts[i];
+    document.getElementById('modalTitle').textContent = 'Edit Bank Account';
+    document.getElementById('editingIndex').value = i;
+    document.getElementById('fieldName').value = a.name || '';
+    document.getElementById('fieldBank').value = a.bank || '';
+    document.getElementById('fieldIBAN').value = a.iban || '';
+    document.getElementById('fieldBIC').value = a.bic || '';
+    document.getElementById('fieldSortCode').value = a.sortCode || '';
+    document.getElementById('fieldAccountNo').value = a.accountNo || '';
+    document.getElementById('fieldNotes').value = a.notes || '';
+    document.getElementById('modalError').style.display = 'none';
+    document.getElementById('accountModal').classList.add('open');
+  }
+
+  async function saveAccount() {
+    const name = document.getElementById('fieldName').value.trim();
+    const bank = document.getElementById('fieldBank').value.trim();
+    const err  = document.getElementById('modalError');
+    if (!name || !bank) { err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    const account = {
+      name, bank,
+      iban:      document.getElementById('fieldIBAN').value.trim(),
+      bic:       document.getElementById('fieldBIC').value.trim(),
+      sortCode:  document.getElementById('fieldSortCode').value.trim(),
+      accountNo: document.getElementById('fieldAccountNo').value.trim(),
+      notes:     document.getElementById('fieldNotes').value.trim(),
+    };
+    const accounts = await getAccounts();
+    const idx = parseInt(document.getElementById('editingIndex').value);
+    if (idx >= 0) accounts[idx] = account; else accounts.push(account);
+    await saveAccounts(accounts);
+    renderVault(accounts);
+    closeModal();
+  }
+
+  async function deleteAccount(i) {
+    if (!confirm('Delete this account? This cannot be undone.')) return;
+    const accounts = await getAccounts();
+    accounts.splice(i, 1);
+    await saveAccounts(accounts);
+    renderVault(accounts);
+  }
+
+  function closeModal() { document.getElementById('accountModal').classList.remove('open'); }
+
+  // ── Change password ───────────────────────────────────────────
+  function showChangePassword() { document.getElementById('cpCurrent').value=''; document.getElementById('cpNew1').value=''; document.getElementById('cpNew2').value=''; document.getElementById('cpError').style.display='none'; document.getElementById('changePwModal').classList.add('open'); }
+
+  async function changePassword() {
+    const current = document.getElementById('cpCurrent').value;
+    const new1    = document.getElementById('cpNew1').value;
+    const new2    = document.getElementById('cpNew2').value;
+    const err     = document.getElementById('cpError');
+    err.style.display = 'none';
+    if (!new1 || new1.length < 6) { err.textContent = 'New password must be at least 6 characters.'; err.style.display='block'; return; }
+    if (new1 !== new2) { err.textContent = 'New passwords do not match.'; err.style.display='block'; return; }
+    try {
+      const accounts = await getAccounts(current);
+      currentPassword = new1;
+      await saveAccounts(accounts);
+      document.getElementById('changePwModal').classList.remove('open');
+      alert('Password updated successfully.');
+    } catch {
+      err.textContent = 'Current password is incorrect.'; err.style.display='block';
+    }
+  }
+
+  // ── Storage helpers ────────────────────────────────────────────
+  async function getAccounts(pw) {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) return [];
+    const plain = await decryptData(pw || currentPassword, stored);
+    return JSON.parse(plain);
+  }
+
+  async function saveAccounts(accounts) {
+    const encrypted = await encryptData(currentPassword, JSON.stringify(accounts));
+    localStorage.setItem(STORAGE_KEY, encrypted);
+  }
+
+  // ── Init ───────────────────────────────────────────────────────
+  window.addEventListener('load', () => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) {
+      document.querySelector('.setup-link').style.display = 'block';
+    }
+    showLock();
+  });
+
+  // Close modals on backdrop click
+  document.getElementById('accountModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+  document.getElementById('changePwModal').addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+</script>
+</body>
+</html>
