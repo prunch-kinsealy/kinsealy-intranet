@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+<script>if(!sessionStorage.getItem('kmc-auth')){sessionStorage.setItem('kmc-redirect',location.href);location.replace('login.html')}</script>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -90,16 +91,20 @@
   <p class="note">
     <strong>Admin</strong> — sees everything including Metrics and Practice Management.<br>
     <strong>Standard</strong> — all sections except Metrics and Practice Management.<br>
-    Password changes sync to GitHub instantly and take effect on all devices at next login.
+    Passwords are stored hashed and can no longer be viewed — only reset. Password changes sync to GitHub instantly and take effect on all devices at next login.
   </p>
 </div>
 
 <div id="toast"></div>
 
 <script>
-// ── Data file (read/write via server-side proxy — no token in the browser) ─
-const GH_PWD_FILE = 'passwords.json';
-const PWD_CACHE_KEY = 'kmc_pwd_cache';
+// Passwords are hashed server-side (see netlify/functions/auth.js) and are
+// never sent to the browser, so this page can no longer show existing
+// passwords — only reset them via the authenticated reset-password action.
+function kmcAuthHeader() {
+  const token = sessionStorage.getItem('kmc-token');
+  return token ? { 'Authorization': 'Bearer ' + token } : {};
+}
 
 const STAFF = [
   {username:'fran',     name:"Dr Fran O'Reilly",      badge:'admin'},
@@ -107,6 +112,7 @@ const STAFF = [
   {username:'maria',    name:'Maria Harding',          badge:'admin'},
   {username:'ciara',    name:'Dr Ciara Dunleavy',      badge:'staff'},
   {username:'ruth',     name:'Dr Ruth Devlin',         badge:'staff'},
+  {username:'eimear',   name:'Dr Eimear Dunne',        badge:'staff'},
   {username:'laura',    name:'Laura McGrath',          badge:'staff'},
   {username:'susan',    name:"Susan O'Leary",          badge:'staff'},
   {username:'michaela', name:'Michaela Duffy-Meade',   badge:'staff'},
@@ -115,55 +121,9 @@ const STAFF = [
   {username:'amy',      name:'Amy Burke',              badge:'staff'},
 ];
 
-const DEFAULT_PWDS = {
-  fran:'Kinsealy1!',joanne:'Kinsealy1!',maria:'Kinsealy1!',ciara:'Kinsealy1!',
-  ruth:'Kinsealy1!',laura:'Kinsealy1!',susan:'Kinsealy1!',michaela:'Kinsealy1!',
-  holly:'Kinsealy1!',edel:'Kinsealy1!',amy:'Kinsealy1!'
-};
-
-let passwords = {};
-
-function cacheGet() { try { return JSON.parse(localStorage.getItem(PWD_CACHE_KEY)); } catch(e) { return null; } }
-function cacheSet(d) { try { localStorage.setItem(PWD_CACHE_KEY, JSON.stringify(d)); } catch(e) {} }
-
-async function fetchPasswords() {
-  const cached = cacheGet();
-  if (cached) { passwords = cached; renderTable(); }
-
-  try {
-    const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(GH_PWD_FILE) + '&t=' + Date.now(), { cache: 'no-store' });
-    if (r.ok) {
-      const j = await r.json();
-      passwords = j.json;
-      cacheSet(j.json);
-      document.getElementById('sync-status').textContent = '✓ Synced from GitHub';
-    } else {
-      document.getElementById('sync-status').textContent = 'GitHub error — showing cached';
-    }
-  } catch(e) {
-    document.getElementById('sync-status').textContent = 'Offline — showing cached';
-  }
-  renderTable();
-}
-
-async function savePasswords() {
-  cacheSet(passwords);
-  const r = await fetch('/.netlify/functions/gh-proxy', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      file: GH_PWD_FILE,
-      content: passwords,
-      message: 'Update staff passwords ' + new Date().toISOString().slice(0, 10)
-    })
-  });
-  if (!r.ok) throw new Error('GitHub write failed');
-}
-
 function renderTable() {
   const tbody = document.getElementById('staff-tbody');
   tbody.innerHTML = STAFF.map(s => {
-    const pwd = passwords[s.username] || DEFAULT_PWDS[s.username] || '—';
     const badgeCls = s.badge === 'admin' ? 'badge-admin' : 'badge-staff';
     const badgeLbl = s.badge === 'admin' ? 'Admin' : 'Standard';
     return `
@@ -173,7 +133,6 @@ function renderTable() {
         <td>
           <div class="pwd-cell">
             <span class="pwd-display" id="pwd-${s.username}">••••••••••</span>
-            <button class="btn-icon" onclick="toggleReveal('${s.username}')">👁 Show</button>
           </div>
         </td>
         <td><span class="badge ${badgeCls}">${badgeLbl}</span></td>
@@ -183,7 +142,7 @@ function renderTable() {
         <td colspan="5">
           <div class="reset-form">
             <label>New password for ${s.name.split(' ').pop()}:</label>
-            <input type="text" id="new-pwd-${s.username}" placeholder="Enter new password"
+            <input type="text" id="new-pwd-${s.username}" placeholder="At least 8 characters"
               onkeydown="if(event.key==='Enter')doReset('${s.username}')">
             <button class="btn-save" id="save-${s.username}" onclick="doReset('${s.username}')">Save</button>
             <button class="btn-cancel" onclick="closeReset('${s.username}')">Cancel</button>
@@ -192,21 +151,6 @@ function renderTable() {
         </td>
       </tr>`;
   }).join('');
-}
-
-const revealed = {};
-function toggleReveal(username) {
-  const span = document.getElementById('pwd-' + username);
-  const btn = span.nextElementSibling;
-  if (revealed[username]) {
-    span.textContent = '••••••••••';
-    btn.textContent = '👁 Show';
-    revealed[username] = false;
-  } else {
-    span.textContent = passwords[username] || DEFAULT_PWDS[username] || '—';
-    btn.textContent = '🙈 Hide';
-    revealed[username] = true;
-  }
 }
 
 function openReset(username) {
@@ -230,6 +174,13 @@ async function doReset(username) {
   const input = document.getElementById('new-pwd-' + username);
   const newPwd = input.value.trim();
   if (!newPwd) { input.focus(); return; }
+  if (newPwd.length < 8) {
+    const msg = document.getElementById('msg-' + username);
+    msg.textContent = 'Must be at least 8 characters';
+    msg.style.color = '#b91c1c';
+    input.focus();
+    return;
+  }
 
   const saveBtn = document.getElementById('save-' + username);
   const msg = document.getElementById('msg-' + username);
@@ -237,19 +188,21 @@ async function doReset(username) {
   saveBtn.textContent = 'Saving…';
   msg.textContent = '';
 
-  passwords[username] = newPwd;
-
   try {
-    await savePasswords();
-    // Update the displayed password if it was revealed
-    if (revealed[username]) {
-      document.getElementById('pwd-' + username).textContent = newPwd;
-    }
+    const r = await fetch('/.netlify/functions/auth', {
+      method: 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, kmcAuthHeader()),
+      body: JSON.stringify({ action: 'reset-password', username, newPassword: newPwd })
+    });
+    if (r.status === 401) { sessionStorage.clear(); location.replace('login.html'); return; }
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.ok) throw new Error(j.error || 'reset failed');
+
     closeReset(username);
     showToast('✓ Password updated for ' + STAFF.find(s => s.username === username).name);
     document.getElementById('sync-status').textContent = '✓ Saved to GitHub';
   } catch(e) {
-    msg.textContent = '⚠ GitHub save failed — saved locally only';
+    msg.textContent = '⚠ ' + (e.message || 'Save failed');
     msg.style.color = '#b91c1c';
   } finally {
     saveBtn.disabled = false;
@@ -267,7 +220,8 @@ function showToast(message) {
 // Init
 if (sessionStorage.getItem('kmc-role') === 'admin') {
   document.getElementById('main-content').style.display = 'block';
-  fetchPasswords();
+  document.getElementById('sync-status').textContent = '';
+  renderTable();
 } else {
   document.getElementById('restricted').style.display = 'block';
 }

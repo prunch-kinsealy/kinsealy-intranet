@@ -1,6 +1,13 @@
 // Server-side proxy for reading/writing the Hub's JSON data files.
 // The GitHub token lives only in the Netlify env (KMC_GITHUB_TOKEN) and is
-// never sent to the browser. Only files in ALLOWED_FILES can be touched.
+// never sent to the browser. Only files in ALLOWED_FILES can be touched, and
+// only by a caller with a valid, signed session token (see _auth.js and
+// auth.js) — anonymous requests are rejected before anything is read.
+//
+// passwords.json is deliberately NOT in ALLOWED_FILES — it is handled only
+// by auth.js, which never returns its contents to the browser.
+
+const { requireAuth } = require('./_auth');
 
 const REPO = 'prunch-kinsealy/kinsealy-intranet';
 const BRANCH = 'main';
@@ -9,7 +16,6 @@ const ALLOWED_FILES = new Set([
   'away-status.json',
   'feedback.json',
   'cdm-submissions.json',
-  'passwords.json',
   'projects.json'
 ]);
 
@@ -19,8 +25,13 @@ function ghHeaders(token) {
 
 exports.handler = async (event) => {
   const token = process.env.KMC_GITHUB_TOKEN;
-  if (!token) {
+  const sessionSecret = process.env.KMC_SESSION_SECRET;
+  if (!token || !sessionSecret) {
     return { statusCode: 500, body: JSON.stringify({ error: 'Server not configured' }) };
+  }
+
+  if (!requireAuth(event, sessionSecret)) {
+    return { statusCode: 401, body: JSON.stringify({ error: 'Not authenticated' }) };
   }
 
   if (event.httpMethod === 'GET') {

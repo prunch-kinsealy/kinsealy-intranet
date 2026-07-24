@@ -1,2 +1,41 @@
 [build]
   functions = "netlify/functions"
+
+# These data files are only ever meant to be read/written through the
+# authenticated gh-proxy/auth functions (which fetch them from GitHub
+# server-side). Block them from being served directly as static assets.
+[[redirects]]
+  from = "/passwords.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/cdm-submissions.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/feedback.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/away-status.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/metrics-data.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/projects.json"
+  to = "/index.html"
+  status = 404
+  force = true

@@ -245,8 +245,14 @@ function escapeHtml(s){
 }
 
 // ── load / save ──
+function kmcAuthHeader() {
+  const token = sessionStorage.getItem('kmc-token');
+  return token ? { 'Authorization': 'Bearer ' + token } : {};
+}
+
 async function fetchLatest(){
-  const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(GH_FILE) + '&t=' + Date.now(), { cache: 'no-store' });
+  const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(GH_FILE) + '&t=' + Date.now(), { cache: 'no-store', headers: kmcAuthHeader() });
+  if (r.status === 401) { sessionStorage.clear(); location.replace('login.html'); throw new Error('Session expired'); }
   if(!r.ok) throw new Error('load failed');
   const j = await r.json();
   return j.json || [];
@@ -255,9 +261,10 @@ async function fetchLatest(){
 async function saveAll(data){
   const r = await fetch('/.netlify/functions/gh-proxy', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: Object.assign({ 'Content-Type': 'application/json' }, kmcAuthHeader()),
     body: JSON.stringify({ file: GH_FILE, content: data, message: 'Update projects ' + new Date().toISOString().slice(0,10) })
   });
+  if (r.status === 401) { sessionStorage.clear(); location.replace('login.html'); throw new Error('Session expired'); }
   if(!r.ok) throw new Error('save failed');
 }
 

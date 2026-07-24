@@ -4447,8 +4447,23 @@ window.__KMC_GH = {
   branch: 'main'
 };
 
+function kmcAuthHeader() {
+  const token = sessionStorage.getItem('kmc-token');
+  return token ? { 'Authorization': 'Bearer ' + token } : {};
+}
+
+// Session missing/expired — bounce back to login rather than leave the page
+// stuck on failed requests.
+function kmcForceReauth() {
+  const redirect = location.pathname.split('/').pop() || 'index.html';
+  sessionStorage.clear();
+  sessionStorage.setItem('kmc-redirect', redirect);
+  location.replace('login.html');
+}
+
 async function kmcProxyGet(file) {
-  const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(file) + '&t=' + Date.now(), { cache: 'no-store' });
+  const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(file) + '&t=' + Date.now(), { cache: 'no-store', headers: kmcAuthHeader() });
+  if (r.status === 401) { kmcForceReauth(); throw new Error('Session expired'); }
   if (!r.ok) throw new Error('proxy read failed (' + r.status + ')');
   return r.json(); // { sha, json }
 }
@@ -4456,9 +4471,10 @@ async function kmcProxyGet(file) {
 async function kmcProxySet(file, content, message) {
   const r = await fetch('/.netlify/functions/gh-proxy', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: Object.assign({ 'Content-Type': 'application/json' }, kmcAuthHeader()),
     body: JSON.stringify({ file, content, message })
   });
+  if (r.status === 401) { kmcForceReauth(); throw new Error('Session expired'); }
   if (!r.ok) {
     const err = await r.json().catch(() => ({}));
     throw new Error(err.error || 'proxy write failed (' + r.status + ')');
@@ -5373,9 +5389,7 @@ async function loadProjectsWidget() {
   const body = document.getElementById('projects-widget-body');
   if (!body) return;
   try {
-    const r = await fetch('/.netlify/functions/gh-proxy?file=projects.json&t=' + Date.now(), { cache: 'no-store' });
-    if (!r.ok) throw new Error('load failed');
-    const projects = (await r.json()).json || [];
+    const projects = (await kmcProxyGet('projects.json')).json || [];
     const active = projects.filter(p => !p.archived).slice(0, 3);
     if (active.length === 0) {
       body.innerHTML = '<div class="away-empty">No active projects yet</div>';

@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+<script>if(!sessionStorage.getItem('kmc-auth')){sessionStorage.setItem('kmc-redirect',location.href);location.replace('login.html')}</script>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -103,10 +104,16 @@ function formatDate(iso) {
     ' at ' + d.toLocaleTimeString('en-IE', { hour:'2-digit', minute:'2-digit' });
 }
 
+function kmcAuthHeader() {
+  const token = sessionStorage.getItem('kmc-token');
+  return token ? { 'Authorization': 'Bearer ' + token } : {};
+}
+
 async function loadFeedback() {
   document.getElementById('sync-status').textContent = 'Loading…';
   try {
-    const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(GH_FB_FILE) + '&t=' + Date.now(), { cache: 'no-store' });
+    const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(GH_FB_FILE) + '&t=' + Date.now(), { cache: 'no-store', headers: kmcAuthHeader() });
+    if (r.status === 401) { sessionStorage.clear(); location.replace('login.html'); return; }
     if (r.ok) {
       const j = await r.json();
       allFeedback = j.json;
@@ -125,13 +132,14 @@ async function loadFeedback() {
 async function saveFeedback() {
   const r = await fetch('/.netlify/functions/gh-proxy', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: Object.assign({ 'Content-Type': 'application/json' }, kmcAuthHeader()),
     body: JSON.stringify({
       file: GH_FB_FILE,
       content: allFeedback,
       message: 'Update feedback ' + new Date().toISOString().slice(0,10)
     })
   });
+  if (r.status === 401) { sessionStorage.clear(); location.replace('login.html'); return; }
   if (!r.ok) throw new Error('save failed');
 }
 
