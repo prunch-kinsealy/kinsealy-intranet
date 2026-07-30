@@ -1792,7 +1792,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
     </div>
     <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>📅 Active from: 08/05/2026</span><span>🔄 Last updated: 08/05/2026</span></div>
     <div class="sop-body">
-
+<!-- SYNC:ROACCUTANE-BODY:START -->
       <div class="info-box" style="margin-bottom:16px">
         <strong>About Roaccutane®</strong><br>
         Roaccutane® (isotretinoin) is a vitamin A derivative used for severe acne that has not responded adequately to topical treatments and oral antibiotics. It is the most effective treatment available for acne and in many cases produces long-term remission. Due to its teratogenicity and potential side effects, it requires careful patient selection, pre-treatment counselling, signed consent, ongoing blood monitoring, and monthly follow-up throughout the course.
@@ -1946,7 +1946,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
       <div class="warn-box" style="margin-bottom:14px">
         ⚠️ <strong>Monthly consultation is mandatory.</strong> A prescription can only be issued following a consultation with doctor sign-off. If a patient misses their monthly appointment, no prescription can be provided.
       </div>
-
+<!-- SYNC:ROACCUTANE-BODY:END -->
     </div>
   </div>
 
@@ -4355,25 +4355,37 @@ function toggleSOP(header) {
 }
 
 // LOAD NOTICEBOARD ANNOUNCEMENTS from editor (stored in localStorage)
-function loadAnnouncements() {
+async function loadAnnouncements() {
   const container = document.getElementById('announcements-container');
   if(!container) return;
+  let posts = [];
   try {
-    const posts = JSON.parse(localStorage.getItem('kinsealy_notices') || '[]');
-    if(posts.length === 0) { container.innerHTML = ''; return; }
-    const now = new Date();
-    const active = posts.filter(p => !p.expiry || new Date(p.expiry) > now);
-    container.innerHTML = active.map(p => `
-      <div class="notice-strip" style="margin-bottom:10px">
-        <span class="badge" style="background:${p.urgent?'#ef4444':'var(--gold)'};">${p.urgent?'URGENT':'Notice'}</span>
-        <div>
-          <h4>${p.title}</h4>
-          <p>${p.body}</p>
-          <p style="font-size:0.68rem;opacity:0.5;margin-top:4px">Posted by ${p.author} · ${new Date(p.date).toLocaleDateString('en-IE',{day:'numeric',month:'short'})}</p>
-        </div>
+    posts = JSON.parse(localStorage.getItem('kinsealy_notices') || '[]');
+  } catch(e) {}
+  // notices.json holds notices posted by automated processes (e.g. the Roaccutane
+  // sandbox sync) — committed to the repo, so visible on every device, unlike the
+  // localStorage-only manual notices above.
+  try {
+    const res = await fetch('notices.json', {cache: 'no-store'});
+    if(res.ok) {
+      const synced = await res.json();
+      if(Array.isArray(synced)) posts = posts.concat(synced);
+    }
+  } catch(e) {}
+  if(posts.length === 0) { container.innerHTML = ''; return; }
+  const now = new Date();
+  const active = posts.filter(p => !p.expiry || new Date(p.expiry) > now);
+  active.sort((a, b) => new Date(b.date) - new Date(a.date));
+  container.innerHTML = active.map(p => `
+    <div class="notice-strip" style="margin-bottom:10px">
+      <span class="badge" style="background:${p.urgent?'#ef4444':'var(--gold)'};">${p.urgent?'URGENT':'Notice'}</span>
+      <div>
+        <h4>${p.title}</h4>
+        <p>${p.body}</p>
+        <p style="font-size:0.68rem;opacity:0.5;margin-top:4px">Posted by ${p.author} · ${new Date(p.date).toLocaleDateString('en-IE',{day:'numeric',month:'short'})}</p>
       </div>
-    `).join('');
-  } catch(e) { container.innerHTML = ''; }
+    </div>
+  `).join('');
 }
 
 // WHO'S IN TODAY
