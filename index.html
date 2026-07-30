@@ -43,6 +43,8 @@ nav a{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,
 nav a:hover{background:rgba(255,255,255,0.06);color:#fff;border-left-color:rgba(42,138,126,0.5)}
 nav a.active{background:rgba(42,138,126,0.15);color:#fff;border-left-color:var(--teal-light);font-weight:500}
 nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+nav a.nav-sublink{padding-left:40px;font-size:0.76rem;color:rgba(255,255,255,0.55)}
+nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .sidebar-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.68rem;color:rgba(255,255,255,0.3)}
 .nav-group-label{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.28);padding:14px 20px 4px;margin-top:4px}
 
@@ -70,6 +72,11 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .section-label{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--teal);margin-bottom:10px;margin-top:24px;padding-bottom:5px;border-bottom:1px solid var(--teal-pale)}
 
 /* STAFF LEGEND */
+.mini-toc{margin-bottom:20px;padding:12px 16px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius)}
+.mini-toc-title{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--grey-400);margin-bottom:8px}
+.mini-toc-links{display:flex;flex-wrap:wrap;gap:8px}
+.mini-toc-links a{font-size:0.78rem;font-weight:500;color:var(--navy);background:var(--grey-100);border:1px solid var(--grey-200);border-radius:20px;padding:5px 12px;text-decoration:none;transition:border-color 0.15s,color 0.15s}
+.mini-toc-links a:hover{border-color:var(--teal);color:var(--teal)}
 .staff-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding:12px 16px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius)}
 .staff-legend-title{font-size:0.72rem;font-weight:600;color:var(--navy);width:100%;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em}
 .staff-badge{display:inline-flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:600;padding:4px 10px;border-radius:20px;cursor:default}
@@ -544,15 +551,16 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <a href="#" class="nav-link active" data-section="home"><span class="nav-icon">🏠</span> Home &amp; Noticeboard</a>
     <div class="nav-group-label">Clinical</div>
     <a href="#" class="nav-link" data-section="cdm" id="cdm-nav-link"><span class="nav-icon">🔁</span> CDM <span class="future-lock" id="cdm-lock-badge">🔒</span><span class="pm-unlocked-badge" id="cdm-unlocked-badge" style="display:none">✓ Unlocked</span></a>
-    <a href="#" class="nav-link" data-section="cdm-inbox" id="nav-cdm-inbox"><span class="nav-icon">📥</span> CDM Inbox <span id="cdm-inbox-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
-    <a href="#" class="nav-link" data-section="prevention-inbox" id="nav-prevention-inbox"><span class="nav-icon">📥</span> Prevention Inbox <span id="prevention-inbox-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
+    <a href="#" class="nav-link nav-sublink" data-section="cdm-inbox" id="nav-cdm-inbox"><span class="nav-icon">📥</span> CDM Inbox <span id="cdm-inbox-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
+    <a href="#" class="nav-link nav-sublink" data-section="prevention-inbox" id="nav-prevention-inbox"><span class="nav-icon">📥</span> Prevention Inbox <span id="prevention-inbox-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
     <a href="#" class="nav-link" data-section="care-pathways"><span class="nav-icon">🩺</span> Patient Journeys</a>
+    <a href="#" class="nav-link" data-section="clinical-procedures"><span class="nav-icon">💉</span> Clinical Procedures</a>
     <a href="#" class="nav-link" data-section="clinical-pathways"><span class="nav-icon">🧬</span> Clinical Pathways</a>
     <a href="#" class="nav-link" data-section="doctor-stuff"><span class="nav-icon">👨‍⚕️</span> Doctor Protocols</a>
     <div class="nav-group-label">Operations</div>
     <a href="#" class="nav-link" data-section="front-of-house"><span class="nav-icon">🏥</span> Front of House</a>
     <a href="#" class="nav-link" data-section="practice-management" id="pm-nav-link"><span class="nav-icon">📋</span> Practice Management <span class="future-lock" id="pm-lock-badge">🔒</span><span class="pm-unlocked-badge" id="pm-unlocked-badge">✓ Unlocked</span></a>
-    <a href="#" class="nav-link" data-section="metrics" id="metrics-nav-link"><span class="nav-icon">📊</span> Metrics <span class="future-lock" id="metrics-lock-badge">🔒</span><span class="pm-unlocked-badge" id="metrics-unlocked-badge">✓ Unlocked</span></a>
+    <a href="#" class="nav-link nav-sublink" data-section="metrics" id="metrics-nav-link"><span class="nav-icon">📊</span> Metrics <span class="future-lock" id="metrics-lock-badge">🔒</span><span class="pm-unlocked-badge" id="metrics-unlocked-badge">✓ Unlocked</span></a>
     <a href="#" class="nav-link" data-section="text-templates"><span class="nav-icon">💬</span> Text Templates</a>
     <a href="#" class="nav-link" data-section="useful-forms"><span class="nav-icon">📄</span> Useful Forms</a>
     <div class="nav-group-label">Practice</div>
@@ -1279,6 +1287,20 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <span class="staff-badge badge-all">⚫ All</span>
   </div>
 
+  <div class="mini-toc">
+    <div class="mini-toc-title">Jump to</div>
+    <div class="mini-toc-links">
+      <a href="#" onclick="goToSOP('care-pathways','sop-contraception');return false;">Contraception</a>
+      <a href="#" onclick="goToSOP('care-pathways','sop-antenatal');return false;">Antenatal / Combined Care</a>
+      <a href="#" onclick="goToSOP('care-pathways','sop-baby-vaccines');return false;">Baby Vaccines Schedule</a>
+      <a href="#" onclick="goToSOP('care-pathways','sop-smears');return false;">Cervical Smears</a>
+      <a href="#" onclick="goToSOP('care-pathways','sop-alivecor');return false;">AliveCor — KardiaMobile</a>
+      <a href="#" onclick="goToSOP('care-pathways','sop-ecg');return false;">ECG — ProMed</a>
+      <a href="#" onclick="goToSOP('care-pathways','sop-abpm');return false;">ABPM — ProMed Tubeless</a>
+      <a href="#" onclick="goToSOP('care-pathways','sop-asthma');return false;">Asthma Registration</a>
+    </div>
+  </div>
+
   <!-- CONTRACEPTION -->
   <div class="sop-card" id="sop-contraception" data-updated="2025-05-23" data-section-name="Patient Journeys" data-sop-name="Contraception">
     <div class="sop-header" onclick="toggleSOP(this)">
@@ -1742,8 +1764,28 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     </div>
   </div>
 
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- CLINICAL PROCEDURES -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="clinical-procedures">
+  <div class="page-header">
+    <h2>Clinical Procedures</h2>
+    <p>Full in-house clinical protocols — prescribing programmes and procedures with their own consent, monitoring, and documentation requirements.</p>
+  </div>
+
+  <div class="staff-legend">
+    <div class="staff-legend-title">Staff Colour Key</div>
+    <span class="staff-badge badge-pm">🟣 PM</span>
+    <span class="staff-badge badge-sec">🔵 Secretary</span>
+    <span class="staff-badge badge-nurse">🟢 Nurse</span>
+    <span class="staff-badge badge-doc">🔴 Doctor</span>
+    <span class="staff-badge badge-all">⚫ All</span>
+  </div>
+
   <!-- ROACCUTANE -->
-  <div class="sop-card" id="sop-roaccutane" data-updated="2026-05-08" data-section-name="Patient Journeys" data-sop-name="Roaccutane (Isotretinoin)">
+  <div class="sop-card" id="sop-roaccutane" data-updated="2026-05-08" data-section-name="Clinical Procedures" data-sop-name="Roaccutane (Isotretinoin)">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>💊</span><h3>Roaccutane® (Isotretinoin)</h3></div>
       <span class="sop-toggle">▼</span>
@@ -1911,7 +1953,7 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 <!-- ════════════════════════════════════════════════════ -->
 <div class="section-label">Procedures</div>
 
-  <div class="sop-card" data-updated="2026-05-09" id="sop-joint-injections" data-section-name="Patient Journeys" data-sop-name="Joint Injections">
+  <div class="sop-card" data-updated="2026-05-09" id="sop-joint-injections" data-section-name="Clinical Procedures" data-sop-name="Joint Injections">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>💉</span><h3>Corticosteroid Joint Injections — SOP (KMC-SOP-JI-01)</h3></div>
       <span class="sop-toggle">▼</span>
@@ -2391,6 +2433,80 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
   <div class="pass-box"><strong>Practice Wi-Fi</strong>Network: <code>—</code> &nbsp; Password: <code>—</code></div>
   <div class="pass-box"><strong>Printer / Photocopier</strong>PIN: <code>—</code></div>
   <div class="pass-box"><strong>Alarm</strong>Code: <code>—</code></div>
+
+  <div class="section-label">Systems &amp; Communications</div>
+
+  <div class="sop-card" id="sop-interpretation" data-updated="2026-02-11" data-section-name="Practice Management" data-sop-name="Interpretation Service">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🌐</span><h3>Interpretation Service — No Longer HSE Funded</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 11/02/2026</span></div>
+    <div class="sop-body">
+      <div class="warn-box">⚠️ As of 11th February 2026, Lingua Translation Services invoices are sent directly to the practice. HSE Social Inclusion will no longer approve bookings. Contact: Antonio Fernando, Lingua Translation Services, 30 Wicklow Street, Dublin 2.</div>
+    </div>
+  </div>
+
+  <div class="sop-card" id="sop-healthmail-mfa" data-updated="2025-05-29" data-section-name="Practice Management" data-sop-name="Healthmail MFA">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🔐</span><h3>Healthmail — Multi-Factor Authentication (from 29/05/2025)</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 IT / Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 29/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        New swipe/code login required from 29th May 2025. Two Samsung tablets available — downstairs and one with the nurse.<br>
+        Verified once every 24 hours per computer. Re-verification needed if: you sign out, computer shuts down, or browser history cleared.<br>
+        Support: 061 203779 or <a href="mailto:ictsupport@three.ie">ictsupport@three.ie</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" id="sop-phone-system" data-updated="2025-05-23" data-section-name="Practice Management" data-sop-name="Phone System">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📞</span><h3>Phone System — Voicemail &amp; Out of Hours</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 PM</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        Login: <a href="https://secure.goldfish.ie/login.aspx" target="_blank">secure.goldfish.ie</a> | Email: kinsealymedicalcentre@gmail.com | Password: 4H3C6TD8<br><br>
+        To turn voicemail on: Select 'Your Numbers' → '018405940' → 'Routing Wizard' → 'Play a message to caller' → select message (e.g. 'PhonesClosedFriday').
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" id="sop-post-handling" data-updated="2025-05-23" data-section-name="Practice Management" data-sop-name="Post Handling">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>📮</span><h3>Post Handling</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 PM / Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        PM opens post 8–8:30am. Date stamp and scan to patient file (select doctor from drop-down in pop-up).<br>
+        When PM absent → early shift admin opens and stamps.<br><br>
+        <strong>Test results (CT/MRI/Ultrasound/DEXA/X-ray ordered by us):</strong> Give to ordering doctor — even if not present that day.<br>
+        <strong>All other post:</strong> Divide equally between doctors on duty.<br>
+        PM posts outgoing letters twice weekly (Tue &amp; Fri). Stamps in PM desk drawer. If PM absent → admin leaving at 4/4:30 brings post before 5:30.
+      </div>
+    </div>
+  </div>
+
+  <div class="sop-card" id="sop-patient-email" data-updated="2025-05-23" data-section-name="Practice Management" data-sop-name="Protonmail / Email Privacy">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🔒</span><h3>Patient Email — Protonmail Preference</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
+    <div class="sop-body">
+      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
+        Encourage ALL patients to sign up to Protonmail where possible.<br>
+        Suggested wording: <em>"Popular email providers scan content for profit, while Proton Mail ensures privacy with encryption. At Kinsealy Medical Centre your confidential information is of utmost importance to us, and our preferred communication method is Protonmail. Sign up takes 2 minutes."</em><br>
+        This is included in our automatic replies.
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ════════════════════════════════════════════════════ -->
@@ -2407,8 +2523,28 @@ nav a .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
     <span class="staff-badge badge-pm">🟣 PM</span><span class="staff-badge badge-sec">🔵 Secretary</span><span class="staff-badge badge-nurse">🟢 Nurse</span><span class="staff-badge badge-doc">🔴 Doctor</span><span class="staff-badge badge-all">⚫ All</span>
   </div>
 
+  <div class="mini-toc">
+    <div class="mini-toc-title">Jump to</div>
+    <div class="mini-toc-links">
+      <a href="#" onclick="goToSOP('front-of-house','sop-onboarding');return false;">New Patient Onboarding</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-appointments');return false;">Appointments — Booking &amp; Triage</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-late-arrivals');return false;">Late Arrivals Policy</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-pharma-reps');return false;">Pharmaceutical Rep Appointments</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-travel-vaccinations');return false;">Travel Vaccinations</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-dna');return false;">DNA Policy</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-staying-late');return false;">Staying Late</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-abusive-patients');return false;">Abusive Patients</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-repeat-prescriptions');return false;">Repeat Prescriptions</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-certs');return false;">Certs, Sick Notes &amp; Social Welfare</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-letters');return false;">Letter Requests</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-results');return false;">Results Handling</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-referrals');return false;">Referrals — Email List</a>
+      <a href="#" onclick="goToSOP('front-of-house','sop-lockup');return false;">Lock Up — End of Day</a>
+    </div>
+  </div>
+
   <div class="section-label">New Patient Onboarding</div>
-  <div class="sop-card" data-updated="2026-05-11" data-section-name="Front of House" data-sop-name="New Patient Onboarding">
+  <div class="sop-card" id="sop-onboarding" data-updated="2026-05-11" data-section-name="Front of House" data-sop-name="New Patient Onboarding">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🆕</span><h3>New Patient Onboarding</h3></div>
       <span class="sop-toggle">▼</span>
@@ -2589,7 +2725,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- APPOINTMENTS -->
-  <div class="sop-card" data-updated="2026-05-28" data-section-name="Front of House" data-sop-name="Appointments — Booking">
+  <div class="sop-card" id="sop-appointments" data-updated="2026-05-28" data-section-name="Front of House" data-sop-name="Appointments — Booking">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>📅</span><h3>Appointments — Booking &amp; Triage</h3></div>
       <span class="sop-toggle open">▼</span>
@@ -2682,7 +2818,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- LATE ARRIVALS -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Late Arrivals">
+  <div class="sop-card" id="sop-late-arrivals" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Late Arrivals">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>⏰</span><h3>Late Arrivals Policy</h3></div>
       <span class="sop-toggle">▼</span>
@@ -2706,7 +2842,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- PHARM REPS -->
-  <div class="sop-card" data-updated="2026-05-28" data-section-name="Front of House" data-sop-name="Pharmaceutical Rep Appointments">
+  <div class="sop-card" id="sop-pharma-reps" data-updated="2026-05-28" data-section-name="Front of House" data-sop-name="Pharmaceutical Rep Appointments">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🧑‍💼</span><h3>Pharmaceutical Rep Appointments</h3></div>
       <span class="sop-toggle">▼</span>
@@ -2726,7 +2862,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
 
   <!-- TRAVEL VACCINES -->
   <div class="section-label">Travel Vaccinations</div>
-  <div class="sop-card" data-updated="2026-05-12" data-section-name="Front of House" data-sop-name="Travel Vaccinations">
+  <div class="sop-card" id="sop-travel-vaccinations" data-updated="2026-05-12" data-section-name="Front of House" data-sop-name="Travel Vaccinations">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>✈️</span><h3>Travel Vaccinations</h3></div>
       <span class="sop-toggle">▼</span>
@@ -2891,7 +3027,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- DNA -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="DNA Policy">
+  <div class="sop-card" id="sop-dna" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="DNA Policy">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>❌</span><h3>DNA (Did Not Attend) Policy</h3></div>
       <span class="sop-toggle">▼</span>
@@ -2914,7 +3050,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- STAYING LATE -->
-  <div class="sop-card" data-updated="2026-05-28" data-section-name="Front of House" data-sop-name="Staying Late — Doctor Running Behind">
+  <div class="sop-card" id="sop-staying-late" data-updated="2026-05-28" data-section-name="Front of House" data-sop-name="Staying Late — Doctor Running Behind">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🕐</span><h3>Staying Late — Doctor Running Behind</h3></div>
       <span class="sop-toggle">▼</span>
@@ -2931,7 +3067,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- ABUSIVE PATIENTS -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Abusive Patients">
+  <div class="sop-card" id="sop-abusive-patients" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Abusive Patients">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🚨</span><h3>Abusive Patients</h3></div>
       <span class="sop-toggle">▼</span>
@@ -2974,7 +3110,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- PRESCRIPTIONS -->
-  <div class="sop-card" data-updated="2026-05-28" data-section-name="Front of House" data-sop-name="Repeat Prescriptions">
+  <div class="sop-card" id="sop-repeat-prescriptions" data-updated="2026-05-28" data-section-name="Front of House" data-sop-name="Repeat Prescriptions">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>💊</span><h3>Repeat Prescriptions</h3></div>
       <span class="sop-toggle">▼</span>
@@ -3038,7 +3174,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- CERTS -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Certificates &amp; Sick Notes">
+  <div class="sop-card" id="sop-certs" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Certificates &amp; Sick Notes">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>📝</span><h3>Certificates, Sick Notes &amp; Social Welfare</h3></div>
       <span class="sop-toggle">▼</span>
@@ -3063,7 +3199,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- LETTER REQUESTS -->
-  <div class="sop-card" data-updated="2026-07-28" data-section-name="Front of House" data-sop-name="Patient Letter Requests">
+  <div class="sop-card" id="sop-letters" data-updated="2026-07-28" data-section-name="Front of House" data-sop-name="Patient Letter Requests">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>✉️</span><h3>Letter Requests — Patients Asking for a Letter</h3></div>
       <span class="sop-toggle">▼</span>
@@ -3091,7 +3227,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- RESULTS -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Results Handling">
+  <div class="sop-card" id="sop-results" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Results Handling">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🔬</span><h3>Results — Requests, Download &amp; Review Fee</h3></div>
       <span class="sop-toggle">▼</span>
@@ -3112,7 +3248,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- REFERRALS -->
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Referral Email List">
+  <div class="sop-card" id="sop-referrals" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Referral Email List">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>📧</span><h3>Referrals — Email List</h3></div>
       <span class="sop-toggle">▼</span>
@@ -3133,7 +3269,7 @@ Keep the response concise and structured for a non-clinical administrator.</div>
   </div>
 
   <!-- LOCK UP -->
-  <div class="sop-card" data-updated="2026-04-30" data-section-name="Front of House" data-sop-name="Lock Up — End of Day">
+  <div class="sop-card" id="sop-lockup" data-updated="2026-04-30" data-section-name="Front of House" data-sop-name="Lock Up — End of Day">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🔒</span><h3>Lock Up — End of Day</h3></div>
       <span class="sop-toggle">▼</span>
@@ -3162,79 +3298,6 @@ Keep the response concise and structured for a non-clinical administrator.</div>
     </div>
   </div>
 
-  <div class="section-label">Systems &amp; Communications</div>
-
-  <div class="sop-card" data-updated="2026-02-11" data-section-name="Front of House" data-sop-name="Interpretation Service">
-    <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>🌐</span><h3>Interpretation Service — No Longer HSE Funded</h3></div>
-      <span class="sop-toggle">▼</span>
-    </div>
-    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 11/02/2026</span></div>
-    <div class="sop-body">
-      <div class="warn-box">⚠️ As of 11th February 2026, Lingua Translation Services invoices are sent directly to the practice. HSE Social Inclusion will no longer approve bookings. Contact: Antonio Fernando, Lingua Translation Services, 30 Wicklow Street, Dublin 2.</div>
-    </div>
-  </div>
-
-  <div class="sop-card" data-updated="2025-05-29" data-section-name="Front of House" data-sop-name="Healthmail MFA">
-    <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>🔐</span><h3>Healthmail — Multi-Factor Authentication (from 29/05/2025)</h3></div>
-      <span class="sop-toggle">▼</span>
-    </div>
-    <div class="sop-meta"><span>👤 IT / Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 29/05/2025</span></div>
-    <div class="sop-body">
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
-        New swipe/code login required from 29th May 2025. Two Samsung tablets available — downstairs and one with the nurse.<br>
-        Verified once every 24 hours per computer. Re-verification needed if: you sign out, computer shuts down, or browser history cleared.<br>
-        Support: 061 203779 or <a href="mailto:ictsupport@three.ie">ictsupport@three.ie</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Phone System">
-    <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>📞</span><h3>Phone System — Voicemail &amp; Out of Hours</h3></div>
-      <span class="sop-toggle">▼</span>
-    </div>
-    <div class="sop-meta"><span>👤 PM</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
-    <div class="sop-body">
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
-        Login: <a href="https://secure.goldfish.ie/login.aspx" target="_blank">secure.goldfish.ie</a> | Email: kinsealymedicalcentre@gmail.com | Password: 4H3C6TD8<br><br>
-        To turn voicemail on: Select 'Your Numbers' → '018405940' → 'Routing Wizard' → 'Play a message to caller' → select message (e.g. 'PhonesClosedFriday').
-      </div>
-    </div>
-  </div>
-
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Post Handling">
-    <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>📮</span><h3>Post Handling</h3></div>
-      <span class="sop-toggle">▼</span>
-    </div>
-    <div class="sop-meta"><span>👤 PM / Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
-    <div class="sop-body">
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
-        PM opens post 8–8:30am. Date stamp and scan to patient file (select doctor from drop-down in pop-up).<br>
-        When PM absent → early shift admin opens and stamps.<br><br>
-        <strong>Test results (CT/MRI/Ultrasound/DEXA/X-ray ordered by us):</strong> Give to ordering doctor — even if not present that day.<br>
-        <strong>All other post:</strong> Divide equally between doctors on duty.<br>
-        PM posts outgoing letters twice weekly (Tue &amp; Fri). Stamps in PM desk drawer. If PM absent → admin leaving at 4/4:30 brings post before 5:30.
-      </div>
-    </div>
-  </div>
-
-  <div class="sop-card" data-updated="2025-05-23" data-section-name="Front of House" data-sop-name="Protonmail / Email Privacy">
-    <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>🔒</span><h3>Patient Email — Protonmail Preference</h3></div>
-      <span class="sop-toggle">▼</span>
-    </div>
-    <div class="sop-meta"><span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span></div>
-    <div class="sop-body">
-      <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
-        Encourage ALL patients to sign up to Protonmail where possible.<br>
-        Suggested wording: <em>"Popular email providers scan content for profit, while Proton Mail ensures privacy with encryption. At Kinsealy Medical Centre your confidential information is of utmost importance to us, and our preferred communication method is Protonmail. Sign up takes 2 minutes."</em><br>
-        This is included in our automatic replies.
-      </div>
-    </div>
-  </div>
 
 </div>
 
@@ -4114,6 +4177,7 @@ document.getElementById('sidebarDate').textContent = d.toLocaleDateString('en-IE
 // SECTION TITLES
 const titles = {
   'home':'Home & Noticeboard','cdm':'Chronic Disease Management','care-pathways':'Patient Journeys','doctor-stuff':'Doctor Protocols',
+  'clinical-procedures':'Clinical Procedures',
   'practice-management':'Practice Management','front-of-house':'Front of House',
   'clinical-pathways':'Clinical Pathways','text-templates':'Text Templates',
   'useful-forms':'Useful Forms','quick-links':'Quick Links',
@@ -5488,6 +5552,7 @@ const FB_SECTIONS = {
 const FB_SECTION_TO_DATA_NAME = {
   'cdm': 'CDM',
   'care-pathways': 'Patient Journeys',
+  'clinical-procedures': 'Clinical Procedures',
   'clinical-pathways': 'Clinical Pathways',
   'doctor-stuff': 'Doctor Protocols',
   'front-of-house': 'Front of House',
@@ -5939,6 +6004,7 @@ async function submitFeedback() {
           <option value="home">Home &amp; Noticeboard</option>
           <option value="cdm">CDM</option>
           <option value="care-pathways">Patient Journeys</option>
+          <option value="clinical-procedures">Clinical Procedures</option>
           <option value="clinical-pathways">Clinical Pathways</option>
           <option value="doctor-stuff">Doctor Protocols</option>
           <option value="front-of-house">Front of House</option>
