@@ -4101,14 +4101,6 @@ Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick
               <option value="amy">Amy Burke</option>
             </select>
           </div>
-          <div class="modal-field" style="margin-bottom:0">
-            <label>Claude API key <span style="font-weight:400;text-transform:none;color:var(--grey-400)">(enables AI welcome-back questions)</span></label>
-            <div class="modal-api-row">
-              <input type="password" id="api-key-input" placeholder="sk-ant-…" style="font-size:0.82rem">
-              <button onclick="saveApiKey()">Save</button>
-            </div>
-            <p id="api-key-status" style="font-size:0.7rem;color:var(--grey-400);margin-top:5px"></p>
-          </div>
         </div>
       </details>
     </div>
@@ -4354,22 +4346,18 @@ function toggleSOP(header) {
   toggle.classList.toggle('open');
 }
 
-// LOAD NOTICEBOARD ANNOUNCEMENTS from editor (stored in localStorage)
+// LOAD NOTICEBOARD ANNOUNCEMENTS — synced via notices.json (see
+// noticeboard-editor.html), committed to the repo through gh-proxy so every
+// device sees the same announcements.
 async function loadAnnouncements() {
   const container = document.getElementById('announcements-container');
   if(!container) return;
   let posts = [];
   try {
-    posts = JSON.parse(localStorage.getItem('kinsealy_notices') || '[]');
-  } catch(e) {}
-  // notices.json holds notices posted by automated processes (e.g. the Roaccutane
-  // sandbox sync) — committed to the repo, so visible on every device, unlike the
-  // localStorage-only manual notices above.
-  try {
     const res = await fetch('notices.json', {cache: 'no-store'});
     if(res.ok) {
       const synced = await res.json();
-      if(Array.isArray(synced)) posts = posts.concat(synced);
+      if(Array.isArray(synced)) posts = synced;
     }
   } catch(e) {}
   if(posts.length === 0) { container.innerHTML = ''; return; }
@@ -5096,9 +5084,6 @@ async function openAwayModal() {
   if (role === 'admin') {
     adminSec.style.display = 'block';
     document.getElementById('away-for-user').value = username;
-    const key = localStorage.getItem('kinsealy_api_key') || '';
-    document.getElementById('api-key-input').placeholder = key ? 'Key saved ✓ — paste new key to update' : 'sk-ant-…';
-    document.getElementById('api-key-status').textContent = key ? '✓ Claude API key is set' : 'No API key set yet';
   } else {
     adminSec.style.display = 'none';
   }
@@ -5173,15 +5158,6 @@ async function clearAwayStatus() {
   updateStatusBtn();
 }
 
-function saveApiKey() {
-  const key = document.getElementById('api-key-input').value.trim();
-  if (!key) return;
-  localStorage.setItem('kinsealy_api_key', key);
-  document.getElementById('api-key-status').textContent = '✓ API key saved';
-  document.getElementById('api-key-input').value = '';
-  document.getElementById('api-key-input').placeholder = 'Key saved ✓ — paste new key to update';
-}
-
 // ── WELCOME BACK ──────────────────────────────────────────────
 async function checkWelcomeBack() {
   const username = sessionStorage.getItem('kmc-user');
@@ -5223,30 +5199,21 @@ async function checkWelcomeBack() {
 
   document.getElementById('welcome-modal-overlay').style.display = 'flex';
 
-  // Generate question
-  const apiKey = localStorage.getItem('kinsealy_api_key');
-  if (apiKey && dest) {
+  // Generate question — via a server-side function so no API key ever
+  // touches the browser (see netlify/functions/welcome-question.js).
+  if (dest) {
     try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      const resp = await fetch('/.netlify/functions/welcome-question', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
+          'Authorization': 'Bearer ' + (sessionStorage.getItem('kmc-token') || '')
         },
-        body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 120,
-          messages: [{
-            role: 'user',
-            content: `A colleague just returned from a holiday in ${dest}. Write one warm, specific, curious question to welcome them back — something that shows genuine interest in their trip (food, culture, a famous landmark, weather, hidden gem, etc.). Keep it to one sentence. No preamble, just the question.`
-          }]
-        })
+        body: JSON.stringify({ destination: dest })
       });
       if (resp.ok) {
         const json = await resp.json();
-        const question = json.content?.[0]?.text?.trim() || '';
+        const question = (json.question || '').trim();
         if (question) {
           document.getElementById('welcome-loading').style.display = 'none';
           document.getElementById('welcome-question-box').textContent = question;
