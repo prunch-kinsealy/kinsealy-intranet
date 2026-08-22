@@ -303,6 +303,8 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .status-btn{display:inline-flex;align-items:center;gap:6px;font-size:0.74rem;font-weight:600;padding:5px 12px;border:1.5px solid var(--grey-200);border-radius:20px;background:#fff;color:var(--grey-700);cursor:pointer;transition:all 0.15s;white-space:nowrap;font-family:'DM Sans',sans-serif}
 .status-btn:hover{border-color:var(--teal);color:var(--teal)}
 .status-btn.is-away{border-color:#f59e0b;background:#fffbeb;color:#92400e}
+.approvals-badge{display:none;align-items:center;gap:6px;font-size:0.74rem;font-weight:600;padding:5px 12px;border:1.5px solid #f59e0b;border-radius:20px;background:#fffbeb;color:#92400e;text-decoration:none;white-space:nowrap;transition:all 0.15s}
+.approvals-badge:hover{background:#fef3c7}
 .away-empty{font-size:0.78rem;color:var(--grey-400);padding:8px 0;text-align:center}
 .away-card{background:#fff;border:1px solid var(--grey-200);border-radius:10px;padding:11px 13px;margin-bottom:8px;position:relative;overflow:hidden;transition:box-shadow 0.15s}
 .away-card:hover{box-shadow:0 2px 10px rgba(0,0,0,0.07)}
@@ -571,7 +573,9 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
     <div class="nav-group-label admin-only" id="nav-admin-label" style="display:none">Admin</div>
     <a href="staff-logins.html" class="nav-link admin-only" id="nav-admin-logins" style="display:none"><span class="nav-icon">🔑</span> Staff Logins</a>
     <a href="feedback.html" class="nav-link admin-only" id="nav-admin-feedback" style="display:none"><span class="nav-icon">💬</span> Staff Feedback</a>
+    <a href="approvals.html" class="nav-link admin-only" id="nav-admin-approvals" style="display:none"><span class="nav-icon">✅</span> Pending Approvals</a>
     <a href="recorder.html" class="nav-link admin-only" style="display:none"><span class="nav-icon">🎥</span> Step Recorder</a>
+    <a href="propose-edit.html" class="nav-link" id="nav-propose-edit" style="display:none"><span class="nav-icon">✏️</span> Propose an Edit</a>
     <div class="nav-group-label" style="margin-top:8px">Help</div>
     <a href="onboarding.html" class="nav-link"><span class="nav-icon">🎓</span> Staff Training Guide</a>
     <a href="#" class="nav-link" onclick="doLogout()" style="margin-top:4px;color:rgba(255,255,255,0.5)"><span class="nav-icon">🚪</span> Log Out</a>
@@ -590,6 +594,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
     <div class="topbar-right">
       <input type="text" id="search" placeholder="Search hub…" autocomplete="off">
       <button id="search-btn" title="Search">🔍</button>
+      <a class="approvals-badge" id="approvals-badge" href="approvals.html">🔔 <span id="approvals-count">0</span> pending</a>
       <button class="status-btn" id="status-btn" onclick="openAwayModal()">🟢 Available</button>
       <div class="avatar" id="user-avatar" title="">FO</div>
     </div>
@@ -4192,6 +4197,14 @@ let pmUnlocked = sessionStorage.getItem('kmc-role') === 'admin';
 if (pmUnlocked) {
   document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
 }
+(function() {
+  let editSections = [];
+  try { editSections = JSON.parse(sessionStorage.getItem('kmc-edit-sections') || '[]'); } catch(e) {}
+  if (Array.isArray(editSections) && editSections.length > 0) {
+    const link = document.getElementById('nav-propose-edit');
+    if (link) link.style.display = '';
+  }
+})();
 if(pmUnlocked){
   document.getElementById('pm-lock-badge').style.display='none';
   document.getElementById('pm-unlocked-badge').style.display='inline';
@@ -5476,6 +5489,21 @@ async function loadProjectsWidget() {
   }
 }
 
+// ── PENDING APPROVALS BADGE (admin only) ────────────────────────
+async function loadApprovalsBadge() {
+  if (sessionStorage.getItem('kmc-role') !== 'admin') return;
+  try {
+    const r = await fetch('/.netlify/functions/edits', { headers: kmcAuthHeader() });
+    if (!r.ok) return;
+    const j = await r.json();
+    const count = (j.edits || []).filter(e => e.status === 'pending').length;
+    if (count > 0) {
+      document.getElementById('approvals-count').textContent = count;
+      document.getElementById('approvals-badge').style.display = 'inline-flex';
+    }
+  } catch (e) { /* stay silent — this is a convenience badge, not critical */ }
+}
+
 // ── INIT ─────────────────────────────────────────────────────
 requestNotificationPermission();
 loadAwayWidget();
@@ -5484,6 +5512,7 @@ updateStatusBtn();
 checkWelcomeBack();
 loadBuddyAlerts();
 loadAwayNotices();
+loadApprovalsBadge();
 
 // Handle deep-link hash from feedback admin page
 (function() {
