@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<script>if(!sessionStorage.getItem('kmc-auth')){sessionStorage.setItem('kmc-redirect',location.href);location.replace('login.html')}</script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propose an Edit — Kinsealy Staff Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2d4a;--teal:#2a8a7e;--teal-light:#3aa897;--teal-pale:#e8f5f3;
+  --gold:#c9a84c;--cream:#f8f6f1;--white:#fff;
+  --grey-100:#f4f4f4;--grey-200:#e8e8e8;--grey-400:#9ca3af;--grey-700:#374151;
+  --text:#1f2937;--radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+
+.header{background:var(--navy);color:#fff;padding:18px 32px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-family:'DM Serif Display',serif;font-size:1.2rem}
+.header span{font-size:0.7rem;opacity:0.5;letter-spacing:0.1em;text-transform:uppercase}
+.back-btn{font-size:0.78rem;color:rgba(255,255,255,0.7);text-decoration:none;display:flex;align-items:center;gap:5px;transition:color 0.15s}
+.back-btn:hover{color:#fff}
+
+#main{max-width:760px;margin:0 auto;padding:32px 20px}
+.section-title{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--navy);margin-bottom:4px}
+.section-sub{font-size:0.82rem;color:var(--grey-400);margin-bottom:28px}
+.card{background:var(--white);border-radius:var(--radius);border:1px solid var(--grey-200);padding:24px;margin-bottom:20px}
+.card-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--teal);margin-bottom:18px;padding-bottom:8px;border-bottom:1px solid var(--teal-pale)}
+.field{margin-bottom:14px}
+.field label{font-size:0.75rem;font-weight:600;color:var(--grey-700);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--grey-200);border-radius:8px;padding:10px 14px;font-size:0.88rem;font-family:'DM Sans',sans-serif;outline:none;transition:border 0.15s;background:#fff}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--teal)}
+.field textarea{min-height:220px;resize:vertical;line-height:1.5;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.8rem}
+.field-hint{font-size:0.74rem;color:var(--grey-400);margin-top:5px}
+.btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:12px 20px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.15s}
+.btn:hover{background:var(--teal)}
+.btn:disabled{opacity:0.5;cursor:default}
+.error{color:#dc2626;font-size:0.78rem;margin-top:10px;display:none}
+.success-banner{background:#dcfce7;border:1px solid #86efac;border-radius:var(--radius);padding:12px 16px;font-size:0.82rem;color:#166534;margin-bottom:16px;display:none}
+.empty-state{text-align:center;color:var(--grey-400);font-size:0.88rem;padding:40px 20px;background:var(--white);border-radius:var(--radius);border:1px solid var(--grey-200)}
+
+.sub-item{border:1px solid var(--grey-200);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
+.sub-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.sub-title{font-size:0.88rem;font-weight:600;color:var(--navy)}
+.sub-meta{font-size:0.72rem;color:var(--grey-400);margin-bottom:6px}
+.status-badge{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:3px 9px;border-radius:20px;flex-shrink:0}
+.status-pending{background:#fef9c3;color:#854d0e}
+.status-approved{background:#dcfce7;color:#166534}
+.status-rejected{background:#fee2e2;color:#991b1b}
+.sub-note{font-size:0.8rem;color:var(--grey-700);background:var(--grey-100);border-radius:6px;padding:8px 10px;margin-top:6px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>✏️ Propose an Edit</h1>
+    <span>Kinsealy Staff Hub</span>
+  </div>
+  <a href="index.html" class="back-btn">← Back to Staff Hub</a>
+</div>
+
+<div id="main">
+  <div class="section-title">Propose an Edit</div>
+  <div class="section-sub">Submit finished content for a section you're authorised to edit. Nothing goes live until the Practice Manager reviews and approves it.</div>
+
+  <div id="no-access" class="empty-state" style="display:none">
+    You don't currently have any sections you're authorised to edit. If you think this is wrong, contact the Practice Manager.
+  </div>
+
+  <div id="form-area"></div>
+
+  <div class="section-title" style="margin-top:36px;font-size:1.1rem">My Submissions</div>
+  <div id="my-submissions"><div class="empty-state">Loading…</div></div>
+</div>
+
+<script>
+// Which sections this account can propose edits for, and which file(s) each
+// section covers. This mirrors EDITABLE_SECTIONS in login.html and
+// EDIT_GRANTS/EDIT_TARGETS in netlify/functions/edits.js — keep all three in
+// sync by hand when granting a new section (the server is the real gate;
+// this copy only decides what the form shows).
+const EDITABLE_SECTIONS = {
+  roaccutane: {
+    label: 'Roaccutane (Isotretinoin)',
+    targets: [
+      { file: 'roaccutane-consent.html', mode: 'whole', label: 'Consent form (roaccutane-consent.html)' },
+      { file: 'index.html', mode: 'anchor', marker: 'ROACCUTANE', label: 'SOP card body (index.html)' }
+    ]
+  }
+};
+const EDIT_GRANTS = { ruth: ['roaccutane'] }; // keep in sync with USERS[x].editSections in login.html
+
+function _escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function authHeader() {
+  const token = sessionStorage.getItem('kmc-token');
+  return token ? { 'Authorization': 'Bearer ' + token } : {};
+}
+
+async function apiCall(payload) {
+  const r = await fetch('/.netlify/functions/edits', {
+    method: 'POST',
+    headers: Object.assign({ 'Content-Type': 'application/json' }, authHeader()),
+    body: JSON.stringify(payload)
+  });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'Request failed');
+  return j;
+}
+
+async function fetchEdits() {
+  const r = await fetch('/.netlify/functions/edits', { headers: authHeader() });
+  if (!r.ok) throw new Error('Could not load submissions');
+  const j = await r.json();
+  return j.edits || [];
+}
+
+const username = sessionStorage.getItem('kmc-user') || '';
+const mySections = EDIT_GRANTS[username] || [];
+
+function buildForm() {
+  const area = document.getElementById('form-area');
+  if (mySections.length === 0) {
+    document.getElementById('no-access').style.display = 'block';
+    return;
+  }
+  area.innerHTML = mySections.map(key => {
+    const section = EDITABLE_SECTIONS[key];
+    if (!section) return '';
+    const options = section.targets.map(t => `<option value="${t.file}">${t.label}</option>`).join('');
+    return `
+      <div class="card">
+        <div class="card-title">${section.label}</div>
+        <div class="success-banner" id="success-${key}">✓ Submitted — the Practice Manager will review it before anything goes live.</div>
+        <div class="field">
+          <label>Which file is this for?</label>
+          <select id="file-${key}">${options}</select>
+        </div>
+        <div class="field">
+          <label>Proposed content</label>
+          <textarea id="content-${key}" placeholder="Paste the finished HTML for this section — e.g. copied from your sandbox preview once you're happy with it."></textarea>
+          <div class="field-hint">Paste exactly what should appear — for the SOP card this is the HTML that goes inside the card body; for the consent form this is the full page HTML.</div>
+        </div>
+        <div class="field">
+          <label>Note for the reviewer (optional)</label>
+          <input type="text" id="note-${key}" placeholder="What changed and why">
+        </div>
+        <button class="btn" id="submit-${key}" onclick="submitEdit('${key}')">Submit for Approval</button>
+        <div class="error" id="error-${key}"></div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function submitEdit(key) {
+  const section = EDITABLE_SECTIONS[key];
+  const file = document.getElementById('file-' + key).value;
+  const content = document.getElementById('content-' + key).value;
+  const note = document.getElementById('note-' + key).value.trim();
+  const btn = document.getElementById('submit-' + key);
+  const err = document.getElementById('error-' + key);
+  err.style.display = 'none';
+
+  if (!content.trim()) {
+    err.textContent = 'Please paste the proposed content first.';
+    err.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+  try {
+    await apiCall({ action: 'submit', section: key, file, proposedContent: content, note });
+    document.getElementById('content-' + key).value = '';
+    document.getElementById('note-' + key).value = '';
+    const banner = document.getElementById('success-' + key);
+    banner.style.display = 'block';
+    setTimeout(() => banner.style.display = 'none', 5000);
+    loadMySubmissions();
+  } catch (e) {
+    err.textContent = e.message;
+    err.style.display = 'block';
+  }
+  btn.disabled = false;
+  btn.textContent = 'Submit for Approval';
+}
+
+function fmtDate(iso) {
+  return new Date(iso).toLocaleDateString('en-IE', { day: 'numeric', month: 'short', year: 'numeric' }) +
+    ' ' + new Date(iso).toLocaleTimeString('en-IE', { hour: '2-digit', minute: '2-digit' });
+}
+
+async function loadMySubmissions() {
+  const list = document.getElementById('my-submissions');
+  try {
+    const edits = (await fetchEdits()).filter(e => e.submittedBy === username);
+    if (edits.length === 0) {
+      list.innerHTML = '<div class="empty-state">No submissions yet.</div>';
+      return;
+    }
+    list.innerHTML = edits.map(e => {
+      const section = EDITABLE_SECTIONS[e.section];
+      const label = section ? section.label : e.section;
+      const badge = `<span class="status-badge status-${e.status}">${e.status}</span>`;
+      const reviewBit = e.status !== 'pending' && e.reviewNote
+        ? `<div class="sub-note"><strong>${e.status === 'approved' ? 'Approved' : 'Rejected'} note:</strong> ${_escHtml(e.reviewNote)}</div>`
+        : '';
+      return `
+        <div class="sub-item">
+          <div class="sub-top"><div class="sub-title">${_escHtml(label)} — ${_escHtml(e.file)}</div>${badge}</div>
+          <div class="sub-meta">Submitted ${fmtDate(e.submittedAt)}${e.note ? ' · ' + _escHtml(e.note) : ''}</div>
+          ${reviewBit}
+        </div>
+      `;
+    }).join('');
+  } catch (e) {
+    list.innerHTML = '<div class="empty-state">Could not load your submissions.</div>';
+  }
+}
+
+buildForm();
+loadMySubmissions();
+</script>
+</body>
+</html>

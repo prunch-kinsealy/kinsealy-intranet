@@ -84,11 +84,27 @@ const USERS = {
 // content for hands-on editing. To grant a new staff member edit rights to a
 // new area: add a key here, add a matching file to the sandbox repo, and add
 // the key to their `editSections` array above.
+//
+// `targets` is the machine-readable half, used by propose-edit.html and
+// netlify/functions/edits.js: each entry is a file this section covers plus
+// how a submission gets applied to it on approval —
+//   mode:'whole'  — the proposed content replaces the entire file
+//   mode:'anchor' — the proposed content replaces everything between the
+//                   `<!-- SYNC:<marker>-BODY:START -->` / `...END -->`
+//                   comment markers in that file (see index.html's
+//                   Roaccutane SOP card for the marker convention)
+// IMPORTANT: netlify/functions/edits.js keeps its own copy of this data
+// (EDIT_GRANTS / EDIT_TARGETS) since Netlify functions can't import from an
+// HTML file — the two MUST be kept in sync by hand when either changes.
 const EDITABLE_SECTIONS = {
   roaccutane: {
     label: 'Roaccutane (Isotretinoin)',
     files: ['roaccutane-consent.html', 'index.html (SOP card id="sop-roaccutane")'],
-    sandboxRepo: 'kinsealy-intranet-sandbox' // private repo — Ruth has Write access here only
+    sandboxRepo: 'kinsealy-intranet-sandbox', // private repo — Ruth has Write access here only
+    targets: [
+      { file: 'roaccutane-consent.html', mode: 'whole', label: 'Consent form (roaccutane-consent.html)' },
+      { file: 'index.html', mode: 'anchor', marker: 'ROACCUTANE', label: 'SOP card body (index.html)' }
+    ]
   }
 };
 
@@ -127,6 +143,7 @@ async function login() {
     sessionStorage.setItem('kmc-initials', user.initials);
     sessionStorage.setItem('kmc-role', j.role); // server-verified, not client-claimed
     sessionStorage.setItem('kmc-job-role', user.jobRole || 'staff');
+    sessionStorage.setItem('kmc-edit-sections', JSON.stringify(user.editSections || []));
     const dest = sessionStorage.getItem('kmc-redirect') || 'index.html';
     sessionStorage.removeItem('kmc-redirect');
     window.location.href = dest;
