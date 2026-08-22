@@ -135,7 +135,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 
 <script>
 const EDITOR_PASSWORD = 'Maria2026'; // Change this to your preferred password
-const STORAGE_KEY = 'kinsealy_notices';
+const NOTICES_FILE = 'notices.json';
 
 function doLogin() {
   const val = document.getElementById('editor-password').value;
@@ -150,16 +150,33 @@ function doLogin() {
   }
 }
 
-function getPosts() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } 
-  catch(e) { return []; }
+// Announcements live in notices.json, read/written through gh-proxy (which
+// commits them to the repo) so a posted announcement reaches every device —
+// not just the browser it was posted from.
+async function getPosts() {
+  const token = sessionStorage.getItem('kmc-token');
+  const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(NOTICES_FILE), {
+    headers: { 'Authorization': 'Bearer ' + (token || '') }
+  });
+  if(!r.ok) throw new Error('Could not load announcements');
+  const j = await r.json();
+  return Array.isArray(j.json) ? j.json : [];
 }
 
-function savePosts(posts) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+async function savePosts(posts, message) {
+  const token = sessionStorage.getItem('kmc-token');
+  const r = await fetch('/.netlify/functions/gh-proxy', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + (token || '')
+    },
+    body: JSON.stringify({ file: NOTICES_FILE, content: posts, message })
+  });
+  if(!r.ok) throw new Error('Could not save announcements');
 }
 
-function postAnnouncement() {
+async function postAnnouncement() {
   const title = document.getElementById('post-title').value.trim();
   const body = document.getElementById('post-body').value.trim();
   const author = document.getElementById('post-author').value.trim() || 'Admin';
@@ -171,17 +188,29 @@ function postAnnouncement() {
     return;
   }
 
-  const posts = getPosts();
-  posts.unshift({
-    id: Date.now(),
-    title,
-    body,
-    author,
-    expiry: expiry || null,
-    urgent,
-    date: new Date().toISOString()
-  });
-  savePosts(posts);
+  const btn = document.querySelector('#editor-screen .card button.btn');
+  btn.disabled = true;
+  btn.textContent = 'Posting…';
+  try {
+    const posts = await getPosts();
+    posts.unshift({
+      id: Date.now(),
+      title,
+      body,
+      author,
+      expiry: expiry || null,
+      urgent,
+      date: new Date().toISOString()
+    });
+    await savePosts(posts, 'Post announcement: ' + title);
+  } catch(e) {
+    alert('Could not post the announcement. Please try again.');
+    btn.disabled = false;
+    btn.textContent = '📢 Post Announcement';
+    return;
+  }
+  btn.disabled = false;
+  btn.textContent = '📢 Post Announcement';
 
   // Reset form
   document.getElementById('post-title').value = '';
@@ -197,16 +226,28 @@ function postAnnouncement() {
   loadPosts();
 }
 
-function deletePost(id) {
+async function deletePost(id) {
   if(!confirm('Delete this announcement?')) return;
-  const posts = getPosts().filter(p => p.id !== id);
-  savePosts(posts);
+  try {
+    const posts = (await getPosts()).filter(p => p.id !== id);
+    await savePosts(posts, 'Delete announcement');
+  } catch(e) {
+    alert('Could not delete the announcement. Please try again.');
+    return;
+  }
   loadPosts();
 }
 
-function loadPosts() {
-  const posts = getPosts();
+async function loadPosts() {
   const list = document.getElementById('posts-list');
+  list.innerHTML = '<div class="no-posts">Loading…</div>';
+  let posts;
+  try {
+    posts = await getPosts();
+  } catch(e) {
+    list.innerHTML = '<div class="no-posts">Could not load announcements. Please refresh and try again.</div>';
+    return;
+  }
   if(posts.length === 0) {
     list.innerHTML = '<div class="no-posts">No announcements posted yet.</div>';
     return;
