@@ -17,7 +17,8 @@ const ALLOWED_FILES = new Set([
   'feedback.json',
   'cdm-submissions.json',
   'prevention-submissions.json',
-  'projects.json'
+  'projects.json',
+  'notices.json'
 ]);
 
 function ghHeaders(token) {
