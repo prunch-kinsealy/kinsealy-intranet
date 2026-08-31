@@ -16,7 +16,7 @@ const PWD_FILE = 'passwords.json';
 // source of truth for who's an admin.
 const ROLES = {
   fran: 'admin', joanne: 'admin', maria: 'admin',
-  ciara: 'staff', ruth: 'staff', eimear: 'staff', laura: 'staff',
+  ciara: 'staff', ruth: 'staff', laura: 'staff',
   susan: 'staff', michaela: 'staff', holly: 'staff', edel: 'staff', amy: 'staff'
 };
 

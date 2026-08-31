@@ -4169,7 +4169,6 @@ Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick
           <option value="joanne">Dr Joanne Dundon</option>
           <option value="ciara">Dr Ciara Dunleavy</option>
           <option value="ruth">Dr Ruth Devlin</option>
-          <option value="eimear">Dr Eimear Dunne</option>
         </select>
       </div>
       <div class="modal-btn-row">
@@ -4194,7 +4193,6 @@ Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick
               <option value="maria">Maria Harding</option>
               <option value="ciara">Dr Ciara Dunleavy</option>
               <option value="ruth">Dr Ruth Devlin</option>
-              <option value="eimear">Dr Eimear Dunne</option>
               <option value="laura">Laura McGrath</option>
               <option value="susan">Susan O'Leary</option>
               <option value="michaela">Michaela Duffy-Meade</option>
@@ -4507,7 +4505,7 @@ async function loadAnnouncements() {
 
 // WHO'S IN TODAY
 const WHOS_IN_STAFF = {
-  doctors:     ['Dr. Fran O\'Reilly','Dr. Joanne Dundon','Dr. Ciara Dunleavy','Dr. Ruth Devlin','Dr. Eimear Dunne'],
+  doctors:     ['Dr. Fran O\'Reilly','Dr. Joanne Dundon','Dr. Ciara Dunleavy','Dr. Ruth Devlin'],
   nurses:      ['Laura McGrath'],
   pm:          ['Maria Harding'],
   secretaries: ['Susan O\'Leary','Michaela Duffy-Meade','Holly McCamley','Edel Grimes','Amy Burke']
@@ -4547,7 +4545,7 @@ async function loadWhosIn() {
   // Map display names → username keys for away lookup
   const NAME_TO_USER = {
     'Dr. Fran O\'Reilly':'fran','Dr. Joanne Dundon':'joanne',
-    'Dr. Ciara Dunleavy':'ciara','Dr. Ruth Devlin':'ruth','Dr. Eimear Dunne':'eimear',
+    'Dr. Ciara Dunleavy':'ciara','Dr. Ruth Devlin':'ruth',
     'Laura McGrath':'laura','Maria Harding':'maria',
     'Susan O\'Leary':'susan','Michaela Duffy-Meade':'michaela',
     'Holly McCamley':'holly','Edel Grimes':'edel','Amy Burke':'amy'
@@ -5109,11 +5107,11 @@ const AWAY_CACHE_KEY = 'kmc_away_v1';
 const AWAY_GH_FILE   = 'away-status.json';
 const STAFF_NAMES = {
   fran:'Dr Fran O\'Reilly', joanne:'Dr Joanne Dundon', maria:'Maria Harding',
-  ciara:'Dr Ciara Dunleavy', ruth:'Dr Ruth Devlin', eimear:'Dr Eimear Dunne', laura:'Laura McGrath',
+  ciara:'Dr Ciara Dunleavy', ruth:'Dr Ruth Devlin', laura:'Laura McGrath',
   susan:'Susan O\'Leary', michaela:'Michaela Duffy-Meade', holly:'Holly McCamley',
   edel:'Edel Grimes', amy:'Amy Burke'
 };
-const DOCTORS = new Set(['fran','joanne','ciara','ruth','eimear']);
+const DOCTORS = new Set(['fran','joanne','ciara','ruth']);
 const STATUS_LABELS = { holiday:'Holiday', training:'Training', sick:'Sick Leave', wfh:'WFH', other:'Away' };
 const STATUS_EMOJIS = { holiday:'✈️', training:'📚', sick:'🤒', wfh:'🏠', other:'📋' };
 
@@ -5758,7 +5756,7 @@ async function loadBuddyAlerts() {
 }
 
 // ── AWAY NOTICES (bon voyage / welcome back cards) ─────────────
-const DOCTOR_USERNAMES = new Set(['fran','joanne','ciara','ruth','eimear']);
+const DOCTOR_USERNAMES = new Set(['fran','joanne','ciara','ruth']);
 
 async function loadAwayNotices() {
   const container = document.getElementById('away-notices-container');
