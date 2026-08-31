@@ -17,6 +17,7 @@ const ALLOWED_FILES = new Set([
   'feedback.json',
   'cdm-submissions.json',
   'prevention-submissions.json',
+  'menopause-submissions.json',
   'projects.json',
   'notices.json'
 ]);
