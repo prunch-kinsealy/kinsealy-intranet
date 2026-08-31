@@ -39,3 +39,21 @@
   to = "/index.html"
   status = 404
   force = true
+
+[[redirects]]
+  from = "/pending-edits.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/leave-requests.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/leave-entitlements.json"
+  to = "/index.html"
+  status = 404
+  force = true

@@ -29,6 +29,11 @@
   .restricted h2{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:8px;color:#1a2d4a}
   .note{font-size:0.78rem;color:#6b7280;margin-top:4px;line-height:1.6}
 
+  /* Entitlement cell */
+  .ent-cell{display:flex;align-items:center;gap:6px}
+  .ent-cell input{width:52px;padding:6px 8px;border:1.5px solid #e8e8e8;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:#1f2937;outline:none;transition:border 0.15s}
+  .ent-cell input:focus{border-color:#2a8a7e}
+
   /* Password cell */
   .pwd-cell{display:flex;align-items:center;gap:8px;min-width:180px}
   .pwd-display{font-family:monospace;font-size:0.88rem;background:#e8f5f3;color:#1a2d4a;padding:3px 10px;border-radius:5px;border:1px solid #c4e0db;letter-spacing:0.04em;min-width:90px}
@@ -84,6 +89,7 @@
           <th>Username</th>
           <th>Password</th>
           <th>Access</th>
+          <th>Annual Leave (days/yr)</th>
           <th></th>
         </tr>
       </thead>
@@ -140,10 +146,18 @@ function renderTable() {
           </div>
         </td>
         <td><span class="badge ${badgeCls}">${badgeLbl}</span></td>
+        <td>
+          <div class="ent-cell">
+            <input type="number" min="0" max="365" id="ent-${s.username}" value="20"
+              onkeydown="if(event.key==='Enter')saveEntitlement('${s.username}')">
+            <button class="btn-icon" onclick="saveEntitlement('${s.username}')" id="ent-save-${s.username}">💾</button>
+            <span class="save-msg" id="ent-msg-${s.username}"></span>
+          </div>
+        </td>
         <td><button class="btn-icon" onclick="openReset('${s.username}')">🔑 Reset</button></td>
       </tr>
       <tr class="reset-row" id="reset-${s.username}">
-        <td colspan="5">
+        <td colspan="6">
           <div class="reset-form">
             <label>New password for ${s.name.split(' ').pop()}:</label>
             <input type="text" id="new-pwd-${s.username}" placeholder="At least 8 characters"
@@ -221,11 +235,53 @@ function showToast(message) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+async function loadEntitlements() {
+  try {
+    const r = await fetch('/.netlify/functions/leave', { headers: kmcAuthHeader() });
+    if (!r.ok) return;
+    const j = await r.json();
+    const entitlements = j.entitlements || {};
+    STAFF.forEach(s => {
+      const input = document.getElementById('ent-' + s.username);
+      if (input && entitlements[s.username] != null) input.value = entitlements[s.username];
+    });
+  } catch (e) { /* inputs keep their default of 20 */ }
+}
+
+async function saveEntitlement(username) {
+  const input = document.getElementById('ent-' + username);
+  const msg = document.getElementById('ent-msg-' + username);
+  const btn = document.getElementById('ent-save-' + username);
+  const days = Number(input.value);
+  if (!Number.isFinite(days) || days < 0 || days > 365) {
+    msg.textContent = '⚠ 0–365 only'; msg.style.color = '#b91c1c'; return;
+  }
+  btn.disabled = true;
+  msg.textContent = '';
+  try {
+    const r = await fetch('/.netlify/functions/leave', {
+      method: 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, kmcAuthHeader()),
+      body: JSON.stringify({ action: 'setEntitlement', username, days })
+    });
+    if (r.status === 401) { sessionStorage.clear(); location.replace('login.html'); return; }
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.ok) throw new Error(j.error || 'save failed');
+    msg.textContent = '✓ Saved'; msg.style.color = '#2a8a7e';
+    setTimeout(() => { msg.textContent = ''; }, 2000);
+  } catch (e) {
+    msg.textContent = '⚠ ' + (e.message || 'Save failed'); msg.style.color = '#b91c1c';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 // Init
 if (sessionStorage.getItem('kmc-role') === 'admin') {
   document.getElementById('main-content').style.display = 'block';
   document.getElementById('sync-status').textContent = '';
   renderTable();
+  loadEntitlements();
 } else {
   document.getElementById('restricted').style.display = 'block';
 }

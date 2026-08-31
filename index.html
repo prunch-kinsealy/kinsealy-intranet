@@ -524,6 +524,31 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .metrics-col-headers{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--navy);border-radius:0}
 .metrics-col-headers div{padding:8px 14px;font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.75)}
 .metrics-col-headers div:first-child{color:#fff}
+
+/* ── LEAVE ── */
+.leave-balance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+@media(max-width:700px){.leave-balance-grid{grid-template-columns:1fr}}
+.leave-balance-card{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:16px 18px}
+.leave-balance-num{font-family:'DM Serif Display',serif;font-size:1.9rem;color:var(--navy)}
+.leave-balance-label{font-size:0.72rem;color:var(--grey-400);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px}
+.leave-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.leave-form-grid{grid-template-columns:1fr}}
+.leave-type-toggle{display:flex;gap:8px;margin-bottom:14px}
+.leave-type-btn{flex:1;border:1.5px solid var(--grey-200);border-radius:8px;padding:10px;text-align:center;cursor:pointer;font-size:0.82rem;font-weight:600;color:var(--grey-700);background:#fff;transition:all 0.15s}
+.leave-type-btn.selected{border-color:var(--teal);background:var(--teal-pale);color:var(--teal)}
+.leave-item{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.leave-item-main{flex:1;min-width:200px}
+.leave-item-name{font-size:0.88rem;font-weight:700;color:var(--navy)}
+.leave-item-dates{font-size:0.8rem;color:var(--grey-700);margin-top:2px}
+.leave-item-meta{font-size:0.74rem;color:var(--grey-400);margin-top:4px}
+.leave-item-note{font-size:0.78rem;color:var(--grey-700);margin-top:6px;background:var(--grey-100);border-radius:6px;padding:6px 10px}
+.leave-status-pill{display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.leave-status-pending{background:#fef3c7;color:#92400e}
+.leave-status-approved{background:#dcfce7;color:#166534}
+.leave-status-rejected{background:#fee2e2;color:#991b1b}
+.leave-status-withdrawn{background:var(--grey-100);color:var(--grey-400)}
+.leave-item-actions{display:flex;gap:8px;flex-wrap:wrap}
+.leave-empty{text-align:center;padding:32px 16px;color:var(--grey-400);font-size:0.85rem}
 </style>
 </head>
 <body>
@@ -562,6 +587,8 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
     <a href="#" class="nav-link" data-section="doctor-stuff"><span class="nav-icon">👨‍⚕️</span> Doctor Protocols</a>
     <div class="nav-group-label">Operations</div>
     <a href="#" class="nav-link" data-section="front-of-house"><span class="nav-icon">🏥</span> Front of House</a>
+    <a href="#" class="nav-link" data-section="leave"><span class="nav-icon">🌴</span> My Leave</a>
+    <a href="#" class="nav-link nav-sublink admin-only" data-section="leave-approvals" id="nav-leave-approvals" style="display:none"><span class="nav-icon">📥</span> Leave Approvals <span id="leave-approvals-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
     <a href="#" class="nav-link" data-section="practice-management" id="pm-nav-link"><span class="nav-icon">📋</span> Practice Management <span class="future-lock" id="pm-lock-badge">🔒</span><span class="pm-unlocked-badge" id="pm-unlocked-badge">✓ Unlocked</span></a>
     <a href="#" class="nav-link nav-sublink" data-section="metrics" id="metrics-nav-link"><span class="nav-icon">📊</span> Metrics <span class="future-lock" id="metrics-lock-badge">🔒</span><span class="pm-unlocked-badge" id="metrics-unlocked-badge">✓ Unlocked</span></a>
     <a href="#" class="nav-link" data-section="text-templates"><span class="nav-icon">💬</span> Text Templates</a>
@@ -3954,6 +3981,32 @@ Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick
   </div>
 </div>
 
+<!-- ════════════════════════════════════════════════════ -->
+<!-- MY LEAVE -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="leave">
+  <div class="page-header">
+    <h2>My Leave</h2>
+    <p>Request annual leave or log a sick day. Approved leave automatically updates the "Who's In" board — no need to also set your status separately.</p>
+  </div>
+  <div id="leave-content">
+    <div style="color:var(--grey-400);font-size:0.85rem;padding:20px 0">Loading…</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- LEAVE APPROVALS (admin) -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="section" id="leave-approvals">
+  <div class="page-header">
+    <h2>Leave Approvals</h2>
+    <p>Review pending annual leave requests. Approving a request publishes it straight to the Who's In / away-status board.</p>
+  </div>
+  <div id="leave-approvals-content">
+    <div style="color:var(--grey-400);font-size:0.85rem;padding:20px 0">Loading…</div>
+  </div>
+</div>
+
 <div class="section" id="maintenance">
   <div class="page-header"><h2>Maintenance</h2><p>Alarm, BLS, equipment, premises and monthly metrics.</p></div>
 
@@ -4071,13 +4124,25 @@ Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick
     <h3 id="away-modal-title">Set Your Status</h3>
     <p class="modal-sub" id="away-modal-sub">Let the team know you're away and who your buddy is.</p>
 
+    <div id="away-leave-redirect" style="display:none">
+      <p style="font-size:0.85rem;color:var(--grey-700);line-height:1.6;margin-bottom:14px">
+        Annual leave and sick leave are now requested from <strong>My Leave</strong> — it keeps this board
+        in sync automatically once approved, and (for annual leave) tracks it against entitlement.
+      </p>
+      <div class="modal-btn-row">
+        <button class="modal-btn" onclick="closeAwayModal();switchSection('leave')">Go to My Leave</button>
+        <button class="modal-btn secondary" onclick="closeAwayModal()">Cancel</button>
+      </div>
+    </div>
+
     <div id="away-form">
+      <p style="font-size:0.78rem;color:var(--grey-400);line-height:1.5;margin-bottom:12px">
+        For annual leave or sick leave, use <a href="#" onclick="closeAwayModal();switchSection('leave');return false" style="color:var(--teal);font-weight:600">My Leave</a> instead — this form is for training, WFH and other short absences that don't draw down leave entitlement.
+      </p>
       <div class="modal-field">
         <label>Status</label>
         <select id="away-status-type" onchange="awayStatusTypeChange()">
-          <option value="holiday">🏖️ Holiday</option>
           <option value="training">📚 Training / Conference</option>
-          <option value="sick">🤒 Sick Leave</option>
           <option value="wfh">🏠 Working From Home</option>
           <option value="other">📋 Other Absence</option>
         </select>
@@ -4104,6 +4169,7 @@ Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick
           <option value="joanne">Dr Joanne Dundon</option>
           <option value="ciara">Dr Ciara Dunleavy</option>
           <option value="ruth">Dr Ruth Devlin</option>
+          <option value="eimear">Dr Eimear Dunne</option>
         </select>
       </div>
       <div class="modal-btn-row">
@@ -4128,6 +4194,7 @@ Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick
               <option value="maria">Maria Harding</option>
               <option value="ciara">Dr Ciara Dunleavy</option>
               <option value="ruth">Dr Ruth Devlin</option>
+              <option value="eimear">Dr Eimear Dunne</option>
               <option value="laura">Laura McGrath</option>
               <option value="susan">Susan O'Leary</option>
               <option value="michaela">Michaela Duffy-Meade</option>
@@ -4206,6 +4273,7 @@ const titles = {
   'home':'Home & Noticeboard','cdm':'Chronic Disease Management','care-pathways':'Patient Journeys','doctor-stuff':'Doctor Protocols',
   'clinical-procedures':'Clinical Procedures',
   'cdm-inbox':'CDM Inbox','prevention-inbox':'Prevention Inbox',
+  'leave':'My Leave','leave-approvals':'Leave Approvals',
   'practice-management':'Practice Management','front-of-house':'Front of House','metrics':'Metrics',
   'clinical-pathways':'Clinical Pathways','text-templates':'Text Templates',
   'useful-forms':'Useful Forms','quick-links':'Quick Links','ai-at-kinsealy':'AI at Kinsealy',
@@ -5029,6 +5097,8 @@ async function kmcProxySet(file, content, message) {
           'Figures below may be incomplete.</div>');
       });
     }
+    if(id==='leave'){ loadLeaveSection(); }
+    if(id==='leave-approvals'){ loadLeaveApprovalsSection(); }
   };
 })();
 
@@ -5039,7 +5109,7 @@ const AWAY_CACHE_KEY = 'kmc_away_v1';
 const AWAY_GH_FILE   = 'away-status.json';
 const STAFF_NAMES = {
   fran:'Dr Fran O\'Reilly', joanne:'Dr Joanne Dundon', maria:'Maria Harding',
-  ciara:'Dr Ciara Dunleavy', ruth:'Dr Ruth Devlin', laura:'Laura McGrath',
+  ciara:'Dr Ciara Dunleavy', ruth:'Dr Ruth Devlin', eimear:'Dr Eimear Dunne', laura:'Laura McGrath',
   susan:'Susan O\'Leary', michaela:'Michaela Duffy-Meade', holly:'Holly McCamley',
   edel:'Edel Grimes', amy:'Amy Burke'
 };
@@ -5150,32 +5220,40 @@ async function openAwayModal() {
   const data = await getAwayData();
   const s = data[username] || {};
 
-  // Pre-fill form with existing data
-  document.getElementById('away-status-type').value = s.status || 'holiday';
-  document.getElementById('away-destination').value = s.destination || '';
-  document.getElementById('away-from').value = s.departureDate || '';
-  document.getElementById('away-until').value = s.returnDate || '';
-  document.getElementById('away-buddy').value = s.buddy || '';
-  awayStatusTypeChange();
-  updateBuddyVisibility(username);
-
-  // Show clear button if already away
+  // Annual/sick leave now goes through My Leave (see leave.js), which is
+  // what keeps this board in sync — this modal only self-services the
+  // remaining short-absence types that don't touch entitlement.
   const today = new Date(); today.setHours(0,0,0,0);
   const isCurrentlyAway = s.returnDate && new Date(s.returnDate + 'T12:00:00') >= today;
-  document.getElementById('clear-status-btn').style.display = isCurrentlyAway ? 'block' : 'none';
+  const isLeaveManaged = isCurrentlyAway && (s.status === 'holiday' || s.status === 'sick');
 
-  // Admin extras
-  const adminSec = document.getElementById('away-admin-section');
-  if (role === 'admin') {
-    adminSec.style.display = 'block';
-    document.getElementById('away-for-user').value = username;
-  } else {
-    adminSec.style.display = 'none';
+  document.getElementById('away-leave-redirect').style.display = isLeaveManaged ? 'block' : 'none';
+  document.getElementById('away-form').style.display = isLeaveManaged ? 'none' : 'block';
+
+  if (!isLeaveManaged) {
+    // Pre-fill form with existing data
+    document.getElementById('away-status-type').value = ['training', 'wfh', 'other'].includes(s.status) ? s.status : 'other';
+    document.getElementById('away-destination').value = s.destination || '';
+    document.getElementById('away-from').value = s.departureDate || '';
+    document.getElementById('away-until').value = s.returnDate || '';
+    document.getElementById('away-buddy').value = s.buddy || '';
+    awayStatusTypeChange();
+    updateBuddyVisibility(username);
+    document.getElementById('clear-status-btn').style.display = isCurrentlyAway ? 'block' : 'none';
+
+    // Admin extras
+    const adminSec = document.getElementById('away-admin-section');
+    if (role === 'admin') {
+      adminSec.style.display = 'block';
+      document.getElementById('away-for-user').value = username;
+    } else {
+      adminSec.style.display = 'none';
+    }
+
+    // Reset save button in case it was left disabled from a previous attempt
+    const saveBtn = document.querySelector('#away-form .modal-btn');
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Status'; }
   }
-
-  // Reset save button in case it was left disabled from a previous attempt
-  const saveBtn = document.querySelector('#away-form .modal-btn');
-  if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Status'; }
 
   document.getElementById('away-modal-overlay').style.display = 'flex';
 }
@@ -5192,9 +5270,7 @@ function updateBuddyVisibility(username) {
 function awayStatusTypeChange() {
   const type = document.getElementById('away-status-type').value;
   const destField = document.getElementById('away-dest-field');
-  destField.style.display = (type === 'holiday' || type === 'other') ? 'block' : 'none';
-  const untilLabel = document.getElementById('away-until-label');
-  if (untilLabel) untilLabel.innerHTML = type === 'sick' ? 'Back On <span style="font-weight:400;text-transform:none;color:var(--grey-400)">(optional)</span>' : 'Back On';
+  destField.style.display = (type === 'other') ? 'block' : 'none';
 }
 
 function getTargetUser() {
@@ -5216,7 +5292,7 @@ function saveAwayStatus() {
   const returnDate = document.getElementById('away-until').value;
   const buddy = document.getElementById('away-buddy').value;
   if (!departureDate) { alert('Please set the away from date.'); return; }
-  if (!returnDate && status !== 'sick') { alert('Please set the return date.'); return; }
+  if (!returnDate) { alert('Please set the return date.'); return; }
 
   // Save to cache instantly so UI updates immediately
   const data = _awayCacheGet();
@@ -5241,6 +5317,287 @@ async function clearAwayStatus() {
   closeAwayModal();
   loadAwayWidget();
   updateStatusBtn();
+}
+
+// ══════════════════════════════════════════════════════════════
+// MY LEAVE — annual leave (approval-gated, entitlement-tracked) and
+// sick leave (self-logged, no gate) — see netlify/functions/leave.js.
+// Approving/logging a request mirrors into away-status.json server-side,
+// so the widgets above (Who's In, buddy alerts, welcome back) need no
+// changes of their own.
+// ══════════════════════════════════════════════════════════════
+const LEAVE_TYPE_LABELS = { annual: 'Annual Leave', sick: 'Sick Leave' };
+let _leaveDataCache = null;
+let _leaveFormType = 'annual';
+
+async function fetchLeaveData(force) {
+  if (_leaveDataCache && !force) return _leaveDataCache;
+  try {
+    const r = await fetch('/.netlify/functions/leave', { headers: kmcAuthHeader() });
+    if (!r.ok) throw new Error('load failed');
+    _leaveDataCache = await r.json();
+  } catch (e) {
+    _leaveDataCache = { requests: [], entitlements: {}, _error: true };
+  }
+  return _leaveDataCache;
+}
+
+// Mon–Fri count inclusive of both ends — mirrors leave.js's server-side
+// count so the form preview matches what actually gets saved. Doesn't
+// subtract Irish public holidays (see leave.js for why).
+function leaveCountWorkingDays(startStr, endStr) {
+  if (!startStr || !endStr) return 0;
+  const start = new Date(startStr + 'T12:00:00');
+  const end = new Date(endStr + 'T12:00:00');
+  if (end < start) return 0;
+  let count = 0;
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    const day = d.getDay();
+    if (day !== 0 && day !== 6) count++;
+  }
+  return count;
+}
+
+function leaveDaysUsedThisYear(requests, username, type) {
+  const year = new Date().getFullYear();
+  return requests
+    .filter(r => r.username === username && r.type === type && r.status === 'approved' && r.startDate && new Date(r.startDate).getFullYear() === year)
+    .reduce((sum, r) => sum + (r.days || 0), 0);
+}
+
+function leaveStatusPill(status) {
+  const labels = { pending: 'Pending', approved: 'Approved', rejected: 'Rejected', withdrawn: 'Withdrawn' };
+  return `<span class="leave-status-pill leave-status-${status}">${labels[status] || status}</span>`;
+}
+
+function leaveFormatRange(r) {
+  const from = formatDate(r.startDate);
+  return r.endDate ? `${from} – ${formatDate(r.endDate)}` : `${from} — return date TBC`;
+}
+
+async function loadLeaveSection() {
+  const container = document.getElementById('leave-content');
+  if (!container) return;
+  const username = sessionStorage.getItem('kmc-user');
+  const { requests, entitlements, _error } = await fetchLeaveData(true);
+
+  const entitlement = entitlements[username] != null ? entitlements[username] : 20;
+  const taken = leaveDaysUsedThisYear(requests, username, 'annual');
+  const remaining = Math.max(0, entitlement - taken);
+  const sickTaken = leaveDaysUsedThisYear(requests, username, 'sick');
+  const pendingCount = requests.filter(r => r.username === username && r.status === 'pending').length;
+  const isDoctor = DOCTORS.has(username);
+
+  const myRequests = requests.filter(r => r.username === username);
+
+  container.innerHTML = `
+    ${_error ? '<div class="info-box" style="border-left:3px solid #b91c1c;color:#b91c1c;margin-bottom:16px">⚠ Could not load leave data — check your connection and reopen this section.</div>' : ''}
+    <div class="leave-balance-grid">
+      <div class="leave-balance-card">
+        <div class="leave-balance-num">${remaining}</div>
+        <div class="leave-balance-label">Annual leave days remaining (of ${entitlement} for ${new Date().getFullYear()})</div>
+      </div>
+      <div class="leave-balance-card">
+        <div class="leave-balance-num">${taken}</div>
+        <div class="leave-balance-label">Annual leave days taken this year</div>
+      </div>
+      <div class="leave-balance-card">
+        <div class="leave-balance-num">${sickTaken}</div>
+        <div class="leave-balance-label">Sick days logged this year</div>
+      </div>
+    </div>
+    ${pendingCount > 0 ? `<div class="info-box" style="margin-bottom:16px">⏳ You have ${pendingCount} request${pendingCount === 1 ? '' : 's'} awaiting approval.</div>` : ''}
+
+    <div class="section-label">Request Leave</div>
+    <div class="sop-card"><div class="sop-body open" style="padding:16px 18px">
+      <div class="leave-type-toggle">
+        <div class="leave-type-btn ${_leaveFormType === 'annual' ? 'selected' : ''}" onclick="leaveSetFormType('annual')">🏖️ Annual Leave</div>
+        <div class="leave-type-btn ${_leaveFormType === 'sick' ? 'selected' : ''}" onclick="leaveSetFormType('sick')">🤒 Sick Leave</div>
+      </div>
+      <div class="leave-form-grid">
+        <div class="modal-field">
+          <label>${_leaveFormType === 'sick' ? 'First Day Off' : 'From'}</label>
+          <input type="date" id="leave-start" onchange="leaveUpdatePreview()">
+        </div>
+        <div class="modal-field">
+          <label>${_leaveFormType === 'sick' ? 'Back On (optional)' : 'Return Date'}</label>
+          <input type="date" id="leave-end" onchange="leaveUpdatePreview()">
+        </div>
+      </div>
+      <div class="modal-field" id="leave-dest-field" style="display:${_leaveFormType === 'annual' ? 'block' : 'none'}">
+        <label>Destination <span style="font-weight:400;text-transform:none;color:var(--grey-400)">(Optional)</span></label>
+        <input type="text" id="leave-destination" placeholder="e.g. Portugal, Tenerife, Cork…">
+      </div>
+      <div class="modal-field" id="leave-buddy-field" style="display:${isDoctor ? 'block' : 'none'}">
+        <label>Buddy / Cover</label>
+        <select id="leave-buddy">
+          <option value="">— None assigned —</option>
+          ${Object.entries(STAFF_NAMES).filter(([u]) => DOCTORS.has(u) && u !== username).map(([u, n]) => `<option value="${u}">${n}</option>`).join('')}
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Note <span style="font-weight:400;text-transform:none;color:var(--grey-400)">(Optional)</span></label>
+        <input type="text" id="leave-note" placeholder="Anything the PM should know" maxlength="1000">
+      </div>
+      <div id="leave-preview" style="font-size:0.8rem;color:var(--grey-400);margin-bottom:10px"></div>
+      <button class="modal-btn" onclick="submitLeaveRequest()" id="leave-submit-btn">${_leaveFormType === 'sick' ? 'Log Sick Leave' : 'Request Annual Leave'}</button>
+    </div></div>
+
+    <div class="section-label" style="margin-top:24px">Your Requests</div>
+    ${myRequests.length === 0 ? '<div class="leave-empty">No leave requested yet.</div>' : myRequests.map(r => `
+      <div class="leave-item">
+        <div class="leave-item-main">
+          <div class="leave-item-name">${LEAVE_TYPE_LABELS[r.type] || r.type}${r.days ? ` · ${r.days} working day${r.days === 1 ? '' : 's'}` : ''}</div>
+          <div class="leave-item-dates">📅 ${leaveFormatRange(r)}</div>
+          ${r.note ? `<div class="leave-item-note">${_escHtml(r.note)}</div>` : ''}
+          ${r.status === 'rejected' && r.reviewNote ? `<div class="leave-item-note">Reviewer note: ${_escHtml(r.reviewNote)}</div>` : ''}
+        </div>
+        <div class="leave-item-actions">
+          ${leaveStatusPill(r.status)}
+          ${r.status === 'pending' ? `<button class="modal-btn secondary" style="padding:5px 12px;font-size:0.76rem" onclick="cancelLeaveRequest(${r.id})">Withdraw</button>` : ''}
+        </div>
+      </div>
+    `).join('')}
+  `;
+  leaveUpdatePreview();
+}
+
+function leaveSetFormType(type) {
+  _leaveFormType = type;
+  loadLeaveSection();
+}
+
+function leaveUpdatePreview() {
+  const startEl = document.getElementById('leave-start');
+  const endEl = document.getElementById('leave-end');
+  const preview = document.getElementById('leave-preview');
+  if (!startEl || !preview) return;
+  if (!startEl.value || !endEl.value) { preview.textContent = ''; return; }
+  const days = leaveCountWorkingDays(startEl.value, endEl.value);
+  preview.textContent = days > 0
+    ? `= ${days} working day${days === 1 ? '' : 's'} (Mon–Fri; bank holidays aren't subtracted)`
+    : 'Return date must be on or after the start date';
+}
+
+async function submitLeaveRequest() {
+  const type = _leaveFormType;
+  const startDate = document.getElementById('leave-start').value;
+  const endDate = document.getElementById('leave-end').value;
+  const destination = document.getElementById('leave-destination') ? document.getElementById('leave-destination').value.trim() : '';
+  const buddy = document.getElementById('leave-buddy') ? document.getElementById('leave-buddy').value : '';
+  const note = document.getElementById('leave-note').value.trim();
+
+  if (!startDate) { alert('Please choose a start date.'); return; }
+  if (type === 'annual' && !endDate) { alert('Please choose a return date — annual leave needs one for entitlement tracking.'); return; }
+  if (endDate && endDate < startDate) { alert('Return date is before the start date.'); return; }
+
+  const btn = document.getElementById('leave-submit-btn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const r = await fetch('/.netlify/functions/leave', {
+      method: 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, kmcAuthHeader()),
+      body: JSON.stringify({ action: 'submit', type, startDate, endDate, destination, buddy, note })
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'Could not submit');
+    _leaveDataCache = null;
+    document.getElementById('leave-note').value = '';
+    await loadLeaveSection();
+    loadAwayWidget(); updateStatusBtn(); loadAwayNotices();
+  } catch (e) {
+    alert(e.message || 'Could not submit the request. Please try again.');
+    btn.disabled = false; btn.textContent = type === 'sick' ? 'Log Sick Leave' : 'Request Annual Leave';
+  }
+}
+
+async function cancelLeaveRequest(id) {
+  if (!confirm('Withdraw this leave request?')) return;
+  try {
+    const r = await fetch('/.netlify/functions/leave', {
+      method: 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, kmcAuthHeader()),
+      body: JSON.stringify({ action: 'cancel', id })
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'Could not withdraw');
+    _leaveDataCache = null;
+    await loadLeaveSection();
+  } catch (e) {
+    alert(e.message || 'Could not withdraw the request.');
+  }
+}
+
+// ── LEAVE APPROVALS (admin) ─────────────────────────────────────
+async function loadLeaveApprovalsSection() {
+  const container = document.getElementById('leave-approvals-content');
+  if (!container) return;
+  const { requests, _error } = await fetchLeaveData(true);
+  const pending = requests.filter(r => r.type === 'annual' && r.status === 'pending');
+  const reviewed = requests.filter(r => r.status !== 'pending').slice(0, 30);
+
+  container.innerHTML = `
+    ${_error ? '<div class="info-box" style="border-left:3px solid #b91c1c;color:#b91c1c;margin-bottom:16px">⚠ Could not load leave data.</div>' : ''}
+    <div class="section-label">Pending (${pending.length})</div>
+    ${pending.length === 0 ? '<div class="leave-empty">Nothing waiting on you 🎉</div>' : pending.map(r => `
+      <div class="leave-item">
+        <div class="leave-item-main">
+          <div class="leave-item-name">${STAFF_NAMES[r.username] || r.username}</div>
+          <div class="leave-item-dates">📅 ${leaveFormatRange(r)} · ${r.days} working day${r.days === 1 ? '' : 's'}</div>
+          <div class="leave-item-meta">Requested ${formatDate(r.submittedAt.slice(0, 10))}${r.buddy ? ` · Buddy: ${STAFF_NAMES[r.buddy] || r.buddy}` : ''}</div>
+          ${r.note ? `<div class="leave-item-note">${_escHtml(r.note)}</div>` : ''}
+        </div>
+        <div class="leave-item-actions">
+          <button class="modal-btn" style="padding:6px 14px;font-size:0.78rem" onclick="reviewLeaveRequest(${r.id},'approve')">Approve</button>
+          <button class="modal-btn danger" style="padding:6px 14px;font-size:0.78rem" onclick="reviewLeaveRequest(${r.id},'reject')">Reject</button>
+        </div>
+      </div>
+    `).join('')}
+
+    <div class="section-label" style="margin-top:24px">Recently Reviewed</div>
+    ${reviewed.length === 0 ? '<div class="leave-empty">Nothing reviewed yet.</div>' : reviewed.map(r => `
+      <div class="leave-item">
+        <div class="leave-item-main">
+          <div class="leave-item-name">${STAFF_NAMES[r.username] || r.username} — ${LEAVE_TYPE_LABELS[r.type] || r.type}</div>
+          <div class="leave-item-dates">📅 ${leaveFormatRange(r)}</div>
+        </div>
+        <div class="leave-item-actions">${leaveStatusPill(r.status)}</div>
+      </div>
+    `).join('')}
+  `;
+}
+
+async function reviewLeaveRequest(id, decision) {
+  let reviewNote = '';
+  if (decision === 'reject') {
+    reviewNote = prompt('Optional note on why (visible to the requester):') || '';
+  }
+  try {
+    const r = await fetch('/.netlify/functions/leave', {
+      method: 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, kmcAuthHeader()),
+      body: JSON.stringify({ action: 'review', id, decision, reviewNote })
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'Could not save the review');
+    _leaveDataCache = null;
+    await loadLeaveApprovalsSection();
+    loadLeaveApprovalsBadge();
+    loadAwayWidget(); loadAwayNotices();
+  } catch (e) {
+    alert(e.message || 'Could not save the review.');
+  }
+}
+
+async function loadLeaveApprovalsBadge() {
+  if (sessionStorage.getItem('kmc-role') !== 'admin') return;
+  try {
+    const { requests } = await fetchLeaveData(true);
+    const count = requests.filter(r => r.type === 'annual' && r.status === 'pending').length;
+    const badge = document.getElementById('leave-approvals-badge');
+    if (count > 0) { badge.textContent = count; badge.style.display = 'inline'; }
+    else { badge.style.display = 'none'; }
+  } catch (e) { /* convenience badge only */ }
 }
 
 // ── WELCOME BACK ──────────────────────────────────────────────
@@ -5585,6 +5942,7 @@ checkWelcomeBack();
 loadBuddyAlerts();
 loadAwayNotices();
 loadApprovalsBadge();
+loadLeaveApprovalsBadge();
 
 // Handle deep-link hash from feedback admin page
 (function() {
