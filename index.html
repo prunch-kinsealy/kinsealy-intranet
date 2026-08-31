@@ -555,6 +555,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
     <a href="#" class="nav-link" data-section="cdm" id="cdm-nav-link"><span class="nav-icon">🔁</span> CDM <span class="future-lock" id="cdm-lock-badge">🔒</span><span class="pm-unlocked-badge" id="cdm-unlocked-badge" style="display:none">✓ Unlocked</span></a>
     <a href="#" class="nav-link nav-sublink" data-section="cdm-inbox" id="nav-cdm-inbox"><span class="nav-icon">📥</span> CDM Inbox <span id="cdm-inbox-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
     <a href="#" class="nav-link nav-sublink" data-section="prevention-inbox" id="nav-prevention-inbox"><span class="nav-icon">📥</span> Prevention Inbox <span id="prevention-inbox-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
+    <a href="#" class="nav-link nav-sublink" data-section="menopause-inbox" id="nav-menopause-inbox"><span class="nav-icon">📥</span> Menopause Inbox <span id="menopause-inbox-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
     <a href="#" class="nav-link" data-section="care-pathways"><span class="nav-icon">🩺</span> Patient Journeys</a>
     <a href="#" class="nav-link" data-section="clinical-procedures"><span class="nav-icon">💉</span> Clinical Procedures</a>
     <a href="#" class="nav-link" data-section="clinical-pathways"><span class="nav-icon">🧬</span> Clinical Pathways</a>
@@ -1271,6 +1272,24 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
   <div id="prevention-inbox-loading" style="text-align:center;padding:40px;color:var(--grey-400);font-size:0.85rem">Loading submissions...</div>
   <div id="prevention-inbox-empty" style="display:none;text-align:center;padding:40px;color:var(--grey-400);font-size:0.85rem">No submissions found.</div>
   <div id="prevention-inbox-list"></div>
+</div>
+
+<div class="section" id="menopause-inbox">
+  <div class="page-header">
+    <h2>Menopause Inbox</h2>
+    <p>Menopause &amp; HRT pre-appointment forms submitted via the website. Book each patient then mark as booked.</p>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+    <button class="cdm-filter-btn active" data-filter="all" onclick="setMenopauseFilter('all',this)">All</button>
+    <button class="cdm-filter-btn" data-filter="new" onclick="setMenopauseFilter('new',this)">New</button>
+    <button class="cdm-filter-btn" data-filter="booked" onclick="setMenopauseFilter('booked',this)">Booked</button>
+    <button onclick="loadMenopauseInbox(true)" style="margin-left:auto;font-size:0.75rem;padding:5px 12px;background:none;border:1px solid var(--grey-200);border-radius:6px;cursor:pointer;color:var(--grey-400);font-family:'DM Sans',sans-serif" title="Refresh">&#8635; Refresh</button>
+  </div>
+
+  <div id="menopause-inbox-loading" style="text-align:center;padding:40px;color:var(--grey-400);font-size:0.85rem">Loading submissions...</div>
+  <div id="menopause-inbox-empty" style="display:none;text-align:center;padding:40px;color:var(--grey-400);font-size:0.85rem">No submissions found.</div>
+  <div id="menopause-inbox-list"></div>
 </div>
 
 <!-- ════════════════════════════════════════════════════ -->
@@ -4203,7 +4222,7 @@ document.getElementById('sidebarDate').textContent = d.toLocaleDateString('en-IE
 // SECTION TITLES
 const titles = {
   'home':'Home & Noticeboard','cdm':'Chronic Disease Management','care-pathways':'Patient Journeys','doctor-stuff':'Doctor Protocols',
-  'clinical-procedures':'Clinical Procedures',
+  'clinical-procedures':'Clinical Procedures','menopause-inbox':'Menopause Inbox',
   'practice-management':'Practice Management','front-of-house':'Front of House',
   'clinical-pathways':'Clinical Pathways','text-templates':'Text Templates',
   'useful-forms':'Useful Forms','quick-links':'Quick Links',
@@ -6020,6 +6039,160 @@ async function submitFeedback() {
   document.addEventListener('click', function(e) {
     const link = e.target.closest('[data-section="prevention-inbox"]');
     if (link && allSubmissions.length === 0) loadPreventionInbox();
+  });
+})();
+
+// ── Menopause Inbox ───────────────────────────────────────────
+(function() {
+  const FILE = 'menopause-submissions.json';
+
+  let allSubmissions = [];
+  let currentFilter  = 'all';
+
+  function fmtDate(iso) {
+    try {
+      return new Date(iso).toLocaleString('en-IE',{
+        day:'2-digit', month:'2-digit', year:'numeric',
+        hour:'2-digit', minute:'2-digit', timeZone:'Europe/Dublin'
+      });
+    } catch(e) { return iso; }
+  }
+
+  // Same visual "at a glance" flag pattern as CDM/Prevention's booking
+  // guidance box, but flagging what actually matters for a menopause
+  // consult: postmenopausal bleeding (needs prompt attention, not just a
+  // routine booking) and whether any HRT risk factors were flagged.
+  function triageFlagHtml(sub) {
+    if (sub.postmenopausalBleeding === 'Yes') {
+      return '<div class="cdm-booking-guidance cdm-bg-abpm-no">'
+        + '<div class="cdm-guidance-title" style="color:#991b1b">⚠ Reported bleeding after menopause</div>'
+        + '<div style="color:#7f1d1d">Patient flagged unexpected/postmenopausal bleeding. Check they were also advised to phone the surgery — don\'t let this wait for the routine appointment slot.</div>'
+        + '</div>';
+    }
+
+    const riskFactors = sub.riskFactors || [];
+    const hasRiskFactors = riskFactors.length > 0 && !riskFactors.every(r => r === 'None of the above');
+    if (hasRiskFactors) {
+      return '<div class="cdm-booking-guidance cdm-bg-abpm-discuss">'
+        + '<div class="cdm-guidance-title" style="color:#713f12">HRT risk factors flagged</div>'
+        + '<div style="color:#713f12">' + riskFactors.filter(r => r !== 'None of the above').join(', ') + '</div>'
+        + '</div>';
+    }
+
+    return '<div class="cdm-booking-guidance" style="background:var(--grey-100);border-left:3px solid var(--grey-200)"><span style="color:var(--grey-400);font-size:0.78rem">No HRT risk factors flagged.</span></div>';
+  }
+
+  function renderCard(sub) {
+    const isBooked = sub.status === 'booked';
+    const dob = sub.dob ? new Date(sub.dob).toLocaleDateString('en-IE') : sub.dob || '—';
+
+    let fieldsHtml = '';
+    if (sub.fields && Object.keys(sub.fields).length) {
+      fieldsHtml = '<dl>';
+      for (const [k, v] of Object.entries(sub.fields)) {
+        const val = Array.isArray(v) ? v.join(', ') : v;
+        if (val) fieldsHtml += '<dt>' + k + '</dt><dd>' + val + '</dd>';
+      }
+      fieldsHtml += '</dl>';
+    }
+
+    const symptoms = (sub.symptoms || []).map(s =>
+      '<span class="cdm-condition-tag">' + s + '</span>'
+    ).join('');
+
+    return '<div class="cdm-card status-' + sub.status + '" id="menopause-card-' + sub.id + '">'
+      + '<div class="cdm-card-header">'
+        + '<div class="cdm-card-name">' + (sub.name || 'Unknown') + '</div>'
+        + '<div class="cdm-card-date">' + fmtDate(sub.submitted) + '</div>'
+        + '<span class="' + (isBooked ? 'cdm-badge-booked' : 'cdm-badge-new') + '">' + (isBooked ? 'Booked' : 'New') + '</span>'
+      + '</div>'
+      + '<div class="cdm-card-body">'
+        + triageFlagHtml(sub)
+        + '<div class="cdm-conditions">' + (symptoms || '<span style="font-size:0.75rem;color:var(--grey-400)">No symptoms listed</span>') + '</div>'
+        + '<div class="cdm-detail-row"><span class="cdm-detail-label">DOB</span><span class="cdm-detail-val">' + dob + '</span></div>'
+        + '<div class="cdm-detail-row"><span class="cdm-detail-label">Phone</span><span class="cdm-detail-val"><a href="tel:' + (sub.phone||'') + '" style="color:var(--teal)">' + (sub.phone||'—') + '</a></span></div>'
+        + '<div class="cdm-detail-row"><span class="cdm-detail-label">Email</span><span class="cdm-detail-val"><a href="mailto:' + (sub.email||'') + '" style="color:var(--teal)">' + (sub.email||'—') + '</a></span></div>'
+      + '</div>'
+      + (fieldsHtml ? '<div class="cdm-fields-body" id="menopause-fields-' + sub.id + '">' + fieldsHtml + '</div>' : '')
+      + '<div class="cdm-card-footer">'
+        + (fieldsHtml ? '<button class="cdm-fields-toggle" onclick="toggleMenopauseFields(' + sub.id + ',this)">Show full form</button>' : '<span></span>')
+        + '<div style="margin-left:auto;display:flex;gap:8px">'
+          + (isBooked
+            ? '<button class="cdm-action-btn cdm-action-unbook" onclick="setMenopauseStatus(' + sub.id + ',\'new\')">Mark as New</button>'
+            : '<button class="cdm-action-btn cdm-action-book" onclick="setMenopauseStatus(' + sub.id + ',\'booked\')">Mark as Booked</button>')
+        + '</div>'
+      + '</div>'
+      + '</div>';
+  }
+
+  function renderInbox() {
+    const list  = document.getElementById('menopause-inbox-list');
+    const empty = document.getElementById('menopause-inbox-empty');
+    const filtered = currentFilter === 'all'
+      ? allSubmissions
+      : allSubmissions.filter(s => s.status === currentFilter);
+
+    const newCount = allSubmissions.filter(s => s.status === 'new').length;
+    const badge = document.getElementById('menopause-inbox-badge');
+    if (badge) {
+      badge.textContent = newCount;
+      badge.style.display = newCount > 0 ? 'inline' : 'none';
+    }
+
+    if (filtered.length === 0) {
+      list.innerHTML = '';
+      empty.style.display = 'block';
+    } else {
+      empty.style.display = 'none';
+      list.innerHTML = filtered.map(renderCard).join('');
+    }
+  }
+
+  window.loadMenopauseInbox = async function(force) {
+    document.getElementById('menopause-inbox-loading').style.display = 'block';
+    document.getElementById('menopause-inbox-list').innerHTML = '';
+    document.getElementById('menopause-inbox-empty').style.display = 'none';
+    try {
+      const r = await kmcProxyGet(FILE);
+      allSubmissions = r.json;
+    } catch(e) {
+      allSubmissions = [];
+    }
+    document.getElementById('menopause-inbox-loading').style.display = 'none';
+    renderInbox();
+  };
+
+  window.setMenopauseFilter = function(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('#menopause-inbox .cdm-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderInbox();
+  };
+
+  window.toggleMenopauseFields = function(id, btn) {
+    const el = document.getElementById('menopause-fields-' + id);
+    if (!el) return;
+    const open = el.style.display === 'block';
+    el.style.display = open ? 'none' : 'block';
+    btn.textContent  = open ? 'Show full form' : 'Hide full form';
+  };
+
+  window.setMenopauseStatus = async function(id, status) {
+    const idx = allSubmissions.findIndex(s => s.id === id);
+    if (idx === -1) return;
+    allSubmissions[idx].status = status;
+
+    try {
+      await kmcProxySet(FILE, allSubmissions, 'Menopause inbox - mark ' + status + ' (' + (allSubmissions[idx].name||'patient') + ')');
+    } catch(e) { console.warn('status save failed', e); }
+
+    renderInbox();
+  };
+
+  // Load when inbox section is opened
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('[data-section="menopause-inbox"]');
+    if (link && allSubmissions.length === 0) loadMenopauseInbox();
   });
 })();
 </script>
