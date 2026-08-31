@@ -39,3 +39,9 @@
   to = "/index.html"
   status = 404
   force = true
+
+[[redirects]]
+  from = "/menopause-submissions.json"
+  to = "/index.html"
+  status = 404
+  force = true
