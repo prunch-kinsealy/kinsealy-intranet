@@ -15,12 +15,11 @@ if(!sessionStorage.getItem('kmc-auth')){
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kinsealy Medical Centre — Staff Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <style>
 :root {
   --navy:#1a2d4a;--navy-light:#243c61;--teal:#2a8a7e;--teal-light:#3aa897;--teal-pale:#e8f5f3;
   --gold:#c9a84c;--cream:#f8f6f1;--white:#ffffff;--grey-100:#f4f4f4;--grey-200:#e8e8e8;
-  --grey-400:#9ca3af;--grey-700:#374151;--text:#1f2937;--sidebar-w:260px;--radius:10px;
+  --grey-400:#6b7280;--grey-700:#374151;--text:#1f2937;--sidebar-w:260px;--radius:10px;
   /* Staff colours */
   --col-pm:#7c3aed;--col-pm-pale:#f3f0ff;
   --col-sec:#0369a1;--col-sec-pale:#e0f2fe;
@@ -91,6 +90,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .sop-card{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);margin-bottom:16px;overflow:hidden}
 .sop-header{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:background 0.15s}
 .sop-header:hover{background:var(--grey-100)}
+.sop-header:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;background:var(--grey-100)}
 .sop-header-left{display:flex;align-items:center;gap:10px}
 .sop-header h3{font-size:0.92rem;font-weight:600;color:var(--navy)}
 .sop-toggle{font-size:0.8rem;color:var(--grey-400);transition:transform 0.2s;flex-shrink:0}
@@ -355,7 +355,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .whos-in-time{font-size:0.72rem;color:var(--grey-400)}
 .whos-in-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 @media(max-width:700px){.whos-in-grid{grid-template-columns:repeat(2,1fr)}}
-.whos-in-group{background:var(--grey-100);border-radius:8px;padding:12px 14px}
+.whos-in-group{background:var(--grey-100);border-radius:8px;padding:12px 14px;min-width:0}
 .whos-in-group-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
 .whos-in-group.doctors .whos-in-group-label{color:var(--col-doc)}
 .whos-in-group.nurses .whos-in-group-label{color:var(--col-nurse)}
@@ -454,8 +454,9 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
   #sidebar{transform:translateX(-100%);transition:transform 0.25s ease;width:260px}
   #sidebar.open{transform:translateX(0)}
   #overlay.show{display:block}
-  #main{margin-left:0}
-  #topbar{padding:12px 16px}
+  #main{margin-left:0;min-width:0}
+  #topbar{padding:12px 16px;flex-wrap:wrap;row-gap:10px}
+  .topbar-right{flex-wrap:wrap;row-gap:8px}
   #search{width:150px}
   #content{padding:16px}
   .home-grid{grid-template-columns:1fr}
@@ -549,7 +550,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
     <span>Staff Hub</span>
   </div>
   <div class="sidebar-date" id="sidebarDate">Thursday 23 April 2026</div>
-  <nav>
+  <nav aria-label="Main">
     <a href="#" class="nav-link active" data-section="home"><span class="nav-icon">🏠</span> Home &amp; Noticeboard</a>
     <div class="nav-group-label">Clinical</div>
     <a href="#" class="nav-link" data-section="cdm" id="cdm-nav-link"><span class="nav-icon">🔁</span> CDM <span class="future-lock" id="cdm-lock-badge">🔒</span><span class="pm-unlocked-badge" id="cdm-unlocked-badge" style="display:none">✓ Unlocked</span></a>
@@ -592,8 +593,8 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
       <div class="topbar-title" id="topbarTitle">Home &amp; Noticeboard</div>
     </div>
     <div class="topbar-right">
-      <input type="text" id="search" placeholder="Search hub…" autocomplete="off">
-      <button id="search-btn" title="Search">🔍</button>
+      <input type="text" id="search" placeholder="Search hub…" autocomplete="off" aria-label="Search the staff hub">
+      <button id="search-btn" title="Search" aria-label="Run search">🔍</button>
       <a class="approvals-badge" id="approvals-badge" href="approvals.html">🔔 <span id="approvals-count">0</span> pending</a>
       <button class="status-btn" id="status-btn" onclick="openAwayModal()">🟢 Available</button>
       <div class="avatar" id="user-avatar" title="">FO</div>
@@ -4066,7 +4067,7 @@ Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick
 <!-- ══ AWAY STATUS MODAL ══ -->
 <div id="away-modal-overlay" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeAwayModal()">
   <div class="modal-card">
-    <button class="modal-close" onclick="closeAwayModal()">✕</button>
+    <button class="modal-close" onclick="closeAwayModal()" aria-label="Close">✕</button>
     <h3 id="away-modal-title">Set Your Status</h3>
     <p class="modal-sub" id="away-modal-sub">Let the team know you're away and who your buddy is.</p>
 
@@ -4384,9 +4385,26 @@ function undoCDMBulkText() {
 function toggleSOP(header) {
   const body = header.nextElementSibling.nextElementSibling;
   const toggle = header.querySelector('.sop-toggle');
-  body.classList.toggle('open');
+  const nowOpen = body.classList.toggle('open');
   toggle.classList.toggle('open');
+  header.setAttribute('aria-expanded', nowOpen ? 'true' : 'false');
 }
+
+// Make every SOP header (and any other element that opens on click via
+// onclick="toggleSOP(this)") keyboard-operable: focusable, announced as a
+// button, and triggerable with Enter/Space — without touching each of the
+// individual SOP card blocks above.
+document.querySelectorAll('.sop-header').forEach(function(header) {
+  header.setAttribute('tabindex', '0');
+  header.setAttribute('role', 'button');
+  header.setAttribute('aria-expanded', 'false');
+  header.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleSOP(header);
+    }
+  });
+});
 
 // LOAD NOTICEBOARD ANNOUNCEMENTS — synced via notices.json (see
 // noticeboard-editor.html), committed to the repo through gh-proxy so every
@@ -4976,15 +4994,39 @@ async function kmcProxySet(file, content, message) {
   window.kmc_exportData=exportData;
   window.kmc_importData=importData;
 
+  // Chart.js is only needed for the Metrics section, so it's loaded on
+  // first visit there instead of blocking every page load for everyone else.
+  let _chartJsPromise=null;
+  function ensureChartJs(){
+    if(window.Chart) return Promise.resolve();
+    if(_chartJsPromise) return _chartJsPromise;
+    _chartJsPromise=new Promise(function(resolve,reject){
+      const s=document.createElement('script');
+      s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js';
+      s.onload=resolve;
+      s.onerror=reject;
+      document.head.appendChild(s);
+    });
+    return _chartJsPromise;
+  }
+
   const origSwitch=window.switchSection;
   window.switchSection=function(id){
     origSwitch(id);
     if(id==='metrics'){
-      if(!document.getElementById('metrics-year')){
-        buildMetricsSection();
-      } else {
-        renderMetrics();
-      }
+      ensureChartJs().then(function(){
+        if(!document.getElementById('metrics-year')){
+          buildMetricsSection();
+        } else {
+          renderMetrics();
+        }
+      }).catch(function(){
+        const container=document.getElementById('metrics');
+        if(container) container.insertAdjacentHTML('afterbegin',
+          '<div class="info-box" style="border-left:3px solid #b91c1c;color:#b91c1c;margin-bottom:16px">'+
+          '⚠ Could not load the charting library — check your internet connection and reopen this section. '+
+          'Figures below may be incomplete.</div>');
+      });
     }
   };
 })();

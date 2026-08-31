@@ -12,7 +12,7 @@
   .container{max-width:740px;margin:0 auto}
   .header{margin-bottom:28px}
   .header h1{font-family:'DM Serif Display',serif;font-size:1.8rem;color:#1a2d4a;margin-bottom:4px}
-  .header p{font-size:0.85rem;color:#9ca3af}
+  .header p{font-size:0.85rem;color:#6b7280}
   .card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;overflow:hidden;margin-bottom:24px}
   .card-header{background:#1a2d4a;color:#fff;padding:14px 20px;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between}
   .sync-status{font-size:0.7rem;font-weight:500;letter-spacing:0;opacity:0.7}
@@ -27,7 +27,7 @@
   .back:hover{text-decoration:underline}
   .restricted{display:none;text-align:center;padding:80px 24px;color:#b91c1c;font-size:0.95rem}
   .restricted h2{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:8px;color:#1a2d4a}
-  .note{font-size:0.78rem;color:#9ca3af;margin-top:4px;line-height:1.6}
+  .note{font-size:0.78rem;color:#6b7280;margin-top:4px;line-height:1.6}
 
   /* Password cell */
   .pwd-cell{display:flex;align-items:center;gap:8px;min-width:180px}
@@ -55,6 +55,8 @@
 </style>
 </head>
 <body>
+<div id="kmc-quicknav"></div>
+<script src="shared-nav.js"></script>
 
 <div id="restricted" class="restricted">
   <h2>Access Denied</h2>
@@ -74,6 +76,7 @@
       All Staff Accounts
       <span class="sync-status" id="sync-status">Loading passwords…</span>
     </div>
+    <div style="overflow-x:auto">
     <table>
       <thead>
         <tr>
@@ -86,6 +89,7 @@
       </thead>
       <tbody id="staff-tbody"></tbody>
     </table>
+    </div>
   </div>
 
   <p class="note">

@@ -10,7 +10,7 @@
 :root{
   --navy:#1a2d4a;--teal:#2a8a7e;--teal-light:#3aa897;--teal-pale:#e8f5f3;
   --gold:#c9a84c;--cream:#f8f6f1;--white:#fff;
-  --grey-100:#f4f4f4;--grey-200:#e8e8e8;--grey-400:#9ca3af;--grey-700:#374151;
+  --grey-100:#f4f4f4;--grey-200:#e8e8e8;--grey-400:#6b7280;--grey-700:#374151;
   --text:#1f2937;--radius:10px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -47,6 +47,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .card{background:var(--white);border-radius:var(--radius);border:1px solid var(--grey-200);padding:24px;margin-bottom:20px}
 .card-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--teal);margin-bottom:18px;padding-bottom:8px;border-bottom:1px solid var(--teal-pale)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.form-row{grid-template-columns:1fr}}
 .toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .toggle-row label{font-size:0.82rem;font-weight:500;color:var(--grey-700);cursor:pointer}
 .toggle-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--teal);cursor:pointer}
@@ -69,6 +70,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 </style>
 </head>
 <body>
+<div id="kmc-quicknav"></div>
+<script src="shared-nav.js"></script>
 
 <div class="header">
   <div>
