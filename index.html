@@ -785,6 +785,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
         Do <strong>NOT</strong> book a CDM or PP appointment until the patient has <strong>fully completed</strong> the relevant pre-appointment form.<br><br>
         <strong>CDM patients:</strong> <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">CDM Pre-Appointment Form ↗</a> — patient completes directly on the website.<br>
         <strong>Prevention Programme patients:</strong> <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Pre-Appointment Form ↗</a> — patient completes directly on the website.<br><br>
+        <strong>Tell the patient:</strong> once they've submitted the form, they don't need to call us — <strong>we will ring them to book</strong> their appointment.<br><br>
         <strong>Elderly / poor IT literacy:</strong> Advise the patient that a <strong>family member, next of kin, or neighbour</strong> can go on to the website and complete the form on their behalf — just like booking a flight or a holiday. It only takes 5 minutes. If all attempts are exhausted, a paper copy is available in the <strong>folder behind the front door</strong> — the patient takes this home to complete and return before their appointment is booked.
       </div>
 
@@ -835,6 +836,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
               Every staff member — doctors, nurses, and phlebotomists — should be <strong>CDM aware</strong>. Anyone identifying a patient due for CDM should act:
               <ul>
                 <li>Direct the patient to complete the correct form on the website — <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">CDM Pre-Appointment Form ↗</a> for CDM patients, <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form ↗</a> for PP patients</li>
+                <li><strong>Advise the patient:</strong> once submitted, they don't need to ring us — <strong>reception will call them to book</strong> the appointment</li>
                 <li><strong>No form, no appointment</strong> — do not book until form is fully completed and received</li>
 <li>If the patient cannot complete the form themselves: advise them that a <strong>family member, next of kin, or neighbour</strong> can go on to the website and complete it on their behalf — just like booking a flight or a holiday. It only takes 5 minutes</li>
                 <li><strong>If all attempts are exhausted:</strong> a paper long form is available in the <strong>folder in the hall</strong>. The patient must take this home to complete and return it before their appointment is booked</li>
@@ -1138,7 +1140,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                 <div id="cdm-reminder-status"></div>
                 <div style="margin-top:10px">
                   <div style="font-weight:600;font-size:0.8rem;margin-bottom:6px">✉️ Bulk Text Template <span style="font-weight:400;color:var(--grey-400);font-size:0.72rem">(replace [FORM LINK] with your Netlify URL)</span></div>
-                  <div id="cdm-sms-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.6;color:var(--text)">Hi, your CDM review is due at Kinsealy MC. Please complete the form before booking: [FORM LINK] No form = no appointment.</div>
+                  <div id="cdm-sms-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.6;color:var(--text)">Hi, your CDM review is due at Kinsealy MC. Please complete the form before booking: [FORM LINK] No form = no appointment. Once submitted, we will call you to book.</div>
                   <button class="cdm-reminder-btn" style="margin-top:8px" onclick="(function(){var t=document.getElementById('cdm-sms-template');navigator.clipboard.writeText(t.innerText).then(function(){var b=event.target;b.textContent='Copied!';setTimeout(function(){b.textContent='Copy text'},1800)})})()">Copy text</button>
                 </div>
               </div>
