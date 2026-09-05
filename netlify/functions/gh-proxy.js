@@ -20,7 +20,8 @@ const ALLOWED_FILES = new Set([
   'ocf-submissions.json',
   'cdm-bulk-text.json',
   'projects.json',
-  'notices.json'
+  'notices.json',
+  'daily-checklist.json'
 ]);
 
 function ghHeaders(token) {

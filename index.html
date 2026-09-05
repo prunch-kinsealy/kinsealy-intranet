@@ -652,6 +652,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
       <div id="away-notices-container"></div>
       <div id="whos-in-container"></div>
       <div id="newsletter-reminder-container"></div>
+      <div id="dna-reminder-container"></div>
 
       <div class="notice-strip">
         <span class="badge">Pinned</span>
@@ -727,6 +728,12 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
           <a href="projects.html" style="font-size:0.7rem;font-weight:600;padding:4px 10px;background:var(--teal);color:#fff;border-radius:6px;text-decoration:none;font-family:'DM Sans',sans-serif">Open →</a>
         </div>
         <div class="widget-body" id="projects-widget-body">
+          <div class="away-empty">Loading…</div>
+        </div>
+      </div>
+      <div class="widget" id="pm-morning-report-widget" style="display:none">
+        <div class="widget-header"><h3>📋 PM Morning Report</h3></div>
+        <div class="widget-body" id="pm-morning-report-body">
           <div class="away-empty">Loading…</div>
         </div>
       </div>
@@ -3305,6 +3312,9 @@ Keep the response concise and structured for a non-clinical administrator.</div>
       <div class="step-detail" style="font-size:0.82rem;line-height:1.6">
         Check booked list against attendance. Mark any DNA in chart with stage (1st, 2nd, 3rd). Send appropriate text. Escalate 3rd DNA to PM immediately.
       </div>
+
+      <div class="section-label" style="margin-top:16px">Today's Confirmation</div>
+      <div id="dna-confirm-box" style="font-size:0.85rem;line-height:1.6">Loading…</div>
     </div>
   </div>
 
@@ -4784,6 +4794,148 @@ function renderNewsletterReminder() {
     </div>`;
 }
 
+// ── SHARED DAILY CHECKLIST (backs the DNA confirm button + PM Morning
+// Report) — one JSON file, keyed by date then item id. Any staff member can
+// write to it via gh-proxy (same as away-status/CDM tracker), same as the
+// rest of this file's day-to-day operational data.
+const CHECKLIST_FILE = 'daily-checklist.json';
+// Extend this list as more end-of-day items get a confirm step — the PM
+// Morning Report widget below just loops over it.
+const PM_REPORT_ITEMS = [
+  { id: 'dna', label: 'DNA texts & BCC email sent, charted' }
+];
+
+function todayKey(d) { return (d || new Date()).toISOString().slice(0, 10); }
+
+async function getChecklist() {
+  try { return (await kmcProxyGet(CHECKLIST_FILE)).json || {}; }
+  catch (e) { return {}; }
+}
+
+async function setChecklistItem(dateKey, itemId, value) {
+  const data = await getChecklist();
+  data[dateKey] = data[dateKey] || {};
+  data[dateKey][itemId] = value;
+  await kmcProxySet(CHECKLIST_FILE, data, 'Checklist: ' + itemId + ' ' + dateKey + (value.done ? ' done' : ' undone'));
+}
+
+function fmtTime(iso) { return new Date(iso).toLocaleTimeString('en-IE', { hour: '2-digit', minute: '2-digit' }); }
+
+// DAILY 16:30 DNA REMINDER (secretaries only) — recurring, client-side only:
+// no server/cron involved, so it needs nothing scheduled or maintained. Shown
+// on weekdays from 16:30 local time onward to whoever is logged in as a
+// secretary, same as the practice being "closed" on Sat/Sun elsewhere on this
+// page. Re-checked every minute so it appears without a page reload right at
+// 16:30 for anyone already on the page. Switches to a quiet confirmation
+// once someone's clicked "done" on the DNA SOP card for today.
+async function renderDNAReminder() {
+  const container = document.getElementById('dna-reminder-container');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const jobRole = sessionStorage.getItem('kmc-job-role') || '';
+  if (!jobRole.split(',').includes('sec')) return;
+
+  const now = new Date();
+  const day = now.getDay(); // 0=Sun,6=Sat
+  if (day === 0 || day === 6) return;
+  const afterCutoff = now.getHours() > 16 || (now.getHours() === 16 && now.getMinutes() >= 30);
+  if (!afterCutoff) return;
+
+  const checklist = await getChecklist();
+  const dna = (checklist[todayKey(now)] || {}).dna;
+  if (dna && dna.done) {
+    container.innerHTML = `
+      <div class="notice-strip" style="margin-bottom:10px">
+        <span class="badge" style="background:var(--teal)">16:30 DNA Check</span>
+        <div><h4>Done for today ✓</h4><p>Confirmed by ${STAFF_NAMES[dna.by] || dna.by} at ${fmtTime(dna.at)}.</p></div>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="notice-strip" style="margin-bottom:10px">
+      <span class="badge" style="background:#ef4444">16:30 DNA Check</span>
+      <div>
+        <h4>Run today's DNA report</h4>
+        <p>It's now 16:30 — please run today's DNA report. For each patient who didn't attend: text them the message matching their DNA stage (1st/2nd/3rd), then send <strong>one email to everyone who DNA'd today with all recipients in BCC</strong>. Chart each one under Active Diagnosis, and escalate any 3rd (Final) DNA to the PM immediately.</p>
+        <p style="font-size:0.78rem;margin-top:4px"><a href="#" onclick="goToSOP('front-of-house','sop-dna');return false;">View the DNA Policy SOP, then confirm at the bottom once it's done →</a></p>
+      </div>
+    </div>`;
+}
+setInterval(renderDNAReminder, 60000);
+
+// Confirm button at the bottom of the DNA SOP card itself.
+async function renderDNAConfirmBox() {
+  const box = document.getElementById('dna-confirm-box');
+  if (!box) return;
+  const checklist = await getChecklist();
+  const entry = (checklist[todayKey()] || {}).dna;
+  if (entry && entry.done) {
+    box.innerHTML = `✓ Confirmed done today by <strong>${STAFF_NAMES[entry.by] || entry.by}</strong> at ${fmtTime(entry.at)}. `
+      + `<a href="#" onclick="undoDNAConfirm();return false;" style="font-size:0.78rem">Undo</a>`;
+  } else {
+    box.innerHTML = `<button class="cdm-reminder-btn" onclick="confirmDNADone()">✅ Confirm today's DNA texts &amp; email sent</button>`;
+  }
+}
+
+async function confirmDNADone() {
+  const box = document.getElementById('dna-confirm-box');
+  box.innerHTML = 'Saving…';
+  try {
+    await setChecklistItem(todayKey(), 'dna', { done: true, by: sessionStorage.getItem('kmc-user') || 'unknown', at: new Date().toISOString() });
+  } catch (e) { /* re-render falls back to the button on failure */ }
+  renderDNAConfirmBox();
+  renderDNAReminder();
+  renderPMMorningReport();
+}
+
+async function undoDNAConfirm() {
+  const box = document.getElementById('dna-confirm-box');
+  box.innerHTML = 'Saving…';
+  try {
+    await setChecklistItem(todayKey(), 'dna', { done: false });
+  } catch (e) {}
+  renderDNAConfirmBox();
+  renderDNAReminder();
+  renderPMMorningReport();
+}
+
+// PM MORNING REPORT (admin only) — reviews the most recent business day's
+// end-of-day checklist. Add future items to PM_REPORT_ITEMS above; this
+// widget doesn't need to change.
+function lastBusinessDayKey() {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  while (d.getDay() === 0 || d.getDay() === 6) d.setDate(d.getDate() - 1);
+  return todayKey(d);
+}
+
+async function renderPMMorningReport() {
+  const widget = document.getElementById('pm-morning-report-widget');
+  if (!widget) return;
+  if (sessionStorage.getItem('kmc-role') !== 'admin') { widget.style.display = 'none'; return; }
+  widget.style.display = '';
+
+  const dateKey = lastBusinessDayKey();
+  const checklist = await getChecklist();
+  const dayEntry = checklist[dateKey] || {};
+  const dateLabel = new Date(dateKey + 'T12:00:00').toLocaleDateString('en-IE', { weekday: 'long', day: 'numeric', month: 'short' });
+
+  const body = document.getElementById('pm-morning-report-body');
+  body.innerHTML = `<div style="font-size:0.78rem;color:var(--grey-400);margin-bottom:8px">${dateLabel}</div>`
+    + PM_REPORT_ITEMS.map(item => {
+      const e = dayEntry[item.id];
+      const done = e && e.done;
+      const sub = done ? `${STAFF_NAMES[e.by] || e.by} at ${fmtTime(e.at)}` : 'Not confirmed';
+      return `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px">
+        <span style="font-size:1rem;line-height:1.3">${done ? '✅' : '⬜'}</span>
+        <div><div style="font-size:0.85rem;font-weight:500">${item.label}</div>
+        <div style="font-size:0.72rem;color:var(--grey-400)">${sub}</div></div>
+      </div>`;
+    }).join('');
+}
+
 // LOAD NOTICEBOARD ANNOUNCEMENTS — synced via notices.json (see
 // noticeboard-editor.html), committed to the repo through gh-proxy so every
 // device sees the same announcements.
@@ -4894,6 +5046,9 @@ loadAnnouncements();
 buildRecentUpdates();
 initCDMReminder();
 renderNewsletterReminder();
+renderDNAReminder();
+renderDNAConfirmBox();
+renderPMMorningReport();
 
 // SEARCH
 function runSearch() {
