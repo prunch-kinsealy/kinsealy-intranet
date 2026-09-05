@@ -17,6 +17,18 @@
   force = true
 
 [[redirects]]
+  from = "/ocf-submissions.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/cdm-bulk-text.json"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
   from = "/feedback.json"
   to = "/index.html"
   status = 404
