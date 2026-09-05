@@ -473,7 +473,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .flow-node-doc{background:#fef2f2;border:2px solid #ef4444;color:#991b1b}
 .flow-node-phle{background:#fff7ed;border:2px solid #f97316;color:#9a3412}
 .flow-node-pm{background:#faf5ff;border:2px solid #a855f7;color:#6b21a8}
-.flow-node-cit{background:#f8fafc;border:2px dashed #94a3b8;color:#94a3b8}
+.flow-node-cit{background:#fffbeb;border:2px solid #d97706;color:#92400e}
 .flow-arrow{font-size:1.1rem;color:#94a3b8;line-height:1;padding:2px 0}
 .flow-branch-row{display:flex;gap:10px;justify-content:center;width:100%}
 .flow-branch-item{display:flex;flex-direction:column;align-items:center;gap:0;flex:1;min-width:0}
@@ -810,10 +810,9 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
             <div class="flow-arrow">↓</div>
             <div class="flow-node flow-node-doc" style="font-size:0.76rem">🔴 Doctor-led</div>
           </div>
-          <div class="flow-branch-item flow-coming-soon">
+          <div class="flow-branch-item">
             <div class="flow-arrow">↓</div>
-            <div class="flow-node flow-node-cit" style="font-size:0.76rem">🏠 CIT-led<br><small>Housebound</small></div>
-            <div class="flow-soon-tag">Coming Soon</div>
+            <div class="flow-node flow-node-cit" style="font-size:0.76rem">🏠 CIT-led<br><small>Housebound / resistant</small></div>
           </div>
         </div>
         <div class="flow-arrow">↓</div>
@@ -838,6 +837,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                 <li><strong>No form, no appointment</strong> — do not book until form is fully completed and received</li>
 <li>If the patient cannot complete the form themselves: advise them that a <strong>family member, next of kin, or neighbour</strong> can go on to the website and complete it on their behalf — just like booking a flight or a holiday. It only takes 5 minutes</li>
                 <li><strong>If all attempts are exhausted:</strong> a paper long form is available in the <strong>folder in the hall</strong>. The patient must take this home to complete and return it before their appointment is booked</li>
+                <li><strong>Genuinely housebound, or resistant to attending?</strong> If a patient cannot physically get to the practice, or pushes back on attending in person during a call, consultation, or any other contact, flag them for the <strong>🏠 CIT-led pathway</strong> (see below) instead of trying to force an in-practice booking</li>
               </ul>
             </div>
           </div>
@@ -868,6 +868,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                 <li><strong>Follow the booking guidance shown in the CDM Inbox</strong> for this patient's submission — appointment length and which staff type it must be booked with are generated automatically from what the patient completed on the form, combined with whether bloods are due. Just follow the instructions shown on the card</li>
                 <li><strong>Check if bloods are due</strong> and mention it to the patient during the phone call — only their CDM bloods are covered under the scheme if due. They can have other bloods done at the same time for a charge, or we can send them a form to bring to the hospital</li>
                 <li><strong>If no bloods are needed</strong>, encourage the patient to take an <strong>afternoon slot</strong> where possible — this keeps morning capacity free for patients who do need bloods done (fasting or otherwise)</li>
+                <li><strong>Patient genuinely housebound, or resistant to coming in?</strong> Don't push for an in-practice slot — offer the <strong>🏠 CIT-led pathway</strong> instead (see below). The patient still completes the CDM/PP form on the website exactly as normal; you then complete the <strong>CIT Referral Form</strong> to request a home-visit date from the Community Intervention Team</li>
                 <li><strong>Use your initiative with scheduling</strong> — if slots look like they won't be filled on a given day, be flexible. You can book patients into non-consecutive slots and cancel a later slot if needed to buy back time. A partially filled CDM day is better than a wasted one</li>
               </ul>
 
@@ -893,9 +894,20 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                   <li>Populate Socrates CDM tab</li>
                 </ul>
               </div>
-              <div style="background:#f8fafc;border:1.5px dashed #94a3b8;border-radius:8px;padding:12px;opacity:0.65">
-                <div style="font-size:0.7rem;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:4px">🏠 CIT-led — Housebound Patients <span style="background:#e2e8f0;color:#64748b;padding:2px 8px;border-radius:10px;font-weight:500;text-transform:none">Coming Soon</span></div>
-                <p style="font-size:0.77rem;color:#94a3b8;margin:0">Community Intervention Team pathway for housebound patients. Details to follow.</p>
+              <div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:8px;padding:14px">
+                <div style="font-size:0.78rem;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">🏠 CIT-led — Home Visit Pathway (Housebound / Resistant Patients)</div>
+
+                <p style="font-size:0.8rem;color:var(--grey-700);margin:0 0 12px;line-height:1.6">
+                  For patients who are <strong>genuinely housebound</strong> — or who are <strong>resistant to attending in person</strong> when this is raised during a call, consultation, or any other contact. Use clinical/professional judgement: this pathway is for genuine need, not convenience. It replaces an in-practice appointment entirely — the whole CDM/PP review is done remotely and via a home visit.
+                </p>
+
+                <ol style="margin:0;padding-left:18px;font-size:0.8rem;line-height:1.9;color:var(--grey-700)">
+                  <li><strong>Patient opts in</strong> — whoever identifies the need (any staff member, or the secretary during the booking call) confirms with the patient that they're happy to proceed via home visit instead of an in-practice appointment</li>
+                  <li><strong>Patient completes the CDM/PP form remotely</strong> — same <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">CDM Pre-Appointment Form ↗</a> / <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form ↗</a> as any other patient, completed by themselves, a family member/next of kin, or on paper if all else fails — see Step 1</li>
+                  <li><strong>Secretary completes the CIT Referral Form</strong> — once the CDM/PP form is received and uploaded to the chart (Step 2), the secretary raises a <strong>CIT Referral</strong> to request a home-visit date from the Community Intervention Team, noting whether bloods are due</li>
+                  <li><strong>CIT team carries out the home visit</strong> — bloods (per <a href="#" onclick="goToSOP('cdm','sop-cdm-bloods');return false;">CDM/PP Bloods — What's Covered ↗</a>), ABPM, and AliveCor/ECG as required, same clinical checklist as an in-practice visit</li>
+                  <li><strong>Results return to the chart</strong> — CIT team scans/uploads results and STCs to the patient's chart, then tasks the doctor on duty exactly as in Step 4 (End of Consult — Task Doctor), so the review continues through the normal Step 5/6 remote review and PCRS submission</li>
+                </ol>
               </div>
             </div>
           </div>
