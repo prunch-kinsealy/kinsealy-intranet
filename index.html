@@ -599,6 +599,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
       <button id="search-btn" title="Search">🔍</button>
       <a class="approvals-badge" id="approvals-badge" href="approvals.html">🔔 <span id="approvals-count">0</span> pending</a>
       <a class="stc-reminder-badge" id="stc-reminder-badge" href="#" onclick="goToSOP('cdm','sop-cdm-claiming');return false;">📋 Friday reminder: STC/PCRS/OCF submission</a>
+      <a class="stc-reminder-badge" id="cdm-finder-reminder-badge" href="#" onclick="goToSOP('cdm','sop-cdm-finding');return false;">🔍 Quarterly reminder: CDM/PP Finder</a>
       <button class="status-btn" id="status-btn" onclick="openAwayModal()">🟢 Available</button>
       <div class="avatar" id="user-avatar" title="">FO</div>
     </div>
@@ -1258,27 +1259,32 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
   </div>
 
   <!-- ── SOP: CDM / PP Finding — Identifying New Patients on Socrates ── -->
-  <div class="sop-card" id="sop-cdm-finding" data-updated="2026-06-05" data-section-name="CDM" data-sop-name="CDM / PP Finding — New Patients on Socrates">
+  <div class="sop-card" id="sop-cdm-finding" data-updated="2026-09-05" data-section-name="CDM" data-sop-name="CDM / PP Finding — New Patients on Socrates">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left"><span>🔍</span><h3>CDM / PP Finding — Identifying New Patients on Socrates</h3></div>
       <span class="sop-toggle">▼</span>
     </div>
     <div class="sop-meta">
-      <span>👤 All Staff</span><span>🔄 Last updated: 05/06/2026</span><span>📅 Monthly / at new patient registration</span>
+      <span>👤 Practice Manager / Clinical Team</span><span>🔄 Last updated: 05/09/2026</span><span>📅 Every 3 months (auto-reminder)</span>
     </div>
     <div class="sop-body">
       <div class="info-box" style="margin-bottom:16px">
-        Use the steps below to identify patients who should be on the CDM or Prevention Programme but are not yet enrolled. Run this search at least <strong>monthly</strong> and whenever a new patient is registered with a CDM-qualifying condition.
+        Use the steps below to identify patients who should be on the CDM or Prevention Programme but are not yet enrolled. Run this at least <strong>every 3 months</strong> — a reminder badge appears in the topbar for the Practice Manager to prompt it — and whenever a new patient is registered with a qualifying condition.
       </div>
       <div class="journey">
 
         <div class="journey-step">
           <div class="step-dot dot-pm" style="font-size:0.65rem">1</div>
           <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">Socrates — Disease Register</div>
-            <div class="step-title">Open the Disease Register / Patient Query</div>
+            <div class="step-role step-role-pm">Practice Manager</div>
+            <div class="step-title">Run the CDM Finder in Socrates</div>
             <div class="step-detail">
-              In Socrates, go to <strong>Reports → Disease Register</strong>. Select the relevant CDM condition(s) to query: Diabetes (Type 1 / Type 2), Hypertension, COPD, Asthma, Cardiovascular Disease, CKD, Atrial Fibrillation, Heart Failure, Stroke / TIA.
+              <ul>
+                <li>Open Socrates and run the <strong>CDM Finder</strong> — follow the steps it walks you through to pull the list of patients it flags as qualifying for CDM or the Prevention Programme</li>
+                <li><strong>Not sure a flagged patient genuinely qualifies?</strong> Ask the clinical team (GP or nurse) before enrolling — don't guess</li>
+                <li>For each patient confirmed to qualify: enrol them on the correct programme in Socrates (<strong>CDM tab</strong> → add condition → set enrolment date &amp; review due date), then <strong>email them the relevant Pre-Appointment Form</strong> — <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">CDM Form ↗</a> or <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form ↗</a></li>
+                <li>Do <strong>not</strong> book an appointment until the completed form has been returned</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -1286,55 +1292,19 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
         <div class="journey-step">
           <div class="step-dot dot-pm" style="font-size:0.65rem">2</div>
           <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">Filter — Not Enrolled or Overdue</div>
-            <div class="step-title">Filter for Unenrolled or Lapsed Patients</div>
+            <div class="step-role step-role-pm">Practice Manager</div>
+            <div class="step-title">Age / QRISK Catch-All</div>
             <div class="step-detail">
-              Apply filters to show patients who:
+              Separately from whatever the CDM Finder itself surfaces, check for patients <strong>not already on CDM or PP</strong> who are:
               <ul>
-                <li>Have a relevant coded diagnosis but are <strong>not currently enrolled on a CDM or PP programme</strong></li>
-                <li>Have not had a CDM review in the last <strong>12 months</strong> (CDM patients) or <strong>24 months</strong> (PP patients)</li>
-                <li>Were recently registered and flagged for CDM enrolment at the new patient screen (Step 3 — AI Medication Screen)</li>
+                <li><strong>Male, aged over 70</strong>, or</li>
+                <li><strong>Female, aged over 75</strong></li>
               </ul>
+              These patients automatically qualify for the <strong>Prevention Programme via QRISK ≥ 20%</strong>, regardless of what the CDM Finder flags. Enrol them on PP in Socrates and email them the <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form ↗</a>.
             </div>
           </div>
         </div>
 
-        <div class="journey-step">
-          <div class="step-dot dot-pm" style="font-size:0.65rem">3</div>
-          <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">Socrates — Enrol Patient</div>
-            <div class="step-title">Enrol in the Correct Programme</div>
-            <div class="step-detail">
-              For each identified patient, open their chart and:
-              <ul>
-                <li>Go to the <strong>CDM tab</strong> in Socrates → add the relevant condition(s) to the disease register</li>
-                <li>Select the correct programme: <strong>CDM</strong> (diabetes, COPD, asthma, CVD, CKD, AF, heart failure, stroke/TIA) or <strong>Prevention Programme (PP)</strong> (cardiovascular risk, pre-diabetes, lifestyle risk factors)</li>
-                <li>Set the enrolment date and initial review due date</li>
-                <li>Document in chart notes: <em>"Enrolled on CDM/PP — [condition] — review due [date]"</em></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="journey-step">
-          <div class="step-dot dot-sec" style="font-size:0.65rem">4</div>
-          <div class="step-content step-content-sec">
-            <div class="step-role step-role-sec">Secretary / Reception</div>
-            <div class="step-title">Contact Patient &amp; Direct to Pre-Appointment Form</div>
-            <div class="step-detail">
-              Once enrolled, contact the patient to arrange their first CDM/PP review:
-              <ul>
-                <li>Direct the patient to complete the relevant form on the website: <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">CDM Pre-Appointment Form ↗</a> or <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form ↗</a></li>
-                <li>Do <strong>not</strong> book an appointment until the completed form has been returned</li>
-                <li>Add a Socrates reminder task: <em>"CDM/PP form sent [date] — awaiting return"</em></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <div class="warn-box" style="font-size:0.81rem;margin-top:4px">
-        ⚠️ <strong>Tip — opportunistic finding:</strong> When reviewing hospital letters, discharge summaries, or specialist correspondence, always check for a newly diagnosed CDM-qualifying condition. If found, enrol the patient immediately and flag to the PM for claiming.
       </div>
     </div>
   </div>
@@ -5668,6 +5638,16 @@ function checkFridaySTCReminder() {
   if (badge) badge.style.display = 'inline-flex';
 }
 
+// ── QUARTERLY CDM/PP FINDER REMINDER (admin/PM only) ────────────
+function checkQuarterlyFinderReminder() {
+  if (sessionStorage.getItem('kmc-role') !== 'admin') return;
+  const now = new Date();
+  const isQuarterStartMonth = [0, 3, 6, 9].includes(now.getMonth()); // Jan, Apr, Jul, Oct
+  if (!isQuarterStartMonth || now.getDate() > 7) return; // first week of the quarter
+  const badge = document.getElementById('cdm-finder-reminder-badge');
+  if (badge) badge.style.display = 'inline-flex';
+}
+
 // ── INIT ─────────────────────────────────────────────────────
 requestNotificationPermission();
 loadAwayWidget();
@@ -5678,6 +5658,7 @@ loadBuddyAlerts();
 loadAwayNotices();
 loadApprovalsBadge();
 checkFridaySTCReminder();
+checkQuarterlyFinderReminder();
 
 // Handle deep-link hash from feedback admin page
 (function() {
