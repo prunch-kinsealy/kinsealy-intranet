@@ -1513,40 +1513,136 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
   </div>
 
   <!-- BABY VACCINES -->
-  <div class="sop-card" id="sop-baby-vaccines" data-updated="2025-05-23" data-section-name="Patient Journeys" data-sop-name="Baby Vaccines">
+  <div class="sop-card" id="sop-baby-vaccines" data-updated="2026-09-05" data-section-name="Patient Journeys" data-sop-name="Childhood Immunisations (Baby Vaccines)">
     <div class="sop-header" onclick="toggleSOP(this)">
-      <div class="sop-header-left"><span>💉</span><h3>Baby Vaccines Schedule</h3></div>
+      <div class="sop-header-left"><span>💉</span><h3>Childhood Immunisation Schedule</h3></div>
       <span class="sop-toggle open">▼</span>
     </div>
     <div class="sop-meta">
-      <span>👤 Dr F. O'Reilly</span><span>🚧 Under Construction</span><span>🔄 Last updated: 23/05/2025</span>
+      <span>👤 Dr F. O'Reilly</span><span>🔄 Last updated: 05/09/2026</span><span>📌 v2.0</span>
     </div>
     <div class="sop-body open">
-      <div class="warn-box">⚠️ Vaccines can be given LATER than scheduled dates but <strong>NEVER earlier</strong>. This is HSE policy.</div>
+      <div class="info-box" style="margin-bottom:18px">
+        <strong>Purpose</strong><br>
+        Covers the free primary childhood immunisation schedule (2, 4, 6, 12 &amp; 13 months) as delivered in-practice by the nurse under the HSE Primary Childhood Immunisation Programme. Does not cover the school-age boosters (4–5 yrs 4-in-1 &amp; MMR2, 1st year secondary Tdap/HPV) — these are delivered by the HSE School Immunisation Team, not this practice.
+      </div>
+      <div class="warn-box">⚠️ Vaccines can be given LATER than scheduled dates but <strong>NEVER earlier</strong>. This is HSE policy — do not bring an appointment forward to suit a family unless the age/interval rule below is met.</div>
+
       <div class="journey">
         <div class="journey-step">
           <div class="step-dot dot-sec">MS</div>
           <div class="step-content step-content-sec">
             <div class="step-role step-role-sec">Secretary — Booking</div>
-            <div class="step-title">Send Consent Form &amp; Advise Schedule</div>
+            <div class="step-title">Send Consent Form &amp; Check Timing</div>
             <div class="step-detail">
-              Send consent form when booking by phone. Pippo users prompted automatically.<br>
-              <strong>2 months (1st vaccines):</strong> Must have 6-week check. Must be 2 calendar months old (not 8 weeks).<br>
-              <strong>4 months:</strong> 2 calendar months from 1st vaccines. E.g. if given 25/05 → from 25/07.<br>
-              <strong>6 months:</strong> Same rule as 4 months.<br>
-              <strong>12 months:</strong> Must be 12 months old.<br>
-              <strong>13 months:</strong> 1 calendar month from 12-month vaccines. E.g. if given 25/05 → from 25/06.
+              Send the Childhood Immunisations consent form when booking by phone (see Forms Library). Pippo users are prompted automatically. Check the age/interval rule before confirming the slot:
+              <ul>
+                <li><strong>2 months (1st vaccines):</strong> 6-week check must be done first. Must be a full 2 calendar months old (not simply 8 weeks).</li>
+                <li><strong>4 months:</strong> at least 2 calendar months after the 1st vaccines. E.g. if given 25/05 → not before 25/07.</li>
+                <li><strong>6 months:</strong> same 2-calendar-month rule from the 4-month vaccines.</li>
+                <li><strong>12 months:</strong> must have turned 12 months old.</li>
+                <li><strong>13 months:</strong> at least 1 calendar month after the 12-month vaccines. E.g. if given 25/05 → not before 25/06.</li>
+                <li>Allow a 15-minute slot — nurse needs time for consent check, administration of multiple injections, and the 15-minute wait after.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-sec">MS</div>
+          <div class="step-content step-content-sec">
+            <div class="step-role step-role-sec">Secretary — Check-In</div>
+            <div class="step-title">Verify Consent Form</div>
+            <div class="step-detail">Confirm the signed consent form is on file (paper or Pippo) before sending the family through. If missing, print a blank form for the parent/guardian to complete at check-in — the nurse cannot vaccinate without it.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Nurse — Pre-Vaccination Check</div>
+            <div class="step-title">Screen &amp; Confirm Due Vaccines</div>
+            <div class="step-detail">
+              <ul>
+                <li>Check Socrates immunisation record to confirm which vaccines are due today and that no dose has already been given.</li>
+                <li>Ask about illness since last visit: if the child has a fever (&gt;38°C) or acute illness on the day, postpone until well — a minor cold with no fever is <strong>not</strong> a reason to defer.</li>
+                <li>Ask about reaction to a previous dose (e.g. anaphylaxis, high fever, prolonged inconsolable crying, seizure) and any known allergy to vaccine components.</li>
+                <li><strong>Rotavirus (2 &amp; 4 month visits only):</strong> confirm first dose is given before 15 weeks of age and the course can be completed by 24 weeks — if outside this window, flag to doctor before giving, do not give routinely outside the window.</li>
+                <li>If any contraindication/precaution flagged below applies, or you are unsure, stop and ask the doctor before proceeding.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-doc">DR</div>
+          <div class="step-content step-content-doc">
+            <div class="step-role step-role-doc">Doctor — Only If Flagged</div>
+            <div class="step-title">Review Contraindications</div>
+            <div class="step-detail">Nurse tasks the doctor only when a precaution/contraindication is flagged at the pre-vaccination check (see reference box below). Doctor reviews and documents a decision to proceed, defer, or refer before the nurse vaccinates.</div>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Nurse — Administer &amp; Document</div>
+            <div class="step-title">Give Vaccines &amp; Record</div>
+            <div class="step-detail">
+              <ul>
+                <li>Administer vaccines per the HSE schedule (see reference table below) — check each vial/pack against the schedule before drawing up.</li>
+                <li>Document in Socrates: each vaccine given, batch number, dose, route and anatomical site. Note any vaccine declined by the parent and the reason.</li>
+                <li>Stamp/complete the parent's Personal Health Record ("yellow book") for every vaccine given today.</li>
+                <li>Task the doctor for travel vaccines if any household member is under 15 (paediatric Hepatitis A required) — see Travel Vaccinations SOP.</li>
+              </ul>
             </div>
           </div>
         </div>
         <div class="journey-step">
           <div class="step-dot dot-nurse">NS</div>
           <div class="step-content step-content-nurse">
-            <div class="step-role step-role-nurse">Nurse</div>
-            <div class="step-title">Administer &amp; Document</div>
-            <div class="step-detail">Administer vaccines as per HSE schedule. Document in Socrates. Task for travel vaccines if any party under 15 (children's Hep A required).</div>
+            <div class="step-role step-role-nurse">Nurse — Aftercare</div>
+            <div class="step-title">Advise Parent Before They Leave</div>
+            <div class="step-detail">
+              <ul>
+                <li>Ask parent to wait in the practice for 15 minutes after vaccination to monitor for immediate reaction.</li>
+                <li>Fever, redness/swelling at injection site and grizzliness are common and expected in the 24–48 hours after — see Calpol dosing box below.</li>
+                <li>Advise parent to seek urgent medical attention (GP/GP out-of-hours/ED) for: difficulty breathing, facial/lip swelling, widespread rash, a fever above 39°C not settling with Calpol, a seizure, or the child becoming floppy/unresponsive.</li>
+                <li>Confirm the next appointment date/interval with the parent before they leave (or advise them to rebook per the age/interval rule above).</li>
+              </ul>
+            </div>
           </div>
         </div>
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">Secretary/PM — Recall &amp; Overdue Tracking</div>
+            <div class="step-title">Follow Up Missed Vaccines</div>
+            <div class="step-detail">Run a periodic Socrates search for children overdue their next scheduled vaccine. Use the "Overdue Child Vaccines" SMS template (Templates Library) to invite them to rebook. Repeat non-responders are flagged to PM for a phone follow-up.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#f1f5f9;border-radius:8px;padding:14px 16px;margin:18px 0;font-size:0.8rem;line-height:1.9">
+        <strong style="color:var(--navy)">Primary schedule — what's given at each visit</strong><br>
+        <strong>2 months:</strong> 6-in-1 (diphtheria, tetanus, pertussis, polio, Hib, Hep B) + PCV (pneumococcal) + MenB + Rotavirus (oral)<br>
+        <strong>4 months:</strong> 6-in-1 + MenB + Rotavirus<br>
+        <strong>6 months:</strong> 6-in-1 + PCV + MenC<br>
+        <strong>12 months:</strong> MMR + MenB<br>
+        <strong>13 months:</strong> Hib/MenC + PCV<br>
+        <em style="color:#64748b">Vaccine brands/combinations are set by the HSE national contract and can change — always check the current product against the HSE schedule at hse.ie/immunisation before administering, not just this table.</em>
+      </div>
+
+      <div style="background:#fef2f2;border-radius:8px;padding:14px 16px;margin:18px 0;font-size:0.8rem;line-height:1.85;border:1px solid #fecaca">
+        <strong style="color:var(--navy)">Contraindications &amp; precautions — flag to doctor before giving</strong><br>
+        • Anaphylaxis to a previous dose of the same vaccine, or to a vaccine component<br>
+        • Acute illness with fever ≥38°C on the day (defer until well — a mild cold with no fever is not a reason to defer)<br>
+        • Known immunosuppression, or a household contact who is significantly immunosuppressed (live vaccines — MMR, Rotavirus)<br>
+        • Encephalopathy within 7 days of a previous pertussis-containing dose<br>
+        • Progressive neurological condition, uncontrolled epilepsy<br>
+        • Rotavirus: history of intussusception, or severe combined immunodeficiency (SCID)<br>
+        • Bleeding disorder or on anticoagulants — use fine-gauge needle, firm pressure, no rubbing
+      </div>
+
+      <div style="background:#f1f5f9;border-radius:8px;padding:14px 16px;margin:18px 0 0;font-size:0.8rem;line-height:1.9">
+        <strong style="color:var(--navy)">Fever &amp; discomfort after vaccination — parent advice</strong><br>
+        Paracetamol (Calpol) as needed, weight-based dosing per the product label — advise parent to check their own bottle's instructions, as strength varies (e.g. Calpol Infant vs Calpol Six Plus). Do not advise a specific dose from memory — direct the parent to the pack insert/pharmacist if unsure. Ibuprofen can be used from 3 months if the child is well-hydrated and not asthmatic, but is not routinely advised prophylactically.
       </div>
     </div>
   </div>
