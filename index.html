@@ -305,6 +305,8 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .status-btn.is-away{border-color:#f59e0b;background:#fffbeb;color:#92400e}
 .approvals-badge{display:none;align-items:center;gap:6px;font-size:0.74rem;font-weight:600;padding:5px 12px;border:1.5px solid #f59e0b;border-radius:20px;background:#fffbeb;color:#92400e;text-decoration:none;white-space:nowrap;transition:all 0.15s}
 .approvals-badge:hover{background:#fef3c7}
+.stc-reminder-badge{display:none;align-items:center;gap:6px;font-size:0.74rem;font-weight:600;padding:5px 12px;border:1.5px solid #f59e0b;border-radius:20px;background:#fffbeb;color:#92400e;text-decoration:none;white-space:nowrap;transition:all 0.15s;cursor:pointer}
+.stc-reminder-badge:hover{background:#fef3c7}
 .away-empty{font-size:0.78rem;color:var(--grey-400);padding:8px 0;text-align:center}
 .away-card{background:#fff;border:1px solid var(--grey-200);border-radius:10px;padding:11px 13px;margin-bottom:8px;position:relative;overflow:hidden;transition:box-shadow 0.15s}
 .away-card:hover{box-shadow:0 2px 10px rgba(0,0,0,0.07)}
@@ -595,6 +597,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
       <input type="text" id="search" placeholder="Search hub…" autocomplete="off">
       <button id="search-btn" title="Search">🔍</button>
       <a class="approvals-badge" id="approvals-badge" href="approvals.html">🔔 <span id="approvals-count">0</span> pending</a>
+      <a class="stc-reminder-badge" id="stc-reminder-badge" href="#" onclick="goToSOP('cdm','sop-cdm-claiming');return false;">📋 Friday reminder: STC/PCRS submission</a>
       <button class="status-btn" id="status-btn" onclick="openAwayModal()">🟢 Available</button>
       <div class="avatar" id="user-avatar" title="">FO</div>
     </div>
@@ -961,6 +964,9 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                 <li>Document in each patient's Socrates chart: <em>"CDM/PP submitted [date]"</em></li>
                 <li>Email the patient their care plan, including the doctor's note</li>
               </ul>
+              <div class="info-box" style="margin-top:12px;font-size:0.8rem">
+                🔔 <strong>Automatic reminder:</strong> a "Friday reminder: STC/PCRS submission" badge appears in the topbar for the Practice Manager every Friday, prompting this weekly review — click it to jump straight to the <a href="#" onclick="goToSOP('cdm','sop-cdm-claiming');return false;">CDM / PP Submission &amp; Claiming ↗</a> SOP.
+              </div>
             </div>
           </div>
         </div>
@@ -5546,6 +5552,14 @@ async function loadApprovalsBadge() {
   } catch (e) { /* stay silent — this is a convenience badge, not critical */ }
 }
 
+// ── FRIDAY STC/PCRS REMINDER (admin/PM only) ────────────────────
+function checkFridaySTCReminder() {
+  if (sessionStorage.getItem('kmc-role') !== 'admin') return;
+  if (new Date().getDay() !== 5) return; // 5 = Friday
+  const badge = document.getElementById('stc-reminder-badge');
+  if (badge) badge.style.display = 'inline-flex';
+}
+
 // ── INIT ─────────────────────────────────────────────────────
 requestNotificationPermission();
 loadAwayWidget();
@@ -5555,6 +5569,7 @@ checkWelcomeBack();
 loadBuddyAlerts();
 loadAwayNotices();
 loadApprovalsBadge();
+checkFridaySTCReminder();
 
 // Handle deep-link hash from feedback admin page
 (function() {
