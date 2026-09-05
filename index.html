@@ -305,6 +305,8 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .status-btn.is-away{border-color:#f59e0b;background:#fffbeb;color:#92400e}
 .approvals-badge{display:none;align-items:center;gap:6px;font-size:0.74rem;font-weight:600;padding:5px 12px;border:1.5px solid #f59e0b;border-radius:20px;background:#fffbeb;color:#92400e;text-decoration:none;white-space:nowrap;transition:all 0.15s}
 .approvals-badge:hover{background:#fef3c7}
+.stc-reminder-badge{display:none;align-items:center;gap:6px;font-size:0.74rem;font-weight:600;padding:5px 12px;border:1.5px solid #f59e0b;border-radius:20px;background:#fffbeb;color:#92400e;text-decoration:none;white-space:nowrap;transition:all 0.15s;cursor:pointer}
+.stc-reminder-badge:hover{background:#fef3c7}
 .away-empty{font-size:0.78rem;color:var(--grey-400);padding:8px 0;text-align:center}
 .away-card{background:#fff;border:1px solid var(--grey-200);border-radius:10px;padding:11px 13px;margin-bottom:8px;position:relative;overflow:hidden;transition:box-shadow 0.15s}
 .away-card:hover{box-shadow:0 2px 10px rgba(0,0,0,0.07)}
@@ -473,7 +475,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .flow-node-doc{background:#fef2f2;border:2px solid #ef4444;color:#991b1b}
 .flow-node-phle{background:#fff7ed;border:2px solid #f97316;color:#9a3412}
 .flow-node-pm{background:#faf5ff;border:2px solid #a855f7;color:#6b21a8}
-.flow-node-cit{background:#f8fafc;border:2px dashed #94a3b8;color:#94a3b8}
+.flow-node-cit{background:#fffbeb;border:2px solid #d97706;color:#92400e}
 .flow-arrow{font-size:1.1rem;color:#94a3b8;line-height:1;padding:2px 0}
 .flow-branch-row{display:flex;gap:10px;justify-content:center;width:100%}
 .flow-branch-item{display:flex;flex-direction:column;align-items:center;gap:0;flex:1;min-width:0}
@@ -555,6 +557,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
     <a href="#" class="nav-link" data-section="cdm" id="cdm-nav-link"><span class="nav-icon">🔁</span> CDM <span class="future-lock" id="cdm-lock-badge">🔒</span><span class="pm-unlocked-badge" id="cdm-unlocked-badge" style="display:none">✓ Unlocked</span></a>
     <a href="#" class="nav-link nav-sublink" data-section="cdm-inbox" id="nav-cdm-inbox"><span class="nav-icon">📥</span> CDM Inbox <span id="cdm-inbox-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
     <a href="#" class="nav-link nav-sublink" data-section="prevention-inbox" id="nav-prevention-inbox"><span class="nav-icon">📥</span> Prevention Inbox <span id="prevention-inbox-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
+    <a href="#" class="nav-link nav-sublink" data-section="ocf-inbox" id="nav-ocf-inbox"><span class="nav-icon">📥</span> OCF Inbox <span id="ocf-inbox-badge" style="display:none;background:#ef4444;color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px">0</span></a>
     <a href="#" class="nav-link" data-section="care-pathways"><span class="nav-icon">🩺</span> Patient Journeys</a>
     <a href="#" class="nav-link" data-section="clinical-procedures"><span class="nav-icon">💉</span> Clinical Procedures</a>
     <a href="#" class="nav-link" data-section="clinical-pathways"><span class="nav-icon">🧬</span> Clinical Pathways</a>
@@ -595,6 +598,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
       <input type="text" id="search" placeholder="Search hub…" autocomplete="off">
       <button id="search-btn" title="Search">🔍</button>
       <a class="approvals-badge" id="approvals-badge" href="approvals.html">🔔 <span id="approvals-count">0</span> pending</a>
+      <a class="stc-reminder-badge" id="stc-reminder-badge" href="#" onclick="goToSOP('cdm','sop-cdm-claiming');return false;">📋 Friday reminder: STC/PCRS/OCF submission</a>
       <button class="status-btn" id="status-btn" onclick="openAwayModal()">🟢 Available</button>
       <div class="avatar" id="user-avatar" title="">FO</div>
     </div>
@@ -785,7 +789,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
         Do <strong>NOT</strong> book a CDM or PP appointment until the patient has <strong>fully completed</strong> the relevant pre-appointment form.<br><br>
         <strong>CDM patients:</strong> <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">CDM Pre-Appointment Form ↗</a> — patient completes directly on the website.<br>
         <strong>Prevention Programme patients:</strong> <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Pre-Appointment Form ↗</a> — patient completes directly on the website.<br><br>
-        <strong>Elderly / poor IT literacy:</strong> Advise the patient that a <strong>family member, next of kin, or neighbour</strong> can go on to the website and complete the form on their behalf — just like booking a flight or a holiday. It only takes 5 minutes. If all attempts are exhausted, a paper copy is available in the <strong>folder behind the front door</strong> — the patient takes this home to complete and return before their appointment is booked.
+        <strong>Elderly / poor IT literacy:</strong> Advise the patient that a <strong>family member, next of kin, or neighbour</strong> can go on to the website and complete the form on their behalf — just like booking a flight or a holiday. It only takes 5 minutes. If all attempts are exhausted, a paper copy is available in the <strong>folder behind the front door</strong> — the patient takes this home to complete and return before their appointment is booked. (Printable master copy: <a href="cdm-paper-form.html" target="_blank">CDM Pre-Appointment Form (Paper) ↗</a> — restock the folder from this.)
       </div>
 
       <h4 style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin:0 0 10px">CDM Pathway Overview</h4>
@@ -810,10 +814,9 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
             <div class="flow-arrow">↓</div>
             <div class="flow-node flow-node-doc" style="font-size:0.76rem">🔴 Doctor-led</div>
           </div>
-          <div class="flow-branch-item flow-coming-soon">
+          <div class="flow-branch-item">
             <div class="flow-arrow">↓</div>
-            <div class="flow-node flow-node-cit" style="font-size:0.76rem">🏠 CIT-led<br><small>Housebound</small></div>
-            <div class="flow-soon-tag">Coming Soon</div>
+            <div class="flow-node flow-node-cit" style="font-size:0.76rem">🏠 CIT-led<br><small>Housebound / resistant</small></div>
           </div>
         </div>
         <div class="flow-arrow">↓</div>
@@ -837,7 +840,8 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                 <li>Direct the patient to complete the correct form on the website — <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">CDM Pre-Appointment Form ↗</a> for CDM patients, <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form ↗</a> for PP patients</li>
                 <li><strong>No form, no appointment</strong> — do not book until form is fully completed and received</li>
 <li>If the patient cannot complete the form themselves: advise them that a <strong>family member, next of kin, or neighbour</strong> can go on to the website and complete it on their behalf — just like booking a flight or a holiday. It only takes 5 minutes</li>
-                <li><strong>If all attempts are exhausted:</strong> a paper long form is available in the <strong>folder in the hall</strong>. The patient must take this home to complete and return it before their appointment is booked</li>
+                <li><strong>If all attempts are exhausted:</strong> a paper long form is available in the <strong>folder in the hall</strong> (printable master copy: <a href="cdm-paper-form.html" target="_blank">CDM Pre-Appointment Form (Paper) ↗</a>). The patient must take this home to complete and return it before their appointment is booked</li>
+                <li><strong>Genuinely housebound, or resistant to attending?</strong> If a patient cannot physically get to the practice, or pushes back on attending in person during a call, consultation, or any other contact, flag them for the <strong>🏠 CIT-led pathway</strong> (see below) instead of trying to force an in-practice booking</li>
               </ul>
             </div>
           </div>
@@ -867,6 +871,8 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
               <ul>
                 <li><strong>Follow the booking guidance shown in the CDM Inbox</strong> for this patient's submission — appointment length and which staff type it must be booked with are generated automatically from what the patient completed on the form, combined with whether bloods are due. Just follow the instructions shown on the card</li>
                 <li><strong>Check if bloods are due</strong> and mention it to the patient during the phone call — only their CDM bloods are covered under the scheme if due. They can have other bloods done at the same time for a charge, or we can send them a form to bring to the hospital</li>
+                <li><strong>If no bloods are needed</strong>, encourage the patient to take an <strong>afternoon slot</strong> where possible — this keeps morning capacity free for patients who do need bloods done (fasting or otherwise)</li>
+                <li><strong>Patient genuinely housebound, or resistant to coming in?</strong> Don't push for an in-practice slot — offer the <strong>🏠 CIT-led pathway</strong> instead (see below). The patient still completes the CDM/PP form on the website exactly as normal; you then complete the <strong>CIT Referral Form</strong> to request a home-visit date from the Community Intervention Team</li>
                 <li><strong>Use your initiative with scheduling</strong> — if slots look like they won't be filled on a given day, be flexible. You can book patients into non-consecutive slots and cancel a later slot if needed to buy back time. A partially filled CDM day is better than a wasted one</li>
               </ul>
 
@@ -892,9 +898,20 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                   <li>Populate Socrates CDM tab</li>
                 </ul>
               </div>
-              <div style="background:#f8fafc;border:1.5px dashed #94a3b8;border-radius:8px;padding:12px;opacity:0.65">
-                <div style="font-size:0.7rem;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:4px">🏠 CIT-led — Housebound Patients <span style="background:#e2e8f0;color:#64748b;padding:2px 8px;border-radius:10px;font-weight:500;text-transform:none">Coming Soon</span></div>
-                <p style="font-size:0.77rem;color:#94a3b8;margin:0">Community Intervention Team pathway for housebound patients. Details to follow.</p>
+              <div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:8px;padding:14px">
+                <div style="font-size:0.78rem;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">🏠 CIT-led — Home Visit Pathway (Housebound / Resistant Patients)</div>
+
+                <p style="font-size:0.8rem;color:var(--grey-700);margin:0 0 12px;line-height:1.6">
+                  For patients who are <strong>genuinely housebound</strong> — or who are <strong>resistant to attending in person</strong> when this is raised during a call, consultation, or any other contact. Use clinical/professional judgement: this pathway is for genuine need, not convenience. It replaces an in-practice appointment entirely — the whole CDM/PP review is done remotely and via a home visit.
+                </p>
+
+                <ol style="margin:0;padding-left:18px;font-size:0.8rem;line-height:1.9;color:var(--grey-700)">
+                  <li><strong>Patient opts in</strong> — whoever identifies the need (any staff member, or the secretary during the booking call) confirms with the patient that they're happy to proceed via home visit instead of an in-practice appointment</li>
+                  <li><strong>Patient completes the CDM/PP form remotely</strong> — same <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">CDM Pre-Appointment Form ↗</a> / <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form ↗</a> as any other patient, completed by themselves, a family member/next of kin, or on paper if all else fails — see Step 1</li>
+                  <li><strong>Secretary completes the CIT Referral Form</strong> — once the CDM/PP form is received and uploaded to the chart (Step 2), the secretary raises a <strong>CIT Referral</strong> to request a home-visit date from the Community Intervention Team, noting whether bloods are due</li>
+                  <li><strong>CIT team carries out the home visit</strong> — bloods (per <a href="#" onclick="goToSOP('cdm','sop-cdm-bloods');return false;">CDM/PP Bloods — What's Covered ↗</a>), ABPM, and AliveCor/ECG as required, same clinical checklist as an in-practice visit</li>
+                  <li><strong>Results return to the chart</strong> — CIT team scans/uploads results and STCs to the patient's chart, then tasks the doctor on duty exactly as in Step 4 (End of Consult — Task Doctor), so the review continues through the normal Step 5/6 remote review and PCRS submission</li>
+                </ol>
               </div>
             </div>
           </div>
@@ -909,9 +926,9 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
               At the end of the visit, task the doctor on duty:
               <ul>
                 <li>Task: <strong>"CDM review and 6/12 script"</strong> (or <strong>"PP review and 12/12 script"</strong> for PP patients)</li>
+                <li>Leave a note in the chart</li>
                 <li>Include bloods result and ABPM under the <strong>same doctor's name</strong></li>
                 <li>Distribute tasks evenly across doctors on the day</li>
-                <li>Priority: Orange</li>
               </ul>
             </div>
           </div>
@@ -948,6 +965,9 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                 <li>Document in each patient's Socrates chart: <em>"CDM/PP submitted [date]"</em></li>
                 <li>Email the patient their care plan, including the doctor's note</li>
               </ul>
+              <div class="info-box" style="margin-top:12px;font-size:0.8rem">
+                🔔 <strong>Automatic reminder:</strong> a "Friday reminder: STC/PCRS/OCF submission" badge appears in the topbar for the Practice Manager every Friday, prompting this weekly review (now covering the <a href="#" onclick="goToSOP('cdm','sop-ocf');return false;">OCF Inbox ↗</a> too) — click it to jump straight to the <a href="#" onclick="goToSOP('cdm','sop-cdm-claiming');return false;">CDM / PP Submission &amp; Claiming ↗</a> SOP.
+              </div>
             </div>
           </div>
         </div>
@@ -1070,6 +1090,88 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
     </div>
   </div>
 
+  <!-- ── SOP: Opportunistic Case Finding (OCF) ── -->
+  <div class="sop-card" id="sop-ocf" data-updated="2026-09-05" data-section-name="CDM" data-sop-name="Opportunistic Case Finding (OCF)">
+    <div class="sop-header" onclick="toggleSOP(this)">
+      <div class="sop-header-left"><span>🩸</span><h3>Opportunistic Case Finding (OCF)</h3></div>
+      <span class="sop-toggle">▼</span>
+    </div>
+    <div class="sop-meta">
+      <span>👤 All Clinical Staff</span><span>🔄 Last updated: 05/09/2026</span><span>📌 v1.0</span>
+    </div>
+    <div class="sop-body">
+
+      <div class="info-box" style="margin-bottom:18px">
+        <strong>What is OCF?</strong> Opportunistic Case Finding lets the practice claim a set of screening bloods (see <a href="#" onclick="goToSOP('cdm','sop-cdm-bloods');return false;">CDM/PP Bloods — What's Covered ↗</a>) for GMS/DVC patients who are having bloods taken for an unrelated reason. It doesn't replace or duplicate a CDM/PP review — it's a separate, lighter-touch scheme for patients not yet registered on either programme.
+      </div>
+
+      <div class="warn-box" style="margin-bottom:18px">
+        <strong>Who qualifies</strong><br>
+        Any <strong>GMS or DVC</strong> patient having bloods taken — for any reason — who is <strong>not currently registered on the CDM or Prevention Programme</strong>. If they're already on CDM/PP, their bloods are covered under that scheme instead — don't also submit OCF for them.
+      </div>
+
+      <div class="journey">
+
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Step 1 — Nurse / Phlebotomist / Doctor</div>
+            <div class="step-title">Before Taking Bloods — Check Eligibility</div>
+            <div class="step-detail">
+              Whenever a GMS or DVC patient is having bloods taken, before drawing:
+              <ul>
+                <li>Check Socrates — is this patient already registered on the <strong>CDM</strong> or <strong>Prevention Programme</strong>? If yes, this doesn't apply — proceed as normal under that scheme</li>
+                <li>If <strong>not</strong> on either programme, give them the <a href="ocf-form.html" target="_blank">OCF Pre-Bloods Form ↗</a> to complete before their bloods are drawn — it only takes a minute</li>
+                <li>Where possible, have them complete it on the spot (practice tablet or their own phone) so it's in the OCF Inbox before the bloods episode is closed</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-all">ALL</div>
+          <div class="step-content step-content-all">
+            <div class="step-role step-role-all">Step 2 — Patient</div>
+            <div class="step-title">Patient Completes OCF Form</div>
+            <div class="step-detail">
+              The patient completes the short <a href="ocf-form.html" target="_blank">OCF Pre-Bloods Form ↗</a> — name, DOB, contact details, GMS/DVC number, confirmation they're not on CDM/PP, and consent for the bloods to be submitted under the scheme. It lands automatically in the <strong>OCF Inbox</strong> as "New" — nothing further for staff to upload.
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-nurse">NS</div>
+          <div class="step-content step-content-nurse">
+            <div class="step-role step-role-nurse">Step 3 — Nurse / Phlebotomist / Doctor</div>
+            <div class="step-title">Take Bloods</div>
+            <div class="step-detail">
+              Take only the bloods covered under OCF — see the <strong>"Opportunistic Case Finding"</strong> row in <a href="#" onclick="goToSOP('cdm','sop-cdm-bloods');return false;">CDM/PP Bloods — What's Covered ↗</a>: FBC, Creatinine, Lipid profile, HbA1c, eGFR, and ACR if clinically indicated. Anything outside this list isn't covered under the scheme.
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="step-dot dot-pm">PM</div>
+          <div class="step-content step-content-pm">
+            <div class="step-role step-role-pm">Step 4 — Practice Manager — Weekly</div>
+            <div class="step-title">Review OCF Inbox &amp; PCRS Submission</div>
+            <div class="step-detail">
+              As part of the same weekly review as CDM/PP (see <a href="#" onclick="goToSOP('cdm','sop-cdm-claiming');return false;">CDM / PP Submission &amp; Claiming ↗</a>):
+              <ul>
+                <li>Open the <strong>OCF Inbox</strong> and confirm bloods have been resulted for each "New" submission</li>
+                <li>Submit eligible patients via the <strong>PCRS portal</strong></li>
+                <li>Mark each submission <strong>Submitted</strong> once claimed</li>
+                <li>Document in each patient's Socrates chart: <em>"OCF submitted [date]"</em></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
   <!-- ── SOP: CDM / PP Submission & Claiming (PM) ── -->
   <div class="sop-card" id="sop-cdm-claiming" data-updated="2026-06-05" data-section-name="CDM" data-sop-name="CDM / PP Submission &amp; Claiming">
     <div class="sop-header" onclick="toggleSOP(this)">
@@ -1088,7 +1190,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
             <div class="step-role step-role-pm">Practice Manager — Weekly</div>
             <div class="step-title">PCRS Portal — Confirm CDM / PP Submission</div>
             <div class="step-detail">
-              Log in to the <strong>PCRS portal</strong> and confirm CDM/PP submission for all completed reviews from the previous week. Ensure every patient seen for a CDM or PP review has been successfully claimed.
+              Log in to the <strong>PCRS portal</strong> and confirm CDM/PP submission for all completed reviews from the previous week. Ensure every patient seen for a CDM or PP review has been successfully claimed. While in the portal, also work through the <a href="#" onclick="goToSOP('cdm','sop-ocf');return false;">OCF Inbox ↗</a> and submit any resulted Opportunistic Case Finding bloods from the week — see <a href="#" onclick="goToSOP('cdm','sop-ocf');return false;">Opportunistic Case Finding (OCF) ↗</a>.
             </div>
           </div>
         </div>
@@ -1271,6 +1373,24 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
   <div id="prevention-inbox-loading" style="text-align:center;padding:40px;color:var(--grey-400);font-size:0.85rem">Loading submissions...</div>
   <div id="prevention-inbox-empty" style="display:none;text-align:center;padding:40px;color:var(--grey-400);font-size:0.85rem">No submissions found.</div>
   <div id="prevention-inbox-list"></div>
+</div>
+
+<div class="section" id="ocf-inbox">
+  <div class="page-header">
+    <h2>OCF Inbox</h2>
+    <p>Opportunistic Case Finding pre-bloods forms submitted via the website by GMS/DVC patients not on CDM or the Prevention Programme. Confirm eligibility, take bloods, then mark as submitted once claimed via PCRS.</p>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+    <button class="cdm-filter-btn active" data-filter="all" onclick="setOcfFilter('all',this)">All</button>
+    <button class="cdm-filter-btn" data-filter="new" onclick="setOcfFilter('new',this)">New</button>
+    <button class="cdm-filter-btn" data-filter="submitted" onclick="setOcfFilter('submitted',this)">Submitted</button>
+    <button onclick="loadOcfInbox(true)" style="margin-left:auto;font-size:0.75rem;padding:5px 12px;background:none;border:1px solid var(--grey-200);border-radius:6px;cursor:pointer;color:var(--grey-400);font-family:'DM Sans',sans-serif" title="Refresh">&#8635; Refresh</button>
+  </div>
+
+  <div id="ocf-inbox-loading" style="text-align:center;padding:40px;color:var(--grey-400);font-size:0.85rem">Loading submissions...</div>
+  <div id="ocf-inbox-empty" style="display:none;text-align:center;padding:40px;color:var(--grey-400);font-size:0.85rem">No submissions found.</div>
+  <div id="ocf-inbox-list"></div>
 </div>
 
 <!-- ════════════════════════════════════════════════════ -->
@@ -3357,7 +3477,9 @@ Keep the response concise and structured for a non-clinical administrator.</div>
     <div class="form-card"><div class="form-icon">🚭</div><div><h4>PMA Consent Form</h4><p>Patient consent for insurance medical reports</p><a href="#">Open form ↗</a></div></div>
     <div class="form-card"><div class="form-icon">📄</div><div><h4>Roaccutane Consent</h4><p>Live on Netlify</p><a href="roaccutane-consent.html" target="_blank">Open form ↗</a></div></div>
     <div class="form-card"><div class="form-icon">📄</div><div><h4>CDM Pre-Appointment Form</h4><p>For chronic disease patients</p><a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🖨️</div><div><h4>CDM Pre-Appointment Form (Paper)</h4><p>Printable fallback for patients who can't complete the form online — restock the hall folder from this</p><a href="cdm-paper-form.html" target="_blank">Open form ↗</a></div></div>
     <div class="form-card"><div class="form-icon">🛡️</div><div><h4>Prevention Programme Form</h4><p>For PP patients</p><a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Open form ↗</a></div></div>
+    <div class="form-card"><div class="form-icon">🩸</div><div><h4>OCF Pre-Bloods Form</h4><p>For GMS/DVC patients having bloods who are not on CDM/PP</p><a href="ocf-form.html" target="_blank">Open form ↗</a></div></div>
   </div>
 
   <div class="section-label">HSE &amp; Social Welfare Forms</div>
@@ -5533,6 +5655,14 @@ async function loadApprovalsBadge() {
   } catch (e) { /* stay silent — this is a convenience badge, not critical */ }
 }
 
+// ── FRIDAY STC/PCRS REMINDER (admin/PM only) ────────────────────
+function checkFridaySTCReminder() {
+  if (sessionStorage.getItem('kmc-role') !== 'admin') return;
+  if (new Date().getDay() !== 5) return; // 5 = Friday
+  const badge = document.getElementById('stc-reminder-badge');
+  if (badge) badge.style.display = 'inline-flex';
+}
+
 // ── INIT ─────────────────────────────────────────────────────
 requestNotificationPermission();
 loadAwayWidget();
@@ -5542,6 +5672,7 @@ checkWelcomeBack();
 loadBuddyAlerts();
 loadAwayNotices();
 loadApprovalsBadge();
+checkFridaySTCReminder();
 
 // Handle deep-link hash from feedback admin page
 (function() {
@@ -6020,6 +6151,132 @@ async function submitFeedback() {
   document.addEventListener('click', function(e) {
     const link = e.target.closest('[data-section="prevention-inbox"]');
     if (link && allSubmissions.length === 0) loadPreventionInbox();
+  });
+})();
+
+// ── OCF Inbox ─────────────────────────────────────────────────
+(function() {
+  const FILE = 'ocf-submissions.json';
+
+  let allSubmissions = [];
+  let currentFilter  = 'all';
+
+  function fmtDate(iso) {
+    try {
+      return new Date(iso).toLocaleString('en-IE',{
+        day:'2-digit', month:'2-digit', year:'numeric',
+        hour:'2-digit', minute:'2-digit', timeZone:'Europe/Dublin'
+      });
+    } catch(e) { return iso; }
+  }
+
+  function renderCard(sub) {
+    const isSubmitted = sub.status === 'submitted';
+    const dob = sub.dob ? new Date(sub.dob).toLocaleDateString('en-IE') : sub.dob || '—';
+
+    let fieldsHtml = '';
+    if (sub.fields && Object.keys(sub.fields).length) {
+      fieldsHtml = '<dl>';
+      for (const [k, v] of Object.entries(sub.fields)) {
+        const val = Array.isArray(v) ? v.join(', ') : v;
+        if (val) fieldsHtml += '<dt>' + k + '</dt><dd>' + val + '</dd>';
+      }
+      fieldsHtml += '</dl>';
+    }
+
+    return '<div class="cdm-card status-' + sub.status + '" id="ocf-card-' + sub.id + '">'
+      + '<div class="cdm-card-header">'
+        + '<div class="cdm-card-name">' + (sub.name || 'Unknown') + '</div>'
+        + '<div class="cdm-card-date">' + fmtDate(sub.submitted) + '</div>'
+        + '<span class="' + (isSubmitted ? 'cdm-badge-booked' : 'cdm-badge-new') + '">' + (isSubmitted ? 'Submitted' : 'New') + '</span>'
+      + '</div>'
+      + '<div class="cdm-card-body">'
+        + '<div class="cdm-conditions"><span class="cdm-condition-tag">' + (sub.cardType || '—') + '</span></div>'
+        + '<div class="cdm-detail-row"><span class="cdm-detail-label">DOB</span><span class="cdm-detail-val">' + dob + '</span></div>'
+        + '<div class="cdm-detail-row"><span class="cdm-detail-label">Card No.</span><span class="cdm-detail-val">' + (sub.cardNumber||'—') + '</span></div>'
+        + '<div class="cdm-detail-row"><span class="cdm-detail-label">Phone</span><span class="cdm-detail-val"><a href="tel:' + (sub.phone||'') + '" style="color:var(--teal)">' + (sub.phone||'—') + '</a></span></div>'
+        + '<div class="cdm-detail-row"><span class="cdm-detail-label">Email</span><span class="cdm-detail-val"><a href="mailto:' + (sub.email||'') + '" style="color:var(--teal)">' + (sub.email||'—') + '</a></span></div>'
+      + '</div>'
+      + (fieldsHtml ? '<div class="cdm-fields-body" id="ocf-fields-' + sub.id + '">' + fieldsHtml + '</div>' : '')
+      + '<div class="cdm-card-footer">'
+        + (fieldsHtml ? '<button class="cdm-fields-toggle" onclick="toggleOcfFields(' + sub.id + ',this)">Show full form</button>' : '<span></span>')
+        + '<div style="margin-left:auto;display:flex;gap:8px">'
+          + (isSubmitted
+            ? '<button class="cdm-action-btn cdm-action-unbook" onclick="setOcfStatus(' + sub.id + ',\'new\')">Mark as New</button>'
+            : '<button class="cdm-action-btn cdm-action-book" onclick="setOcfStatus(' + sub.id + ',\'submitted\')">Mark as Submitted</button>')
+        + '</div>'
+      + '</div>'
+      + '</div>';
+  }
+
+  function renderInbox() {
+    const list  = document.getElementById('ocf-inbox-list');
+    const empty = document.getElementById('ocf-inbox-empty');
+    const filtered = currentFilter === 'all'
+      ? allSubmissions
+      : allSubmissions.filter(s => s.status === currentFilter);
+
+    const newCount = allSubmissions.filter(s => s.status === 'new').length;
+    const badge = document.getElementById('ocf-inbox-badge');
+    if (badge) {
+      badge.textContent = newCount;
+      badge.style.display = newCount > 0 ? 'inline' : 'none';
+    }
+
+    if (filtered.length === 0) {
+      list.innerHTML = '';
+      empty.style.display = 'block';
+    } else {
+      empty.style.display = 'none';
+      list.innerHTML = filtered.map(renderCard).join('');
+    }
+  }
+
+  window.loadOcfInbox = async function(force) {
+    document.getElementById('ocf-inbox-loading').style.display = 'block';
+    document.getElementById('ocf-inbox-list').innerHTML = '';
+    document.getElementById('ocf-inbox-empty').style.display = 'none';
+    try {
+      const r = await kmcProxyGet(FILE);
+      allSubmissions = r.json;
+    } catch(e) {
+      allSubmissions = [];
+    }
+    document.getElementById('ocf-inbox-loading').style.display = 'none';
+    renderInbox();
+  };
+
+  window.setOcfFilter = function(filter, btn) {
+    currentFilter = filter;
+    btn.parentElement.querySelectorAll('.cdm-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderInbox();
+  };
+
+  window.toggleOcfFields = function(id, btn) {
+    const el = document.getElementById('ocf-fields-' + id);
+    if (!el) return;
+    const open = el.style.display === 'block';
+    el.style.display = open ? 'none' : 'block';
+    btn.textContent  = open ? 'Show full form' : 'Hide full form';
+  };
+
+  window.setOcfStatus = async function(id, status) {
+    const idx = allSubmissions.findIndex(s => s.id === id);
+    if (idx === -1) return;
+    allSubmissions[idx].status = status;
+
+    try {
+      await kmcProxySet(FILE, allSubmissions, 'OCF inbox - mark ' + status + ' (' + (allSubmissions[idx].name||'patient') + ')');
+    } catch(e) { console.warn('status save failed', e); }
+
+    renderInbox();
+  };
+
+  // Load when inbox section is opened
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('[data-section="ocf-inbox"]');
+    if (link && allSubmissions.length === 0) loadOcfInbox();
   });
 })();
 </script>

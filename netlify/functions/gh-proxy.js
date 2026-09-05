@@ -17,6 +17,7 @@ const ALLOWED_FILES = new Set([
   'feedback.json',
   'cdm-submissions.json',
   'prevention-submissions.json',
+  'ocf-submissions.json',
   'projects.json',
   'notices.json'
 ]);
