@@ -623,6 +623,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
       <div id="buddy-alert-container"></div>
       <div id="away-notices-container"></div>
       <div id="whos-in-container"></div>
+      <div id="newsletter-reminder-container"></div>
 
       <div class="notice-strip">
         <span class="badge">Pinned</span>
@@ -4559,6 +4560,42 @@ function toggleSOP(header) {
   toggle.classList.toggle('open');
 }
 
+// NEWSLETTER REMINDER — shows during the last 7 days of the month
+const NEWSLETTER_TOPIC_IDEAS = {
+  // Nov, Dec, Jan, Feb
+  winter: ['Flu &amp; winter vaccine uptake', 'Coughs, colds &amp; when to worry in children', 'New Year health checks / smoking cessation'],
+  // Mar, Apr, May
+  spring: ['Hay fever &amp; allergy season', 'Cervical screening / women’s health awareness', 'Book early: travel vaccines for summer trips'],
+  // Jun, Jul, Aug
+  summer: ['Travel vaccines &amp; malaria prevention', 'Sun safety &amp; skin checks', 'Back-to-school health checks'],
+  // Sep, Oct
+  autumn: ['Flu vaccine campaign kick-off', 'Mental health awareness', 'Winter vomiting bug / back-to-school illness prevention']
+};
+function newsletterSeason(month) { // 0=Jan
+  if ([10,11,0,1].includes(month)) return 'winter';
+  if ([2,3,4].includes(month)) return 'spring';
+  if ([5,6,7].includes(month)) return 'summer';
+  return 'autumn'; // 8,9
+}
+function renderNewsletterReminder() {
+  const container = document.getElementById('newsletter-reminder-container');
+  if (!container) return;
+  const now = new Date();
+  const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  if (now.getDate() < lastDayOfMonth - 6) { container.innerHTML = ''; return; }
+  const nextMonthName = new Date(now.getFullYear(), now.getMonth() + 1, 1).toLocaleDateString('en-IE', { month: 'long' });
+  const ideas = NEWSLETTER_TOPIC_IDEAS[newsletterSeason(now.getMonth())];
+  container.innerHTML = `
+    <div class="notice-strip" style="margin-bottom:10px">
+      <span class="badge" style="background:var(--gold)">Reminder</span>
+      <div>
+        <h4>Time to prepare the ${nextMonthName} newsletter</h4>
+        <p>We're in the last week of the month — the ${nextMonthName} edition should go out to subscribers soon. A few topic ideas for this time of year:</p>
+        <p style="font-size:0.68rem;opacity:0.5;margin-top:4px">${ideas.join(' &nbsp;·&nbsp; ')}</p>
+      </div>
+    </div>`;
+}
+
 // LOAD NOTICEBOARD ANNOUNCEMENTS — synced via notices.json (see
 // noticeboard-editor.html), committed to the repo through gh-proxy so every
 // device sees the same announcements.
@@ -4668,6 +4705,7 @@ loadWhosIn();
 loadAnnouncements();
 buildRecentUpdates();
 initCDMReminder();
+renderNewsletterReminder();
 
 // SEARCH
 function runSearch() {
