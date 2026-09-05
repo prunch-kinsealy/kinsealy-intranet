@@ -600,6 +600,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
       <a class="approvals-badge" id="approvals-badge" href="approvals.html">🔔 <span id="approvals-count">0</span> pending</a>
       <a class="stc-reminder-badge" id="stc-reminder-badge" href="#" onclick="goToSOP('cdm','sop-cdm-claiming');return false;">📋 Friday reminder: STC/PCRS/OCF submission</a>
       <a class="stc-reminder-badge" id="cdm-finder-reminder-badge" href="#" onclick="goToSOP('cdm','sop-cdm-finding');return false;">🔍 Quarterly reminder: CDM/PP Finder</a>
+      <a class="stc-reminder-badge" id="pm-away-bulktext-badge" href="#" onclick="goToSOP('cdm','sop-cdm-claiming');return false;">📱 PM away — please send this month's CDM/PP text</a>
       <button class="status-btn" id="status-btn" onclick="openAwayModal()">🟢 Available</button>
       <div class="avatar" id="user-avatar" title="">FO</div>
     </div>
@@ -1237,18 +1238,22 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
         <div class="journey-step">
           <div class="step-dot dot-pm" style="font-size:0.65rem">5</div>
           <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">Practice Manager — Every 2 Months</div>
+            <div class="step-role step-role-pm">Practice Manager — Monthly</div>
             <div class="step-title">Bulk Text Reminders to Overdue Patients</div>
             <div class="step-detail">
-              Send a bulk text reminder to all CDM/PP patients who are overdue for their review. Use the template below. Track the date sent using the reminder tracker.
-              <div style="background:white;border:1px solid #ddd6fe;border-radius:8px;padding:12px 14px;margin-top:12px">
+              Send a bulk text reminder to all CDM/PP patients who are overdue for their review — <strong>every month</strong>. Use the template below, then tick the sign-off box once it's sent.
+              <div class="cdm-reminder-widget" style="background:white;border:1px solid #ddd6fe;border-radius:8px;padding:12px 14px;margin-top:12px">
                 <div style="font-weight:600;font-size:0.8rem;margin-bottom:8px;color:var(--col-pm)">📱 Bulk Text Reminder Tracker</div>
-                <div id="cdm-reminder-status"></div>
+                <div id="cdm-reminder-status" style="font-size:0.85rem;color:var(--grey-400)">Loading…</div>
                 <div style="margin-top:10px">
-                  <div style="font-weight:600;font-size:0.8rem;margin-bottom:6px">✉️ Bulk Text Template <span style="font-weight:400;color:var(--grey-400);font-size:0.72rem">(replace [FORM LINK] with your Netlify URL)</span></div>
-                  <div id="cdm-sms-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.6;color:var(--text)">Hi, your CDM review is due at Kinsealy MC. Please complete the form before booking: [FORM LINK] No form = no appointment.</div>
+                  <div style="font-weight:600;font-size:0.8rem;margin-bottom:6px">✉️ Bulk Text Template</div>
+                  <div id="cdm-sms-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.6;color:var(--text)">Hi, your CDM review is due at Kinsealy MC. Please complete the form before booking: https://coruscating-dusk-a3bdf9.netlify.app/cdm-form No form = no appointment.</div>
+                  <div style="font-size:0.72rem;color:var(--grey-400);margin-top:4px">Sending to PP patients instead? Swap in the <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form</a> link.</div>
                   <button class="cdm-reminder-btn" style="margin-top:8px" onclick="(function(){var t=document.getElementById('cdm-sms-template');navigator.clipboard.writeText(t.innerText).then(function(){var b=event.target;b.textContent='Copied!';setTimeout(function(){b.textContent='Copy text'},1800)})})()">Copy text</button>
                 </div>
+              </div>
+              <div class="info-box" style="margin-top:10px;font-size:0.78rem">
+                🔔 <strong>Automatic ping:</strong> if the Practice Manager is away when this falls due, secretaries get a badge in the topbar prompting them to send it in her place.
               </div>
             </div>
           </div>
@@ -4430,51 +4435,120 @@ function goToSOP(sectionId, sopId) {
   }, 100);
 }
 
-// CDM BULK TEXT REMINDER TRACKER
-const CDM_INTERVAL = 30 * 24 * 60 * 60 * 1000; // monthly
-function initCDMReminder() {
+// CDM BULK TEXT REMINDER TRACKER — shared via cdm-bulk-text.json (monthly cadence)
+const CDM_BULK_TEXT_FILE = 'cdm-bulk-text.json';
+const PM_USERNAME = 'maria'; // the Practice Manager (jobRole 'pm' in login.html)
+let cdmBulkTextData = null;
+
+function _sameCalendarMonth(a, b) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
+}
+
+async function initCDMReminder() {
   const el = document.getElementById('cdm-reminder-status');
   if (!el) return;
-  renderCDMReminder(el);
+  try {
+    const r = await kmcProxyGet(CDM_BULK_TEXT_FILE);
+    cdmBulkTextData = r.json || {};
+  } catch (e) {
+    cdmBulkTextData = {};
+  }
+  renderCDMReminder();
+  checkPMAwayBulkTextReminder();
 }
-function renderCDMReminder(el) {
-  const raw = localStorage.getItem('cdm-bulk-text-last');
-  const prev = localStorage.getItem('cdm-bulk-text-prev');
-  if (!raw) {
-    el.innerHTML = '<span class="reminder-overdue">⚠️ No bulk text logged yet</span><br><button class="cdm-reminder-btn" onclick="logCDMBulkText()">Log bulk text sent today</button>';
+
+function renderCDMReminder() {
+  const el = document.getElementById('cdm-reminder-status');
+  if (!el) return;
+  const data = cdmBulkTextData || {};
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+
+  if (!data.lastSent) {
+    el.innerHTML = '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.85rem;color:var(--text)">'
+      + '<input type="checkbox" onchange="toggleCDMBulkTextSent(this)"> Sent this month\'s bulk text</label>'
+      + '<div style="margin-top:6px"><span class="reminder-overdue">⚠️ No bulk text logged yet</span></div>';
     return;
   }
-  const last = new Date(raw);
-  const next = new Date(last.getTime() + CDM_INTERVAL);
-  const days = Math.round((next - new Date()) / (24 * 60 * 60 * 1000));
+
+  const last = new Date(data.lastSent + 'T12:00:00');
+  const next = new Date(last); next.setMonth(next.getMonth() + 1);
+  const days = Math.round((next - today) / (24 * 60 * 60 * 1000));
+  const sentThisMonth = _sameCalendarMonth(last, today);
+  const sentByName = STAFF_NAMES[data.sentBy] || data.sentBy || '';
+
   let status;
   if (days < 0) {
     status = `<span class="reminder-overdue">⚠️ Overdue — was due ${next.toLocaleDateString('en-IE')} (${Math.abs(days)} days ago)</span>`;
-  } else if (days <= 10) {
+  } else if (days <= 5) {
     status = `<span class="reminder-warn">⚡ Due soon: ${next.toLocaleDateString('en-IE')} (${days} days)</span>`;
   } else {
-    status = `<span class="reminder-ok">✅ Next due: ${next.toLocaleDateString('en-IE')} (${days} days)</span>`;
+    status = `<span class="reminder-ok">✅ Next due: ${next.toLocaleDateString('en-IE')}</span>`;
   }
-  const undoBtn = prev !== null ? `<button class="cdm-reminder-btn" style="background:#64748b;margin-left:6px" onclick="undoCDMBulkText()">Undo</button>` : '';
-  el.innerHTML = `<div style="margin-bottom:6px">Last sent: <strong>${last.toLocaleDateString('en-IE')}</strong></div>${status}<br><button class="cdm-reminder-btn" onclick="logCDMBulkText()">Log bulk text sent today</button>${undoBtn}`;
+
+  const sentLabel = sentThisMonth
+    ? ` Sent this month's bulk text${sentByName ? ' — ' + sentByName + ' (' + last.toLocaleDateString('en-IE') + ')' : ''}`
+    : ' Sent this month\'s bulk text';
+
+  el.innerHTML = '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.85rem;color:var(--text)">'
+    + `<input type="checkbox" ${sentThisMonth ? 'checked' : ''} onchange="toggleCDMBulkTextSent(this)">${sentLabel}</label>`
+    + `<div style="margin-top:6px">${status}</div>`;
 }
-function logCDMBulkText() {
-  const current = localStorage.getItem('cdm-bulk-text-last');
-  localStorage.setItem('cdm-bulk-text-prev', current || '');
-  localStorage.setItem('cdm-bulk-text-last', new Date().toISOString());
-  const el = document.getElementById('cdm-reminder-status');
-  if (el) renderCDMReminder(el);
-}
-function undoCDMBulkText() {
-  const prev = localStorage.getItem('cdm-bulk-text-prev');
-  if (prev === '') {
-    localStorage.removeItem('cdm-bulk-text-last');
-  } else if (prev) {
-    localStorage.setItem('cdm-bulk-text-last', prev);
+
+async function toggleCDMBulkTextSent(checkbox) {
+  const data = Object.assign({}, cdmBulkTextData || {});
+  if (checkbox.checked) {
+    data.prevSent = data.lastSent || null;
+    data.prevSentBy = data.sentBy || null;
+    data.lastSent = new Date().toISOString().slice(0, 10);
+    data.sentBy = sessionStorage.getItem('kmc-user') || 'unknown';
+  } else {
+    data.lastSent = data.prevSent || null;
+    data.sentBy = data.prevSentBy || null;
+    data.prevSent = null;
+    data.prevSentBy = null;
   }
-  localStorage.removeItem('cdm-bulk-text-prev');
-  const el = document.getElementById('cdm-reminder-status');
-  if (el) renderCDMReminder(el);
+  cdmBulkTextData = data;
+  renderCDMReminder();
+  try {
+    await kmcProxySet(CDM_BULK_TEXT_FILE, data, 'CDM bulk text tracker - ' + (checkbox.checked ? 'marked sent' : 'undo'));
+  } catch (e) { console.warn('bulk text tracker save failed', e); }
+  checkPMAwayBulkTextReminder();
+}
+
+// ── PM-AWAY PING (secretaries only) ─────────────────────────────
+async function checkPMAwayBulkTextReminder() {
+  const badge = document.getElementById('pm-away-bulktext-badge');
+  if (!badge) return;
+  badge.style.display = 'none';
+
+  const jobRole = sessionStorage.getItem('kmc-job-role') || '';
+  if (!jobRole.split(',').includes('sec')) return;
+
+  try {
+    const awayData = await getAwayData();
+    const s = awayData[PM_USERNAME];
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const pmAway = s && s.departureDate
+      && new Date(s.departureDate + 'T12:00:00') <= today
+      && (!s.returnDate || new Date(s.returnDate + 'T12:00:00') >= today);
+    if (!pmAway) return;
+
+    if (!cdmBulkTextData) {
+      try {
+        const r = await kmcProxyGet(CDM_BULK_TEXT_FILE);
+        cdmBulkTextData = r.json || {};
+      } catch (e) { cdmBulkTextData = {}; }
+    }
+    const data = cdmBulkTextData || {};
+    let due = true;
+    if (data.lastSent) {
+      due = !_sameCalendarMonth(new Date(data.lastSent + 'T12:00:00'), today);
+    }
+    if (!due) return;
+
+    badge.textContent = '📱 ' + (STAFF_NAMES[PM_USERNAME] || 'PM') + ' is away — please send this month\'s CDM/PP text';
+    badge.style.display = 'inline-flex';
+  } catch (e) { /* stay silent — this is a convenience ping, not critical */ }
 }
 
 // SOP TOGGLE
