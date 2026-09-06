@@ -1594,20 +1594,13 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
           </div>
         </div>
         <div class="journey-step">
-          <div class="step-dot dot-sec">MS</div>
-          <div class="step-content step-content-sec">
-            <div class="step-role step-role-sec">Secretary — Check-In</div>
-            <div class="step-title">Verify Consent Form</div>
-            <div class="step-detail">Confirm the signed consent form is on file (paper or Pippo) before sending the family through. If missing, print a blank form for the parent/guardian to complete at check-in — the nurse cannot vaccinate without it.</div>
-          </div>
-        </div>
-        <div class="journey-step">
           <div class="step-dot dot-nurse">NS</div>
           <div class="step-content step-content-nurse">
             <div class="step-role step-role-nurse">Nurse — Pre-Vaccination Check</div>
             <div class="step-title">Screen &amp; Confirm Due Vaccines</div>
             <div class="step-detail">
               <ul>
+                <li>Confirm the consent form has been completed. If not, advise the parent/guardian to complete it now on their phone via our website while the vaccines are being drawn up.</li>
                 <li>Check Socrates immunisation record to confirm which vaccines are due today and that no dose has already been given.</li>
                 <li>Ask about illness since last visit: if the child has a fever (&gt;38°C) or acute illness on the day, postpone until well — a minor cold with no fever is <strong>not</strong> a reason to defer.</li>
                 <li>Ask about reaction to a previous dose (e.g. anaphylaxis, high fever, prolonged inconsolable crying, seizure) and any known allergy to vaccine components.</li>
@@ -1635,22 +1628,6 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                 <li>Administer vaccines per the HSE schedule (see reference table below) — check each vial/pack against the schedule before drawing up.</li>
                 <li>Document in Socrates: each vaccine given, batch number, dose, route and anatomical site. Note any vaccine declined by the parent and the reason.</li>
                 <li>Stamp/complete the parent's Personal Health Record ("yellow book") for every vaccine given today.</li>
-                <li>Task the doctor for travel vaccines if any household member is under 15 (paediatric Hepatitis A required) — see Travel Vaccinations SOP.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="journey-step">
-          <div class="step-dot dot-nurse">NS</div>
-          <div class="step-content step-content-nurse">
-            <div class="step-role step-role-nurse">Nurse — Aftercare</div>
-            <div class="step-title">Advise Parent Before They Leave</div>
-            <div class="step-detail">
-              <ul>
-                <li>Ask parent to wait in the practice for 15 minutes after vaccination to monitor for immediate reaction.</li>
-                <li>Fever, redness/swelling at injection site and grizzliness are common and expected in the 24–48 hours after — see Calpol dosing box below.</li>
-                <li>Advise parent to seek urgent medical attention (GP/GP out-of-hours/ED) for: difficulty breathing, facial/lip swelling, widespread rash, a fever above 39°C not settling with Calpol, a seizure, or the child becoming floppy/unresponsive.</li>
-                <li>Confirm the next appointment date/interval with the parent before they leave (or advise them to rebook per the age/interval rule above).</li>
               </ul>
             </div>
           </div>
@@ -4098,6 +4075,22 @@ Best regards, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclic
     <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Overdue Child Vaccines</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
 Your child is overdue vaccines. It is important that your child continues to have these important vaccines. Please phone 018405940 to make an appointment.
 Kind Regards, Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
+    <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Childhood Vaccines — Aftercare Email</h4><span class="tpl-tag">📧</span></div><div class="tpl-body">Dear [Parent/Guardian name],
+
+Thank you for bringing [Child's name] in to see us today for their vaccinations.
+
+Today [Child's name] received: [vaccines given, e.g. 6-in-1, PCV, MenB].
+
+A mild fever, redness/swelling at the injection site, and grizzliness are common in the 24–48 hours after vaccination. Paracetamol (Calpol) can be given as needed — please use the dose for your child's weight/age on your own bottle's label.
+
+Please contact us, or go to your GP out-of-hours service or your nearest Emergency Department, if your child has: difficulty breathing, facial or lip swelling, a widespread rash, a fever above 39°C not settling with Calpol, a seizure, or becomes floppy or unresponsive.
+
+Your next appointment is due: [date/interval — see the schedule on our website].
+
+If you were happy with your visit today, we'd be really grateful for a Google review — there's no greater compliment for our small team, and it helps other local families find us: [Google review link].
+
+Kind regards,
+Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
     <div class="tpl-card"><div class="tpl-hdr" onclick="toggleTpl(this)"><h4>Joint Injection Offer — MRI</h4><span class="tpl-tag">📱</span></div><div class="tpl-body">Dear [X],
 Your recent MRI showed some degeneration changes but thankfully nothing else. If you are still experiencing pain that is not settling down with time and physiotherapy we could arrange for a joint injection performed by myself. Please contact if you would like to arrange now or in the future.
 Best Wishes, Dr {{DOCTOR}}, Kinsealy Medical Centre<button class="cpbtn" onclick="copyTpl(this)">Copy</button><span class="cpok">✓ Copied</span></div></div>
