@@ -12,7 +12,7 @@
   .container{max-width:740px;margin:0 auto}
   .header{margin-bottom:28px}
   .header h1{font-family:'DM Serif Display',serif;font-size:1.8rem;color:#1a2d4a;margin-bottom:4px}
-  .header p{font-size:0.85rem;color:#9ca3af}
+  .header p{font-size:0.85rem;color:#6b7280}
   .card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;overflow:hidden;margin-bottom:24px}
   .card-header{background:#1a2d4a;color:#fff;padding:14px 20px;font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between}
   .sync-status{font-size:0.7rem;font-weight:500;letter-spacing:0;opacity:0.7}
@@ -27,7 +27,12 @@
   .back:hover{text-decoration:underline}
   .restricted{display:none;text-align:center;padding:80px 24px;color:#b91c1c;font-size:0.95rem}
   .restricted h2{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:8px;color:#1a2d4a}
-  .note{font-size:0.78rem;color:#9ca3af;margin-top:4px;line-height:1.6}
+  .note{font-size:0.78rem;color:#6b7280;margin-top:4px;line-height:1.6}
+
+  /* Entitlement cell */
+  .ent-cell{display:flex;align-items:center;gap:6px}
+  .ent-cell input{width:52px;padding:6px 8px;border:1.5px solid #e8e8e8;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:#1f2937;outline:none;transition:border 0.15s}
+  .ent-cell input:focus{border-color:#2a8a7e}
 
   /* Password cell */
   .pwd-cell{display:flex;align-items:center;gap:8px;min-width:180px}
@@ -55,6 +60,8 @@
 </style>
 </head>
 <body>
+<div id="kmc-quicknav"></div>
+<script src="shared-nav.js"></script>
 
 <div id="restricted" class="restricted">
   <h2>Access Denied</h2>
@@ -74,6 +81,7 @@
       All Staff Accounts
       <span class="sync-status" id="sync-status">Loading passwords…</span>
     </div>
+    <div style="overflow-x:auto">
     <table>
       <thead>
         <tr>
@@ -81,11 +89,13 @@
           <th>Username</th>
           <th>Password</th>
           <th>Access</th>
+          <th>Annual Leave (days/yr)</th>
           <th></th>
         </tr>
       </thead>
       <tbody id="staff-tbody"></tbody>
     </table>
+    </div>
   </div>
 
   <p class="note">
@@ -112,7 +122,6 @@ const STAFF = [
   {username:'maria',    name:'Maria Harding',          badge:'admin'},
   {username:'ciara',    name:'Dr Ciara Dunleavy',      badge:'staff'},
   {username:'ruth',     name:'Dr Ruth Devlin',         badge:'staff'},
-  {username:'eimear',   name:'Dr Eimear Dunne',        badge:'staff'},
   {username:'laura',    name:'Laura McGrath',          badge:'staff'},
   {username:'susan',    name:"Susan O'Leary",          badge:'staff'},
   {username:'michaela', name:'Michaela Duffy-Meade',   badge:'staff'},
@@ -136,10 +145,18 @@ function renderTable() {
           </div>
         </td>
         <td><span class="badge ${badgeCls}">${badgeLbl}</span></td>
+        <td>
+          <div class="ent-cell">
+            <input type="number" min="0" max="365" id="ent-${s.username}" value="20"
+              onkeydown="if(event.key==='Enter')saveEntitlement('${s.username}')">
+            <button class="btn-icon" onclick="saveEntitlement('${s.username}')" id="ent-save-${s.username}">💾</button>
+            <span class="save-msg" id="ent-msg-${s.username}"></span>
+          </div>
+        </td>
         <td><button class="btn-icon" onclick="openReset('${s.username}')">🔑 Reset</button></td>
       </tr>
       <tr class="reset-row" id="reset-${s.username}">
-        <td colspan="5">
+        <td colspan="6">
           <div class="reset-form">
             <label>New password for ${s.name.split(' ').pop()}:</label>
             <input type="text" id="new-pwd-${s.username}" placeholder="At least 8 characters"
@@ -217,11 +234,53 @@ function showToast(message) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+async function loadEntitlements() {
+  try {
+    const r = await fetch('/.netlify/functions/leave', { headers: kmcAuthHeader() });
+    if (!r.ok) return;
+    const j = await r.json();
+    const entitlements = j.entitlements || {};
+    STAFF.forEach(s => {
+      const input = document.getElementById('ent-' + s.username);
+      if (input && entitlements[s.username] != null) input.value = entitlements[s.username];
+    });
+  } catch (e) { /* inputs keep their default of 20 */ }
+}
+
+async function saveEntitlement(username) {
+  const input = document.getElementById('ent-' + username);
+  const msg = document.getElementById('ent-msg-' + username);
+  const btn = document.getElementById('ent-save-' + username);
+  const days = Number(input.value);
+  if (!Number.isFinite(days) || days < 0 || days > 365) {
+    msg.textContent = '⚠ 0–365 only'; msg.style.color = '#b91c1c'; return;
+  }
+  btn.disabled = true;
+  msg.textContent = '';
+  try {
+    const r = await fetch('/.netlify/functions/leave', {
+      method: 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, kmcAuthHeader()),
+      body: JSON.stringify({ action: 'setEntitlement', username, days })
+    });
+    if (r.status === 401) { sessionStorage.clear(); location.replace('login.html'); return; }
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.ok) throw new Error(j.error || 'save failed');
+    msg.textContent = '✓ Saved'; msg.style.color = '#2a8a7e';
+    setTimeout(() => { msg.textContent = ''; }, 2000);
+  } catch (e) {
+    msg.textContent = '⚠ ' + (e.message || 'Save failed'); msg.style.color = '#b91c1c';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 // Init
 if (sessionStorage.getItem('kmc-role') === 'admin') {
   document.getElementById('main-content').style.display = 'block';
   document.getElementById('sync-status').textContent = '';
   renderTable();
+  loadEntitlements();
 } else {
   document.getElementById('restricted').style.display = 'block';
 }
