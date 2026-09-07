@@ -248,6 +248,15 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .bloods-table-title:first-child{margin-top:0}
 .bloods-legend{display:flex;flex-wrap:wrap;gap:16px;font-size:0.75rem;color:var(--grey-700);margin-bottom:16px}
 .bloods-legend span{display:inline-flex;align-items:center;gap:5px}
+.rsv-calc{background:#fff;border:1.5px solid var(--grey-200);border-radius:var(--radius);padding:18px 20px;margin:14px 0}
+.rsv-calc-title{font-size:0.78rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}
+.rsv-calc-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
+.rsv-calc-row label{display:block;font-size:0.78rem;font-weight:600;color:var(--navy);margin-bottom:5px}
+.rsv-calc-row select{width:100%;padding:9px 11px;border:1.5px solid var(--grey-200);border-radius:7px;font-family:inherit;font-size:0.85rem;background:#fff;color:var(--text)}
+.rsv-calc-result{margin-top:6px;padding:14px 16px;border-radius:8px;font-size:0.85rem;line-height:1.6}
+.rsv-calc-result.ok{background:var(--teal-pale);border:1px solid rgba(42,138,126,0.25);color:var(--navy)}
+.rsv-calc-result.warn{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
+@media(max-width:560px){.rsv-calc-row{grid-template-columns:1fr}}
 
 /* PASSWORD FUTURE NOTE */
 .future-lock{display:inline-flex;align-items:center;gap:5px;font-size:0.68rem;padding:3px 8px;border-radius:4px;background:#fef3c7;color:#92400e;font-weight:600;margin-left:8px}
@@ -1666,6 +1675,88 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
       <div style="background:#f1f5f9;border-radius:8px;padding:14px 16px;margin:18px 0 0;font-size:0.8rem;line-height:1.9">
         <strong style="color:var(--navy)">Fever &amp; discomfort after vaccination — parent advice</strong><br>
         Paracetamol (Calpol) as needed, weight-based dosing per the product label — advise parent to check their own bottle's instructions, as strength varies (e.g. Calpol Infant vs Calpol Six Plus). Do not advise a specific dose from memory — direct the parent to the pack insert/pharmacist if unsure. Ibuprofen can be used from 3 months if the child is well-hydrated and not asthmatic, but is not routinely advised prophylactically.
+      </div>
+
+      <div class="bloods-table-title" style="margin-top:22px">RSV Vaccine — Timing &amp; Dose</div>
+
+      <div class="info-box">
+        <strong>Season:</strong> RSV season runs <strong>1 September – 28 February</strong>. Babies born in that window are normally already immunised against RSV at birth in the maternity hospital. Babies born <strong>March–August</strong> are immunised here at the practice instead, timed to a routine visit so they're protected before the next RSV season begins.
+      </div>
+
+      <div class="bloods-table-wrap">
+        <table class="bloods-table" style="min-width:0">
+          <thead><tr><th>Baby born in</th><th>RSV vaccine given at</th></tr></thead>
+          <tbody>
+            <tr><th>March</th><td>6 month PCI visit</td></tr>
+            <tr><th>April</th><td>4 month PCI visit</td></tr>
+            <tr><th>May</th><td>4 month PCI visit</td></tr>
+            <tr><th>June</th><td>2 or 4 month PCI visit</td></tr>
+            <tr><th>July</th><td>2 month PCI visit</td></tr>
+            <tr><th>August</th><td>2 month PCI visit (or the 2- or 6-week check under M&amp;I)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-box">
+        <strong>Dosing — two product strengths, same product name:</strong>
+        <ul style="margin:8px 0 0 18px;padding:0">
+          <li>Babies weighing <strong>&lt;5kg</strong> → use the <strong>50mg</strong> product.</li>
+          <li>Babies weighing <strong>≥5kg</strong> → use the <strong>100mg</strong> product.</li>
+          <li>GPs can administer RSV any time in the season (1 September – 28 February), but ideally in <strong>September/October</strong>, in line with the table above.</li>
+          <li>You are <strong>not required to weigh every baby</strong> — only when the rules below say so.</li>
+        </ul>
+      </div>
+
+      <div class="warn-box">
+        <strong>Dosing decision:</strong>
+        <ul style="margin:8px 0 0 18px;padding:0">
+          <li>Child aged <strong>≥3 months</strong>, no concerns about weight loss, feeding or growth → give <strong>100mg</strong> (no weight needed).</li>
+          <li>Child aged <strong>&lt;3 months</strong>, no concerns, recorded weight <strong>≥5kg</strong> → give <strong>100mg</strong>.</li>
+          <li>Child has a recorded weight <strong>&lt;5kg</strong> in the last 2 weeks → give <strong>50mg</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="rsv-calc">
+        <div class="rsv-calc-title">🧮 RSV Dose &amp; Timing Picker</div>
+        <div class="rsv-calc-row">
+          <div>
+            <label for="rsv-month">Baby's month of birth</label>
+            <select id="rsv-month" onchange="rsvCalc()">
+              <option value="season">September – February (RSV season)</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+            </select>
+          </div>
+          <div>
+            <label for="rsv-age">Age today</label>
+            <select id="rsv-age" onchange="rsvCalc()">
+              <option value="ge3">3 months or older</option>
+              <option value="lt3">Under 3 months</option>
+            </select>
+          </div>
+        </div>
+        <div class="rsv-calc-row">
+          <div>
+            <label for="rsv-weight">Recorded weight (last 2 weeks)</label>
+            <select id="rsv-weight" onchange="rsvCalc()">
+              <option value="unknown">Not recorded</option>
+              <option value="ge5">≥ 5kg</option>
+              <option value="lt5">&lt; 5kg</option>
+            </select>
+          </div>
+          <div>
+            <label for="rsv-concerns">Concerns re: weight loss, feeding or growth?</label>
+            <select id="rsv-concerns" onchange="rsvCalc()">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+        </div>
+        <div class="rsv-calc-result" id="rsv-result"></div>
       </div>
     </div>
   </div>
@@ -4794,6 +4885,50 @@ function renderNewsletterReminder() {
       </div>
     </div>`;
 }
+
+// RSV vaccine dose & timing picker — see "Baby Vaccines Schedule" SOP card
+function rsvCalc() {
+  const resultEl = document.getElementById('rsv-result');
+  if (!resultEl) return;
+  const month = document.getElementById('rsv-month').value;
+  const age = document.getElementById('rsv-age').value;
+  const weight = document.getElementById('rsv-weight').value;
+  const concerns = document.getElementById('rsv-concerns').value;
+
+  const visitMap = {
+    March: '6 month PCI visit',
+    April: '4 month PCI visit',
+    May: '4 month PCI visit',
+    June: '2 or 4 month PCI visit',
+    July: '2 month PCI visit',
+    August: '2 month PCI visit (or the 2- or 6-week check under M&I)'
+  };
+  const timing = month === 'season'
+    ? "Born in RSV season — should already have had RSV at birth in the maternity hospital. Check the yellow book; only give here if it was missed."
+    : 'Give at the ' + visitMap[month] + '.';
+
+  let dose, doseClass;
+  if (concerns === 'yes') {
+    dose = 'Concerns noted re: weight loss, feeding or growth — weigh baby today and assess clinically before dosing.';
+    doseClass = 'warn';
+  } else if (age === 'ge3') {
+    dose = 'Give 100mg. No weight check required.';
+    doseClass = 'ok';
+  } else if (weight === 'ge5') {
+    dose = 'Give 100mg.';
+    doseClass = 'ok';
+  } else if (weight === 'lt5') {
+    dose = 'Give 50mg.';
+    doseClass = 'ok';
+  } else {
+    dose = 'Weight not recorded — please weigh baby: under 5kg → 50mg, 5kg or over → 100mg.';
+    doseClass = 'warn';
+  }
+
+  resultEl.className = 'rsv-calc-result ' + doseClass;
+  resultEl.innerHTML = '<strong>Timing:</strong> ' + timing + '<br><strong>Dose:</strong> ' + dose;
+}
+document.addEventListener('DOMContentLoaded', rsvCalc);
 
 // LOAD NOTICEBOARD ANNOUNCEMENTS — synced via notices.json (see
 // noticeboard-editor.html), committed to the repo through gh-proxy so every
