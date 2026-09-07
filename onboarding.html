@@ -255,7 +255,7 @@ function getSteps(roleKey) {
              <p style="margin-top:10px">Each template is already signed with <strong>your name</strong>. Click <strong>Copy</strong>, paste into Socrates, and adjust the bracketed values like <code>[patient name]</code> or <code>[medication]</code>.</p>
              <p style="margin-top:10px">No more typing the same message from scratch.</p>`,
       highlight: { icon: '✍️', title: 'Personalised to you', text: 'The sign-off updates automatically — whoever is logged in, the template shows their name.' },
-      link: { label: '💬 Open Text Templates', href: hub + '#text-templates', section: 'text-templates' }
+      link: { label: '💬 Open Text Templates', href: hub + '#text-templates' }
     },
     {
       icon: '🔁',
@@ -268,7 +268,8 @@ function getSteps(roleKey) {
                <li>Issue 6/12 (CDM) or 12/12 (PP) script</li>
                <li>If changes needed: decide text / phone / in-person</li>
              </ul>`,
-      link: { label: '🔁 Open CDM', href: hub + '#cdm', section: 'cdm' }
+      tip: { text: "This is just a sample of what's in the hub — some of it might not apply to you yet, and CDM needs a password from your Practice Manager if you don't already have one. Don't worry if it asks." },
+      link: { label: '🔁 Open CDM', href: hub + '#cdm' }
     },
     {
       icon: '🏥',
@@ -282,7 +283,7 @@ function getSteps(roleKey) {
                <li><strong>Roaccutane</strong> — consent, double appointment, monitoring</li>
                <li><strong>Clinical Pathways</strong> — HTN, T2DM, and more</li>
              </ul>`,
-      link: { label: '🏥 Open Patient Journeys', href: hub + '#care-pathways', section: 'care-pathways' }
+      link: { label: '🏥 Open Patient Journeys', href: hub + '#care-pathways' }
     },
     {
       icon: '🗒️',
@@ -291,7 +292,7 @@ function getSteps(roleKey) {
       desc: `<p>The <strong>Doctor Protocols</strong> section is where doctor-specific guidelines live — referral templates, prescribing guidance, and clinical decision frameworks.</p>
              <p style="margin-top:10px">This section is actively being built out. If something you use regularly isn't here yet, that's exactly the kind of feedback we want.</p>`,
       tip: { text: 'Use the 💬 Feedback button to request a protocol or template you\'d find useful. We\'ll add it.' },
-      link: { label: '🗒️ Open Doctor Protocols', href: hub + '#doctor-stuff', section: 'doctor-stuff' }
+      link: { label: '🗒️ Open Doctor Protocols', href: hub + '#doctor-stuff' }
     },
     common_feedback
   ];
@@ -333,7 +334,7 @@ function getSteps(roleKey) {
                <li><strong>🫁 Asthma</strong> — spirometry, registration</li>
              </ul>`,
       highlight: { icon: '🎥', title: 'Video guides coming', text: 'Step-by-step video walkthroughs for device procedures like ABPM fitting are being recorded and will be linked directly in each SOP.' },
-      link: { label: '🏥 Open Patient Journeys', href: hub + '#care-pathways', section: 'care-pathways' }
+      link: { label: '🏥 Open Patient Journeys', href: hub + '#care-pathways' }
     },
     {
       icon: '🔁',
@@ -348,7 +349,8 @@ function getSteps(roleKey) {
                <li>Bloods as per CDM note template</li>
                <li>Task doctor (orange): "CDM review and 6/12 script"</li>
              </ul>`,
-      link: { label: '🔁 Open CDM', href: hub + '#cdm', section: 'cdm' }
+      tip: { text: "This is just a sample of what's in the hub — some of it might not apply to you yet, and CDM needs a password from your Practice Manager if you don't already have one. Don't worry if it asks." },
+      link: { label: '🔁 Open CDM', href: hub + '#cdm' }
     },
     {
       icon: '📄',
@@ -363,7 +365,7 @@ function getSteps(roleKey) {
                <li>Joint injection consent</li>
                <li>Roaccutane consent</li>
              </ul>`,
-      link: { label: '📄 Open Useful Forms', href: hub + '#useful-forms', section: 'useful-forms' }
+      link: { label: '📄 Open Useful Forms', href: hub + '#useful-forms' }
     },
     common_feedback
   ];
@@ -391,7 +393,7 @@ function getSteps(roleKey) {
       title: 'Blood tests & investigations SOP',
       desc: `<p>The <strong>Patient Journeys → Blood Tests & Investigations</strong> SOP covers the full process: which bottles to use, labelling, sending samples, and what to do if a patient is difficult to bleed.</p>
              <p style="margin-top:10px">Refer to it whenever you're unsure about a test order or an unusual request.</p>`,
-      link: { label: '🩸 Open Patient Journeys', href: hub + '#care-pathways', section: 'care-pathways' }
+      link: { label: '🩸 Open Patient Journeys', href: hub + '#care-pathways' }
     },
     {
       icon: '📋',
@@ -438,7 +440,8 @@ function getSteps(roleKey) {
                <li><strong>Step 2</strong> — Once form is received, book the appointment and confirm by phone or email.</li>
                <li><strong>Step 3 — Pre-Appointment Setup</strong> — Upload form to Socrates CDM section, complete STC (ECG) and STC (ABPM), leave forms in PM's tray.</li>
              </ul>`,
-      link: { label: '🔁 Open CDM', href: hub + '#cdm', section: 'cdm' }
+      tip: { text: "This is just a sample of what's in the hub — some of it might not apply to you yet, and CDM needs a password from your Practice Manager if you don't already have one. Don't worry if it asks." },
+      link: { label: '🔁 Open CDM', href: hub + '#cdm' }
     },
     {
       icon: '🏢',
@@ -451,7 +454,7 @@ function getSteps(roleKey) {
                <li><strong>Booking colour codes</strong> — what each appointment colour means in Socrates</li>
                <li><strong>Lateness policy</strong> — when to accept late patients and when to reschedule</li>
              </ul>`,
-      link: { label: '🏢 Open Front of House', href: hub + '#front-of-house', section: 'front-of-house' }
+      link: { label: '🏢 Open Front of House', href: hub + '#front-of-house' }
     },
     {
       icon: '💬',
@@ -459,7 +462,7 @@ function getSteps(roleKey) {
       title: 'Patient texts — ready to copy',
       desc: `<p>The <strong>Text Templates</strong> section has pre-written patient messages for results, referrals, appointments, and more. Just click <strong>Copy</strong> and paste into Socrates.</p>
              <p style="margin-top:10px">Templates signed by a specific doctor will automatically show that doctor's name when they're logged in.</p>`,
-      link: { label: '💬 Open Text Templates', href: hub + '#text-templates', section: 'text-templates' }
+      link: { label: '💬 Open Text Templates', href: hub + '#text-templates' }
     },
     {
       icon: '📄',
@@ -472,7 +475,7 @@ function getSteps(roleKey) {
                <li>New patient registration form</li>
                <li>Referral templates</li>
              </ul>`,
-      link: { label: '📄 Open Useful Forms', href: hub + '#useful-forms', section: 'useful-forms' }
+      link: { label: '📄 Open Useful Forms', href: hub + '#useful-forms' }
     },
     common_feedback
   ];
@@ -512,7 +515,7 @@ function getSteps(roleKey) {
                <li>Monthly checklists and compliance reminders</li>
              </ul>
              <p style="margin-top:10px">Enter your PIN from the sidebar to unlock it.</p>`,
-      link: { label: '📋 Open Practice Management', href: hub + '#practice-management', section: 'practice-management' }
+      link: { label: '📋 Open Practice Management', href: hub + '#practice-management' }
     },
     {
       icon: '📊',
@@ -520,7 +523,7 @@ function getSteps(roleKey) {
       title: 'Practice performance dashboard',
       desc: `<p>The <strong>Metrics</strong> section gives you a visual overview of practice performance — call volumes, CDM numbers, appointment stats, and more.</p>
              <p style="margin-top:10px">Data is updated manually — you can edit the underlying figures from the Metrics section directly.</p>`,
-      link: { label: '📊 Open Metrics', href: hub + '#metrics', section: 'metrics' }
+      link: { label: '📊 Open Metrics', href: hub + '#metrics' }
     },
     {
       icon: '🔑',
@@ -783,7 +786,7 @@ function renderStep() {
     </div>` : '';
 
   const linkHtml = step.link ? `
-    <a class="ob-link-btn" href="${step.link.href}"${step.link.section ? ` onclick="sessionStorage.setItem('kmc-pending-section','${step.link.section}')"` : ''} target="_blank">
+    <a class="ob-link-btn" href="${step.link.href}" target="_blank">
       ${step.link.label} ↗
     </a>` : '';
 
@@ -826,14 +829,14 @@ function finishTour() {
 
       <div class="ob-finish-grid">
         <a class="ob-finish-link" href="index.html"><span class="ob-finish-link-icon">🏠</span><span>Home & Noticeboard</span></a>
-        <a class="ob-finish-link" href="index.html" onclick="sessionStorage.setItem('kmc-pending-section','text-templates')"><span class="ob-finish-link-icon">💬</span><span>Text Templates</span></a>
-        <a class="ob-finish-link" href="index.html" onclick="sessionStorage.setItem('kmc-pending-section','care-pathways')"><span class="ob-finish-link-icon">🏥</span><span>Patient Journeys</span></a>
-        <a class="ob-finish-link" href="index.html" onclick="sessionStorage.setItem('kmc-pending-section','cdm')"><span class="ob-finish-link-icon">🔁</span><span>CDM</span></a>
+        <a class="ob-finish-link" href="index.html#text-templates"><span class="ob-finish-link-icon">💬</span><span>Text Templates</span></a>
+        <a class="ob-finish-link" href="index.html#care-pathways"><span class="ob-finish-link-icon">🏥</span><span>Patient Journeys</span></a>
+        <a class="ob-finish-link" href="index.html#cdm"><span class="ob-finish-link-icon">🔁</span><span>CDM</span></a>
       </div>
 
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px">
         <a href="index.html" style="display:inline-block;background:var(--teal);color:#fff;text-decoration:none;padding:11px 28px;border-radius:8px;font-size:0.9rem;font-weight:600">Go to the Staff Hub →</a>
-        <button onclick="currentRole=null;stepIndex=0;renderLegal()" style="background:var(--grey-100);color:var(--grey-700);border:none;padding:11px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">↩ Redo tour for another role</button>
+        <button onclick="currentRoles.clear();stepIndex=0;renderLegal()" style="background:var(--grey-100);color:var(--grey-700);border:none;padding:11px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">↩ Redo tour for another role</button>
       </div>
 
       <p style="text-align:center;font-size:0.7rem;color:var(--grey-400);margin-top:16px">
