@@ -4583,6 +4583,9 @@ let pmUnlocked = sessionStorage.getItem('kmc-role') === 'admin';
 if (pmUnlocked) {
   document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
 }
+// Doctors and nurses don't need the PM password for CDM — it's core to their daily work.
+const kmcJobRoles = (sessionStorage.getItem('kmc-job-role') || '').split(',');
+let cdmUnlocked = pmUnlocked || kmcJobRoles.includes('doc') || kmcJobRoles.includes('nurse');
 (function() {
   let editSections = [];
   try { editSections = JSON.parse(sessionStorage.getItem('kmc-edit-sections') || '[]'); } catch(e) {}
@@ -4596,13 +4599,24 @@ if(pmUnlocked){
   document.getElementById('pm-unlocked-badge').style.display='inline';
   document.getElementById('metrics-lock-badge').style.display='none';
   document.getElementById('metrics-unlocked-badge').style.display='inline';
+}
+if(cdmUnlocked){
   document.getElementById('cdm-lock-badge').style.display='none';
   document.getElementById('cdm-unlocked-badge').style.display='inline';
 }
 
 function switchSection(target) {
-  // Check PM lock
-  if((target === 'practice-management' || target === 'metrics' || target === 'cdm') && !pmUnlocked) {
+  // Check PM lock (Practice Management / Metrics: admin only)
+  if((target === 'practice-management' || target === 'metrics') && !pmUnlocked) {
+    window._pmLockTarget = target;
+    document.getElementById('pm-lock').classList.add('show');
+    document.getElementById('pm-password').value = '';
+    document.getElementById('pm-error').style.display = 'none';
+    setTimeout(()=>document.getElementById('pm-password').focus(),100);
+    return;
+  }
+  // CDM: admin, doctors, and nurses don't need the password
+  if(target === 'cdm' && !cdmUnlocked) {
     window._pmLockTarget = target;
     document.getElementById('pm-lock').classList.add('show');
     document.getElementById('pm-password').value = '';
@@ -4640,6 +4654,7 @@ function checkPmPassword() {
   // Password: KMC2026 (you can change this)
   if(val === 'KMC2026') {
     pmUnlocked = true;
+    cdmUnlocked = true;
     document.getElementById('pm-lock').classList.remove('show');
     document.getElementById('pm-lock-badge').style.display = 'none';
     document.getElementById('pm-unlocked-badge').style.display = 'inline';
