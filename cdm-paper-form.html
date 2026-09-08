@@ -113,16 +113,20 @@
       margin-bottom: 6px;
     }
 
-    .not-verified-flag {
-      background: #fff7e6;
-      border: 1.5px dashed #d97706;
+    .info-box {
+      background: var(--teal-pale);
+      border: 1px solid rgba(42,124,138,0.25);
       border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 0.76rem;
-      color: #92400e;
-      line-height: 1.55;
-      margin: 14px 0 24px;
+      padding: 12px 16px;
+      margin: 16px 0;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: var(--text);
     }
+
+    .info-box strong { color: var(--navy); }
+    .info-box ul { padding-left: 18px; margin-top: 6px; }
+    .info-box li { margin-bottom: 3px; }
 
     .section-divider {
       font-family: 'Playfair Display', serif;
@@ -130,7 +134,14 @@
       color: var(--navy);
       border-bottom: 1.5px solid var(--border);
       padding-bottom: 6px;
-      margin: 28px 0 14px;
+      margin: 30px 0 14px;
+    }
+
+    .section-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin: -8px 0 14px;
     }
 
     .field-row {
@@ -192,21 +203,21 @@
 
     .radio-row {
       display: flex;
-      gap: 22px;
-      margin: 8px 0 4px;
+      gap: 18px;
+      margin: 6px 0 2px;
       flex-wrap: wrap;
     }
 
     .radio-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.85rem;
+      gap: 7px;
+      font-size: 0.82rem;
     }
 
     .circle {
-      width: 15px;
-      height: 15px;
+      width: 14px;
+      height: 14px;
       border: 1.5px solid var(--navy);
       border-radius: 50%;
       flex-shrink: 0;
@@ -240,8 +251,10 @@
     .declaration {
       font-size: 0.82rem;
       line-height: 1.65;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
     }
+
+    .declaration + .declaration { margin-top: -4px; }
 
     .sig-row {
       display: grid;
@@ -274,6 +287,52 @@
       line-height: 1.6;
     }
 
+    /* Condition-specific question blocks */
+    .cond-block {
+      border-left: 3px solid var(--teal-pale);
+      padding: 4px 0 4px 16px;
+      margin-bottom: 22px;
+    }
+
+    .cond-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: var(--teal);
+      margin-bottom: 2px;
+    }
+
+    .cond-flag {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      font-style: italic;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .cond-intro {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-style: italic;
+      margin: 4px 0 10px;
+    }
+
+    .q { margin-bottom: 12px; }
+
+    .q .qlabel {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .q .hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 3px;
+    }
+
     @media (max-width: 620px) {
       .field-row, .field-row.three { grid-template-columns: 1fr; }
       .checklist { grid-template-columns: 1fr; }
@@ -284,7 +343,8 @@
       body { background: white; }
       .no-print-bar, .no-print { display: none !important; }
       .container { padding: 0; max-width: none; }
-      .not-verified-flag { display: none; }
+      .cond-block { break-inside: avoid; }
+      .section-divider { break-after: avoid; }
       @page { margin: 16mm; }
     }
   </style>
@@ -308,74 +368,621 @@
 
   <div class="form-title">CDM Pre-Appointment Form</div>
   <div class="form-intro">
-    Please complete every section below as fully as you can, then return this form to reception before your Chronic Disease Management (CDM) appointment is booked. If a family member, next of kin, or neighbour is helping you complete this, that's absolutely fine.
+    Please complete every section below as fully as you can, then return this form to reception before your Chronic Disease Management (CDM) or Prevention Programme appointment. If a family member, next of kin, or neighbour is helping you complete this, that's absolutely fine.
   </div>
 
-  <div class="not-verified-flag no-print">
-    ⚠️ Staff note (remove before printing/photocopying for the folder): this paper form has been laid out to match the structured data the online CDM Pre-Appointment Form feeds into the CDM Inbox (name, DOB, contact details, conditions, ABPM consent) plus the standard clinical intake questions a CDM review needs. It has <strong>not</strong> been checked field-by-field against the live online form at <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">coruscating-dusk-a3bdf9.netlify.app/cdm-form</a> (a separate site this session couldn't reach). Please compare the two and adjust wording here before printing copies for the hall folder.
+  <div class="info-box no-print">
+    🍽️ <strong>Fasting required.</strong> Please fast from midnight the night before your appointment — no food or drink except plain water. Continue all regular medications as normal with a small sip of water. Fasting is needed for accurate blood results (glucose, cholesterol, triglycerides).
+    <br><br>
+    <strong>Before you begin, if possible have to hand:</strong>
+    <ul>
+      <li>Weight scales — to enter your weight in Section 4</li>
+      <li>A measuring tape — to measure your waist in Section 4</li>
+      <li>A home blood pressure machine, if you have one — take a few readings over several mornings and note your average in the relevant condition section below. Home readings are often more accurate than surgery readings ("white coat hypertension"). If you are declining the 24-hour BP monitor (ABPM) in Section 7, a home BP reading is required.</li>
+    </ul>
   </div>
 
-  <!-- Patient Details -->
+  <!-- Section 1: Patient Details -->
   <div class="section-divider">1. Patient Details</div>
 
   <div class="field-row">
-    <div class="field"><label>Full Name</label><div class="fill-line"></div></div>
-    <div class="field"><label>Date of Birth</label><div class="fill-line"></div></div>
+    <div class="field"><label>Full Name *</label><div class="fill-line"></div></div>
+    <div class="field"><label>Date of Birth *</label><div class="fill-line"></div></div>
   </div>
   <div class="field-row">
-    <div class="field"><label>Phone Number</label><div class="fill-line"></div></div>
-    <div class="field"><label>Email Address</label><div class="fill-line"></div></div>
-  </div>
-  <div class="field-row single">
-    <div class="field"><label>Home Address</label><div class="fill-line"></div></div>
+    <div class="field"><label>Phone Number *</label><div class="fill-line"></div></div>
+    <div class="field"><label>Email Address *</label><div class="fill-line"></div></div>
   </div>
   <div class="field-row">
     <div class="field"><label>GP (if not Kinsealy Medical Centre)</label><div class="fill-line"></div></div>
     <div class="field"><label>Next of Kin / Emergency Contact &amp; Number</label><div class="fill-line"></div></div>
   </div>
 
-  <!-- Conditions -->
-  <div class="section-divider">2. Condition(s) Being Managed</div>
-  <div class="note">Tick all conditions you are currently being treated for or monitored for as part of this programme.</div>
+  <!-- Section 2: Conditions -->
+  <div class="section-divider">2. Your Conditions</div>
+  <div class="note">Conditions for today's appointment. Tick all that apply — each one you tick has its own short set of questions in Section 2A below, so please only answer the sub-section(s) matching what you've ticked here.</div>
   <div class="checklist">
+    <div class="check-item"><span class="box"></span> Hypertension (High Blood Pressure)</div>
     <div class="check-item"><span class="box"></span> Type 2 Diabetes</div>
-    <div class="check-item"><span class="box"></span> Asthma</div>
-    <div class="check-item"><span class="box"></span> COPD</div>
+    <div class="check-item"><span class="box"></span> Cardiovascular Disease / Heart Disease / Angina</div>
     <div class="check-item"><span class="box"></span> Heart Failure</div>
-    <div class="check-item"><span class="box"></span> Atrial Fibrillation</div>
-    <div class="check-item"><span class="box"></span> Ischaemic Heart Disease</div>
-    <div class="check-item"><span class="box"></span> Stroke / TIA</div>
-    <div class="check-item"><span class="box"></span> Other (please specify below)</div>
-  </div>
-  <div class="field-row single">
-    <div class="field"><label>Other condition(s) / details</label><div class="fill-line"></div></div>
+    <div class="check-item"><span class="box"></span> Atrial Fibrillation (AF / Irregular Heartbeat)</div>
+    <div class="check-item"><span class="box"></span> COPD (Chronic Obstructive Pulmonary Disease)</div>
+    <div class="check-item"><span class="box"></span> Asthma</div>
+    <div class="check-item"><span class="box"></span> Stroke / TIA (Mini-Stroke)</div>
+    <div class="check-item"><span class="box"></span> Prevention Programme (PP)</div>
   </div>
 
-  <!-- Clinical Intake -->
-  <div class="section-divider">3. Current Medications &amp; Lifestyle</div>
+  <!-- Section 2A: Condition-specific questions -->
+  <div class="section-divider">2A. Condition-Specific Questions</div>
+  <div class="section-note">Only complete the sub-section(s) below that match what you ticked in Section 2 — skip the rest.</div>
+
+  <!-- Hypertension -->
+  <div class="cond-block">
+    <div class="cond-title">Hypertension <span class="cond-flag">— complete only if ticked above</span></div>
+
+    <div class="q"><span class="qlabel">Do you check your blood pressure at home?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes — I check at home</div>
+        <div class="radio-item"><span class="circle"></span> No</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any symptoms since your last visit? (tick all that apply)</span>
+      <div class="checklist">
+        <div class="check-item"><span class="box"></span> Headaches</div>
+        <div class="check-item"><span class="box"></span> Dizziness or lightheadedness</div>
+        <div class="check-item"><span class="box"></span> Chest pain or chest tightness</div>
+        <div class="check-item"><span class="box"></span> Shortness of breath</div>
+        <div class="check-item"><span class="box"></span> Swelling in legs or ankles</div>
+        <div class="check-item"><span class="box"></span> None of the above</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Approximate alcohol intake (units per week)</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> 0 — I don't drink</div>
+        <div class="radio-item"><span class="circle"></span> 1–7 (low)</div>
+        <div class="radio-item"><span class="circle"></span> 8–14 (moderate)</div>
+        <div class="radio-item"><span class="circle"></span> 15–21 (high)</div>
+        <div class="radio-item"><span class="circle"></span> 22+</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Are you taking your blood pressure medication every day?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes — every day</div>
+        <div class="radio-item"><span class="circle"></span> Most days</div>
+        <div class="radio-item"><span class="circle"></span> Sometimes — I forget</div>
+        <div class="radio-item"><span class="circle"></span> No — stopped</div>
+        <div class="radio-item"><span class="circle"></span> Not on any BP medication</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any side effects from your medication you'd like to discuss? (optional)</span><div class="fill-line"></div></div>
+  </div>
+
+  <!-- Type 2 Diabetes -->
+  <div class="cond-block">
+    <div class="cond-title">Type 2 Diabetes <span class="cond-flag">— complete only if ticked above</span></div>
+
+    <div class="q"><span class="qlabel">Do you check your blood sugar (glucose) at home?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes — I have a monitor at home</div>
+        <div class="radio-item"><span class="circle"></span> No</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Have you had any hypos (low blood sugar) since your last visit?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No — none at all</div>
+        <div class="radio-item"><span class="circle"></span> Yes — one or two, mild</div>
+        <div class="radio-item"><span class="circle"></span> Yes — several episodes</div>
+        <div class="radio-item"><span class="circle"></span> Yes — a severe episode (needed help)</div>
+        <div class="radio-item"><span class="circle"></span> Not sure</div>
+      </div>
+      <div class="hint">A hypo is when blood sugar drops too low — symptoms include shakiness, sweating, confusion, or feeling faint.</div>
+    </div>
+
+    <div class="q"><span class="qlabel">Foot health — any sores, cuts, wounds, numbness, or tingling in your feet?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No — feet are fine</div>
+        <div class="radio-item"><span class="circle"></span> Yes — sore/wound (tell staff today)</div>
+        <div class="radio-item"><span class="circle"></span> Yes — numbness or tingling</div>
+        <div class="radio-item"><span class="circle"></span> Yes — other issue</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any changes in your vision since your last visit?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No change</div>
+        <div class="radio-item"><span class="circle"></span> Yes — some blurring or changes</div>
+        <div class="radio-item"><span class="circle"></span> Not sure</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">When did you last have a Diabetic Eye Screening (DES) check? (optional)</span><div class="fill-line"></div>
+      <div class="hint">The HSE DES programme sends a letter or text for your eye check — separate from a routine optician visit.</div>
+    </div>
+
+    <div class="q"><span class="qlabel">Are you taking your diabetes medication as prescribed?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes — every day</div>
+        <div class="radio-item"><span class="circle"></span> Most days</div>
+        <div class="radio-item"><span class="circle"></span> Sometimes — I forget</div>
+        <div class="radio-item"><span class="circle"></span> No — stopped</div>
+        <div class="radio-item"><span class="circle"></span> Diet only (no medication)</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any changes to your diet or exercise since your last visit? (optional)</span><div class="fill-line"></div></div>
+
+    <div class="q"><span class="qlabel">🧪 Please bring a urine sample to your appointment</span>
+      <div class="hint">A small amount of urine in a clean container is needed to check your kidney health as part of your diabetes review. Collect this first thing on the morning of your appointment.</div>
+      <div class="checklist" style="margin-top:6px;">
+        <div class="check-item"><span class="box"></span> I confirm I will bring a urine sample to my appointment</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cardiovascular Disease / Angina -->
+  <div class="cond-block">
+    <div class="cond-title">Cardiovascular Disease / Angina <span class="cond-flag">— complete only if ticked above</span></div>
+
+    <div class="q"><span class="qlabel">Have you had any chest pain or chest tightness since your last visit?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No — none</div>
+        <div class="radio-item"><span class="circle"></span> Yes</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Shortness of breath on exertion (walking, climbing stairs)?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No breathlessness</div>
+        <div class="radio-item"><span class="circle"></span> Yes — same as before</div>
+        <div class="radio-item"><span class="circle"></span> Yes — worse than before</div>
+        <div class="radio-item"><span class="circle"></span> Yes — better than before</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any palpitations or awareness of your heartbeat?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No</div>
+        <div class="radio-item"><span class="circle"></span> Yes — occasional</div>
+        <div class="radio-item"><span class="circle"></span> Yes — frequent</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any swelling in your ankles or legs?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No</div>
+        <div class="radio-item"><span class="circle"></span> Yes — mild</div>
+        <div class="radio-item"><span class="circle"></span> Yes — significant</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Smoking status</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Never smoked</div>
+        <div class="radio-item"><span class="circle"></span> Ex-smoker</div>
+        <div class="radio-item"><span class="circle"></span> Currently smoking</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Are you taking all your heart medications as prescribed?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes — every day</div>
+        <div class="radio-item"><span class="circle"></span> Most days</div>
+        <div class="radio-item"><span class="circle"></span> Sometimes</div>
+        <div class="radio-item"><span class="circle"></span> No — stopped one or more</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Heart Failure -->
+  <div class="cond-block">
+    <div class="cond-title">Heart Failure <span class="cond-flag">— complete only if ticked above</span></div>
+
+    <div class="q"><span class="qlabel">Breathlessness — compared to your last visit?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Much better</div>
+        <div class="radio-item"><span class="circle"></span> Slightly better</div>
+        <div class="radio-item"><span class="circle"></span> About the same</div>
+        <div class="radio-item"><span class="circle"></span> Slightly worse</div>
+        <div class="radio-item"><span class="circle"></span> Much worse</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Ankle / leg swelling?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No swelling</div>
+        <div class="radio-item"><span class="circle"></span> Mild — same as before</div>
+        <div class="radio-item"><span class="circle"></span> Worse than last visit</div>
+        <div class="radio-item"><span class="circle"></span> Better than last visit</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Have you noticed any recent weight gain (possible fluid retention)?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No</div>
+        <div class="radio-item"><span class="circle"></span> Yes</div>
+        <div class="radio-item"><span class="circle"></span> Not sure — I don't weigh regularly</div>
+      </div>
+      <div class="hint">Gaining more than 2 kg in a week can be a sign of fluid build-up — let a member of staff know today if this has happened.</div>
+    </div>
+
+    <div class="q"><span class="qlabel">Exercise tolerance — can you climb a flight of stairs?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes — without stopping</div>
+        <div class="radio-item"><span class="circle"></span> Yes — but need to stop and rest</div>
+        <div class="radio-item"><span class="circle"></span> Breathless before I reach the top</div>
+        <div class="radio-item"><span class="circle"></span> Cannot manage stairs at all</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Are you taking all your medications as prescribed?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes — every day</div>
+        <div class="radio-item"><span class="circle"></span> Most days</div>
+        <div class="radio-item"><span class="circle"></span> Sometimes</div>
+        <div class="radio-item"><span class="circle"></span> No — stopped one or more</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Atrial Fibrillation -->
+  <div class="cond-block">
+    <div class="cond-title">Atrial Fibrillation (AF) <span class="cond-flag">— complete only if ticked above</span></div>
+
+    <div class="q"><span class="qlabel">Are you currently experiencing palpitations or an irregular heartbeat?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No</div>
+        <div class="radio-item"><span class="circle"></span> Yes — occasionally</div>
+        <div class="radio-item"><span class="circle"></span> Yes — frequently</div>
+        <div class="radio-item"><span class="circle"></span> Yes — almost constantly</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any dizziness or lightheadedness?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No</div>
+        <div class="radio-item"><span class="circle"></span> Yes — occasional</div>
+        <div class="radio-item"><span class="circle"></span> Yes — frequent</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Shortness of breath?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No</div>
+        <div class="radio-item"><span class="circle"></span> Yes — on exertion only</div>
+        <div class="radio-item"><span class="circle"></span> Yes — at rest</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Are you on a blood-thinning medication (e.g. Eliquis / Apixaban, Xarelto, Warfarin)?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes</div>
+        <div class="radio-item"><span class="circle"></span> No</div>
+        <div class="radio-item"><span class="circle"></span> Not sure</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COPD -->
+  <div class="cond-block">
+    <div class="cond-title">COPD <span class="cond-flag">— complete only if ticked above</span></div>
+
+    <div class="q"><span class="qlabel">How breathless are you generally day-to-day?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Only with very hard exercise</div>
+        <div class="radio-item"><span class="circle"></span> Short of breath uphill / hurrying on the flat</div>
+        <div class="radio-item"><span class="circle"></span> Slower than others on the flat, or stop for breath</div>
+        <div class="radio-item"><span class="circle"></span> Stop for breath every few minutes on the flat</div>
+        <div class="radio-item"><span class="circle"></span> Too breathless to leave the house</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">How would you describe your cough?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No cough</div>
+        <div class="radio-item"><span class="circle"></span> Occasional dry cough</div>
+        <div class="radio-item"><span class="circle"></span> Regular cough, clear/white phlegm</div>
+        <div class="radio-item"><span class="circle"></span> Regular cough, yellow/green phlegm</div>
+        <div class="radio-item"><span class="circle"></span> Persistent cough, blood-stained (tell staff today)</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">How many chest infections or COPD flare-ups since your last visit?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> None</div>
+        <div class="radio-item"><span class="circle"></span> 1</div>
+        <div class="radio-item"><span class="circle"></span> 2</div>
+        <div class="radio-item"><span class="circle"></span> 3 or more</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">How often are you using your blue rescue inhaler (e.g. Ventolin / Salbutamol)?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Not at all (or rarely)</div>
+        <div class="radio-item"><span class="circle"></span> 1–2 times a week</div>
+        <div class="radio-item"><span class="circle"></span> Most days</div>
+        <div class="radio-item"><span class="circle"></span> Every day</div>
+        <div class="radio-item"><span class="circle"></span> Multiple times a day</div>
+        <div class="radio-item"><span class="circle"></span> I don't have / use one</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Smoking status</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Never smoked</div>
+        <div class="radio-item"><span class="circle"></span> Ex-smoker</div>
+        <div class="radio-item"><span class="circle"></span> Currently smoking — would like help to stop</div>
+        <div class="radio-item"><span class="circle"></span> Currently smoking — not ready yet</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Asthma -->
+  <div class="cond-block">
+    <div class="cond-title">Asthma <span class="cond-flag">— complete only if ticked above</span></div>
+    <div class="cond-intro">The following questions are based on the standard Asthma Control Test (ACT).</div>
+
+    <div class="q"><span class="qlabel">Over the past month, how often did you have asthma symptoms (wheeze, cough, shortness of breath, chest tightness)?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Not at all</div>
+        <div class="radio-item"><span class="circle"></span> 1 or 2 times</div>
+        <div class="radio-item"><span class="circle"></span> 3–6 times</div>
+        <div class="radio-item"><span class="circle"></span> More than once a week</div>
+        <div class="radio-item"><span class="circle"></span> Every day</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Over the past month, how often were you woken at night by asthma symptoms?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Never</div>
+        <div class="radio-item"><span class="circle"></span> Once or twice</div>
+        <div class="radio-item"><span class="circle"></span> Once a week</div>
+        <div class="radio-item"><span class="circle"></span> Several nights a week</div>
+        <div class="radio-item"><span class="circle"></span> Every night</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">How many times per week did you use your blue rescue inhaler (e.g. Ventolin)?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Not at all</div>
+        <div class="radio-item"><span class="circle"></span> 1–2 times per week</div>
+        <div class="radio-item"><span class="circle"></span> 3–6 times per week</div>
+        <div class="radio-item"><span class="circle"></span> Once a day</div>
+        <div class="radio-item"><span class="circle"></span> More than once a day</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Did asthma limit your daily activities (work, exercise, housework)?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Not at all</div>
+        <div class="radio-item"><span class="circle"></span> A little</div>
+        <div class="radio-item"><span class="circle"></span> Moderately</div>
+        <div class="radio-item"><span class="circle"></span> Quite a lot</div>
+        <div class="radio-item"><span class="circle"></span> A lot</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Are you using your preventer inhaler (brown / purple / red / orange) as prescribed?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes — every day</div>
+        <div class="radio-item"><span class="circle"></span> Most days</div>
+        <div class="radio-item"><span class="circle"></span> Occasionally</div>
+        <div class="radio-item"><span class="circle"></span> No — only use reliever</div>
+        <div class="radio-item"><span class="circle"></span> I have no preventer inhaler</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stroke / TIA -->
+  <div class="cond-block">
+    <div class="cond-title">Stroke / TIA <span class="cond-flag">— complete only if ticked above</span></div>
+
+    <div class="q"><span class="qlabel">Have you noticed any new or worsening neurological symptoms since your last visit?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No — none</div>
+        <div class="radio-item"><span class="circle"></span> Yes</div>
+      </div>
+      <div class="hint">Neurological symptoms include: weakness, numbness or tingling on one side, slurred speech, vision changes, sudden confusion, or difficulty finding words.</div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any falls or balance problems since your last visit?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No</div>
+        <div class="radio-item"><span class="circle"></span> Yes — one fall</div>
+        <div class="radio-item"><span class="circle"></span> Yes — more than one fall</div>
+        <div class="radio-item"><span class="circle"></span> No falls but balance problems</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any concerns about your memory or concentration?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No concerns</div>
+        <div class="radio-item"><span class="circle"></span> Yes — I've noticed changes</div>
+        <div class="radio-item"><span class="circle"></span> Family members have raised concerns</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Are you taking all your medications as prescribed (especially aspirin or blood thinners)?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes — every day</div>
+        <div class="radio-item"><span class="circle"></span> Most days</div>
+        <div class="radio-item"><span class="circle"></span> Sometimes — I forget</div>
+        <div class="radio-item"><span class="circle"></span> No — stopped one or more</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Do you check your blood pressure at home?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes</div>
+        <div class="radio-item"><span class="circle"></span> No</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prevention Programme -->
+  <div class="cond-block">
+    <div class="cond-title">Prevention Programme (PP) <span class="cond-flag">— complete only if ticked above</span></div>
+
+    <div class="q"><span class="qlabel">Smoking status</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Never smoked</div>
+        <div class="radio-item"><span class="circle"></span> Ex-smoker</div>
+        <div class="radio-item"><span class="circle"></span> Currently smoking</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Approximate alcohol intake (units per week)</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> 0 — I don't drink</div>
+        <div class="radio-item"><span class="circle"></span> 1–7 (low)</div>
+        <div class="radio-item"><span class="circle"></span> 8–14 (moderate)</div>
+        <div class="radio-item"><span class="circle"></span> 15–21 (high)</div>
+        <div class="radio-item"><span class="circle"></span> 22+</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">How many days per week do you do physical activity or exercise (at least 30 minutes)?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> 0 days</div>
+        <div class="radio-item"><span class="circle"></span> 1–2 days</div>
+        <div class="radio-item"><span class="circle"></span> 3–4 days</div>
+        <div class="radio-item"><span class="circle"></span> 5 or more days</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any concerns about your diet you would like to discuss? (optional)</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No — diet is fine</div>
+        <div class="radio-item"><span class="circle"></span> Yes — advice on healthy eating</div>
+        <div class="radio-item"><span class="circle"></span> Yes — recently changed diet</div>
+        <div class="radio-item"><span class="circle"></span> Yes — struggling with weight</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Do you check your blood pressure at home?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> Yes</div>
+        <div class="radio-item"><span class="circle"></span> No</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any new family history of heart disease, stroke, or diabetes since your last visit?</span>
+      <div class="radio-row">
+        <div class="radio-item"><span class="circle"></span> No changes</div>
+        <div class="radio-item"><span class="circle"></span> Yes — heart disease</div>
+        <div class="radio-item"><span class="circle"></span> Yes — stroke</div>
+        <div class="radio-item"><span class="circle"></span> Yes — diabetes</div>
+        <div class="radio-item"><span class="circle"></span> Yes — other</div>
+      </div>
+    </div>
+
+    <div class="q"><span class="qlabel">Any other concerns you would like to discuss at your appointment? (optional)</span><div class="fill-line"></div></div>
+  </div>
+
+  <!-- Section 3: General Health Update -->
+  <div class="section-divider">3. General Health Update</div>
+
+  <div class="q"><span class="qlabel">Has your overall health changed since your last visit?</span>
+    <div class="radio-row">
+      <div class="radio-item"><span class="circle"></span> No significant changes</div>
+      <div class="radio-item"><span class="circle"></span> Yes — I have noticed changes</div>
+    </div>
+  </div>
+
+  <div class="q"><span class="qlabel">Any hospital admissions or A&amp;E visits since your last appointment?</span>
+    <div class="radio-row">
+      <div class="radio-item"><span class="circle"></span> No</div>
+      <div class="radio-item"><span class="circle"></span> Yes</div>
+    </div>
+  </div>
+
+  <div class="q"><span class="qlabel">Any new diagnoses or new hospital specialists since your last visit?</span>
+    <div class="radio-row">
+      <div class="radio-item"><span class="circle"></span> No</div>
+      <div class="radio-item"><span class="circle"></span> Yes</div>
+    </div>
+  </div>
+
+  <div class="field-row">
+    <div class="field"><label>Smoking status</label>
+      <div class="radio-row" style="margin-top:2px;">
+        <div class="radio-item"><span class="circle"></span> Never</div>
+        <div class="radio-item"><span class="circle"></span> Ex-smoker</div>
+        <div class="radio-item"><span class="circle"></span> Current</div>
+      </div>
+    </div>
+    <div class="field"><label>Do you drink alcohol?</label>
+      <div class="radio-row" style="margin-top:2px;">
+        <div class="radio-item"><span class="circle"></span> No</div>
+        <div class="radio-item"><span class="circle"></span> Yes</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q"><span class="qlabel">Any issues with your medications?</span><div class="fill-line"></div></div>
+
+  <div class="q"><span class="qlabel">Health and Well-being — how would you describe this?</span>
+    <div class="radio-row">
+      <div class="radio-item"><span class="circle"></span> Excellent — I feel very well</div>
+      <div class="radio-item"><span class="circle"></span> Good — generally well</div>
+      <div class="radio-item"><span class="circle"></span> Fair — some days are difficult</div>
+      <div class="radio-item"><span class="circle"></span> Poor — struggling with my health/wellbeing</div>
+      <div class="radio-item"><span class="circle"></span> Very poor — significantly affecting daily life</div>
+    </div>
+  </div>
+
+  <div class="field-row single">
+    <div class="field"><label>My Health Goals (optional)</label><div class="fill-box"></div></div>
+  </div>
+
+  <!-- Section 4: Physical Measurements -->
+  <div class="section-divider">4. Physical Measurements <span class="cond-flag">(optional)</span></div>
+  <div class="section-note">If you're able to weigh yourself and measure your waist at home, please fill these in — otherwise we'll take these measurements at your appointment.</div>
+  <div class="field-row">
+    <div class="field"><label>Weight (kg)</label><div class="fill-line"></div></div>
+    <div class="field"><label>Waist Circumference (cm)</label><div class="fill-line"></div></div>
+  </div>
+
+  <!-- Section 5: Medications & Allergies -->
+  <div class="section-divider">5. Medications &amp; Allergies</div>
+  <div class="note">Please bring your medication list or tablets to your appointment.</div>
   <div class="field-row single">
     <div class="field"><label>List all current medications (including inhalers, insulin, etc.)</label><div class="fill-box"></div></div>
   </div>
-  <div class="field-row">
-    <div class="field"><label>Do you smoke?</label>
-      <div class="radio-row">
-        <div class="radio-item"><span class="circle"></span> Never</div>
-        <div class="radio-item"><span class="circle"></span> Ex-smoker</div>
-        <div class="radio-item"><span class="circle"></span> Current smoker</div>
-      </div>
-    </div>
+  <div class="field-row single">
+    <div class="field"><label>Any new medications added since your last visit? (e.g. from a hospital, specialist, or other doctor)</label><div class="fill-box"></div></div>
+  </div>
+  <div class="field-row single">
     <div class="field"><label>Known drug allergies</label><div class="fill-line"></div></div>
   </div>
 
-  <!-- ABPM Consent -->
-  <div class="section-divider">4. 24-Hour Blood Pressure Monitor (ABPM) Consent</div>
+  <!-- Section 6: Blood Tests -->
+  <div class="section-divider">6. Blood Tests</div>
   <div class="note">
-    As part of your CDM review you may be asked to wear a 24-hour blood pressure monitor (ABPM) — a small device worn on your arm for 24 hours. Please indicate your preference below.
+    🧪 Your CDM bloods are free of charge. On the day, we carry out the exact blood tests recommended by the HSE for your condition(s) and appointment type. If your doctor or nurse have recommended additional tests outside this scheme, you can either have them done privately at our standard charge, or be referred to the hospital to have the full panel done there for free.
+  </div>
+  <div class="q"><span class="qlabel">How would you like to proceed with your bloods?</span>
+    <div class="checklist" style="grid-template-columns: 1fr;">
+      <div class="check-item"><span class="box"></span> I'm happy to just have the bloods covered under my CDM / Prevention Programme</div>
+      <div class="check-item"><span class="box"></span> I think I need additional blood tests — details below</div>
+    </div>
+    <div class="fill-line" style="margin-top:8px;"></div>
+  </div>
+
+  <!-- ABPM Consent -->
+  <div class="section-divider">7. 24-Hour Blood Pressure Monitor (ABPM) Consent</div>
+  <div class="note">
+    The ABPM is a small device worn on your upper arm for 24 hours. It automatically checks your blood pressure every 30 minutes during the day and every hour at night, giving a more accurate picture than a single surgery reading. It's recommended for patients aged 50 or over with hypertension, cardiovascular disease, type 2 diabetes, heart failure, atrial fibrillation, or a history of stroke/TIA. If unsure, your nurse will advise you at your appointment.
   </div>
   <div class="radio-row">
-    <div class="radio-item"><span class="circle"></span> Yes, I consent to ABPM if clinically indicated</div>
-    <div class="radio-item"><span class="circle"></span> No, I do not wish to have ABPM</div>
-    <div class="radio-item"><span class="circle"></span> I'd like to discuss this with the doctor/nurse first</div>
+    <div class="radio-item"><span class="circle"></span> Yes, I consent to wearing the ABPM if my nurse recommends it</div>
+    <div class="radio-item"><span class="circle"></span> I'd like to discuss this further at my appointment</div>
+    <div class="radio-item"><span class="circle"></span> No, I decline the ABPM at this time</div>
   </div>
   <div class="waiver-box">
     <strong>If you consent to ABPM, please note:</strong>
@@ -386,11 +993,15 @@
       <li>Failure to return the device, or damage due to negligence, may result in a charge for repair or replacement.</li>
     </ul>
   </div>
+  <div class="note">If you are declining the ABPM, please provide a home blood pressure reading (average of several mornings) in the relevant condition section above, where available.</div>
 
   <!-- Declaration -->
-  <div class="section-divider">5. Declaration</div>
+  <div class="section-divider">8. Data Consent &amp; Declaration</div>
   <div class="declaration">
-    I confirm that the information given on this form is accurate to the best of my knowledge, and I consent to Kinsealy Medical Centre using this information for my clinical care and for submission under the HSE Chronic Disease Management programme.
+    <strong>Data protection:</strong> I consent to the information in this form being stored securely as part of my medical record at Kinsealy Medical Centre and used for my clinical care. I understand that relevant information may be shared with other healthcare providers directly involved in my care, in line with applicable data protection legislation.
+  </div>
+  <div class="declaration">
+    <strong>Patient confirmation:</strong> I confirm that I must fast from midnight before my appointment (water only), and that the information I have provided in this form is accurate to the best of my knowledge. I consent to Kinsealy Medical Centre submitting this information under the HSE Chronic Disease Management / Prevention Programme.
   </div>
 
   <div class="sig-row">
