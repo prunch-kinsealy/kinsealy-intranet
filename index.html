@@ -498,6 +498,11 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .flow-branch-item{display:flex;flex-direction:column;align-items:center;gap:0;flex:1;min-width:0}
 .flow-coming-soon{opacity:0.5}
 .flow-soon-tag{font-size:0.65rem;background:#e2e8f0;color:#64748b;padding:2px 8px;border-radius:10px;margin-top:4px;font-weight:500}
+.flow-node.clickable{cursor:pointer;transition:transform 0.15s,box-shadow 0.15s}
+.flow-node.clickable:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(0,0,0,0.14)}
+.flow-node.clickable:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+@keyframes cdmJumpFlash{0%{box-shadow:0 0 0 5px rgba(56,189,248,0.55)}100%{box-shadow:0 0 0 0 rgba(56,189,248,0)}}
+.cdm-jump-highlight{animation:cdmJumpFlash 1.4s ease}
 /* CDM Bulk Text Reminder */
 .cdm-reminder-widget{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-top:12px;font-size:0.8rem}
 .cdm-reminder-widget .reminder-ok{color:#166534;font-weight:600}
@@ -831,7 +836,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
         To provide excellence in CDM care, to allow efficient use of our resources, and to match the correct patient with the correct service.
       </div>
 
-      <div class="warn-box" style="margin-bottom:18px">
+      <div class="warn-box" style="margin-bottom:18px" id="cdm-no-form-box">
         <strong>📋 No Form = No Appointment</strong><br><br>
         Do <strong>NOT</strong> book a CDM or PP appointment until the patient has <strong>fully completed</strong> the relevant pre-appointment form.<br><br>
         <strong>CDM patients:</strong> <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">CDM Pre-Appointment Form ↗</a> — patient completes directly on the website.<br>
@@ -841,42 +846,42 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 
       <h4 style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin:0 0 10px">CDM Pathway Overview</h4>
       <div class="cdm-flow">
-        <div class="flow-node flow-node-all">⚫ All Staff — CDM Aware<br><small>Identify patients due · Send form link</small></div>
+        <div class="flow-node flow-node-all clickable" role="button" tabindex="0" onclick="jumpToCDMFlowTarget('cdm-step-1')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToCDMFlowTarget('cdm-step-1')}">⚫ All Staff — CDM Aware<br><small>Identify patients due · Send form link</small></div>
         <div class="flow-arrow">↓</div>
-        <div class="flow-node flow-node-all">📋 No Form = No Appointment<br><small>Patient completes form on website</small></div>
+        <div class="flow-node flow-node-all clickable" role="button" tabindex="0" onclick="jumpToCDMFlowTarget('cdm-no-form-box')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToCDMFlowTarget('cdm-no-form-box')}">📋 No Form = No Appointment<br><small>Patient completes form on website</small></div>
         <div class="flow-arrow">↓</div>
-        <div class="flow-node flow-node-sec">🔵 Secretary — Form Received<br><small>Upload to chart · STCs · Ring to book</small></div>
+        <div class="flow-node flow-node-sec clickable" role="button" tabindex="0" onclick="jumpToCDMFlowTarget('cdm-step-2')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToCDMFlowTarget('cdm-step-2')}">🔵 Secretary — Form Received<br><small>Upload to chart · STCs · Ring to book</small></div>
         <div class="flow-arrow">↓</div>
         <div style="font-size:0.7rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px">Select Pathway</div>
         <div class="flow-branch-row">
           <div class="flow-branch-item">
             <div class="flow-arrow">↓</div>
-            <div class="flow-node flow-node-phle" style="font-size:0.76rem">🟠 Phlebotomist-led<br><small style="color:#c2410c">Non-diabetics only</small></div>
+            <div class="flow-node flow-node-phle clickable" style="font-size:0.76rem" role="button" tabindex="0" onclick="jumpToCDMFlowTarget('cdm-step-3')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToCDMFlowTarget('cdm-step-3')}">🟠 Phlebotomist-led<br><small style="color:#c2410c">Non-diabetics only</small></div>
           </div>
           <div class="flow-branch-item">
             <div class="flow-arrow">↓</div>
-            <div class="flow-node flow-node-nurse" style="font-size:0.76rem">🟢 Nurse-led</div>
+            <div class="flow-node flow-node-nurse clickable" style="font-size:0.76rem" role="button" tabindex="0" onclick="jumpToCDMFlowTarget('cdm-step-3')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToCDMFlowTarget('cdm-step-3')}">🟢 Nurse-led</div>
           </div>
           <div class="flow-branch-item">
             <div class="flow-arrow">↓</div>
-            <div class="flow-node flow-node-doc" style="font-size:0.76rem">🔴 Doctor-led</div>
+            <div class="flow-node flow-node-doc clickable" style="font-size:0.76rem" role="button" tabindex="0" onclick="jumpToCDMFlowTarget('cdm-step-3')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToCDMFlowTarget('cdm-step-3')}">🔴 Doctor-led</div>
           </div>
           <div class="flow-branch-item">
             <div class="flow-arrow">↓</div>
-            <div class="flow-node flow-node-cit" style="font-size:0.76rem">🏠 CIT-led<br><small>Housebound / resistant</small></div>
+            <div class="flow-node flow-node-cit clickable" style="font-size:0.76rem" role="button" tabindex="0" onclick="jumpToCDMFlowTarget('cdm-cit-pathway')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToCDMFlowTarget('cdm-cit-pathway')}">🏠 CIT-led<br><small>Housebound / resistant</small></div>
           </div>
         </div>
         <div class="flow-arrow">↓</div>
-        <div class="flow-node flow-node-nurse">🟢 End of Consult — Task Doctor</div>
+        <div class="flow-node flow-node-nurse clickable" role="button" tabindex="0" onclick="jumpToCDMFlowTarget('cdm-step-4')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToCDMFlowTarget('cdm-step-4')}">🟢 End of Consult — Task Doctor</div>
         <div class="flow-arrow">↓</div>
-        <div class="flow-node flow-node-doc">🔴 Doctor Remote Review + Script</div>
+        <div class="flow-node flow-node-doc clickable" role="button" tabindex="0" onclick="jumpToCDMFlowTarget('cdm-step-5')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToCDMFlowTarget('cdm-step-5')}">🔴 Doctor Remote Review + Script</div>
         <div class="flow-arrow">↓</div>
-        <div class="flow-node flow-node-pm">🟣 PM Weekly Submission</div>
+        <div class="flow-node flow-node-pm clickable" role="button" tabindex="0" onclick="jumpToCDMFlowTarget('cdm-step-6')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToCDMFlowTarget('cdm-step-6')}">🟣 PM Weekly Submission</div>
       </div>
 
       <div class="journey">
 
-        <div class="journey-step">
+        <div class="journey-step" id="cdm-step-1">
           <div class="step-dot dot-all">ALL</div>
           <div class="step-content step-content-all">
             <div class="step-role step-role-all">Step 1 — All Staff</div>
@@ -894,7 +899,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
           </div>
         </div>
 
-        <div class="journey-step">
+        <div class="journey-step" id="cdm-step-2">
           <div class="step-dot dot-sec">MS</div>
           <div class="step-content step-content-sec">
             <div class="step-role step-role-sec">Step 2 — Secretary</div>
@@ -927,7 +932,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
           </div>
         </div>
 
-        <div class="journey-step">
+        <div class="journey-step" id="cdm-step-3">
           <div class="step-dot dot-all">ALL</div>
           <div class="step-content step-content-all">
             <div class="step-role step-role-all">Step 3 — On the Day</div>
@@ -945,7 +950,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                   <li>Populate Socrates CDM tab</li>
                 </ul>
               </div>
-              <div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:8px;padding:14px">
+              <div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:8px;padding:14px" id="cdm-cit-pathway">
                 <div style="font-size:0.78rem;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">🏠 CIT-led — Home Visit Pathway (Housebound / Resistant Patients)</div>
 
                 <p style="font-size:0.8rem;color:var(--grey-700);margin:0 0 12px;line-height:1.6">
@@ -964,7 +969,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
           </div>
         </div>
 
-        <div class="journey-step">
+        <div class="journey-step" id="cdm-step-4">
           <div class="step-dot dot-nurse">NS</div>
           <div class="step-content step-content-nurse">
             <div class="step-role step-role-nurse">Step 4 — Nurse / Phlebotomist</div>
@@ -981,7 +986,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
           </div>
         </div>
 
-        <div class="journey-step">
+        <div class="journey-step" id="cdm-step-5">
           <div class="step-dot dot-doc">DR</div>
           <div class="step-content step-content-doc">
             <div class="step-role step-role-doc">Step 5 — Doctor</div>
@@ -997,7 +1002,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
           </div>
         </div>
 
-        <div class="journey-step">
+        <div class="journey-step" id="cdm-step-6">
           <div class="step-dot dot-pm">PM</div>
           <div class="step-content step-content-pm">
             <div class="step-role step-role-pm">Step 6 — Practice Manager</div>
@@ -1006,8 +1011,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
               At the end of each week the Practice Manager reviews all CDM/PP activity:
               <ul>
                 <li>Review all CDM/PP reviews completed during the week</li>
-                <li>Confirm <strong>STC (ECG) and STC (ABPM) have been scanned to chart</strong> for all applicable patients — chase any missing</li>
-                <li>Submit all eligible patients via the <strong>PCRS portal</strong></li>
+                <li>Confirm <strong>STC (ECG) and STC (ABPM) have been scanned to chart</strong> for all applicable patients and submit via <strong>PCRS</strong> — chase any missing</li>
                 <li>Check for any failed or rejected submissions and resubmit with corrections</li>
                 <li>Document in each patient's Socrates chart: <em>"CDM/PP submitted [date]"</em></li>
                 <li>Email the patient their care plan, including the doctor's note</li>
@@ -1032,7 +1036,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
   </div>
 
   <!-- ── SOP: CDM / PP Bloods — What's Covered ── -->
-  <div class="sop-card" id="sop-cdm-bloods" data-updated="2026-07-16" data-section-name="CDM" data-sop-name="CDM / PP Bloods — What's Covered">
+  <div class="sop-card" id="sop-cdm-bloods" data-updated="2026-09-08" data-section-name="CDM" data-sop-name="CDM / PP Bloods — What's Covered">
     <div class="sop-header" onclick="toggleSOP(this)">
       <div class="sop-header-left">
         <span>🩸</span>
@@ -1042,8 +1046,8 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
     </div>
     <div class="sop-meta">
       <span>👤 Created by: Dr F. O'Reilly</span>
-      <span>🔄 Last updated: 16/07/2026</span>
-      <span>📌 v1.0</span>
+      <span>🔄 Last updated: 08/09/2026</span>
+      <span>📌 v1.1</span>
     </div>
     <div class="sop-body">
 
@@ -1053,6 +1057,9 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
       <div class="warn-box" style="margin-bottom:18px">
         <strong>💷 Patient wants bloods outside this list?</strong><br>
         These are not covered under the CDM/PP scheme. Either (a) offer them privately at the practice's standard blood charge, or (b) refer them to the hospital for the full panel. Do not add extra tests to the scheme-funded sample "just in case."
+      </div>
+      <div class="info-box" style="margin-bottom:18px">
+        <strong>Practice policy overrides two columns:</strong> the laminated HSE sheet marks <strong>ACR</strong> as "if clinically indicated" in several rows — this practice takes it as <strong>routine (✓)</strong> everywhere it appears. Conversely, <strong>FPG</strong> (Fasting Glucose) is left <strong>blank throughout</strong> regardless of what the HSE sheet shows. This is a deliberate deviation, not a transcription error — don't "correct" these two columns back to match the laminated original.
       </div>
 
       <div class="bloods-legend">
@@ -1066,7 +1073,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
         <table class="bloods-table">
           <thead><tr><th>Condition</th><th>FBC</th><th title="Creatinine">Creat.</th><th>Lipid</th><th>HbA1c</th><th>ACR</th><th>NTproBNP</th><th title="Fasting Glucose">FPG</th><th>eGFR</th><th title="Thyroid Function Test">TFT</th><th title="Liver Function Test">LFT</th></tr></thead>
           <tbody>
-            <tr><th>Type 2 Diabetes</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick-cond">IF</td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
+            <tr><th>Type 2 Diabetes</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
             <tr><th>Asthma</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             <tr><th>COPD</th><td></td><td></td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             <tr><th>Heart Failure</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
@@ -1098,7 +1105,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
         <table class="bloods-table">
           <thead><tr><th>Condition</th><th>FBC</th><th title="Creatinine">Creat.</th><th>Lipid</th><th>HbA1c</th><th>ACR</th><th>NTproBNP</th><th title="Fasting Glucose">FPG</th><th>eGFR</th><th title="Thyroid Function Test">TFT</th><th title="Liver Function Test">LFT</th></tr></thead>
           <tbody>
-            <tr><th>Type 2 Diabetes</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick-cond">IF</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+            <tr><th>Type 2 Diabetes</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
             <tr><th>Asthma</th><td class="tick-cond">IF</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             <tr><th>COPD</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             <tr><th>Heart Failure</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td></td><td class="tick">✓</td><td class="tick">✓*</td><td class="tick">✓*</td></tr>
@@ -1114,8 +1121,8 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
         <table class="bloods-table">
           <thead><tr><th>Visit</th><th>FBC</th><th title="Creatinine">Creat.</th><th>Lipid</th><th>HbA1c</th><th>ACR</th><th>NTproBNP</th><th title="Fasting Glucose">FPG</th><th>eGFR</th><th title="Thyroid Function Test">TFT</th><th title="Liver Function Test">LFT</th></tr></thead>
           <tbody>
-            <tr><th>Registration — First Visit Only</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick-cond">IF</td><td></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓*</td><td class="tick">✓*</td></tr>
-            <tr><th>Annual Review</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick-cond">IF</td><td></td><td class="tick-cond">IF</td><td class="tick-cond">IF</td><td></td><td></td></tr>
+            <tr><th>Registration — First Visit Only</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td class="tick">✓</td><td class="tick">✓*</td><td class="tick">✓*</td></tr>
+            <tr><th>Annual Review</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td class="tick-cond">IF</td><td></td><td></td></tr>
           </tbody>
         </table>
       </div>
@@ -1125,13 +1132,13 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
         <table class="bloods-table">
           <thead><tr><th>Visit</th><th>FBC</th><th title="Creatinine">Creat.</th><th>Lipid</th><th>HbA1c</th><th>ACR</th><th>NTproBNP</th><th title="Fasting Glucose">FPG</th><th>eGFR</th><th title="Thyroid Function Test">TFT</th><th title="Liver Function Test">LFT</th></tr></thead>
           <tbody>
-            <tr><th>OCF Visit</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick-cond">IF</td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
+            <tr><th>OCF Visit</th><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td></td><td></td><td class="tick">✓</td><td></td><td></td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="info-box" style="margin-top:4px">
-        <strong>Source</strong> — HSE "Recommended Investigations for the HSE Chronic Disease Treatment and Prevention Programmes" printed reference sheet. Additional copies can be printed from <a href="https://www.hse.ie/eng/services/list/2/primarycare/community-healthcare-networks/chronic-disease-management/" target="_blank">hse.ie</a>. If any cell here looks wrong, check the laminated original before relying on this page — flag Dr O'Reilly to correct it.
+        <strong>Source</strong> — HSE "Recommended Investigations for the HSE Chronic Disease Treatment and Prevention Programmes" printed reference sheet. Additional copies can be printed from <a href="https://www.hse.ie/eng/services/list/2/primarycare/community-healthcare-networks/chronic-disease-management/" target="_blank">hse.ie</a>. If any cell here looks wrong, check the laminated original before relying on this page — flag Dr O'Reilly to correct it (except the ACR and FPG columns, which intentionally differ from the laminated original per practice policy — see note above).
       </div>
 
     </div>
@@ -1197,7 +1204,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
             <div class="step-role step-role-nurse">Step 3 — Nurse / Phlebotomist / Doctor</div>
             <div class="step-title">Take Bloods</div>
             <div class="step-detail">
-              Take only the bloods covered under OCF — see the <strong>"Opportunistic Case Finding"</strong> row in <a href="#" onclick="goToSOP('cdm','sop-cdm-bloods');return false;">CDM/PP Bloods — What's Covered ↗</a>: FBC, Creatinine, Lipid profile, HbA1c, eGFR, and ACR if clinically indicated. Anything outside this list isn't covered under the scheme.
+              Take only the bloods covered under OCF — see the <strong>"Opportunistic Case Finding"</strong> row in <a href="#" onclick="goToSOP('cdm','sop-cdm-bloods');return false;">CDM/PP Bloods — What's Covered ↗</a>: FBC, Creatinine, Lipid profile, HbA1c, ACR, and eGFR. Anything outside this list isn't covered under the scheme.
             </div>
           </div>
         </div>
@@ -1925,24 +1932,6 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                 <li>Check trace quality: no artefact, all leads present</li>
                 <li>Save trace to Socrates. If clearly abnormal, alert doctor immediately</li>
                 <li>🎥 Video guide: <a href="#" style="color:var(--teal)">[Add ECG lead placement tutorial link]</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="journey-step">
-          <div class="step-dot dot-doc">DR</div>
-          <div class="step-content step-content-doc">
-            <div class="step-role step-role-doc">Doctor</div>
-            <div class="step-title">Interpretation &amp; Follow-Up</div>
-            <div class="step-detail">
-              Systematic review: rate → rhythm → axis → intervals (PR, QRS, QTc) → ST changes → T-wave morphology → comparison with previous if available.
-              <ul>
-                <li><strong>Normal trace</strong> — document, no action</li>
-                <li><strong>AF / flutter / heart block</strong> — urgent review, consider cardiology referral</li>
-                <li><strong>ST elevation</strong> — emergency management protocol</li>
-                <li><strong>ST depression / T-wave changes</strong> — clinical context, consider stress test or cardiology referral</li>
-                <li><strong>Long QTc</strong> — review medications, consider cardiology</li>
-                <li>Document interpretation and any action taken in chart</li>
               </ul>
             </div>
           </div>
@@ -4726,6 +4715,16 @@ function goToSOP(sectionId, sopId) {
     }
     el.scrollIntoView({behavior:'smooth', block:'start'});
   }, 100);
+}
+
+function jumpToCDMFlowTarget(anchorId) {
+  const el = document.getElementById(anchorId);
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+  el.classList.remove('cdm-jump-highlight');
+  void el.offsetWidth; // restart animation if clicked again
+  el.classList.add('cdm-jump-highlight');
+  setTimeout(() => el.classList.remove('cdm-jump-highlight'), 1500);
 }
 
 // CDM BULK TEXT REMINDER TRACKER — shared via cdm-bulk-text.json (monthly cadence)
