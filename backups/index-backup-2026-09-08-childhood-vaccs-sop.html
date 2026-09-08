@@ -258,13 +258,6 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .rsv-calc-result.warn{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
 @media(max-width:560px){.rsv-calc-row{grid-template-columns:1fr}}
 
-.month-picker{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.month-btn{flex:1 1 100px;padding:10px 8px;border:1.5px solid var(--grey-200);border-radius:8px;background:#fff;color:var(--navy);font-family:inherit;font-size:0.8rem;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
-.month-btn:hover{border-color:var(--teal)}
-.month-btn.active{background:var(--teal);border-color:var(--teal);color:#fff}
-.month-pick-result{margin-top:2px;padding:14px 16px;border-radius:8px;font-size:0.85rem;line-height:1.7;background:var(--teal-pale);border:1px solid rgba(42,138,126,0.25);color:var(--navy)}
-.month-pick-result strong{color:var(--teal)}
-
 /* PASSWORD FUTURE NOTE */
 .future-lock{display:inline-flex;align-items:center;gap:5px;font-size:0.68rem;padding:3px 8px;border-radius:4px;background:#fef3c7;color:#92400e;font-weight:600;margin-left:8px}
 
@@ -1703,20 +1696,6 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
           <li>Child has a recorded weight <strong>&lt;5kg</strong> in the last 2 weeks → give <strong>50mg</strong>.</li>
         </ul>
       </div>
-
-      <div class="bloods-table-title" style="margin-top:22px">📅 Click Baby's Birth Month — What's Due &amp; Is RSV Due?</div>
-      <div class="info-box">
-        Click the month the baby was born in (March–August) to see which PCI visit lines up with it, what routine vaccines are given at that visit, and whether RSV is due then. Babies born September–February are normally already immunised against RSV at birth — see the season note above.
-      </div>
-      <div class="month-picker" id="month-picker">
-        <button type="button" class="month-btn" onclick="monthPick('March')">March</button>
-        <button type="button" class="month-btn" onclick="monthPick('April')">April</button>
-        <button type="button" class="month-btn" onclick="monthPick('May')">May</button>
-        <button type="button" class="month-btn" onclick="monthPick('June')">June</button>
-        <button type="button" class="month-btn" onclick="monthPick('July')">July</button>
-        <button type="button" class="month-btn" onclick="monthPick('August')">August</button>
-      </div>
-      <div class="month-pick-result" id="month-pick-result">👆 Click a birth month above to see what's due.</div>
 
       <div class="rsv-calc">
         <div class="rsv-calc-title">🧮 RSV Dose &amp; Timing Picker</div>
@@ -4946,49 +4925,6 @@ function rsvCalc() {
   resultEl.innerHTML = '<strong>Timing:</strong> ' + timing + '<br><strong>Dose:</strong> ' + dose;
 }
 document.addEventListener('DOMContentLoaded', rsvCalc);
-
-// Birth-month click picker — combines the routine PCI visit schedule with the
-// RSV birth-month table so staff see both in one place (see "Baby Vaccines Schedule" SOP card)
-const MONTH_PICK_VISITS = {
-  March: ['6'],
-  April: ['4'],
-  May: ['4'],
-  June: ['2', '4'],
-  July: ['2'],
-  August: ['2']
-};
-const MONTH_PICK_RSV_LABEL = {
-  March: '6 month PCI visit',
-  April: '4 month PCI visit',
-  May: '4 month PCI visit',
-  June: '2 or 4 month PCI visit',
-  July: '2 month PCI visit',
-  August: '2 month PCI visit (or the 2- or 6-week check under M&I)'
-};
-const PCI_VISIT_VACCINES = {
-  '2': '6-in-1 (diphtheria, tetanus, pertussis, polio, Hib, Hep B) + PCV (pneumococcal) + MenB + Rotavirus (oral)',
-  '4': '6-in-1 + MenB + Rotavirus',
-  '6': '6-in-1 + PCV + MenC'
-};
-function monthPick(month) {
-  const resultEl = document.getElementById('month-pick-result');
-  const buttons = document.querySelectorAll('#month-picker .month-btn');
-  if (!resultEl || !buttons.length) return;
-  buttons.forEach(function(btn) {
-    btn.classList.toggle('active', btn.textContent.trim() === month);
-  });
-
-  const visits = MONTH_PICK_VISITS[month];
-  const vaccinesHtml = visits.map(function(v) {
-    return '<strong>' + v + ' month visit:</strong> ' + PCI_VISIT_VACCINES[v];
-  }).join('<br>');
-
-  resultEl.innerHTML =
-    '<strong>Born in:</strong> ' + month + '<br>' +
-    '<strong>RSV given at:</strong> ' + MONTH_PICK_RSV_LABEL[month] + '<br>' +
-    '<strong>Routine vaccines given at ' + (visits.length > 1 ? 'those visits' : 'that visit') + ':</strong><br>' + vaccinesHtml + '<br>' +
-    '<strong>RSV dose reminder:</strong> ≥3 months old with no feeding/growth concerns → 100mg (no weight needed). Under 3 months → 100mg if recorded weight ≥5kg, 50mg if &lt;5kg. Use the dose &amp; timing picker below to work through it step by step.';
-}
 
 // LOAD NOTICEBOARD ANNOUNCEMENTS — synced via notices.json (see
 // noticeboard-editor.html), committed to the repo through gh-proxy so every
