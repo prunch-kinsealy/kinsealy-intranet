@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<script>if(!sessionStorage.getItem('kmc-auth')){sessionStorage.setItem('kmc-redirect',location.href);location.replace('login.html')}</script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reception Rota — Kinsealy Staff Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2d4a;--navy-light:#243c61;--teal:#2a8a7e;--teal-light:#3aa897;--teal-pale:#e8f5f3;
+  --gold:#c9a84c;--cream:#f8f6f1;--white:#fff;
+  --grey-100:#f4f4f4;--grey-200:#e8e8e8;--grey-400:#6b7280;--grey-700:#374151;
+  --text:#1f2937;--radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+
+.header{background:var(--navy);color:#fff;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.header h1{font-family:'DM Serif Display',serif;font-size:1.2rem}
+.header span{font-size:0.7rem;opacity:0.5;letter-spacing:0.1em;text-transform:uppercase}
+.back-btn{font-size:0.78rem;color:rgba(255,255,255,0.7);text-decoration:none;display:flex;align-items:center;gap:5px}
+.back-btn:hover{color:#fff}
+.sync-status{font-size:0.68rem;color:rgba(255,255,255,0.45);margin-top:2px}
+
+#app{max-width:980px;margin:0 auto;padding:32px 24px 60px}
+.page-header{margin-bottom:20px}
+.page-header h2{font-family:'DM Serif Display',serif;font-size:1.75rem;color:var(--navy);margin-bottom:4px}
+.page-header p{font-size:0.85rem;color:var(--grey-400);max-width:640px;line-height:1.5}
+
+.btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.15s;white-space:nowrap}
+.btn:hover{background:var(--teal)}
+.btn-outline{background:#fff;color:var(--navy);border:1px solid var(--grey-200)}
+.btn-outline:hover{background:var(--teal-pale);border-color:var(--teal);color:var(--navy)}
+.btn-sm{padding:6px 11px;font-size:0.72rem}
+
+/* rules reference */
+.rules-panel{background:var(--white);border:1px solid var(--grey-200);border-radius:12px;margin-bottom:22px;overflow:hidden}
+.rules-toggle{width:100%;background:none;border:none;text-align:left;padding:14px 18px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.85rem;color:var(--navy);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.rules-body{padding:0 18px 18px;font-size:0.8rem;color:var(--grey-700);line-height:1.7;display:none}
+.rules-body.open{display:block}
+.rules-body table{width:100%;border-collapse:collapse;margin-top:6px}
+.rules-body td{padding:5px 8px;border-bottom:1px solid var(--grey-100);vertical-align:top}
+.rules-body td:first-child{font-weight:600;color:var(--navy);white-space:nowrap;width:150px}
+.rules-body .work-days{font-size:0.76rem;color:var(--grey-400);margin-top:8px}
+
+/* week nav */
+.week-nav{display:flex;align-items:center;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.week-nav .week-label{font-weight:600;color:var(--navy);font-size:0.92rem;margin:0 4px}
+.week-nav input[type=date]{border:1px solid var(--grey-200);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:0.8rem}
+.bh-banner{background:#fff7e0;border:1px solid var(--gold);color:#7a5c00;border-radius:8px;padding:9px 14px;font-size:0.78rem;margin-bottom:18px}
+
+/* day cards */
+.day-card{background:var(--white);border:1px solid var(--grey-200);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.day-card.is-bh-tweak{border-top:3px solid var(--gold)}
+.day-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.day-title{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.day-title h3{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy)}
+.day-rule{font-size:0.74rem;color:var(--grey-400)}
+.badge{font-size:0.68rem;font-weight:700;padding:2px 9px;border-radius:20px}
+.badge-bh{background:#fff2cc;color:#8a6600}
+.badge-ok{background:var(--teal-pale);color:var(--teal)}
+.badge-warn{background:#fee2e2;color:#dc2626}
+
+.leave-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed var(--grey-200)}
+.leave-chk{display:flex;align-items:center;gap:5px;font-size:0.76rem;color:var(--grey-700)}
+.leave-chk input{accent-color:#dc2626;cursor:pointer}
+
+.slots{display:flex;flex-direction:column;gap:8px}
+.slot-row{display:flex;align-items:center;gap:10px}
+.slot-row .slot-label{font-size:0.78rem;color:var(--grey-700);width:230px;flex-shrink:0}
+.slot-row select{flex:1;border:1px solid var(--grey-200);border-radius:8px;padding:8px 10px;font-size:0.82rem;font-family:'DM Sans',sans-serif;background:#fff}
+.slot-row select.is-empty{border-color:#fca5a5;color:#dc2626}
+.phleb-tag{font-size:0.65rem;background:var(--teal-pale);color:var(--teal);padding:1px 6px;border-radius:6px;margin-left:6px}
+
+.warn-banner{background:#fee2e2;color:#991b1b;border-radius:8px;padding:8px 12px;font-size:0.76rem;margin-top:12px}
+.day-actions{margin-top:12px;display:flex;gap:8px}
+
+@media(max-width:600px){
+  .slot-row{flex-direction:column;align-items:stretch}
+  .slot-row .slot-label{width:auto}
+}
+</style>
+</head>
+<body>
+<div id="kmc-quicknav"></div>
+<script src="shared-nav.js"></script>
+
+<div class="header">
+  <div>
+    <h1>🗓️ Reception Rota</h1>
+    <span>Kinsealy Staff Hub</span>
+    <div class="sync-status" id="sync-status">Loading…</div>
+  </div>
+  <a href="index.html" class="back-btn">← Back to Staff Hub</a>
+</div>
+
+<div id="app">
+  <div class="page-header">
+    <h2>Reception Rota</h2>
+    <p>Weekly reception / back-office (phlebotomy) cover for Edel, Susan, Michaela, Holly and Amy. Bank holidays are detected automatically. Leave isn't pulled from leavedates.com yet — tick anyone who's off below so the day recalculates.</p>
+  </div>
+
+  <div class="rules-panel">
+    <button class="rules-toggle" onclick="toggleRules()">📋 Rota rules &amp; who works which days <span id="rules-chevron">▾</span></button>
+    <div class="rules-body" id="rules-body">
+      <table>
+        <tr><td>Monday</td><td>2 on reception, 1 out back.</td></tr>
+        <tr><td>Tuesday</td><td>1 on reception, 1 coming back to reception ~11am after bloods, 1 out back.</td></tr>
+        <tr><td>Tuesday after a bank holiday</td><td>2 on reception, 1 out back (the Monday holiday pushes Tuesday to the busier pattern).</td></tr>
+        <tr><td>Wed / Thu / Fri</td><td>1 on reception, 1 coming back to reception ~11am after bloods, 1 out back.</td></tr>
+        <tr><td>Friday before a bank holiday</td><td>2 on reception, 1 out back.</td></tr>
+      </table>
+      <p style="margin-top:10px"><strong>The issue:</strong> on any 2-reception day, if someone's on leave only 2 people may be left — both end up needed on the front desk, leaving no-one out back to answer overflow calls or do phlebotomy.</p>
+      <div class="work-days">
+        <strong>Normal work days:</strong> Edel — Thu, Fri · Susan — Mon, Tue, Wed · Michaela — Mon–Fri (phlebotomist) · Holly — Mon–Fri · Amy — Mon, Tue, Wed (phlebotomist)
+      </div>
+    </div>
+  </div>
+
+  <div class="week-nav">
+    <button class="btn btn-outline btn-sm" onclick="shiftWeek(-1)">← Prev week</button>
+    <button class="btn btn-outline btn-sm" onclick="goToday()">This week</button>
+    <button class="btn btn-outline btn-sm" onclick="shiftWeek(1)">Next week →</button>
+    <span class="week-label" id="week-label"></span>
+    <input type="date" id="week-date-picker" onchange="pickWeek(this.value)">
+  </div>
+
+  <div id="bh-banner-slot"></div>
+  <div id="days-container"></div>
+</div>
+
+<script>
+const GH_FILE = 'rota.json';
+const CURRENT_USER = sessionStorage.getItem('kmc-display') || 'Staff';
+
+const STAFF = {
+  edel:     { name: 'Edel',     days: [4,5],       phlebotomist: false },
+  susan:    { name: 'Susan',    days: [1,2,3],     phlebotomist: false },
+  michaela: { name: 'Michaela', days: [1,2,3,4,5], phlebotomist: true },
+  holly:    { name: 'Holly',    days: [1,2,3,4,5], phlebotomist: false },
+  amy:      { name: 'Amy',      days: [1,2,3],     phlebotomist: true }
+};
+const STAFF_ORDER = ['edel','susan','michaela','holly','amy'];
+
+let rotaData = {};       // loaded from GH_FILE: { "YYYY-MM-DD": { leave:[...], slots:{...} } }
+let weekMonday = mondayOf(new Date());
+const bhCache = {};      // year -> Set of ISO date strings
+
+// ── date helpers ──
+function addDays(d, n){ const nd = new Date(d); nd.setDate(nd.getDate() + n); return nd; }
+function mondayOf(d){ const nd = new Date(d); const dow = nd.getDay(); const diff = dow === 0 ? -6 : 1 - dow; return addDays(nd, diff); }
+function fmtISO(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function fmtNice(d){ return d.toLocaleDateString('en-IE', { weekday: 'long', day: 'numeric', month: 'long' }); }
+
+// ── Irish public holiday calendar (computed, no external data) ──
+function easterSunday(year){
+  const a = year % 19, b = Math.floor(year/100), c = year % 100;
+  const d = Math.floor(b/4), e = b % 4, f = Math.floor((b+8)/25);
+  const g = Math.floor((b-f+1)/3), h = (19*a + b - d - g + 15) % 30;
+  const i = Math.floor(c/4), k = c % 4, l = (32 + 2*e + 2*i - h - k) % 7;
+  const m = Math.floor((a + 11*h + 22*l)/451);
+  const month = Math.floor((h + l - 7*m + 114)/31);
+  const day = ((h + l - 7*m + 114) % 31) + 1;
+  return new Date(year, month-1, day);
+}
+function nthWeekdayOfMonth(year, month, weekday, n){
+  const d = new Date(year, month, 1); let count = 0;
+  while (true){ if (d.getDay() === weekday){ count++; if (count === n) return new Date(d); } d.setDate(d.getDate()+1); }
+}
+function lastWeekdayOfMonth(year, month, weekday){
+  const d = new Date(year, month+1, 0);
+  while (d.getDay() !== weekday) d.setDate(d.getDate()-1);
+  return new Date(d);
+}
+function observedFixed(d){
+  const day = d.getDay();
+  if (day === 6) return addDays(d, 2);
+  if (day === 0) return addDays(d, 1);
+  return d;
+}
+function irishBankHolidays(year){
+  if (bhCache[year]) return bhCache[year];
+  const set = new Set();
+  set.add(fmtISO(observedFixed(new Date(year,0,1))));               // New Year's Day
+  const feb1 = new Date(year,1,1);
+  set.add(fmtISO(feb1.getDay() === 5 ? feb1 : nthWeekdayOfMonth(year,1,1,1))); // St Brigid's Day
+  set.add(fmtISO(observedFixed(new Date(year,2,17))));               // St Patrick's Day
+  const easterMon = addDays(easterSunday(year), 1);
+  set.add(fmtISO(easterMon));                                        // Easter Monday
+  set.add(fmtISO(nthWeekdayOfMonth(year,4,1,1)));                    // First Mon in May
+  set.add(fmtISO(nthWeekdayOfMonth(year,5,1,1)));                    // First Mon in June
+  set.add(fmtISO(nthWeekdayOfMonth(year,7,1,1)));                    // First Mon in August
+  set.add(fmtISO(lastWeekdayOfMonth(year,9,1)));                     // Last Mon in October
+  const dec25 = new Date(year,11,25);
+  if (dec25.getDay() === 6){ set.add(fmtISO(new Date(year,11,27))); set.add(fmtISO(new Date(year,11,28))); }
+  else if (dec25.getDay() === 0){ set.add(fmtISO(new Date(year,11,26))); set.add(fmtISO(new Date(year,11,27))); }
+  else { set.add(fmtISO(dec25)); set.add(fmtISO(new Date(year,11,26))); }
+  bhCache[year] = set;
+  return set;
+}
+function isBankHoliday(d){ return irishBankHolidays(d.getFullYear()).has(fmtISO(d)); }
+
+// ── day type / slot rules ──
+function normalSlots(){
+  return [
+    { id: 'reception', label: 'Reception (all day)', type: 'reception' },
+    { id: 'bloods', label: 'Bloods → back to reception ~11am', type: 'back' },
+    { id: 'back', label: 'Out back / phlebotomy (all day)', type: 'back' }
+  ];
+}
+function tworecepSlots(){
+  return [
+    { id: 'r1', label: 'Reception (all day)', type: 'reception' },
+    { id: 'r2', label: 'Reception (all day)', type: 'reception' },
+    { id: 'back', label: 'Out back / phlebotomy (all day)', type: 'back' }
+  ];
+}
+function dayTypeFor(date){
+  const dow = date.getDay();
+  if (dow === 1) return { label: 'Monday', tag: null, slots: tworecepSlots() };
+  if (dow === 2){
+    const monday = addDays(date, -1);
+    if (isBankHoliday(monday)) return { label: 'Tuesday', tag: 'After Bank Holiday Monday', slots: tworecepSlots() };
+    return { label: 'Tuesday', tag: null, slots: normalSlots() };
+  }
+  if (dow === 3) return { label: 'Wednesday', tag: null, slots: normalSlots() };
+  if (dow === 4) return { label: 'Thursday', tag: null, slots: normalSlots() };
+  if (dow === 5){
+    const nextMonday = addDays(date, 3);
+    if (isBankHoliday(nextMonday)) return { label: 'Friday', tag: 'Before Bank Holiday', slots: tworecepSlots() };
+    return { label: 'Friday', tag: null, slots: normalSlots() };
+  }
+  return null;
+}
+
+// ── who's normally working + auto-suggest ──
+function rosterFor(dow){ return STAFF_ORDER.filter(u => STAFF[u].days.includes(dow)); }
+function availableFor(dow, leaveSet){ return rosterFor(dow).filter(u => !leaveSet.has(u)); }
+
+function suggestAssignments(dayType, available){
+  const nonPhleb = available.filter(u => !STAFF[u].phlebotomist);
+  const phleb = available.filter(u => STAFF[u].phlebotomist);
+  const pool = nonPhleb.concat(phleb); // fill reception with non-phlebotomists first, so Amy/Michaela stay free for back
+  const assign = {};
+  dayType.slots.filter(s => s.type === 'reception').forEach(s => { if (pool.length) assign[s.id] = pool.shift(); });
+  const remaining = pool.slice().sort((a,b) => (STAFF[b].phlebotomist?1:0) - (STAFF[a].phlebotomist?1:0));
+  dayType.slots.filter(s => s.type === 'back').forEach(s => { if (remaining.length) assign[s.id] = remaining.shift(); });
+  return assign;
+}
+
+// ── GH proxy load/save ──
+function kmcAuthHeader(){ const t = sessionStorage.getItem('kmc-token'); return t ? { 'Authorization': 'Bearer ' + t } : {}; }
+
+async function fetchLatest(){
+  const r = await fetch('/.netlify/functions/gh-proxy?file=' + encodeURIComponent(GH_FILE) + '&t=' + Date.now(), { cache: 'no-store', headers: kmcAuthHeader() });
+  if (r.status === 401) { sessionStorage.clear(); location.replace('login.html'); throw new Error('Session expired'); }
+  if (!r.ok) throw new Error('load failed');
+  const j = await r.json();
+  return j.json || {};
+}
+async function saveAll(data){
+  const r = await fetch('/.netlify/functions/gh-proxy', {
+    method: 'POST',
+    headers: Object.assign({ 'Content-Type': 'application/json' }, kmcAuthHeader()),
+    body: JSON.stringify({ file: GH_FILE, content: data, message: 'Update rota ' + new Date().toISOString().slice(0,10) + ' — ' + CURRENT_USER })
+  });
+  if (r.status === 401) { sessionStorage.clear(); location.replace('login.html'); throw new Error('Session expired'); }
+  if (!r.ok) throw new Error('save failed');
+}
+async function mutate(fn){
+  const status = document.getElementById('sync-status');
+  status.textContent = 'Saving…';
+  try{
+    const fresh = await fetchLatest();
+    const updated = fn(fresh) || fresh;
+    await saveAll(updated);
+    rotaData = updated;
+    status.textContent = '✓ Synced';
+    renderWeek();
+  }catch(e){
+    status.textContent = 'Save failed — try again';
+  }
+}
+async function loadRota(){
+  const status = document.getElementById('sync-status');
+  status.textContent = 'Loading…';
+  try{ rotaData = await fetchLatest(); status.textContent = '✓ Synced'; }
+  catch(e){ status.textContent = 'Offline or error'; }
+  renderWeek();
+}
+
+function dayEntry(iso){ return rotaData[iso] || { leave: [], slots: {} }; }
+
+// ── week navigation ──
+function shiftWeek(n){ weekMonday = addDays(weekMonday, n*7); renderWeek(); }
+function goToday(){ weekMonday = mondayOf(new Date()); renderWeek(); }
+function pickWeek(val){ if (!val) return; weekMonday = mondayOf(new Date(val + 'T12:00:00')); renderWeek(); }
+function toggleRules(){
+  const body = document.getElementById('rules-body');
+  const chev = document.getElementById('rules-chevron');
+  body.classList.toggle('open');
+  chev.textContent = body.classList.contains('open') ? '▴' : '▾';
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function toggleLeave(iso, username, checked){
+  mutate(fresh => {
+    const entry = fresh[iso] || { leave: [], slots: {} };
+    entry.leave = entry.leave || [];
+    if (checked && !entry.leave.includes(username)) entry.leave.push(username);
+    if (!checked) entry.leave = entry.leave.filter(u => u !== username);
+    fresh[iso] = entry;
+    return fresh;
+  });
+}
+
+function setSlot(iso, slotId, value){
+  mutate(fresh => {
+    const entry = fresh[iso] || { leave: [], slots: {} };
+    entry.slots = entry.slots || {};
+    if (value) entry.slots[slotId] = value; else delete entry.slots[slotId];
+    fresh[iso] = entry;
+    return fresh;
+  });
+}
+
+function autoFillDay(iso, dow){
+  mutate(fresh => {
+    const entry = fresh[iso] || { leave: [], slots: {} };
+    const leaveSet = new Set(entry.leave || []);
+    const dayType = dayTypeFor(new Date(iso + 'T12:00:00'));
+    entry.slots = suggestAssignments(dayType, availableFor(dow, leaveSet));
+    fresh[iso] = entry;
+    return fresh;
+  });
+}
+
+function clearDay(iso){
+  mutate(fresh => {
+    const entry = fresh[iso] || { leave: [], slots: {} };
+    entry.slots = {};
+    fresh[iso] = entry;
+    return fresh;
+  });
+}
+
+// ── render ──
+function renderWeek(){
+  const friday = addDays(weekMonday, 4);
+  document.getElementById('week-label').textContent = weekMonday.toLocaleDateString('en-IE',{day:'numeric',month:'short'}) + ' – ' + friday.toLocaleDateString('en-IE',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('week-date-picker').value = fmtISO(weekMonday);
+
+  const days = [1,2,3,4,5].map(i => addDays(weekMonday, i-1));
+  const bhInWeek = days.filter(isBankHoliday);
+  const bhSlot = document.getElementById('bh-banner-slot');
+  bhSlot.innerHTML = bhInWeek.length
+    ? '<div class="bh-banner">🎌 Bank holiday this week: ' + bhInWeek.map(d => escapeHtml(fmtNice(d))).join(', ') + '</div>'
+    : '';
+
+  const container = document.getElementById('days-container');
+  container.innerHTML = days.map(date => renderDay(date)).join('');
+}
+
+function renderDay(date){
+  const iso = fmtISO(date);
+  const dow = date.getDay();
+  const dayType = dayTypeFor(date);
+  const entry = dayEntry(iso);
+  const leaveSet = new Set(entry.leave || []);
+  const roster = rosterFor(dow);
+  const available = availableFor(dow, leaveSet);
+  const assignments = entry.slots || {};
+
+  const usedElsewhere = {};
+  dayType.slots.forEach(s => {
+    Object.keys(assignments).forEach(k => { if (k !== s.id && assignments[k]) { usedElsewhere[s.id] = usedElsewhere[s.id] || new Set(); usedElsewhere[s.id].add(assignments[k]); } });
+  });
+
+  const backSlots = dayType.slots.filter(s => s.type === 'back');
+  const backFilled = backSlots.filter(s => assignments[s.id]).length;
+  const shortStaffed = available.length < dayType.slots.length;
+
+  const leaveRow = roster.length
+    ? '<div class="leave-row">' + roster.map(u =>
+        '<label class="leave-chk"><input type="checkbox" ' + (leaveSet.has(u) ? 'checked' : '') +
+        ' onchange="toggleLeave(\'' + iso + '\',\'' + u + '\',this.checked)"> ' + escapeHtml(STAFF[u].name) + ' off</label>'
+      ).join('') + '</div>'
+    : '<div class="leave-row" style="color:var(--grey-400);font-size:0.76rem">No-one normally rostered this day.</div>';
+
+  const slotsHtml = dayType.slots.map(s => {
+    const conflictSet = usedElsewhere[s.id] || new Set();
+    const opts = available.filter(u => !conflictSet.has(u));
+    const current = assignments[s.id] || '';
+    const optionsHtml = ['<option value="">— unfilled —</option>']
+      .concat(opts.map(u => '<option value="' + u + '"' + (u === current ? ' selected' : '') + '>' + escapeHtml(STAFF[u].name) + (STAFF[u].phlebotomist ? ' 🩸' : '') + '</option>'))
+      .concat((current && !opts.includes(current)) ? ['<option value="' + current + '" selected>' + escapeHtml(STAFF[current] ? STAFF[current].name : current) + ' (unavailable)</option>'] : [])
+      .join('');
+    return '<div class="slot-row"><span class="slot-label">' + escapeHtml(s.label) + (s.type === 'back' ? '<span class="phleb-tag">phlebotomy</span>' : '') + '</span>' +
+      '<select class="' + (current ? '' : 'is-empty') + '" onchange="setSlot(\'' + iso + '\',\'' + s.id + '\',this.value)">' + optionsHtml + '</select></div>';
+  }).join('');
+
+  const warn = backFilled < backSlots.length
+    ? '<div class="warn-banner">⚠️ No-one out back today — everyone available is needed on reception.' + (leaveSet.size ? ' (' + Array.from(leaveSet).map(u => STAFF[u].name).join(', ') + ' off.)' : '') + '</div>'
+    : '';
+
+  const ruleText = dayType.slots.some(s => s.id === 'r1')
+    ? '2 on reception, 1 out back'
+    : '1 on reception, 1 back to reception ~11am, 1 out back';
+
+  return '<div class="day-card' + (dayType.tag ? ' is-bh-tweak' : '') + '">' +
+    '<div class="day-head">' +
+      '<div class="day-title"><h3>' + escapeHtml(fmtNice(date)) + '</h3><span class="day-rule">' + ruleText + '</span></div>' +
+      '<div>' + (dayType.tag ? '<span class="badge badge-bh">' + escapeHtml(dayType.tag) + '</span> ' : '') +
+        '<span class="badge ' + (shortStaffed ? 'badge-warn' : 'badge-ok') + '">' + available.length + ' available / ' + dayType.slots.length + ' needed</span></div>' +
+    '</div>' +
+    leaveRow +
+    '<div class="slots">' + slotsHtml + '</div>' +
+    warn +
+    '<div class="day-actions">' +
+      '<button class="btn btn-outline btn-sm" onclick="autoFillDay(\'' + iso + '\',' + dow + ')">✨ Auto-fill</button>' +
+      '<button class="btn btn-outline btn-sm" onclick="clearDay(\'' + iso + '\')">Clear</button>' +
+    '</div>' +
+  '</div>';
+}
+
+loadRota();
+</script>
+</body>
+</html>

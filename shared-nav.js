@@ -27,6 +27,7 @@
   // gate: null = always shown, 'admin' = kmc-role==='admin', 'edit' = has editSections
   var PAGES = [
     ['onboarding.html', '🎓 Staff Training Guide', null],
+    ['rota.html', '🗓️ Reception Rota', null],
     ['propose-edit.html', '✏️ Propose an Edit', 'edit'],
     ['feedback.html', '💬 Staff Feedback', 'admin'],
     ['projects.html', '🗂️ Projects', 'admin'],
