@@ -74,6 +74,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .phleb-tag{font-size:0.65rem;background:var(--teal-pale);color:var(--teal);padding:1px 6px;border-radius:6px;margin-left:6px}
 
 .warn-banner{background:#fee2e2;color:#991b1b;border-radius:8px;padding:8px 12px;font-size:0.76rem;margin-top:12px}
+.phleb-note{background:var(--teal-pale);color:var(--teal);border-radius:8px;padding:8px 12px;font-size:0.76rem;margin-top:12px;font-weight:600}
 .day-actions{margin-top:12px;display:flex;gap:8px}
 
 @media(max-width:600px){
@@ -405,6 +406,17 @@ function renderDay(date){
     ? '<div class="warn-banner">⚠️ No-one out back today — everyone available is needed on reception.' + (leaveSet.size ? ' (' + Array.from(leaveSet).map(u => STAFF[u].name).join(', ') + ' off.)' : '') + '</div>'
     : '';
 
+  // Once every required slot is covered, anyone left over who's a
+  // phlebotomist (Amy/Michaela) is spare capacity that could be booked for
+  // bloods work rather than sitting idle on the rota.
+  const assignedSet = new Set(Object.values(assignments).filter(Boolean));
+  const rulesSatisfied = dayType.slots.every(s => assignments[s.id]);
+  const surplusPhleb = available.filter(u => STAFF[u].phlebotomist && !assignedSet.has(u));
+  const phlebNote = (rulesSatisfied && surplusPhleb.length)
+    ? '<div class="phleb-note">🩸 ' + surplusPhleb.map(u => escapeHtml(STAFF[u].name)).join(' and ') +
+      (surplusPhleb.length > 1 ? ' are' : ' is') + ' free once reception/back is covered — available to schedule for phlebotomy.</div>'
+    : '';
+
   const ruleText = dayType.slots.some(s => s.id === 'r1')
     ? '2 on reception, 1 out back'
     : '1 on reception, 1 back to reception ~11am, 1 out back';
@@ -418,6 +430,7 @@ function renderDay(date){
     leaveRow +
     '<div class="slots">' + slotsHtml + '</div>' +
     warn +
+    phlebNote +
     '<div class="day-actions">' +
       '<button class="btn btn-outline btn-sm" onclick="autoFillDay(\'' + iso + '\',' + dow + ')">✨ Auto-fill</button>' +
       '<button class="btn btn-outline btn-sm" onclick="clearDay(\'' + iso + '\')">Clear</button>' +
