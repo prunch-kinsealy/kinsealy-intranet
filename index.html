@@ -6853,6 +6853,25 @@ async function submitFeedback() {
   let allSubmissions = [];
   let currentFilter  = 'all';
 
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function bloodsPreferenceHtml(sub) {
+    const pref = sub.bloodsPreference || '';
+    let label, cls;
+    if (/consultant/i.test(pref)) { label = '🧪 Bloods: + Consultant-ordered (€60)'; cls = 'cdm-bloods-consultant'; }
+    else if (/GP|annual/i.test(pref)) { label = '🧪 Bloods: + GP-ordered / annual (€40)'; cls = 'cdm-bloods-gp'; }
+    else if (pref) { label = '🧪 Bloods: PP scheme only'; cls = 'cdm-bloods-scheme'; }
+    else { label = '🧪 Bloods: not specified'; cls = 'cdm-bloods-unknown'; }
+
+    if (sub.bloodsExtraList) {
+      return '<div class="cdm-bloods-row"><span class="cdm-bloods-badge ' + cls + '">' + label + '</span>'
+        + '<span class="cdm-bloods-list"><strong>List:</strong> ' + escapeHtml(sub.bloodsExtraList) + '</span></div>';
+    }
+    return '<div class="cdm-bloods-row"><span class="cdm-bloods-badge ' + cls + '">' + label + '</span></div>';
+  }
+
   function fmtDate(iso) {
     try {
       return new Date(iso).toLocaleString('en-IE',{
@@ -6905,6 +6924,7 @@ async function submitFeedback() {
       + '</div>'
       + '<div class="cdm-card-body">'
         + bookingGuidanceHtml(sub)
+        + bloodsPreferenceHtml(sub)
         + '<div class="cdm-detail-row"><span class="cdm-detail-label">DOB</span><span class="cdm-detail-val">' + dob + '</span></div>'
         + '<div class="cdm-detail-row"><span class="cdm-detail-label">Phone</span><span class="cdm-detail-val"><a href="tel:' + (sub.phone||'') + '" style="color:var(--teal)">' + (sub.phone||'—') + '</a></span></div>'
         + '<div class="cdm-detail-row"><span class="cdm-detail-label">Email</span><span class="cdm-detail-val"><a href="mailto:' + (sub.email||'') + '" style="color:var(--teal)">' + (sub.email||'—') + '</a></span></div>'
