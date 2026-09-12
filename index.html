@@ -141,6 +141,16 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
 .step-hide-toggle:hover{border-color:var(--grey-400);color:var(--grey-700)}
 .journey-step.step-collapsed .step-hide-toggle{display:none}
 
+/* Finding & Reminding — side-by-side subsections */
+.fr-columns{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+@media(max-width:760px){.fr-columns{grid-template-columns:1fr}}
+.fr-col-heading{font-size:0.95rem;font-weight:700;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.fr-conditions-list{font-size:0.79rem;line-height:1.6;margin:0;padding:0;list-style:none}
+.fr-conditions-list li{padding:6px 0;border-bottom:1px solid var(--grey-200)}
+.fr-conditions-list li:last-child{border-bottom:none}
+.fr-conditions-list .fr-cond-name{font-weight:700;color:var(--navy)}
+.fr-conditions-list .fr-cond-aka{color:var(--grey-400)}
+
 /* CDM INBOX */
 .cdm-filter-btn{font-size:0.75rem;padding:5px 14px;border:1.5px solid var(--grey-200);border-radius:20px;background:#fff;color:var(--grey-700);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all 0.15s}
 .cdm-filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
@@ -1337,39 +1347,123 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
     </div>
     <div class="sop-body">
       <div class="info-box" style="margin-bottom:16px">
-        Use the steps below to identify patients who should be on the CDM or Prevention Programme but are not yet enrolled. Run this at least <strong>every 3 months</strong> — a reminder badge appears in the topbar for the Practice Manager to prompt it — and whenever a new patient is registered with a qualifying condition.
+        Use the steps below to identify patients who should be on the CDM or Prevention Programme but are not yet enrolled, then invite them in. Run this at least <strong>every 3 months</strong> — a reminder badge appears in the topbar for the Practice Manager to prompt it — and whenever a new patient is registered with a qualifying condition.
       </div>
-      <div class="journey">
 
-        <div class="journey-step">
-          <div class="step-dot dot-pm" style="font-size:0.65rem">1</div>
-          <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">Practice Manager</div>
-            <div class="step-title">Run the CDM Finder in Socrates</div>
-            <div class="step-detail">
-              <ul>
-                <li>Open Socrates and run the <strong>CDM Finder</strong> — follow the steps it walks you through to pull the list of patients it flags as qualifying for CDM or the Prevention Programme</li>
-                <li><strong>Not sure a flagged patient genuinely qualifies?</strong> Ask the clinical team (GP or nurse) before enrolling — don't guess</li>
-                <li>For each patient confirmed to qualify: enrol them on the correct programme in Socrates (<strong>CDM tab</strong> → add condition → set enrolment date &amp; review due date), then <strong>email them the relevant Pre-Appointment Form</strong> — <a href="https://coruscating-dusk-a3bdf9.netlify.app/cdm-form" target="_blank">CDM Form ↗</a> or <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form ↗</a></li>
-                <li>Do <strong>not</strong> book an appointment until the completed form has been returned</li>
-              </ul>
+      <div class="fr-columns">
+
+        <!-- FINDING -->
+        <div>
+          <div class="fr-col-heading">🔍 Finding — Identify Who Qualifies</div>
+          <div class="journey">
+
+            <div class="journey-step">
+              <div class="step-dot dot-pm" style="font-size:0.65rem">1</div>
+              <div class="step-content step-content-pm">
+                <div class="step-role step-role-pm">Practice Manager</div>
+                <div class="step-title">Run the CDM Finder in Socrates</div>
+                <div class="step-detail">
+                  Open Socrates and run the <strong>CDM Finder</strong> — it generates a list of "Potential" and "Probable" patients who may qualify for CDM or the Prevention Programme. Full walkthrough: <a href="https://www.socrates.ie/wp-content/uploads/2025/06/SocratesGP_CDMFinder_Potentials.pdf" target="_blank">Socrates CDM Finder — Potentials Guide ↗</a>
+                </div>
+              </div>
             </div>
+
+            <div class="journey-step">
+              <div class="step-dot dot-pm" style="font-size:0.65rem">2</div>
+              <div class="step-content step-content-pm">
+                <div class="step-role step-role-pm">Practice Manager / Clinical Team</div>
+                <div class="step-title">Go Through the List</div>
+                <div class="step-detail">
+                  Open each flagged patient's chart and check their history against the <strong>conditions that count</strong> below to see whether they genuinely qualify for CDM or PP.
+                  <ul>
+                    <li><strong>Unsure if a patient qualifies?</strong> Ask a GP or nurse before enrolling — don't guess, and don't rely on the finder alone</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="journey-step">
+              <div class="step-dot dot-pm" style="font-size:0.65rem">3</div>
+              <div class="step-content step-content-pm">
+                <div class="step-role step-role-pm">Practice Manager</div>
+                <div class="step-title">Age / QRISK Catch-All</div>
+                <div class="step-detail">
+                  Separately from whatever the CDM Finder surfaces, check for patients <strong>not already on CDM or PP</strong> who are <strong>male, aged over 70</strong>, or <strong>female, aged over 75</strong> — these automatically qualify for the <strong>Prevention Programme via QRISK ≥ 20%</strong>, regardless of what the finder flags.
+                </div>
+              </div>
+            </div>
+
+            <div class="journey-step">
+              <div class="step-dot dot-pm" style="font-size:0.65rem">4</div>
+              <div class="step-content step-content-pm">
+                <div class="step-role step-role-pm">Practice Manager</div>
+                <div class="step-title">Qualifies? Enrol Them</div>
+                <div class="step-detail">
+                  Enrol the patient on the correct programme in Socrates (<strong>CDM tab</strong> → add condition → set enrolment date &amp; review due date), then move to <strong>Reminding</strong> (right) to invite them in. Do <strong>not</strong> book an appointment until their completed pre-appointment form has been returned.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div style="margin-top:14px">
+            <div class="fr-col-heading" style="font-size:0.85rem">📋 Conditions That Count (CDM)</div>
+            <div class="info-box" style="margin-bottom:8px;font-size:0.76rem">
+              Written with plain-English alternatives so non-clinical staff can match what's actually written in a patient's notes. The <strong>Prevention Programme (PP) has no condition list</strong> — it's based purely on the age/QRISK catch-all above or a QRISK score the clinical team calculates.
+            </div>
+            <ul class="fr-conditions-list">
+              <li><span class="fr-cond-name">Type 2 Diabetes</span> — <span class="fr-cond-aka">diabetes, sugar diabetes, high blood sugar, T2DM</span></li>
+              <li><span class="fr-cond-name">Asthma</span> — <span class="fr-cond-aka">wheezy chest, reactive airway disease</span></li>
+              <li><span class="fr-cond-name">COPD</span> — <span class="fr-cond-aka">emphysema, chronic bronchitis, smoker's lung, COAD</span></li>
+              <li><span class="fr-cond-name">Hypertension</span> — <span class="fr-cond-aka">high blood pressure, HBP, HTN</span></li>
+              <li><span class="fr-cond-name">Ischaemic Heart Disease</span> — <span class="fr-cond-aka">coronary artery disease, angina, heart attack, myocardial infarction / MI, stent, bypass / CABG</span></li>
+              <li><span class="fr-cond-name">Heart Failure</span> — <span class="fr-cond-aka">weak heart, cardiac failure, congestive heart failure / CHF, fluid on the lungs</span></li>
+              <li><span class="fr-cond-name">Atrial Fibrillation</span> — <span class="fr-cond-aka">AF, AFib, irregular heartbeat, irregular heart rhythm</span></li>
+              <li><span class="fr-cond-name">Stroke / TIA</span> — <span class="fr-cond-aka">mini-stroke, CVA, transient ischaemic attack</span></li>
+            </ul>
           </div>
         </div>
 
-        <div class="journey-step">
-          <div class="step-dot dot-pm" style="font-size:0.65rem">2</div>
-          <div class="step-content step-content-pm">
-            <div class="step-role step-role-pm">Practice Manager</div>
-            <div class="step-title">Age / QRISK Catch-All</div>
-            <div class="step-detail">
-              Separately from whatever the CDM Finder itself surfaces, check for patients <strong>not already on CDM or PP</strong> who are:
-              <ul>
-                <li><strong>Male, aged over 70</strong>, or</li>
-                <li><strong>Female, aged over 75</strong></li>
-              </ul>
-              These patients automatically qualify for the <strong>Prevention Programme via QRISK ≥ 20%</strong>, regardless of what the CDM Finder flags. Enrol them on PP in Socrates and email them the <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form ↗</a>.
+        <!-- REMINDING -->
+        <div>
+          <div class="fr-col-heading">📣 Reminding — Invite Them to Book</div>
+          <div class="journey">
+
+            <div class="journey-step">
+              <div class="step-dot dot-sec" style="font-size:0.65rem">1</div>
+              <div class="step-content step-content-sec">
+                <div class="step-role step-role-sec">Secretary</div>
+                <div class="step-title">Text Them</div>
+                <div class="step-detail">
+                  <div class="cdm-reminder-widget" style="background:white;border:1px solid #ddd6fe;border-radius:8px;padding:12px 14px;margin-top:6px">
+                    <div style="font-weight:600;font-size:0.8rem;margin-bottom:8px;color:var(--col-sec)">📱 SMS Template</div>
+                    <div id="cdm-invite-sms-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.6;color:var(--text)">Hi [Name], our records show you're entitled to avail of Kinsealy MC's CDM programme at no charge. Please complete this quick form so we can book you in: https://coruscating-dusk-a3bdf9.netlify.app/cdm-form Questions? Call the surgery.</div>
+                    <div style="font-size:0.72rem;color:var(--grey-400);margin-top:4px">Texting a PP patient instead? Swap "CDM programme" for "Prevention Programme" and use the <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form</a> link.</div>
+                    <button class="cdm-reminder-btn" style="margin-top:8px" onclick="(function(){var t=document.getElementById('cdm-invite-sms-template');navigator.clipboard.writeText(t.innerText).then(function(){var b=event.target;b.textContent='Copied!';setTimeout(function(){b.textContent='Copy text'},1800)})})()">Copy text</button>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <div class="journey-step">
+              <div class="step-dot dot-sec" style="font-size:0.65rem">2</div>
+              <div class="step-content step-content-sec">
+                <div class="step-role step-role-sec">Secretary</div>
+                <div class="step-title">Email Them</div>
+                <div class="step-detail">
+                  <div class="cdm-reminder-widget" style="background:white;border:1px solid #ddd6fe;border-radius:8px;padding:12px 14px;margin-top:6px">
+                    <div style="font-weight:600;font-size:0.8rem;margin-bottom:8px;color:var(--col-sec)">✉️ Email Template</div>
+                    <div id="cdm-invite-email-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.7;color:var(--text)">Subject: You're eligible for our free CDM programme — Kinsealy Medical Centre<br><br>Dear [Patient Name],<br><br>Our records show that, based on your medical history, you're entitled to avail of Kinsealy Medical Centre's Chronic Disease Management (CDM) programme. This is provided at no charge to eligible patients and includes a structured review of your condition along with routine bloods and monitoring.<br><br>To book your appointment, please complete the short pre-appointment form below (it only takes a few minutes) and a member of our team will be in touch to arrange a suitable time:<br>👉 https://coruscating-dusk-a3bdf9.netlify.app/cdm-form<br><br>If you're unable to complete it online, a paper copy is attached — please fill it in and drop it back to reception, or bring it with you on the day.<br><br>If you have any questions, or believe this doesn't apply to you, please don't hesitate to contact the practice.<br><br>Kind regards,<br>Kinsealy Medical Centre</div>
+                    <div style="font-size:0.72rem;color:var(--grey-400);margin-top:4px">For a PP patient: replace "Chronic Disease Management (CDM) programme" with "Prevention Programme", swap the form link for the <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form</a>, and attach the <a href="cdm-paper-form.html" target="_blank">paper form ↗</a> only if the patient may need it.</div>
+                    <button class="cdm-reminder-btn" style="margin-top:8px" onclick="(function(){var t=document.getElementById('cdm-invite-email-template');navigator.clipboard.writeText(t.innerText).then(function(){var b=event.target;b.textContent='Copied!';setTimeout(function(){b.textContent='Copy text'},1800)})})()">Copy text</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="info-box" style="margin-top:10px;font-size:0.76rem">
+            This is the one-off invite for a <strong>newly identified</strong> patient. Already-enrolled patients who are overdue for their review get a separate <strong>monthly bulk-text reminder</strong> instead — see <a href="#" onclick="goToSOP('cdm','sop-cdm-claiming');return false;">CDM / PP Submission &amp; Claiming ↗</a>.
           </div>
         </div>
 
