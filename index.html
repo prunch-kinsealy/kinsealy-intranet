@@ -1428,6 +1428,10 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
         <!-- REMINDING -->
         <div>
           <div class="fr-col-heading">📣 Reminding — Invite Them to Book</div>
+          <div class="cdm-invite-type-toggle" style="margin-bottom:10px">
+            <button type="button" class="cdm-filter-btn active" id="cdm-invite-type-cdm" onclick="setCdmInviteType('cdm')">CDM patient</button>
+            <button type="button" class="cdm-filter-btn" id="cdm-invite-type-pp" onclick="setCdmInviteType('pp')">PP patient</button>
+          </div>
           <div class="journey">
 
             <div class="journey-step">
@@ -1438,8 +1442,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                 <div class="step-detail">
                   <div class="cdm-reminder-widget" style="background:white;border:1px solid #ddd6fe;border-radius:8px;padding:12px 14px;margin-top:6px">
                     <div style="font-weight:600;font-size:0.8rem;margin-bottom:8px;color:var(--col-sec)">📱 SMS Template</div>
-                    <div id="cdm-invite-sms-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.6;color:var(--text)">Hi [Name], our records show you're entitled to avail of Kinsealy MC's CDM programme at no charge. Please complete this quick form so we can book you in: https://coruscating-dusk-a3bdf9.netlify.app/cdm-form Questions? Call the surgery.</div>
-                    <div style="font-size:0.72rem;color:var(--grey-400);margin-top:4px">Texting a PP patient instead? Swap "CDM programme" for "Prevention Programme" and use the <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form</a> link.</div>
+                    <div id="cdm-invite-sms-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.6;color:var(--text)">Hi [Name], our records show you're entitled to avail of Kinsealy MC's CDM programme at no charge. Please complete this quick form so we can book you in: kinsealymedicalcentre.ie/cdm-form Questions? Call the surgery.</div>
                     <button class="cdm-reminder-btn" style="margin-top:8px" onclick="(function(){var t=document.getElementById('cdm-invite-sms-template');navigator.clipboard.writeText(t.innerText).then(function(){var b=event.target;b.textContent='Copied!';setTimeout(function(){b.textContent='Copy text'},1800)})})()">Copy text</button>
                   </div>
                 </div>
@@ -1454,8 +1457,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
                 <div class="step-detail">
                   <div class="cdm-reminder-widget" style="background:white;border:1px solid #ddd6fe;border-radius:8px;padding:12px 14px;margin-top:6px">
                     <div style="font-weight:600;font-size:0.8rem;margin-bottom:8px;color:var(--col-sec)">✉️ Email Template</div>
-                    <div id="cdm-invite-email-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.7;color:var(--text)">Subject: You're eligible for our free CDM programme — Kinsealy Medical Centre<br><br>Dear [Patient Name],<br><br>Our records show that, based on your medical history, you're entitled to avail of Kinsealy Medical Centre's Chronic Disease Management (CDM) programme. This is provided at no charge to eligible patients and includes a structured review of your condition along with routine bloods and monitoring.<br><br>To book your appointment, please complete the short pre-appointment form below (it only takes a few minutes) and a member of our team will be in touch to arrange a suitable time:<br>👉 https://coruscating-dusk-a3bdf9.netlify.app/cdm-form<br><br>If you're unable to complete it online, a paper copy is attached — please fill it in and drop it back to reception, or bring it with you on the day.<br><br>If you have any questions, or believe this doesn't apply to you, please don't hesitate to contact the practice.<br><br>Kind regards,<br>Kinsealy Medical Centre</div>
-                    <div style="font-size:0.72rem;color:var(--grey-400);margin-top:4px">For a PP patient: replace "Chronic Disease Management (CDM) programme" with "Prevention Programme", swap the form link for the <a href="https://coruscating-dusk-a3bdf9.netlify.app/prevention-form" target="_blank">Prevention Programme Form</a>, and attach the <a href="cdm-paper-form.html" target="_blank">paper form ↗</a> only if the patient may need it.</div>
+                    <div id="cdm-invite-email-template" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px 12px;font-size:0.79rem;line-height:1.7;color:var(--text)">Subject: You're eligible for our free CDM programme — Kinsealy Medical Centre<br><br>Dear [Patient Name],<br><br>Our records show that, based on your medical history, you're entitled to avail of Kinsealy Medical Centre's Chronic Disease Management (CDM) programme. This is provided at no charge to eligible patients and includes a structured review of your condition along with routine bloods and monitoring.<br><br>To book your appointment, please complete the short pre-appointment form below (it only takes a few minutes) and a member of our team will be in touch to arrange a suitable time:<br>👉 kinsealymedicalcentre.ie/cdm-form<br><br>If you have any questions, or believe this doesn't apply to you, please don't hesitate to contact the practice.<br><br>Kind regards,<br>Kinsealy Medical Centre</div>
                     <button class="cdm-reminder-btn" style="margin-top:8px" onclick="(function(){var t=document.getElementById('cdm-invite-email-template');navigator.clipboard.writeText(t.innerText).then(function(){var b=event.target;b.textContent='Copied!';setTimeout(function(){b.textContent='Copy text'},1800)})})()">Copy text</button>
                   </div>
                 </div>
@@ -1463,6 +1465,7 @@ nav a.nav-sublink .nav-icon{font-size:0.85rem;width:16px}
             </div>
 
           </div>
+          <div class="info-box" style="margin-top:10px;font-size:0.76rem">Pick <strong>CDM patient</strong> or <strong>PP patient</strong> above and both templates update automatically — no manual swapping needed.</div>
           <div class="info-box" style="margin-top:10px;font-size:0.76rem">
             This is the one-off invite for a <strong>newly identified</strong> patient. Already-enrolled patients who are overdue for their review get a separate <strong>monthly bulk-text reminder</strong> instead — see <a href="#" onclick="goToSOP('cdm','sop-cdm-claiming');return false;">CDM / PP Submission &amp; Claiming ↗</a>.
           </div>
@@ -4831,6 +4834,31 @@ function jumpToCDMFlowTarget(anchorId) {
   void el.offsetWidth; // restart animation if clicked again
   el.classList.add('cdm-jump-highlight');
   setTimeout(() => el.classList.remove('cdm-jump-highlight'), 1500);
+}
+
+// CDM/PP INVITE TEMPLATES — one click swaps both the SMS and email text
+const CDM_INVITE_TEMPLATES = {
+  cdm: {
+    sms: `Hi [Name], our records show you're entitled to avail of Kinsealy MC's CDM programme at no charge. Please complete this quick form so we can book you in: kinsealymedicalcentre.ie/cdm-form Questions? Call the surgery.`,
+    email: `Subject: You're eligible for our free CDM programme — Kinsealy Medical Centre<br><br>Dear [Patient Name],<br><br>Our records show that, based on your medical history, you're entitled to avail of Kinsealy Medical Centre's Chronic Disease Management (CDM) programme. This is provided at no charge to eligible patients and includes a structured review of your condition along with routine bloods and monitoring.<br><br>To book your appointment, please complete the short pre-appointment form below (it only takes a few minutes) and a member of our team will be in touch to arrange a suitable time:<br>👉 kinsealymedicalcentre.ie/cdm-form<br><br>If you have any questions, or believe this doesn't apply to you, please don't hesitate to contact the practice.<br><br>Kind regards,<br>Kinsealy Medical Centre`
+  },
+  pp: {
+    sms: `Hi [Name], our records show you're entitled to avail of Kinsealy MC's Prevention Programme at no charge. Please complete this quick form so we can book you in: kinsealymedicalcentre.ie/prevention-form Questions? Call the surgery.`,
+    email: `Subject: You're eligible for our free Prevention Programme — Kinsealy Medical Centre<br><br>Dear [Patient Name],<br><br>Our records show that, based on your age and cardiovascular risk profile, you're entitled to avail of Kinsealy Medical Centre's Prevention Programme. This is provided at no charge to eligible patients and includes a structured health review along with routine bloods and monitoring.<br><br>To book your appointment, please complete the short pre-appointment form below (it only takes a few minutes) and a member of our team will be in touch to arrange a suitable time:<br>👉 kinsealymedicalcentre.ie/prevention-form<br><br>If you have any questions, or believe this doesn't apply to you, please don't hesitate to contact the practice.<br><br>Kind regards,<br>Kinsealy Medical Centre`
+  }
+};
+
+function setCdmInviteType(type) {
+  const t = CDM_INVITE_TEMPLATES[type];
+  if(!t) return;
+  const smsEl = document.getElementById('cdm-invite-sms-template');
+  const emailEl = document.getElementById('cdm-invite-email-template');
+  if(smsEl) smsEl.innerHTML = t.sms;
+  if(emailEl) emailEl.innerHTML = t.email;
+  const cdmBtn = document.getElementById('cdm-invite-type-cdm');
+  const ppBtn = document.getElementById('cdm-invite-type-pp');
+  if(cdmBtn) cdmBtn.classList.toggle('active', type === 'cdm');
+  if(ppBtn) ppBtn.classList.toggle('active', type === 'pp');
 }
 
 // CDM BULK TEXT REMINDER TRACKER — shared via cdm-bulk-text.json (monthly cadence)
