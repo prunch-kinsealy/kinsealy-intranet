@@ -65,26 +65,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .section-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--grey-400);margin:14px 0 8px}
 .section-label:first-of-type{margin-top:0}
 
-.slots{display:flex;flex-direction:column;gap:8px}
-.slot-row{display:flex;align-items:center;gap:10px}
-.slot-row .slot-label{font-size:0.78rem;color:var(--grey-700);width:230px;flex-shrink:0}
-.slot-row select{flex:1;border:1px solid var(--grey-200);border-radius:8px;padding:8px 10px;font-size:0.82rem;font-family:'DM Sans',sans-serif;background:#fff}
-.slot-row select.is-empty{border-color:#fca5a5;color:#dc2626}
-.phleb-tag{font-size:0.65rem;background:var(--teal-pale);color:var(--teal);padding:1px 6px;border-radius:6px;margin-left:6px}
-
 .room-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 10px;background:var(--grey-100);border-radius:8px;font-size:0.8rem;color:var(--grey-700)}
 .room-row + .room-row{margin-top:6px}
 .room-row .room-name{font-weight:600;color:var(--navy)}
 .room-row .room-label{font-size:0.72rem;color:var(--teal);font-weight:600}
+.room-row.is-unfilled .room-name{color:#dc2626}
+.room-row.is-unfilled .room-label{color:#dc2626}
 .rooms-empty{font-size:0.76rem;color:var(--grey-400)}
 
 .warn-banner{background:#fee2e2;color:#991b1b;border-radius:8px;padding:8px 12px;font-size:0.76rem;margin-top:12px}
-.day-actions{margin-top:12px;display:flex;gap:8px}
-
-@media(max-width:600px){
-  .slot-row{flex-direction:column;align-items:stretch}
-  .slot-row .slot-label{width:auto}
-}
 </style>
 </head>
 <body>
@@ -103,7 +92,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 <div id="app">
   <div class="page-header">
     <h2>Staff Rota</h2>
-    <p>Weekly cover for the whole practice — reception/phlebotomy and the consulting rooms. Bank holidays are detected automatically. Who's off comes from each person's status on the Staff Hub homepage — use "+ Set Status" there (or My Leave) to mark someone away; it shows up here automatically.</p>
+    <p>Weekly cover for the whole practice — reception/phlebotomy and the consulting rooms. This is a fully automatic schedule: it's computed from each person's normal work days, bank holidays, and whoever's currently marked away on the Staff Hub homepage ("+ Set Status" / My Leave) — there's nothing to fill in here.</p>
   </div>
 
   <div class="rules-panel">
@@ -140,9 +129,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 </div>
 
 <script>
-const GH_FILE = 'rota.json';
 const AWAY_GH_FILE = 'away-status.json';
-const CURRENT_USER = sessionStorage.getItem('kmc-display') || 'Staff';
 
 const STAFF = {
   edel:     { name: 'Edel',     days: [4,5],       phlebotomist: false },
@@ -169,10 +156,11 @@ function personName(u){ return (STAFF[u] || CLINICAL[u] || {}).name || u; }
 
 const ALL_USERNAMES = STAFF_ORDER.concat(CLINICAL_ORDER);
 
-let rotaData = {};       // loaded from GH_FILE: { "YYYY-MM-DD": { slots:{...} } }
 let awayData = {};       // loaded from AWAY_GH_FILE: { username: { departureDate, returnDate, status, ... } } —
                          // the same "Set Status" / My Leave data shown on the homepage; who's off on a
-                         // given day is derived from this, not tracked separately here.
+                         // given day is derived from this. The rest of the rota (who's on reception,
+                         // phlebotomy, or in a consulting room) is fully computed, not stored — there's
+                         // nothing else to load or save.
 let weekMonday = mondayOf(new Date());
 const bhCache = {};      // year -> Set of ISO date strings
 
@@ -301,7 +289,7 @@ function buildDaySlots(dayType, available){
   return { slots, assign };
 }
 
-// ── GH proxy load/save ──
+// ── GH proxy load (read-only — this page has nothing to save) ──
 function kmcAuthHeader(){ const t = sessionStorage.getItem('kmc-token'); return t ? { 'Authorization': 'Bearer ' + t } : {}; }
 
 async function fetchFile(file){
@@ -311,45 +299,12 @@ async function fetchFile(file){
   const j = await r.json();
   return j.json || {};
 }
-function fetchLatest(){ return fetchFile(GH_FILE); }
-async function saveAll(data){
-  const r = await fetch('/.netlify/functions/gh-proxy', {
-    method: 'POST',
-    headers: Object.assign({ 'Content-Type': 'application/json' }, kmcAuthHeader()),
-    body: JSON.stringify({ file: GH_FILE, content: data, message: 'Update rota ' + new Date().toISOString().slice(0,10) + ' — ' + CURRENT_USER })
-  });
-  if (r.status === 401) { sessionStorage.clear(); location.replace('login.html'); throw new Error('Session expired'); }
-  if (!r.ok) throw new Error('save failed');
-}
-async function mutate(fn){
-  // Apply the change to what's on screen right away, so a slot edit
-  // recalculates the day instantly instead of waiting on a network
-  // round-trip. The fetch-latest-then-save below still re-applies the same
-  // change on top of the current server copy before persisting, so a
-  // concurrent edit from someone else isn't clobbered.
-  fn(rotaData);
-  renderWeek();
 
-  const status = document.getElementById('sync-status');
-  status.textContent = 'Saving…';
-  try{
-    const fresh = await fetchLatest();
-    const updated = fn(fresh) || fresh;
-    await saveAll(updated);
-    rotaData = updated;
-    status.textContent = '✓ Synced';
-    renderWeek();
-  }catch(e){
-    status.textContent = 'Save failed — try again';
-  }
-}
 async function loadRota(){
   const status = document.getElementById('sync-status');
   status.textContent = 'Loading…';
-  try{
-    [rotaData, awayData] = await Promise.all([fetchLatest(), fetchFile(AWAY_GH_FILE)]);
-    status.textContent = '✓ Synced';
-  }catch(e){ status.textContent = 'Offline or error'; }
+  try{ awayData = await fetchFile(AWAY_GH_FILE); status.textContent = '✓ Synced'; }
+  catch(e){ status.textContent = 'Offline or error'; }
   renderWeek();
 }
 
@@ -360,8 +315,6 @@ async function refreshAvailability(){
   catch(e){ status.textContent = 'Refresh failed — try again'; }
   renderWeek();
 }
-
-function dayEntry(iso){ return rotaData[iso] || { slots: {} }; }
 
 // ── week navigation ──
 function shiftWeek(n){ weekMonday = addDays(weekMonday, n*7); renderWeek(); }
@@ -376,41 +329,8 @@ function toggleRules(){
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-function roomRow(name, room){
-  return '<div class="room-row"><span class="room-name">' + escapeHtml(name) + '</span><span class="room-label">' + escapeHtml(room) + '</span></div>';
-}
-
-// A slot key absent from entry.slots means "not yet decided — show the
-// auto-suggestion". Choosing "— unfilled —" stores an explicit null so a
-// deliberately-cleared slot doesn't just snap back to the suggestion.
-function setSlot(iso, slotId, value){
-  mutate(fresh => {
-    const entry = fresh[iso] || { slots: {} };
-    entry.slots = entry.slots || {};
-    entry.slots[slotId] = value || null;
-    fresh[iso] = entry;
-    return fresh;
-  });
-}
-
-function autoFillDay(iso, dow){
-  mutate(fresh => {
-    const entry = fresh[iso] || { slots: {} };
-    const leaveSet = new Set(STAFF_ORDER.filter(u => isAwayOn(u, iso)));
-    const dayType = dayTypeFor(new Date(iso + 'T12:00:00'));
-    entry.slots = buildDaySlots(dayType, availableFor(dow, leaveSet)).assign;
-    fresh[iso] = entry;
-    return fresh;
-  });
-}
-
-function clearDay(iso){
-  mutate(fresh => {
-    const entry = fresh[iso] || { slots: {} };
-    entry.slots = {};
-    fresh[iso] = entry;
-    return fresh;
-  });
+function roomRow(name, room, unfilled){
+  return '<div class="room-row' + (unfilled ? ' is-unfilled' : '') + '"><span class="room-name">' + escapeHtml(name) + '</span><span class="room-label">' + escapeHtml(room) + '</span></div>';
 }
 
 // ── render ──
@@ -434,8 +354,6 @@ function renderDay(date){
   const iso = fmtISO(date);
   const dow = date.getDay();
   const dayType = dayTypeFor(date);
-  const entry = dayEntry(iso);
-  const savedSlots = entry.slots || {};
   const leaveSet = new Set(ALL_USERNAMES.filter(u => isAwayOn(u, iso)));
   const roster = rosterFor(dow);
   const available = availableFor(dow, leaveSet);
@@ -447,30 +365,13 @@ function renderDay(date){
 
   const built = buildDaySlots(dayType, available);
   const slots = built.slots;
-  const suggested = built.assign;
-
-  // A slot not yet touched by anyone falls back to the suggestion; a slot
-  // explicitly set to null (someone picked "— unfilled —") stays blank. A
-  // slot saved with someone who's since gone on leave is treated the same
-  // as untouched, so ticking someone off immediately recalculates who's
-  // needed instead of leaving a stale, now-unavailable name in place.
-  const assignments = {};
-  slots.forEach(s => {
-    const hasSaved = Object.prototype.hasOwnProperty.call(savedSlots, s.id);
-    const saved = hasSaved ? savedSlots[s.id] : undefined;
-    assignments[s.id] = (saved && !available.includes(saved)) ? suggested[s.id] : (hasSaved ? saved : suggested[s.id]);
-  });
-
-  const usedElsewhere = {};
-  slots.forEach(s => {
-    Object.keys(assignments).forEach(k => { if (k !== s.id && assignments[k]) { usedElsewhere[s.id] = usedElsewhere[s.id] || new Set(); usedElsewhere[s.id].add(assignments[k]); } });
-  });
+  const assign = built.assign;
 
   const receptionSlots = slots.filter(s => s.type === 'reception');
-  const receptionFilled = receptionSlots.filter(s => assignments[s.id]).length;
+  const receptionFilled = receptionSlots.filter(s => assign[s.id]).length;
 
-  // Off-today is read-only here — leave is set from each person's status on
-  // the Staff Hub homepage ("+ Set Status" / My Leave), not on this page.
+  // Off-today is informational only — leave is set from each person's status
+  // on the Staff Hub homepage ("+ Set Status" / My Leave), not on this page.
   const offToday = Array.from(leaveSet).filter(u => roster.includes(u) || clinicalRoster.includes(u));
   const offTodayHtml = offToday.length
     ? '<div class="off-today">Off today: ' + offToday.map(u => {
@@ -487,24 +388,16 @@ function renderDay(date){
   const phlebSlotsList = slots.filter(s => s.type === 'phleb');
   const amFirst = dow % 2 === 0;
   const slotsHtml = slots.map(s => {
-    const conflictSet = usedElsewhere[s.id] || new Set();
-    const opts = available.filter(u => !conflictSet.has(u));
-    const current = assignments[s.id] || '';
-    const optionsHtml = ['<option value="">— unfilled —</option>']
-      .concat(opts.map(u => '<option value="' + u + '"' + (u === current ? ' selected' : '') + '>' + escapeHtml(STAFF[u].name) + (STAFF[u].phlebotomist ? ' 🩸' : '') + '</option>'))
-      .join('');
-    let tag = '';
-    if (s.type === 'phleb'){
-      if (phlebSlotsList.length > 1){
-        const idx = phlebSlotsList.indexOf(s);
-        const isAM = idx === 0 ? amFirst : !amFirst;
-        tag = '<span class="phleb-tag">phlebotomy room — ' + (isAM ? 'AM' : 'PM') + '</span>';
-      } else {
-        tag = '<span class="phleb-tag">phlebotomy room</span>';
-      }
+    const person = assign[s.id];
+    let label = s.label;
+    if (s.type === 'phleb' && phlebSlotsList.length > 1){
+      const idx = phlebSlotsList.indexOf(s);
+      const isAM = idx === 0 ? amFirst : !amFirst;
+      label = s.label + ' — ' + (isAM ? 'AM' : 'PM');
     }
-    return '<div class="slot-row"><span class="slot-label">' + escapeHtml(s.label) + tag + '</span>' +
-      '<select class="' + (current ? '' : 'is-empty') + '" onchange="setSlot(\'' + iso + '\',\'' + s.id + '\',this.value)">' + optionsHtml + '</select></div>';
+    return person
+      ? roomRow(STAFF[person].name, label)
+      : roomRow('Unfilled', label, true);
   }).join('');
 
   const warn = receptionFilled < receptionSlots.length
@@ -525,12 +418,8 @@ function renderDay(date){
     '</div>' +
     offTodayHtml +
     '<div class="section-label">Reception / Phlebotomy</div>' +
-    '<div class="slots">' + slotsHtml + '</div>' +
+    slotsHtml +
     warn +
-    '<div class="day-actions">' +
-      '<button class="btn btn-outline btn-sm" onclick="autoFillDay(\'' + iso + '\',' + dow + ')">✨ Auto-fill</button>' +
-      '<button class="btn btn-outline btn-sm" onclick="clearDay(\'' + iso + '\')">Clear</button>' +
-    '</div>' +
     '<div class="section-label">Consulting Rooms</div>' +
     roomsHtml +
   '</div>';
