@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reception Rota — Kinsealy Staff Hub</title>
+<title>Staff Rota — Kinsealy Staff Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -62,9 +62,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .badge-ok{background:var(--teal-pale);color:var(--teal)}
 .badge-warn{background:#fee2e2;color:#dc2626}
 
-.leave-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed var(--grey-200)}
+.leave-group{margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed var(--grey-200)}
+.leave-group-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--grey-400);margin-bottom:6px}
+.leave-row{display:flex;flex-wrap:wrap;gap:12px}
 .leave-chk{display:flex;align-items:center;gap:5px;font-size:0.76rem;color:var(--grey-700)}
 .leave-chk input{accent-color:#dc2626;cursor:pointer}
+
+.section-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--grey-400);margin:14px 0 8px}
+.section-label:first-of-type{margin-top:0}
 
 .slots{display:flex;flex-direction:column;gap:8px}
 .slot-row{display:flex;align-items:center;gap:10px}
@@ -72,6 +77,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .slot-row select{flex:1;border:1px solid var(--grey-200);border-radius:8px;padding:8px 10px;font-size:0.82rem;font-family:'DM Sans',sans-serif;background:#fff}
 .slot-row select.is-empty{border-color:#fca5a5;color:#dc2626}
 .phleb-tag{font-size:0.65rem;background:var(--teal-pale);color:var(--teal);padding:1px 6px;border-radius:6px;margin-left:6px}
+
+.room-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 10px;background:var(--grey-100);border-radius:8px;font-size:0.8rem;color:var(--grey-700)}
+.room-row + .room-row{margin-top:6px}
+.room-row .room-name{font-weight:600;color:var(--navy)}
+.room-row .room-label{font-size:0.72rem;color:var(--teal);font-weight:600}
+.rooms-empty{font-size:0.76rem;color:var(--grey-400)}
 
 .warn-banner{background:#fee2e2;color:#991b1b;border-radius:8px;padding:8px 12px;font-size:0.76rem;margin-top:12px}
 .day-actions{margin-top:12px;display:flex;gap:8px}
@@ -88,7 +99,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 
 <div class="header">
   <div>
-    <h1>🗓️ Reception Rota</h1>
+    <h1>🗓️ Staff Rota</h1>
     <span>Kinsealy Staff Hub</span>
     <div class="sync-status" id="sync-status">Loading…</div>
   </div>
@@ -97,8 +108,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 
 <div id="app">
   <div class="page-header">
-    <h2>Reception Rota</h2>
-    <p>Weekly Reception / In office cover for Edel, Susan, Michaela, Holly and Amy — Michaela and Amy also cover Phlebotomy on days when Reception / In office doesn't need them. Bank holidays are detected automatically. Enter annual leave below by ticking anyone who's off — assume no-one is off until you do.</p>
+    <h2>Staff Rota</h2>
+    <p>Weekly cover for the whole practice — reception/phlebotomy and the consulting rooms. Bank holidays are detected automatically. Enter annual leave below by ticking anyone who's off — assume no-one is off until you do.</p>
   </div>
 
   <div class="rules-panel">
@@ -111,8 +122,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
         <tr><td>Every other day</td><td>2 on Reception / In office.</td></tr>
       </table>
       <p style="margin-top:10px">Only Michaela and Amy do phlebotomy. If Reception / In office already has enough people covered without them, whichever of the two isn't needed there covers phlebotomy instead — otherwise they're on reception like everyone else.</p>
+      <p style="margin-top:8px">There are 3 consulting rooms, 1 nurse room and 1 phlebotomy room. Doctors and the nurse are always in their room when they're in. If two people need phlebotomy at once and the nurse isn't in that day, the second phlebotomist uses the nurse room.</p>
       <div class="work-days">
-        <strong>Normal work days:</strong> Edel — Thu, Fri · Susan — Mon, Tue, Wed · Michaela — Mon–Fri (phlebotomist if available) · Holly — Mon–Fri · Amy — Mon, Tue, Wed (phlebotomist if available)
+        <strong>Normal work days — reception/phlebotomy:</strong> Edel — Thu, Fri · Susan — Mon, Tue, Wed · Michaela — Mon–Fri (phlebotomist if available) · Holly — Mon–Fri · Amy — Mon, Tue, Wed (phlebotomist if available)
+      </div>
+      <div class="work-days" style="margin-top:4px">
+        <strong>Normal work days — clinical:</strong> Dr Fran O'Reilly — Mon, Tue, Thu, Fri · Dr Joanne Dundon — Tue, Wed, Fri · Dr Ruth Devlin — Tue–Fri · Dr Ciara McDonagh — Mon, Wed, Thu · Nurse Laura McGrath — Tue, Wed, Thu, Fri
       </div>
     </div>
   </div>
@@ -141,6 +156,20 @@ const STAFF = {
   amy:      { name: 'Amy',      days: [1,2,3],     phlebotomist: true }
 };
 const STAFF_ORDER = ['edel','susan','michaela','holly','amy'];
+
+// Doctors and the nurse — a separate team from reception/phlebotomy, each
+// always in their own room when they're in (3 consulting rooms, 1 nurse
+// room; no reception/phlebotomy cover from this team, ever).
+const CLINICAL = {
+  fran:    { name: "Dr Fran O'Reilly",    days: [1,2,4,5], role: 'doctor' },
+  joanne:  { name: 'Dr Joanne Dundon',    days: [2,3,5],   role: 'doctor' },
+  ruth:    { name: 'Dr Ruth Devlin',      days: [2,3,4,5], role: 'doctor' },
+  ciara:   { name: 'Dr Ciara McDonagh',   days: [1,3,4],   role: 'doctor' },
+  laura:   { name: 'Nurse Laura McGrath', days: [2,3,4,5], role: 'nurse' }
+};
+const CLINICAL_ORDER = ['fran','joanne','ruth','ciara','laura'];
+
+function personName(u){ return (STAFF[u] || CLINICAL[u] || {}).name || u; }
 
 let rotaData = {};       // loaded from GH_FILE: { "YYYY-MM-DD": { leave:[...], slots:{...} } }
 let weekMonday = mondayOf(new Date());
@@ -226,6 +255,9 @@ const PHLEB_LABEL = 'Phlebotomy';
 // ── who's normally working + auto-suggest ──
 function rosterFor(dow){ return STAFF_ORDER.filter(u => STAFF[u].days.includes(dow)); }
 function availableFor(dow, leaveSet){ return rosterFor(dow).filter(u => !leaveSet.has(u)); }
+
+function clinicalRosterFor(dow){ return CLINICAL_ORDER.filter(u => CLINICAL[u].days.includes(dow)); }
+function clinicalAvailableFor(dow, leaveSet){ return clinicalRosterFor(dow).filter(u => !leaveSet.has(u)); }
 
 // Builds the day's slot list AND a suggested assignment together. Everyone
 // available is on one of two roles: Reception / In office, or Phlebotomy.
@@ -319,6 +351,10 @@ function toggleRules(){
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
+function roomRow(name, room){
+  return '<div class="room-row"><span class="room-name">' + escapeHtml(name) + '</span><span class="room-label">' + escapeHtml(room) + '</span></div>';
+}
+
 function toggleLeave(iso, username, checked){
   mutate(fresh => {
     const entry = fresh[iso] || { leave: [], slots: {} };
@@ -390,6 +426,11 @@ function renderDay(date){
   const roster = rosterFor(dow);
   const available = availableFor(dow, leaveSet);
 
+  const clinicalRoster = clinicalRosterFor(dow);
+  const clinicalAvailable = clinicalAvailableFor(dow, leaveSet);
+  const doctorsIn = clinicalAvailable.filter(u => CLINICAL[u].role === 'doctor');
+  const nurseIn = clinicalAvailable.filter(u => CLINICAL[u].role === 'nurse');
+
   const built = buildDaySlots(dayType, available);
   const slots = built.slots;
   const suggested = built.assign;
@@ -415,13 +456,22 @@ function renderDay(date){
   const receptionFilled = receptionSlots.filter(s => assignments[s.id]).length;
   const shortStaffed = available.length < dayType.receptionCount;
 
-  const leaveRow = roster.length
-    ? '<div class="leave-row">' + roster.map(u =>
+  function leaveGroup(label, people){
+    if (!people.length) return '';
+    return '<div class="leave-group">' +
+      '<div class="leave-group-label">' + escapeHtml(label) + '</div>' +
+      '<div class="leave-row">' + people.map(u =>
         '<label class="leave-chk"><input type="checkbox" ' + (leaveSet.has(u) ? 'checked' : '') +
-        ' onchange="toggleLeave(\'' + iso + '\',\'' + u + '\',this.checked)"> ' + escapeHtml(STAFF[u].name) + ' off</label>'
-      ).join('') + '</div>'
-    : '<div class="leave-row" style="color:var(--grey-400);font-size:0.76rem">No-one normally rostered this day.</div>';
+        ' onchange="toggleLeave(\'' + iso + '\',\'' + u + '\',this.checked)"> ' + escapeHtml(personName(u)) + ' off</label>'
+      ).join('') + '</div>' +
+    '</div>';
+  }
+  const leaveRow = leaveGroup('Reception / phlebotomy', roster) + leaveGroup('Clinical', clinicalRoster)
+    || '<div class="leave-group" style="color:var(--grey-400);font-size:0.76rem">No-one normally rostered this day.</div>';
 
+  // The 2nd+ phlebotomist normally shares the phlebotomy room, but uses the
+  // nurse's room instead on a day the nurse isn't in.
+  let phlebSeen = 0;
   const slotsHtml = slots.map(s => {
     const conflictSet = usedElsewhere[s.id] || new Set();
     const opts = available.filter(u => !conflictSet.has(u));
@@ -429,16 +479,26 @@ function renderDay(date){
     const optionsHtml = ['<option value="">— unfilled —</option>']
       .concat(opts.map(u => '<option value="' + u + '"' + (u === current ? ' selected' : '') + '>' + escapeHtml(STAFF[u].name) + (STAFF[u].phlebotomist ? ' 🩸' : '') + '</option>'))
       .join('');
-    const tag = s.type === 'phleb' ? '<span class="phleb-tag">phlebotomy</span>' : '';
+    let tag = '';
+    if (s.type === 'phleb'){
+      const usesNurseRoom = phlebSeen > 0 && !nurseIn.length;
+      tag = '<span class="phleb-tag">' + (usesNurseRoom ? 'nurse room' : 'phlebotomy room') + '</span>';
+      phlebSeen++;
+    }
     return '<div class="slot-row"><span class="slot-label">' + escapeHtml(s.label) + tag + '</span>' +
       '<select class="' + (current ? '' : 'is-empty') + '" onchange="setSlot(\'' + iso + '\',\'' + s.id + '\',this.value)">' + optionsHtml + '</select></div>';
   }).join('');
 
   const warn = receptionFilled < receptionSlots.length
-    ? '<div class="warn-banner">⚠️ Reception / In office is short today — not enough people available to cover it.' + (leaveSet.size ? ' (' + Array.from(leaveSet).map(u => STAFF[u].name).join(', ') + ' off.)' : '') + '</div>'
+    ? '<div class="warn-banner">⚠️ Reception / In office is short today — not enough people available to cover it.' + (leaveSet.size ? ' (' + Array.from(leaveSet).map(u => personName(u)).join(', ') + ' off.)' : '') + '</div>'
     : '';
 
   const ruleText = dayType.receptionCount + ' needed on Reception / In office';
+
+  const roomRows = doctorsIn.map(u => roomRow(CLINICAL[u].name, 'Consulting Room'))
+    .concat(nurseIn.map(u => roomRow(CLINICAL[u].name, 'Nurse Room')))
+    .join('');
+  const roomsHtml = roomRows || '<div class="rooms-empty">No doctors or nurse in today.</div>';
 
   return '<div class="day-card' + (dayType.tag ? ' is-bh-tweak' : '') + '">' +
     '<div class="day-head">' +
@@ -447,12 +507,15 @@ function renderDay(date){
         '<span class="badge ' + (shortStaffed ? 'badge-warn' : 'badge-ok') + '">' + available.length + ' available / ' + dayType.receptionCount + ' needed</span></div>' +
     '</div>' +
     leaveRow +
+    '<div class="section-label">Reception / Phlebotomy</div>' +
     '<div class="slots">' + slotsHtml + '</div>' +
     warn +
     '<div class="day-actions">' +
       '<button class="btn btn-outline btn-sm" onclick="autoFillDay(\'' + iso + '\',' + dow + ')">✨ Auto-fill</button>' +
       '<button class="btn btn-outline btn-sm" onclick="clearDay(\'' + iso + '\')">Clear</button>' +
     '</div>' +
+    '<div class="section-label">Consulting Rooms</div>' +
+    roomsHtml +
   '</div>';
 }
 
