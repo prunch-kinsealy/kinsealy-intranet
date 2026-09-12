@@ -98,22 +98,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 <div id="app">
   <div class="page-header">
     <h2>Reception Rota</h2>
-    <p>Weekly reception / back-office (phlebotomy) cover for Edel, Susan, Michaela, Holly and Amy. Bank holidays are detected automatically. Leave isn't pulled from leavedates.com yet — tick anyone who's off below so the day recalculates.</p>
+    <p>Weekly Reception / In office cover for Edel, Susan, Michaela, Holly and Amy — Michaela and Amy also cover Phlebotomy on days when Reception / In office doesn't need them. Bank holidays are detected automatically. Enter annual leave below by ticking anyone who's off — assume no-one is off until you do.</p>
   </div>
 
   <div class="rules-panel">
     <button class="rules-toggle" onclick="toggleRules()">📋 Rota rules &amp; who works which days <span id="rules-chevron">▾</span></button>
     <div class="rules-body" id="rules-body">
       <table>
-        <tr><td>Monday</td><td>2 on reception, 1 on phlebotomy.</td></tr>
-        <tr><td>Tuesday</td><td>1 on reception, 2 on phlebotomy.</td></tr>
-        <tr><td>Tuesday after a bank holiday</td><td>2 on reception, 1 on phlebotomy.</td></tr>
-        <tr><td>Wed / Thu / Fri</td><td>1 on reception, 2 on phlebotomy.</td></tr>
-        <tr><td>Friday before a bank holiday</td><td>2 on reception, 1 on phlebotomy.</td></tr>
+        <tr><td>Monday (all day)</td><td>3 on Reception / In office.</td></tr>
+        <tr><td>Tuesday after a bank holiday</td><td>3 on Reception / In office.</td></tr>
+        <tr><td>Friday before a bank holiday</td><td>3 on Reception / In office.</td></tr>
+        <tr><td>Every other day</td><td>2 on Reception / In office.</td></tr>
       </table>
-      <p style="margin-top:10px">Whoever is down for phlebotomy on a given day does bloods in the morning, comes back to reception around 11am to help out, then more phlebotomy in the afternoon — it's not a separate "all day out back, never on reception" role. If someone is free beyond what a day needs, they're shown as extra phlebotomy capacity rather than left idle.</p>
+      <p style="margin-top:10px">Only Michaela and Amy do phlebotomy. On any day they're in, they cover phlebotomy — unless Reception / In office is short of the headcount above, in which case one of them fills in on reception instead.</p>
       <div class="work-days">
-        <strong>Normal work days:</strong> Edel — Thu, Fri · Susan — Mon, Tue, Wed · Michaela — Mon–Fri (phlebotomist) · Holly — Mon–Fri · Amy — Mon, Tue, Wed (phlebotomist)
+        <strong>Normal work days:</strong> Edel — Thu, Fri · Susan — Mon, Tue, Wed · Michaela — Mon–Fri (phlebotomist if available) · Holly — Mon–Fri · Amy — Mon, Tue, Wed (phlebotomist if available)
       </div>
     </div>
   </div>
@@ -201,40 +200,39 @@ function irishBankHolidays(year){
 }
 function isBankHoliday(d){ return irishBankHolidays(d.getFullYear()).has(fmtISO(d)); }
 
-// ── day type: mandatory reception / phlebotomy headcounts ──
-// Whoever's on phlebotomy on a given day isn't "out back all day" — they do
-// bloods in the morning, come back to reception ~11am to help, then more
-// phlebotomy in the afternoon. So there's just one "phlebotomy" role, and
-// its headcount (1 or 2) is what varies by day type, same as reception.
+// ── day type: how many are needed on Reception / In office ──
+// Every day needs 2, except Monday (all day), the Tuesday after a bank
+// holiday Monday, and the Friday before a bank holiday, which need 3.
 function dayTypeFor(date){
   const dow = date.getDay();
-  if (dow === 1) return { label: 'Monday', tag: null, receptionCount: 2, phlebCount: 1 };
+  if (dow === 1) return { label: 'Monday', tag: null, receptionCount: 3 };
   if (dow === 2){
     const monday = addDays(date, -1);
-    if (isBankHoliday(monday)) return { label: 'Tuesday', tag: 'After Bank Holiday Monday', receptionCount: 2, phlebCount: 1 };
-    return { label: 'Tuesday', tag: null, receptionCount: 1, phlebCount: 2 };
+    if (isBankHoliday(monday)) return { label: 'Tuesday', tag: 'After Bank Holiday Monday', receptionCount: 3 };
+    return { label: 'Tuesday', tag: null, receptionCount: 2 };
   }
-  if (dow === 3) return { label: 'Wednesday', tag: null, receptionCount: 1, phlebCount: 2 };
-  if (dow === 4) return { label: 'Thursday', tag: null, receptionCount: 1, phlebCount: 2 };
+  if (dow === 3) return { label: 'Wednesday', tag: null, receptionCount: 2 };
+  if (dow === 4) return { label: 'Thursday', tag: null, receptionCount: 2 };
   if (dow === 5){
     const nextMonday = addDays(date, 3);
-    if (isBankHoliday(nextMonday)) return { label: 'Friday', tag: 'Before Bank Holiday', receptionCount: 2, phlebCount: 1 };
-    return { label: 'Friday', tag: null, receptionCount: 1, phlebCount: 2 };
+    if (isBankHoliday(nextMonday)) return { label: 'Friday', tag: 'Before Bank Holiday', receptionCount: 3 };
+    return { label: 'Friday', tag: null, receptionCount: 2 };
   }
   return null;
 }
 
-const PHLEB_LABEL = 'Phlebotomy — bloods AM, reception ~11am, more PM';
+const PHLEB_LABEL = 'Phlebotomy';
 
 // ── who's normally working + auto-suggest ──
 function rosterFor(dow){ return STAFF_ORDER.filter(u => STAFF[u].days.includes(dow)); }
 function availableFor(dow, leaveSet){ return rosterFor(dow).filter(u => !leaveSet.has(u)); }
 
-// Builds the day's slot list AND a suggested assignment together, since the
-// number of slots itself depends on who's free: reception fills first from
-// non-phlebotomists (so Amy/Michaela stay free for phlebotomy where
-// possible), the mandatory phlebotomy slots fill next, and anyone left over
-// who's a phlebotomist gets an extra phlebotomy slot instead of sitting idle.
+// Builds the day's slot list AND a suggested assignment together. Everyone
+// available is on one of two roles: Reception / In office, or Phlebotomy.
+// Reception fills first from non-phlebotomists, then from Michaela/Amy if
+// there aren't enough non-phlebotomists to hit the day's headcount.
+// Whichever of Michaela/Amy isn't needed for reception does phlebotomy —
+// there's no third role and no minimum phlebotomy headcount.
 function buildDaySlots(dayType, available){
   const nonPhleb = available.filter(u => !STAFF[u].phlebotomist);
   const phleb = available.filter(u => STAFF[u].phlebotomist);
@@ -244,23 +242,13 @@ function buildDaySlots(dayType, available){
 
   for (let i = 0; i < dayType.receptionCount; i++){
     const id = 'r' + (i+1);
-    slots.push({ id, label: 'Reception (all day)', type: 'reception' });
+    slots.push({ id, label: 'Reception / In office', type: 'reception' });
     if (pool.length) assign[id] = pool.shift();
   }
 
-  // Only Amy/Michaela are trained phlebotomists — phlebotomy slots can only
-  // be auto-filled from whichever of them is left after reception, never
-  // backfilled with a non-phlebotomist just because a body is free.
-  let remainingPhleb = pool.filter(u => STAFF[u].phlebotomist);
-  for (let i = 0; i < dayType.phlebCount; i++){
+  pool.filter(u => STAFF[u].phlebotomist).forEach((u, i) => {
     const id = 'phleb' + (i+1);
     slots.push({ id, label: PHLEB_LABEL, type: 'phleb' });
-    if (remainingPhleb.length) assign[id] = remainingPhleb.shift();
-  }
-
-  remainingPhleb.forEach((u, i) => {
-    const id = 'phlebExtra' + (i+1);
-    slots.push({ id, label: PHLEB_LABEL + ' (extra capacity)', type: 'phleb', extra: true });
     assign[id] = u;
   });
 
@@ -399,10 +387,15 @@ function renderDay(date){
   const suggested = built.assign;
 
   // A slot not yet touched by anyone falls back to the suggestion; a slot
-  // explicitly set to null (someone picked "— unfilled —") stays blank.
+  // explicitly set to null (someone picked "— unfilled —") stays blank. A
+  // slot saved with someone who's since gone on leave is treated the same
+  // as untouched, so ticking someone off immediately recalculates who's
+  // needed instead of leaving a stale, now-unavailable name in place.
   const assignments = {};
   slots.forEach(s => {
-    assignments[s.id] = Object.prototype.hasOwnProperty.call(savedSlots, s.id) ? savedSlots[s.id] : suggested[s.id];
+    const hasSaved = Object.prototype.hasOwnProperty.call(savedSlots, s.id);
+    const saved = hasSaved ? savedSlots[s.id] : undefined;
+    assignments[s.id] = (saved && !available.includes(saved)) ? suggested[s.id] : (hasSaved ? saved : suggested[s.id]);
   });
 
   const usedElsewhere = {};
@@ -410,12 +403,9 @@ function renderDay(date){
     Object.keys(assignments).forEach(k => { if (k !== s.id && assignments[k]) { usedElsewhere[s.id] = usedElsewhere[s.id] || new Set(); usedElsewhere[s.id].add(assignments[k]); } });
   });
 
-  const mandatorySlots = slots.filter(s => !s.extra);
-  const phlebSlots = mandatorySlots.filter(s => s.type === 'phleb');
-  const receptionSlots = mandatorySlots.filter(s => s.type === 'reception');
-  const phlebFilled = phlebSlots.filter(s => assignments[s.id]).length;
+  const receptionSlots = slots.filter(s => s.type === 'reception');
   const receptionFilled = receptionSlots.filter(s => assignments[s.id]).length;
-  const shortStaffed = available.length < mandatorySlots.length;
+  const shortStaffed = available.length < dayType.receptionCount;
 
   const leaveRow = roster.length
     ? '<div class="leave-row">' + roster.map(u =>
@@ -430,29 +420,23 @@ function renderDay(date){
     const current = assignments[s.id] || '';
     const optionsHtml = ['<option value="">— unfilled —</option>']
       .concat(opts.map(u => '<option value="' + u + '"' + (u === current ? ' selected' : '') + '>' + escapeHtml(STAFF[u].name) + (STAFF[u].phlebotomist ? ' 🩸' : '') + '</option>'))
-      .concat((current && !opts.includes(current)) ? ['<option value="' + current + '" selected>' + escapeHtml(STAFF[current] ? STAFF[current].name : current) + ' (unavailable)</option>'] : [])
       .join('');
-    const tag = s.type === 'phleb' ? '<span class="phleb-tag">' + (s.extra ? 'extra' : 'phlebotomy') + '</span>' : '';
+    const tag = s.type === 'phleb' ? '<span class="phleb-tag">phlebotomy</span>' : '';
     return '<div class="slot-row"><span class="slot-label">' + escapeHtml(s.label) + tag + '</span>' +
       '<select class="' + (current ? '' : 'is-empty') + '" onchange="setSlot(\'' + iso + '\',\'' + s.id + '\',this.value)">' + optionsHtml + '</select></div>';
   }).join('');
 
-  const warnParts = [];
-  if (phlebSlots.length && phlebFilled === 0) warnParts.push('no-one on phlebotomy');
-  else if (phlebFilled < phlebSlots.length) warnParts.push('phlebotomy cover is short');
-  if (receptionFilled === 0) warnParts.push('no-one on reception');
-  else if (receptionFilled < receptionSlots.length) warnParts.push('reception is short');
-  const warn = warnParts.length
-    ? '<div class="warn-banner">⚠️ ' + escapeHtml(warnParts.join(' and ')) + ' today — not enough people available for the full rota.' + (leaveSet.size ? ' (' + Array.from(leaveSet).map(u => STAFF[u].name).join(', ') + ' off.)' : '') + '</div>'
+  const warn = receptionFilled < receptionSlots.length
+    ? '<div class="warn-banner">⚠️ Reception / In office is short today — not enough people available to cover it.' + (leaveSet.size ? ' (' + Array.from(leaveSet).map(u => STAFF[u].name).join(', ') + ' off.)' : '') + '</div>'
     : '';
 
-  const ruleText = dayType.receptionCount + ' on reception, ' + dayType.phlebCount + ' on phlebotomy';
+  const ruleText = dayType.receptionCount + ' needed on Reception / In office';
 
   return '<div class="day-card' + (dayType.tag ? ' is-bh-tweak' : '') + '">' +
     '<div class="day-head">' +
       '<div class="day-title"><h3>' + escapeHtml(fmtNice(date)) + '</h3><span class="day-rule">' + ruleText + '</span></div>' +
       '<div>' + (dayType.tag ? '<span class="badge badge-bh">' + escapeHtml(dayType.tag) + '</span> ' : '') +
-        '<span class="badge ' + (shortStaffed ? 'badge-warn' : 'badge-ok') + '">' + available.length + ' available / ' + mandatorySlots.length + ' needed</span></div>' +
+        '<span class="badge ' + (shortStaffed ? 'badge-warn' : 'badge-ok') + '">' + available.length + ' available / ' + dayType.receptionCount + ' needed</span></div>' +
     '</div>' +
     leaveRow +
     '<div class="slots">' + slotsHtml + '</div>' +
