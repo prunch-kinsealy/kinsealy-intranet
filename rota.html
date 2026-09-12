@@ -110,7 +110,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
         <tr><td>Friday before a bank holiday</td><td>3 on Reception / In office.</td></tr>
         <tr><td>Every other day</td><td>2 on Reception / In office.</td></tr>
       </table>
-      <p style="margin-top:10px">Only Michaela and Amy do phlebotomy. On any day they're in, they cover phlebotomy — unless Reception / In office is short of the headcount above, in which case one of them fills in on reception instead.</p>
+      <p style="margin-top:10px">Only Michaela and Amy do phlebotomy. If Reception / In office already has enough people covered without them, whichever of the two isn't needed there covers phlebotomy instead — otherwise they're on reception like everyone else.</p>
       <div class="work-days">
         <strong>Normal work days:</strong> Edel — Thu, Fri · Susan — Mon, Tue, Wed · Michaela — Mon–Fri (phlebotomist if available) · Holly — Mon–Fri · Amy — Mon, Tue, Wed (phlebotomist if available)
       </div>
@@ -275,6 +275,14 @@ async function saveAll(data){
   if (!r.ok) throw new Error('save failed');
 }
 async function mutate(fn){
+  // Apply the change to what's on screen right away, so ticking someone off
+  // (or any other edit) recalculates the day instantly instead of waiting on
+  // a network round-trip. The fetch-latest-then-save below still re-applies
+  // the same change on top of the current server copy before persisting, so
+  // a concurrent edit from someone else isn't clobbered.
+  fn(rotaData);
+  renderWeek();
+
   const status = document.getElementById('sync-status');
   status.textContent = 'Saving…';
   try{
